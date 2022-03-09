@@ -29,22 +29,22 @@ class IntroView: UIViewController {
     //MARK: - attributed Set
     func setAttributed(){
         backgroundFrame.then({
-            $0.backgroundColor = UIColor(named: "white")
+            $0.backgroundColor = Asset.white.color
         })
         introLabel.then({
             $0.font = .systemFont(ofSize: 20, weight: .bold)
-            $0.textColor = UIColor(named: "black")
+            $0.textColor = Asset.black.color
             $0.text = ""
         })
         button.then({
-            $0.backgroundColor = UIColor(named: "white")
+            $0.backgroundColor = Asset.white.color
             $0.setTitle("눌러봐여!", for: .normal)
-            $0.setTitleColor(UIColor(named: "black"), for: .normal)
+            $0.setTitleColor(Asset.black.color, for: .normal)
             $0.addTarget(self, action: #selector(btnAction), for: .touchUpInside)
             $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
             $0.layer.cornerRadius = 8
             $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor(named: "black")?.cgColor
+            $0.layer.borderColor = Asset.black.color.cgColor
         })
     }
     //MARK: - layout Set

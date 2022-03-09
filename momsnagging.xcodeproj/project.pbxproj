@@ -17,6 +17,7 @@
 		8F82E72D27D8A87A008CDC22 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E72C27D8A87A008CDC22 /* Extensions.swift */; };
 		8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E72E27D8A89F008CDC22 /* CommonView.swift */; };
 		8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E73027D8AA9C008CDC22 /* ApiList.swift */; };
+		8F82E73427D8D8E3008CDC22 /* Color+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E73327D8D8E3008CDC22 /* Color+Generated.swift */; };
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
 		8F8DAEA127D8952100F2E78F /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */; };
 		8F8DAEA327D8952700F2E78F /* IntroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8DAEA227D8952700F2E78F /* IntroModel.swift */; };
@@ -36,6 +37,7 @@
 		8F82E72C27D8A87A008CDC22 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8F82E72E27D8A89F008CDC22 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
 		8F82E73027D8AA9C008CDC22 /* ApiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiList.swift; sourceTree = "<group>"; };
+		8F82E73327D8D8E3008CDC22 /* Color+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Generated.swift"; sourceTree = "<group>"; };
 		8F8DAE9927D8948800F2E78F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
 		8F8DAEA227D8952700F2E78F /* IntroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroModel.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		8F8DAE9827D8945300F2E78F /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8F82E73327D8D8E3008CDC22 /* Color+Generated.swift */,
 				8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */,
 				8F8DAE9927D8948800F2E78F /* Color.xcassets */,
 			);
@@ -322,7 +325,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n  ${PODS_ROOT}/SwiftGen/bin/swiftgen xcassets ${TARGETNAME}/Resource/Color.xcassets -t swift5 --output \"${TARGETNAME}/Resource/Color+Generated.swift\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -336,6 +339,7 @@
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				8F8DAEA327D8952700F2E78F /* IntroModel.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
+				8F82E73427D8D8E3008CDC22 /* Color+Generated.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
 				8F8DAEA127D8952100F2E78F /* IntroViewModel.swift in Sources */,

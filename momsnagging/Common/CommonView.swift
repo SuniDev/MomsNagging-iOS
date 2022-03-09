@@ -14,7 +14,7 @@ class CommonView {
     //ex. 공통 버튼 형태 등
     func testButton() -> UIButton{
         let button = UIButton().then({
-            $0.backgroundColor = .red
+            $0.backgroundColor = Asset.black.color
         })
         return button
     }
