@@ -1,0 +1,6 @@
+framework module Pods_momsnagging {
+  umbrella header "Pods-momsnagging-umbrella.h"
+
+  export *
+  module * { export * }
+}
