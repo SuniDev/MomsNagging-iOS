@@ -7,23 +7,23 @@ min Version 13.0
 IntroView까지 진입가능
 
 #pod 설치 리스트
-###UI&CodeConvention
-pod ‘SnapKit’, ‘~> 5.0.0’
-pod 'Then'
-pod ‘Kingfisher’, ‘~> 5.0’
-pod 'SwiftLint'
-pod 'SwiftGen', '~> 6.0'
+* UI&CodeConvention
+Snapkit
+Then
+Kingfisher
+swiftLint
+swiftGen
 
-###Networking
-pod 'Moya/RxSwift', '~> 15.0'
-pod ‘SwiftyJSON’, ‘~> 4.0’
+* Networking
+Moya/RxSwift
+SwiftyJson
 
-###async
-pod ‘RxSwift’, ‘~> 5’
-pod ‘RxCocoa’, ‘~> 5’
+* Async
+RxSwift
+RxCocoa
 
-###firebase
-pod ‘Firebase/Analytics’
-pod ‘Firebase/Crashlytics’
-pod 'Firebase/Messaging'
-pod 'Firebase/AppDistribution'
+* Firebase
+Analytics
+Crashlytics
+Messaging
+AppDistribution
