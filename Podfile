@@ -7,23 +7,23 @@ target 'momsnagging' do
 
   # Pods for momsnagging
 	#UI&CodeConvention
-	pod ‘SnapKit’, ‘~> 5.0.0’
+	pod 'SnapKit', '~> 5.0.0'
 	pod 'Then'
-	pod ‘Kingfisher’, ‘~> 5.0’
+	pod 'Kingfisher','~> 5.0'
 	pod 'SwiftLint'
 	pod 'SwiftGen', '~> 6.0'
 
 	#Networking
 	pod 'Moya/RxSwift', '~> 15.0'
-	pod ‘SwiftyJSON’, ‘~> 4.0’
+	pod 'SwiftyJSON', '~> 4.0'
 
 	#async
-	pod ‘RxSwift’, ‘~> 6’
-	pod ‘RxCocoa’, ‘~> 6’
+	pod 'RxSwift', '~> 6'
+	pod 'RxCocoa', '~> 6'
 
 	#firebase
-	pod ‘Firebase/Analytics’
-	pod ‘Firebase/Crashlytics’
+	pod 'Firebase/Analytics'
+	pod 'Firebase/Crashlytics'
 	pod 'Firebase/Messaging'
 	pod 'Firebase/AppDistribution'
 
