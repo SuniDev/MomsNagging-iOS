@@ -21,6 +21,7 @@
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
 		8F8DAEA127D8952100F2E78F /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */; };
 		8F8DAEA327D8952700F2E78F /* IntroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8DAEA227D8952700F2E78F /* IntroModel.swift */; };
+		A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,8 @@
 		8F8DAE9927D8948800F2E78F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
 		8F8DAEA227D8952700F2E78F /* IntroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroModel.swift; sourceTree = "<group>"; };
+		A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -101,6 +104,7 @@
 		8F6BCB2627D89E840038B020 /* Release */ = {
 			isa = PBXGroup;
 			children = (
+				A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */,
 			);
 			path = Release;
 			sourceTree = "<group>";
@@ -108,6 +112,7 @@
 		8F6BCB2727D89E8A0038B020 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
+				A0728E2727DDD6F90046058D /* GoogleService-Info.plist */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -212,7 +217,9 @@
 				8F06EC0027D892D900A17FF2 /* Frameworks */,
 				8F06EC0127D892D900A17FF2 /* Resources */,
 				44DF14DD82400B7789E2EE16 /* [CP] Embed Pods Frameworks */,
-				8F82E73227D8AFB9008CDC22 /* ShellScript */,
+				8F82E73227D8AFB9008CDC22 /* Run Script */,
+				A0728E2927DDD9F80046058D /* Firebase Script */,
+				A06F805E27DDFCEB00F13BFD /* Crashlytics Script */,
 			);
 			buildRules = (
 			);
@@ -263,6 +270,7 @@
 			files = (
 				8F06EC1327D892DB00A17FF2 /* LaunchScreen.storyboard in Resources */,
 				8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */,
+				A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */,
 				8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */,
 				8F6C537427D8972D000212CC /* Intro.storyboard in Resources */,
 			);
@@ -310,7 +318,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-momsnagging/Pods-momsnagging-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8F82E73227D8AFB9008CDC22 /* ShellScript */ = {
+		8F82E73227D8AFB9008CDC22 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -319,6 +327,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -326,6 +335,42 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n  ${PODS_ROOT}/SwiftGen/bin/swiftgen xcassets ${TARGETNAME}/Resource/Color.xcassets -t swift5 --output \"${TARGETNAME}/Resource/Color+Generated.swift\"\n";
+		};
+		A06F805E27DDFCEB00F13BFD /* Crashlytics Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Crashlytics Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#\"${PODS_ROOT}/FirebaseCrashlytics/run\"\nif [ \"${CONFIGURATION}\" != \"Debug\" ]; then\n    \"${PODS_ROOT}/FirebaseCrashlytics/run\"\n    \"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist -p ios ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\nfi\n";
+		};
+		A0728E2927DDD9F80046058D /* Firebase Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Firebase Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "case \"${CONFIGURATION}\" in\n\"Debug\" )\ncp -r \"$SRCROOT/momsnagging/FBConfig/Debug/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n\"Release\" )\ncp -r \"$SRCROOT/momsnagging/FBConfig/Release/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n- )\n;;\nesac\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -485,7 +530,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEPLOY_PHASE = debug;
-				DEVELOPMENT_TEAM = QTH4H7YB67;
+				DEVELOPMENT_TEAM = 3T5QFYSPG5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = momsnagging/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -500,7 +545,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging;
+				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -517,7 +562,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEPLOY_PHASE = release;
-				DEVELOPMENT_TEAM = QTH4H7YB67;
+				DEVELOPMENT_TEAM = 3T5QFYSPG5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = momsnagging/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -550,7 +595,7 @@
 				8F06EC1627D892DB00A17FF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		8F06EC1727D892DB00A17FF2 /* Build configuration list for PBXNativeTarget "momsnagging" */ = {
 			isa = XCConfigurationList;
@@ -559,7 +604,7 @@
 				8F06EC1927D892DB00A17FF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
