@@ -26,5 +26,12 @@ target 'momsnagging' do
 	pod 'Firebase/Crashlytics'
 	pod 'Firebase/Messaging'
 	pod 'Firebase/AppDistribution'
+  
+  #Google
+  pod 'GoogleSignIn'
+  
+  #Kakao
+  pod 'RxKakaoSDKAuth'
+  pod 'RxKakaoSDKUser'
 
 end

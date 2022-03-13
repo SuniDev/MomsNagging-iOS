@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import RxKakaoSDKCommon
+import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +21,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
         
+        // Use Kakao SDK
+        RxKakaoSDK.initSDK(appKey: ApiList.getKakaoNativeAppKey())
+        
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        var handled: Bool
+        
+        handled = GIDSignIn.sharedInstance.handle(url)
+        
+        if handled {
+            return true
+        }
+        
+        return false
     }
 
     // MARK: UISceneSession Lifecycle
