@@ -12,43 +12,39 @@ import RxSwift
 
 class IntroView: UIViewController {
     
-    //MARK: - Outlet
-    @IBOutlet weak var introLabel : UILabel!
-    @IBOutlet weak var backgroundFrame : UIView!
-    @IBOutlet weak var button : UIButton!
-    
-    //MARK: - Properties
+    //MARK: - Properties & Variable
     var disposedBag = DisposeBag()
     var viewModel = IntroViewModel()
+    //MARK: - UI Properties
+    var backgroundFrame = UIView().then({
+        $0.backgroundColor = Asset.white.color
+    })
+    var introLabel = UILabel().then({
+        $0.font = .systemFont(ofSize: 20, weight: .bold)
+        $0.textColor = Asset.black.color
+        $0.text = ""
+    })
+    var button = UIButton().then({
+        $0.backgroundColor = Asset.white.color
+        $0.setTitle("눌러봐여!", for: .normal)
+        $0.setTitleColor(Asset.black.color, for: .normal)
+        $0.addTarget(self, action: #selector(btnAction), for: .touchUpInside)
+        $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        $0.layer.cornerRadius = 8
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = Asset.black.color.cgColor
+    })
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setAttributed()
         layoutSetting()
     }
     //MARK: - attributed Set
-    func setAttributed(){
-        backgroundFrame.then({
-            $0.backgroundColor = Asset.white.color
-        })
-        introLabel.then({
-            $0.font = .systemFont(ofSize: 20, weight: .bold)
-            $0.textColor = Asset.black.color
-            $0.text = ""
-        })
-        button.then({
-            $0.backgroundColor = Asset.white.color
-            $0.setTitle("눌러봐여!", for: .normal)
-            $0.setTitleColor(Asset.black.color, for: .normal)
-            $0.addTarget(self, action: #selector(btnAction), for: .touchUpInside)
-            $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-            $0.layer.cornerRadius = 8
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = Asset.black.color.cgColor
-        })
-    }
     //MARK: - layout Set
     func layoutSetting(){
+        view.addSubview(backgroundFrame)
+        backgroundFrame.addSubview(introLabel)
+        backgroundFrame.addSubview(button)
         backgroundFrame.snp.makeConstraints({
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.snp.leading)
