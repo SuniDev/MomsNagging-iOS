@@ -15,6 +15,7 @@ class IntroView: UIViewController {
     //MARK: - Properties & Variable
     var disposedBag = DisposeBag()
     var viewModel = IntroViewModel()
+    var imagePickerController = UIImagePickerController()
     //MARK: - UI Properties
     var backgroundFrame = UIView().then({
         $0.backgroundColor = Asset.white.color
@@ -70,5 +71,16 @@ extension IntroView {
         viewModel.nameOb?.subscribe(onNext: { st in
             self.introLabel.text = st
         }).disposed(by: disposedBag)
+        /*
+         System Alert 사용 형태입니다 UIAlertAction의 doneAction은 handler관리가 불편하여 빼놨습니다. 혹시 더 좋은 방법이 있다면 공유 부탁드려용 :)
+         */
+//        let doneAction = UIAlertAction(title: "확인", style: .default, handler: { _ in
+//            print("Alert 확인 액션 테스트")
+//        })
+//        CommonView.systemAlert(view: self, type: .twoButton, title: "타이틀테스트", message: "메세지테스트", doneAction: doneAction)
+//        Common.checkPhotoLibraryPermission(view: self)
     }
+}
+extension IntroView : UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    //앨범 사용이 필요한 View에서 ImagePickerControllerDelegate,UINavigationControllerDelegate가 필요함.
 }
