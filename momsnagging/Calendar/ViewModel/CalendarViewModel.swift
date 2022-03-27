@@ -11,16 +11,16 @@ import Moya
 
 class CalenderViewModel {
     
-    //MARK: - Properties & Variable
+    // MARK: - Properties & Variable
     private var model = CalendarModel()
     
-    func dayList()->Array<String>{
+    func dayList() -> [String] {
         return model.getDayList()
     }
-    func rowCount()->Int{
+    func rowCount() -> Int {
         return model.getMonthRow()
     }
-    func weekDayList()->Array<String>{
+    func weekDayList() -> [String] {
         return model.weekDayList
     }
 }

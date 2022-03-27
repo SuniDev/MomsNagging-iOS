@@ -14,17 +14,20 @@ class CalendarDayCell: UICollectionViewCell {
         super.layoutSubviews()
         setUI()
     }
+    
     lazy var number = UILabel().then({
         $0.textColor = UIColor.white
         $0.font = .systemFont(ofSize: 15, weight: .regular)
     })
+    
     lazy var emoji = UIButton().then({
         $0.setTitle("😊", for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 13, weight: .regular)
     })
+    
 }
 extension CalendarDayCell {
-    private func setUI(){
+    private func setUI() {
         contentView.addSubview(number)
         contentView.addSubview(emoji)
         number.snp.makeConstraints({

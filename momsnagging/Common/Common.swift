@@ -10,7 +10,7 @@ import Photos
 import UIKit
 
 class Common {
-    static func checkPhotoLibraryPermission(view:UIViewController){
+    static func checkPhotoLibraryPermission(view: UIViewController){
         if #available(iOS 14, *) {
             PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: { status in
                 switch status {
@@ -24,9 +24,9 @@ class Common {
                             guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                             UIApplication.shared.open(url, options: [:], completionHandler: nil)
                         })
-                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction,cancelTitle: "아니요")
+                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction, cancelTitle: "아니요")
                     }
-                case .authorized: //권한 허용 상태
+                case .authorized: // 권한 허용 상태
                     DispatchQueue.main.async {
                         let imagePickerController = UIImagePickerController()
                         imagePickerController.sourceType = .photoLibrary
@@ -51,13 +51,13 @@ class Common {
                     print("아직 선택하지 않음 notDetermined")
                 case .restricted:
                     print("아직 선택하지 않음 restricted")
-                case .denied://권한 거부 상태
+                case .denied:// 권한 거부 상태
                     DispatchQueue.main.async {
                         let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
                             guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                             UIApplication.shared.open(url, options: [:], completionHandler: nil)
                         })
-                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction,cancelTitle: "아니요")
+                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction, cancelTitle: "아니요")
                     }
                 case .authorized://권한 허용 상태
                     DispatchQueue.main.async {

@@ -72,7 +72,7 @@ class CalendarModel{
         let today = getToday()
         for _ in 0..<today - 1{
             if count != 0 {
-                count = count - 1
+                count -= 1
             }else{
                 count = 6
             }
@@ -84,12 +84,12 @@ class CalendarModel{
         var count = 0
         var monthDayCount = getMonthDaysCount()
         let startWeekDay = getMonthFirstDayWeekDay()
-        monthDayCount = monthDayCount - (7 - startWeekDay)
-        count = count + 1
-        count = count + (monthDayCount / 7)
-        monthDayCount = monthDayCount - (7 * (monthDayCount / 7))
+        monthDayCount -= (7 - startWeekDay)
+        count += 1
+        count += (monthDayCount / 7)
+        monthDayCount -= (7 * (monthDayCount / 7))
         if monthDayCount != 0 {
-            count = count + 1
+            count += 1
         }
         return count
     }

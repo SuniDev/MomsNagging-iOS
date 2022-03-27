@@ -14,13 +14,15 @@ class CalendarWeekDayCell: UICollectionViewCell {
         super.layoutSubviews()
         setUI()
     }
+    
     lazy var dayWeekLabel = UILabel().then({
         $0.textColor = UIColor.white
         $0.font = .systemFont(ofSize: 17, weight: .bold)
     })
+    
 }
 extension CalendarWeekDayCell {
-    private func setUI(){
+    private func setUI() {
         contentView.addSubview(dayWeekLabel)
         dayWeekLabel.snp.makeConstraints({
             $0.center.equalTo(contentView.snp.center)

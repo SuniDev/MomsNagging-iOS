@@ -8,5 +8,5 @@
 import Foundation
 
 struct IntroModel {
-    var name : String?
+    var name: String?
 }

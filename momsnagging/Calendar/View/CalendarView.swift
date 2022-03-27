@@ -103,12 +103,16 @@ extension CalendarView : UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView.tag == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarWeekDayCell", for: indexPath) as! CalendarWeekDayCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarWeekDayCell", for: indexPath) as? CalendarWeekDayCell else {
+                fatalError()
+            }
             let row = weekDay?[indexPath.row]
             cell.dayWeekLabel.text = row
             return cell
         }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarDayCell", for: indexPath) as! CalendarDayCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarDayCell", for: indexPath) as? CalendarDayCell else {
+                fatalError()
+            }
             let row = daylist?[indexPath.row]
             if row == "" {
                 cell.emoji.isHidden = true

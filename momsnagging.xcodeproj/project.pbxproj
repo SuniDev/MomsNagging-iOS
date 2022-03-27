@@ -53,6 +53,7 @@
 		8F8DAE9927D8948800F2E78F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
 		8F8DAEA227D8952700F2E78F /* IntroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroModel.swift; sourceTree = "<group>"; };
+		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +83,7 @@
 		8F06EBFA27D892D900A17FF2 = {
 			isa = PBXGroup;
 			children = (
+				A06BB31627F058FA005727AD /* .swiftlint.yml */,
 				8F06EC0527D892D900A17FF2 /* momsnagging */,
 				8F06EC0427D892D900A17FF2 /* Products */,
 				3022C1F3C21435DC7A457ECC /* Pods */,
@@ -254,6 +256,7 @@
 			buildConfigurationList = 8F06EC1727D892DB00A17FF2 /* Build configuration list for PBXNativeTarget "momsnagging" */;
 			buildPhases = (
 				4301286D6BFFD4E020662A8A /* [CP] Check Pods Manifest.lock */,
+				A06BB31527F058AC005727AD /* SwiftLint Script */,
 				8F06EBFF27D892D900A17FF2 /* Sources */,
 				8F06EC0027D892D900A17FF2 /* Frameworks */,
 				8F06EC0127D892D900A17FF2 /* Resources */,
@@ -375,6 +378,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n  ${PODS_ROOT}/SwiftGen/bin/swiftgen xcassets ${TARGETNAME}/Resource/Color.xcassets -t swift5 --output \"${TARGETNAME}/Resource/Color+Generated.swift\"\n";
+		};
+		A06BB31527F058AC005727AD /* SwiftLint Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		A06F805E27DDFCEB00F13BFD /* Crashlytics Script */ = {
 			isa = PBXShellScriptBuildPhase;
