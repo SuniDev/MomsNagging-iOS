@@ -13,6 +13,7 @@ analyzer_rules:
 opt_in_rules:
   - anyobject_protocol
   - array_init
+  # @objc, @IBoutlet 에 엔터키 안하고 바로 붙여쓰도록 함 https://realm.github.io/SwiftLint/attributes.html
   - attributes
   - closure_end_indentation
   - closure_spacing
