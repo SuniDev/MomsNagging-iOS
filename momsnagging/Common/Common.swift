@@ -79,4 +79,35 @@ class Common {
             })
         }
     }
+    
+    // MARK: - Badge
+    /**
+     # setBadgeNumber
+     - Authors: suni
+     - parameters:
+        - count : 설정할 Badge 개수
+     - Note: badge number를 설정하는 공용 함수.
+     */
+    static func setBadgeNumber(count: Int) {
+        UIApplication.shared.applicationIconBadgeNumber = count
+    }
+    
+    /**
+     # getBadgeNumber
+     - Authors: suni
+     - returns : Badge 개수
+     - Note: badge number를 설정하는 공용 함수.
+     */
+    static func getBadgeNumber() -> Int {
+        return UIApplication.shared.applicationIconBadgeNumber
+    }
+    
+    /**
+     # setBadgeNumber
+     - Authors: suni
+     - Note: badge number를 설정하는 공용 함수.
+     */
+    static func removeBadgeNumber() {
+        setBadgeNumber(count: 0)
+    }
 }
