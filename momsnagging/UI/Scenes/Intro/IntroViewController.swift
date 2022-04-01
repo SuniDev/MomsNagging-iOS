@@ -43,7 +43,7 @@ class IntroViewController: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        Log.debug("Debug Log Sample")
     }
     
     // MARK: - initUI
