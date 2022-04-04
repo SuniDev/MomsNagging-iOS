@@ -54,6 +54,7 @@ opt_in_rules:
   - static_operator
   # 구현되지 않은 기능은 사용할 수없는 것으로 표시해야합니다. https://realm.github.io/SwiftLint/unavailable_function.html
   - unavailable_function
+  # 클로저 인수를 선언 할 때는 괄호가 필요하지 않습니다. https://realm.github.io/SwiftLint/unneeded_parentheses_in_closure_argument.html
   - unneeded_parentheses_in_closure_argument
   - untyped_error_in_catch
   - vertical_parameter_alignment_on_call

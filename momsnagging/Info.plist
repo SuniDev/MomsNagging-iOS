@@ -19,7 +19,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.124964608262-pgkimsv78a5tc2jkum5oc9716u78qhna</string>
+				<string>com.googleusercontent.apps.124964608262-32u0a6bdj4875g40e9t5aadmrpp7sirr</string>
 			</array>
 		</dict>
 		<dict>
@@ -36,7 +36,7 @@
 	<key>DeployPhase</key>
 	<string>$(DEPLOY_PHASE)</string>
 	<key>GoogleClientID</key>
-	<string></string>
+	<string>$(GOOGLE_CLIENT_ID)</string>
 	<key>KakaoNativeAppKey</key>
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>LSApplicationQueriesSchemes</key>

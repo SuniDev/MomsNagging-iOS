@@ -10,6 +10,7 @@
 		78423E9A816288D6BC1EF082 /* Pods_momsnagging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */; };
 		86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */; };
 		86D4BE2927F683D700E9EE8B /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D4BE2827F683D700E9EE8B /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2D27F6BE2000E9EE8B /* User.swift */; };
 		8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0627D892D900A17FF2 /* AppDelegate.swift */; };
 		8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */; };
 		8F06EC0B27D892D900A17FF2 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0A27D892D900A17FF2 /* IntroView.swift */; };
@@ -39,6 +40,7 @@
 		A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35727F0E55C005727AD /* UIViewController+Rx.swift */; };
 		A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35927F0E982005727AD /* BaseNavigationController.swift */; };
 		A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */; };
+		A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,7 @@
 		7976B2BB96C29942DF65316A /* Pods-momsnagging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.debug.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.debug.xcconfig"; sourceTree = "<group>"; };
 		86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
 		86D4BE2827F683D700E9EE8B /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
+		86D4BE2D27F6BE2000E9EE8B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8F06EC0327D892D900A17FF2 /* momsnagging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = momsnagging.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F06EC0627D892D900A17FF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +82,7 @@
 		A06BB35927F0E982005727AD /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -104,6 +108,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		86D4BE2C27F6BE1100E9EE8B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				86D4BE2D27F6BE2000E9EE8B /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		8F06EBFA27D892D900A17FF2 = {
 			isa = PBXGroup;
 			children = (
@@ -126,7 +138,8 @@
 		8F06EC0527D892D900A17FF2 /* momsnagging */ = {
 			isa = PBXGroup;
 			children = (
-				A06BB33A27F0BA5A005727AD /* UI */,
+				86D4BE2C27F6BE1100E9EE8B /* Models */,
+				A06BB33B27F0BA5E005727AD /* Scenes */,
 				8F8DAEA427D8954D00F2E78F /* FBConfig */,
 				8F8DAE9B27D894A100F2E78F /* IntroView */,
 				8F8DAE9827D8945300F2E78F /* Resource */,
@@ -272,21 +285,15 @@
 			children = (
 				A06BB33827F0BA37005727AD /* BaseViewController.swift */,
 				A06BB35927F0E982005727AD /* BaseNavigationController.swift */,
+				A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		A06BB33A27F0BA5A005727AD /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				A06BB33B27F0BA5E005727AD /* Scenes */,
-			);
-			path = UI;
 			sourceTree = "<group>";
 		};
 		A06BB33B27F0BA5E005727AD /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				A0EDBE6B27FA7EE900272B0E /* Main */,
 				A06BB33E27F0BA74005727AD /* Intro */,
 				A06BB34D27F0C20D005727AD /* Onboarding */,
 				A06BB33F27F0BA92005727AD /* Login */,
@@ -328,6 +335,13 @@
 				86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A0EDBE6B27FA7EE900272B0E /* Main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		E2B7BEA15ACF83AA558CED4E /* Frameworks */ = {
@@ -548,9 +562,11 @@
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
 				8F82E73427D8D8E3008CDC22 /* Color+Generated.swift in Sources */,
+				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
+				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
@@ -707,6 +723,7 @@
 				DEPLOY_PHASE = debug;
 				DEVELOPMENT_TEAM = 3T5QFYSPG5;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_CLIENT_ID = "124964608262-32u0a6bdj4875g40e9t5aadmrpp7sirr.apps.googleusercontent.com";
 				INFOPLIST_FILE = momsnagging/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "엄마의 잔소리(개발)";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
