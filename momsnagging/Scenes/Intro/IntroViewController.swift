@@ -71,12 +71,10 @@ class IntroViewController: BaseViewController, Navigatable {
     override func bind() {
         Observable.just(Void())
             .subscribe(onNext: {
-                print("viewDidLoad")
                 self.viewModel.getLoginInfo()
             }).disposed(by: disposeBag)
         
         viewModel.isAutoLogin?.subscribe(onNext: { [weak self] isAutoLogin in
-            print("isAutoLogin \(isAutoLogin)")
             if isAutoLogin {
                 // TODO: - 메인 화면 이동
             } else {
