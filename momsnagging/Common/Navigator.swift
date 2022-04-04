@@ -30,6 +30,7 @@ class Navigator {
         case intro(viewModel: SampleIntroViewModel)
         case onboarding(viewModel: OnboardingViewModel)
         case login(viewModel: LoginViewModel)
+        case calendar(viewModel: CalendarViewModel)
     }
     
     enum Transition {
@@ -47,6 +48,7 @@ class Navigator {
         case .intro(let viewModel): return IntroViewController(viewModel: viewModel, navigator: self)
         case .onboarding(let viewModel): return OnboardingViewController(viewModel: viewModel, navigator: self)
         case .login(let viewModel): return LoginViewController(viewModel: viewModel, navigator: self)
+        case .calendar(viewModel: let viewModel): return CalendarView(viewModel: viewModel, navigator: self)
         }
     }
     

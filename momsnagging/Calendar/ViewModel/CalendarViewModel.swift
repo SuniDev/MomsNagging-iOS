@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import Moya
 
-class CalenderViewModel {
+class CalendarViewModel {
     
     // MARK: - Properties & Variable
     private var model = CalendarModel()
@@ -22,5 +22,8 @@ class CalenderViewModel {
     }
     func weekDayList() -> [String] {
         return model.weekDayList
+    }
+    func getWeekCalendarData() -> [Int] {
+        return model.getWeek()
     }
 }
