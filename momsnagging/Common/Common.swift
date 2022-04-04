@@ -8,6 +8,7 @@
 import Foundation
 import Photos
 import UIKit
+import StoreKit
 
 class Common {
     static func checkPhotoLibraryPermission(view: UIViewController){
@@ -96,18 +97,27 @@ class Common {
      # getBadgeNumber
      - Authors: suni
      - returns : Badge 개수
-     - Note: badge number를 설정하는 공용 함수.
+     - Note: badge number를 가져오는 공용 함수.
      */
     static func getBadgeNumber() -> Int {
         return UIApplication.shared.applicationIconBadgeNumber
     }
     
     /**
-     # setBadgeNumber
+     # removeBadgeNumber
      - Authors: suni
-     - Note: badge number를 설정하는 공용 함수.
+     - Note: badge number를 지우는 함수.
      */
     static func removeBadgeNumber() {
         setBadgeNumber(count: 0)
+    }
+    
+    /**
+     # requestStoreReview
+     - Authors: suni
+     - Note: App Store 리뷰를 요청하는 공용 함수.
+     */
+    static func requestStoreReview() {
+        SKStoreReviewController.requestReview()
     }
 }
