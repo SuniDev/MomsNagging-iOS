@@ -32,22 +32,22 @@ class CalendarView: UIViewController {
         bind()
     }
     // MARK: - Properties & Variable
-//    var viewModel = CalendarViewModel()
-    var weekDay: [String]?
-    var daylist: [String]?
-    var weekdayList: [Int]?
+    var disposedBag = DisposeBag()
+    var weekDay: Observable<[String]>?
+    var daylist: Observable<[String]>?
+    var weekDayList: Observable<[Int]>?
     // MARK: - UI Properties
-    lazy var weekDayCollectionView: UICollectionView = {
+    var weekDayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: weekDayCellLayout())
         collectionView.register(CalendarWeekDayCell.self, forCellWithReuseIdentifier: "CalendarWeekDayCell")
-        collectionView.delegate = self
-        collectionView.dataSource = self
+//        collectionView.delegate = self
+//        collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.tag = 0
         return collectionView
     }()
     
-    func weekDayCellLayout() -> UICollectionViewFlowLayout {
+    static func weekDayCellLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.scrollDirection = .vertical
@@ -56,18 +56,17 @@ class CalendarView: UIViewController {
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 7, height: 50)
         return layout
     }
-    lazy var dayCollectionView: UICollectionView = {
+    
+    var dayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: dayDayCellLayout())
         collectionView.register(CalendarDayCell.self, forCellWithReuseIdentifier: "CalendarDayCell")
-        collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.tag = 1
         collectionView.isScrollEnabled = false
         return collectionView
     }()
     
-    func dayDayCellLayout() -> UICollectionViewFlowLayout {
+    static func dayDayCellLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.scrollDirection = .vertical
@@ -82,11 +81,9 @@ class CalendarView: UIViewController {
         $0.textColor = .white
     })
     
-    lazy var weekCalendarCollectionView: UICollectionView = {
+    var weekCalendarCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: dayDayCellLayout())
         collectionView.register(CalendarDayCell.self, forCellWithReuseIdentifier: "CalendarDayCell")
-        collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.tag = 2
         collectionView.isScrollEnabled = false
@@ -95,9 +92,9 @@ class CalendarView: UIViewController {
     
     // MARK: - InitUI
     func initUI() {
-        weekDay = viewModel.weekDayList()
-        daylist = viewModel.dayList()
-        weekdayList = viewModel.getWeekCalendarData()
+        weekDay = Observable.just(viewModel.weekDayList())
+        daylist = Observable.just(viewModel.dayList())
+        weekDayList = Observable.just(viewModel.getWeekCalendarData())
     }
     // MARK: - Layout Setting
     func layoutSetting() {
@@ -131,54 +128,21 @@ class CalendarView: UIViewController {
     }
     // MARK: - Bind
     func bind() {
-        
+        self.weekDay!
+            .bind(to: self.weekDayCollectionView.rx.items(cellIdentifier: "CalendarWeekDayCell", cellType: CalendarWeekDayCell.self)) { _, item, cell in
+                cell.dayWeekLabel.text = item
+            }.disposed(by: disposedBag)
+        self.daylist!
+            .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "CalendarDayCell", cellType: CalendarDayCell.self)) { _, item, cell in
+                cell.number.text = item
+            }.disposed(by: disposedBag)
+        self.weekDayList!
+            .bind(to: self.weekCalendarCollectionView.rx.items(cellIdentifier: "CalendarDayCell", cellType: CalendarDayCell.self)) { _, item, cell in
+                cell.number.text = "\(item)"
+            }.disposed(by: disposedBag)
     }
     // MARK: - Other
 }
 // MARK: - Action
 extension CalendarView {
-}
-
-// MARK: - UICollectionView Delegate, Datasource
-extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView.tag == 0 {
-            return weekDay?.count ?? 0
-        } else if collectionView.tag == 1 {
-            return daylist?.count ?? 0
-        } else {
-            return weekdayList?.count ?? 0
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView.tag == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarWeekDayCell", for: indexPath) as? CalendarWeekDayCell else {
-                fatalError()
-            }
-            let row = weekDay?[indexPath.row]
-            cell.dayWeekLabel.text = row
-            return cell
-        } else if collectionView.tag == 1 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarDayCell", for: indexPath) as? CalendarDayCell else {
-                fatalError()
-            }
-            let row = daylist?[indexPath.row]
-            if row == "" {
-                cell.emoji.isHidden = true
-            } else {
-                cell.number.text = row
-                cell.emoji.isHidden = false
-            }
-            return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarDayCell", for: indexPath) as? CalendarDayCell else {
-                fatalError()
-            }
-            let row = weekdayList?[indexPath.row]
-            cell.number.text = "\(row ?? 0)"
-            cell.emoji.isHidden = false
-            return cell
-        }
-    }
 }
