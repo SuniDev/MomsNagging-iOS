@@ -20,20 +20,20 @@ struct Log {
     /**
      # (e) Level
      - Authors : suni
-     - debug : 디버깅 모드 로그
-     - info : 상세 오류
+     - debug : 디버깅 로그
+     - info : 문제 해결 정보
      - network : 네트워크 정보
-     - error : 간단한 오류
+     - error :  오류
      - custom(category: String) : 커스텀 디버깅 로그
      */
     enum Level {
         /// 디버깅 로그
         case debug
-        /// 상세 Error
+        /// 문제 해결 정보
         case info
         /// 네트워크 로그
         case network
-        /// 간단 Error
+        /// 오류 로그
         case error
         case custom(category: String)
         
@@ -113,7 +113,7 @@ extension Log {
     /**
      # debug
      - Authors : suni
-     - Note : 개발 환경에서의 간단한 로깅
+     - Note : 개발 중 코드 디버깅 시 사용할 수 있는 유용한 정보
      */
     static func debug(_ message: Any, _ arguments: Any...) {
         log(message, arguments, level: .debug)
@@ -122,7 +122,7 @@ extension Log {
     /**
      # info
      - Authors : suni
-     - Note : 상세한 오류
+     - Note : 문제 해결시 활용할 수 있는, 도움이 되지만 필수적이지 않은 정보﻿
      */
     static func info(_ message: Any, _ arguments: Any...) {
         log(message, arguments, level: .info)
@@ -131,7 +131,7 @@ extension Log {
     /**
      # network
      - Authors : suni
-     - Note : 네트워크 정보
+     - Note : 네트워크 문제 해결에 필수적인 정보
      */
     static func network(_ message: Any, _ arguments: Any...) {
         log(message, arguments, level: .network)
@@ -140,10 +140,10 @@ extension Log {
     /**
      # error
      - Authors : suni
-     - Note : 간단한 오류
+     - Note : 코드 실행 중 나타난 에러
      */
     static func error(_ message: Any, _ arguments: Any...) {
-        log(message, arguments, level: .network)
+        log(message, arguments, level: .error)
     }
 
     /**
