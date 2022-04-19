@@ -13,7 +13,6 @@
 		86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2D27F6BE2000E9EE8B /* User.swift */; };
 		8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0627D892D900A17FF2 /* AppDelegate.swift */; };
 		8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */; };
-		8F06EC0B27D892D900A17FF2 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0A27D892D900A17FF2 /* IntroView.swift */; };
 		8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */; };
 		8F06EC1327D892DB00A17FF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */; };
 		8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F939E27EC89C0000F08AF /* CalendarView.swift */; };
@@ -22,13 +21,10 @@
 		8F1F93A527EEF2C6000F08AF /* CalendarDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F93A427EEF2C5000F08AF /* CalendarDayCell.swift */; };
 		8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F93A627EEF2DA000F08AF /* CalendarWeekDayCell.swift */; };
 		8F1F93A927EF51B4000F08AF /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F93A827EF51B4000F08AF /* Common.swift */; };
-		8F82E72D27D8A87A008CDC22 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E72C27D8A87A008CDC22 /* Extensions.swift */; };
 		8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E72E27D8A89F008CDC22 /* CommonView.swift */; };
 		8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E73027D8AA9C008CDC22 /* ApiList.swift */; };
 		8F82E73427D8D8E3008CDC22 /* Color+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E73327D8D8E3008CDC22 /* Color+Generated.swift */; };
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
-		8F8DAEA127D8952100F2E78F /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */; };
-		8F8DAEA327D8952700F2E78F /* IntroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8DAEA227D8952700F2E78F /* IntroModel.swift */; };
 		A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33827F0BA37005727AD /* BaseViewController.swift */; };
 		A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33C27F0BA72005727AD /* IntroViewController.swift */; };
 		A06BB34127F0BAA3005727AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34027F0BAA3005727AD /* LoginViewController.swift */; };
@@ -52,7 +48,6 @@
 		8F06EC0327D892D900A17FF2 /* momsnagging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = momsnagging.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F06EC0627D892D900A17FF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8F06EC0A27D892D900A17FF2 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8F06EC1227D892DB00A17FF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F06EC1427D892DB00A17FF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,13 +57,10 @@
 		8F1F93A427EEF2C5000F08AF /* CalendarDayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayCell.swift; sourceTree = "<group>"; };
 		8F1F93A627EEF2DA000F08AF /* CalendarWeekDayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarWeekDayCell.swift; sourceTree = "<group>"; };
 		8F1F93A827EF51B4000F08AF /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		8F82E72C27D8A87A008CDC22 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8F82E72E27D8A89F008CDC22 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
 		8F82E73027D8AA9C008CDC22 /* ApiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiList.swift; sourceTree = "<group>"; };
 		8F82E73327D8D8E3008CDC22 /* Color+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Generated.swift"; sourceTree = "<group>"; };
 		8F8DAE9927D8948800F2E78F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
-		8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
-		8F8DAEA227D8952700F2E78F /* IntroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroModel.swift; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		A06BB33827F0BA37005727AD /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A06BB33C27F0BA72005727AD /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +100,32 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		86BD71BC280EAF270038200E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				8F82E73027D8AA9C008CDC22 /* ApiList.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		86BD71BD280EAF840038200E /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				A06BB35027F0D18B005727AD /* Navigator.swift */,
+				8F06EC0627D892D900A17FF2 /* AppDelegate.swift */,
+				8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		86BD71BE280EB0E50038200E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				8F82E72E27D8A89F008CDC22 /* CommonView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		86D4BE2C27F6BE1100E9EE8B /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,17 +156,13 @@
 		8F06EC0527D892D900A17FF2 /* momsnagging */ = {
 			isa = PBXGroup;
 			children = (
-				86D4BE2C27F6BE1100E9EE8B /* Models */,
-				A06BB33B27F0BA5E005727AD /* Scenes */,
-				8F8DAEA427D8954D00F2E78F /* FBConfig */,
-				8F8DAE9B27D894A100F2E78F /* IntroView */,
-				8F8DAE9827D8945300F2E78F /* Resource */,
+				86BD71BD280EAF840038200E /* Application */,
 				8F8DAE9727D8944F00F2E78F /* Common */,
-				8F6BCB2827D89ECD0038B020 /* Etc */,
-				8F1F939A27EC8975000F08AF /* Calendar */,
-				8F06EC0627D892D900A17FF2 /* AppDelegate.swift */,
-				8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */,
-				8F06EC1427D892DB00A17FF2 /* Info.plist */,
+				86D4BE2C27F6BE1100E9EE8B /* Models */,
+				A06BB33B27F0BA5E005727AD /* Modules */,
+				86BD71BC280EAF270038200E /* Networking */,
+				8F8DAEA427D8954D00F2E78F /* FBConfig */,
+				8F8DAE9827D8945300F2E78F /* Resource */,
 			);
 			path = momsnagging;
 			sourceTree = "<group>";
@@ -205,24 +219,13 @@
 			path = Debug;
 			sourceTree = "<group>";
 		};
-		8F6BCB2827D89ECD0038B020 /* Etc */ = {
-			isa = PBXGroup;
-			children = (
-				8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */,
-			);
-			path = Etc;
-			sourceTree = "<group>";
-		};
 		8F8DAE9727D8944F00F2E78F /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				A06BB35627F0E53B005727AD /* Extensions */,
-				A06BB33727F0BA1F005727AD /* Base */,
 				8F1F93A827EF51B4000F08AF /* Common.swift */,
-				8F82E72E27D8A89F008CDC22 /* CommonView.swift */,
-				8F82E73027D8AA9C008CDC22 /* ApiList.swift */,
-				8F82E72C27D8A87A008CDC22 /* Extensions.swift */,
-				A06BB35027F0D18B005727AD /* Navigator.swift */,
+				86BD71BE280EB0E50038200E /* UI */,
+				A06BB33727F0BA1F005727AD /* Base */,
+				A06BB35627F0E53B005727AD /* Extensions */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -230,45 +233,12 @@
 		8F8DAE9827D8945300F2E78F /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8F06EC1427D892DB00A17FF2 /* Info.plist */,
 				8F82E73327D8D8E3008CDC22 /* Color+Generated.swift */,
 				8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */,
 				8F8DAE9927D8948800F2E78F /* Color.xcassets */,
 			);
 			path = Resource;
-			sourceTree = "<group>";
-		};
-		8F8DAE9B27D894A100F2E78F /* IntroView */ = {
-			isa = PBXGroup;
-			children = (
-				8F8DAE9F27D894C200F2E78F /* Model */,
-				8F8DAE9E27D894BE00F2E78F /* ViewModel */,
-				8F8DAE9D27D894B600F2E78F /* View */,
-			);
-			path = IntroView;
-			sourceTree = "<group>";
-		};
-		8F8DAE9D27D894B600F2E78F /* View */ = {
-			isa = PBXGroup;
-			children = (
-				8F06EC0A27D892D900A17FF2 /* IntroView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		8F8DAE9E27D894BE00F2E78F /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				8F8DAEA027D8952100F2E78F /* IntroViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		8F8DAE9F27D894C200F2E78F /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				8F8DAEA227D8952700F2E78F /* IntroModel.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		8F8DAEA427D8954D00F2E78F /* FBConfig */ = {
@@ -290,20 +260,21 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
-		A06BB33B27F0BA5E005727AD /* Scenes */ = {
+		A06BB33B27F0BA5E005727AD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				A0EDBE6B27FA7EE900272B0E /* Main */,
 				A06BB33E27F0BA74005727AD /* Intro */,
 				A06BB34D27F0C20D005727AD /* Onboarding */,
 				A06BB33F27F0BA92005727AD /* Login */,
+				8F1F939A27EC8975000F08AF /* Calendar */,
 			);
-			path = Scenes;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		A06BB33E27F0BA74005727AD /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */,
 				A06BB33C27F0BA72005727AD /* IntroViewController.swift */,
 				A06BB34227F0BABA005727AD /* SampleIntroViewModel.swift */,
 			);
@@ -335,13 +306,6 @@
 				86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		A0EDBE6B27FA7EE900272B0E /* Main */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Main;
 			sourceTree = "<group>";
 		};
 		E2B7BEA15ACF83AA558CED4E /* Frameworks */ = {
@@ -553,11 +517,8 @@
 				A06BB34F27F0C21E005727AD /* OnboardingViewController.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
-				8F06EC0B27D892D900A17FF2 /* IntroView.swift in Sources */,
-				8F82E72D27D8A87A008CDC22 /* Extensions.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A06BB34327F0BABA005727AD /* SampleIntroViewModel.swift in Sources */,
-				8F8DAEA327D8952700F2E78F /* IntroModel.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
@@ -572,7 +533,6 @@
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */,
-				8F8DAEA127D8952100F2E78F /* IntroViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,7 +684,7 @@
 				DEVELOPMENT_TEAM = 3T5QFYSPG5;
 				GENERATE_INFOPLIST_FILE = YES;
 				GOOGLE_CLIENT_ID = "124964608262-32u0a6bdj4875g40e9t5aadmrpp7sirr.apps.googleusercontent.com";
-				INFOPLIST_FILE = momsnagging/Info.plist;
+				INFOPLIST_FILE = momsnagging/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "엄마의 잔소리(개발)";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -759,7 +719,7 @@
 				DEPLOY_PHASE = release;
 				DEVELOPMENT_TEAM = 3T5QFYSPG5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = momsnagging/Info.plist;
+				INFOPLIST_FILE = momsnagging/Resource/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "엄마의 잔소리(개발)";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
