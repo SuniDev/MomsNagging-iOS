@@ -43,21 +43,21 @@ class CalendarView: UIViewController {
         $0.backgroundColor = .black
     })
     var yearLabel = UILabel().then({
-        $0.textColor = Asset.white.color
+        $0.textColor = .white
         $0.font = .systemFont(ofSize: 22, weight: .heavy)
     })
     var monthLabel = UILabel().then({
-        $0.textColor = Asset.white.color
+        $0.textColor = .white
         $0.font = .systemFont(ofSize: 22, weight: .heavy)
     })
     var btnPrev = UIButton().then({
         $0.setTitle("<", for: .normal)
-        $0.setTitleColor(Asset.white.color, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
     })
     var btnNext = UIButton().then({
         $0.setTitle(">", for: .normal)
-        $0.setTitleColor(Asset.white.color, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
     })
     var weekDayCollectionView: UICollectionView = {

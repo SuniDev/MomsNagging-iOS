@@ -19,12 +19,12 @@ class IntroViewController: BaseViewController, Navigatable {
     
     // MARK: - UI Properties
     var viewBackground = UIView().then({
-        $0.backgroundColor = Asset.white.color
+        $0.backgroundColor = .white
     })
     
     var lblTitle = UILabel().then({
         $0.font = .systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = Asset.black.color
+        $0.textColor = .black
         $0.text = "엄마의 잔소리"
     })
     

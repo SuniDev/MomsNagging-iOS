@@ -20,34 +20,34 @@ class LoginViewController: BaseViewController, Navigatable {
     
     // MARK: - UI Properties
     var viewBackground = UIView().then({
-        $0.backgroundColor = Asset.white.color
+        $0.backgroundColor = .white
     })
     
     var lblTitle = UILabel().then({
         $0.font = .systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = Asset.black.color
+        $0.textColor = .black
         $0.text = "로그인 화면"
         $0.textAlignment = .center
     })
     
     var btnGoogleLogin = UIButton().then({
-        $0.backgroundColor = Asset.red.color
+        $0.backgroundColor = .red
         $0.setTitle("구글 로그인", for: .normal)
-        $0.setTitleColor(Asset.white.color, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 20)
     })
     
     var btnKakaoLogin = UIButton().then({
-        $0.backgroundColor = Asset.yellow.color
+        $0.backgroundColor = .yellow
         $0.setTitle("카카오 로그인", for: .normal)
-        $0.setTitleColor(Asset.white.color, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 20)
     })
     
     var btnAppleLogin = UIButton().then({
-        $0.backgroundColor = Asset.black.color
+        $0.backgroundColor = .black
         $0.setTitle("애플 로그인", for: .normal)
-        $0.setTitleColor(Asset.white.color, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 20)
     })
     
