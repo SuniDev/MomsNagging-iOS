@@ -27,9 +27,14 @@ internal enum Asset {
   }
   internal enum Color {
     internal static let black = ColorAsset(name: "black")
-    internal static let red = ColorAsset(name: "red")
+    internal static let primaryDark010 = ColorAsset(name: "primaryDark010")
+    internal static let primaryDark020 = ColorAsset(name: "primaryDark020")
+    internal static let primaryLight010 = ColorAsset(name: "primaryLight010")
+    internal static let primaryLight018dis = ColorAsset(name: "primaryLight018dis")
+    internal static let primaryLight020 = ColorAsset(name: "primaryLight020")
+    internal static let primaryLight030 = ColorAsset(name: "primaryLight030")
+    internal static let primaryMain = ColorAsset(name: "primaryMain")
     internal static let white = ColorAsset(name: "white")
-    internal static let yellow = ColorAsset(name: "yellow")
   }
   internal enum Icon {
   }
