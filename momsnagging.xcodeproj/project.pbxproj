@@ -13,6 +13,10 @@
 		86D4BE2927F683D700E9EE8B /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D4BE2827F683D700E9EE8B /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2D27F6BE2000E9EE8B /* User.swift */; };
 		86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E39208280F93E2007D3C04 /* XCAssets+Generated.swift */; };
+		86E3920C280FC923007D3C04 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920B280FC922007D3C04 /* Pretendard-Bold.otf */; };
+		86E3920E280FC92B007D3C04 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */; };
+		86E39210280FC931007D3C04 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920F280FC931007D3C04 /* Pretendard-SemiBold.otf */; };
+		86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */; };
 		8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0627D892D900A17FF2 /* AppDelegate.swift */; };
 		8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */; };
 		8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */; };
@@ -48,6 +52,10 @@
 		86D4BE2827F683D700E9EE8B /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		86D4BE2D27F6BE2000E9EE8B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		86E39208280F93E2007D3C04 /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
+		86E3920B280FC922007D3C04 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		86E3920F280FC931007D3C04 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Fonts+Generated.swift"; sourceTree = "<group>"; };
 		8F06EC0327D892D900A17FF2 /* momsnagging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = momsnagging.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F06EC0627D892D900A17FF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -134,6 +142,16 @@
 				86D4BE2D27F6BE2000E9EE8B /* User.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		86E3920A280FC910007D3C04 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				86E3920F280FC931007D3C04 /* Pretendard-SemiBold.otf */,
+				86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */,
+				86E3920B280FC922007D3C04 /* Pretendard-Bold.otf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		8F06EBFA27D892D900A17FF2 = {
@@ -235,6 +253,8 @@
 		8F8DAE9827D8945300F2E78F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				86E3920A280FC910007D3C04 /* Font */,
+				86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */,
 				86E39208280F93E2007D3C04 /* XCAssets+Generated.swift */,
 				8F06EC1427D892DB00A17FF2 /* Info.plist */,
 				8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */,
@@ -385,8 +405,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F06EC1327D892DB00A17FF2 /* LaunchScreen.storyboard in Resources */,
+				86E3920C280FC923007D3C04 /* Pretendard-Bold.otf in Resources */,
 				8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */,
+				86E39210280FC931007D3C04 /* Pretendard-SemiBold.otf in Resources */,
 				A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */,
+				86E3920E280FC92B007D3C04 /* Pretendard-Regular.otf in Resources */,
 				8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */,
 				868A11A4280F8F9F004DAC73 /* Icon.xcassets in Resources */,
 			);
@@ -531,6 +554,7 @@
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
+				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
