@@ -34,11 +34,11 @@ class LoginViewModel: BaseViewModel, BaseViewModelType {
     // MARK: - Output
     struct Output {
         /// 회원가입으로 이동
-        let shouldJoin = PublishRelay<LoginInfo>()
+        let shouldJoin = PublishSubject<LoginInfo>()
         /// 회원 인증 성공
-        let successLogin = PublishRelay<Void>()
+        let successLogin = PublishSubject<Void>()
         /// 로그인 오류 발생 (네트워크 오류)
-        let error = PublishRelay<String>()
+        let error = PublishSubject<String>()
     }
     
     // MARK: - init

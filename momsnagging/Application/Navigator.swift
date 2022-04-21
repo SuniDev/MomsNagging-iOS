@@ -27,7 +27,7 @@ class Navigator {
     
     // MARK: - all app scenes
     enum Scene {
-        case intro(viewModel: SampleIntroViewModel)
+        case intro(viewModel: IntroViewModel)
         case onboarding(viewModel: OnboardingViewModel)
         case login(viewModel: LoginViewModel)
         case calendar(viewModel: CalendarViewModel)

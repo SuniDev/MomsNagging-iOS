@@ -9,27 +9,26 @@ import UIKit
 import SnapKit
 import Then
 import RxSwift
+import RxCocoa
 
 class IntroViewController: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel = SampleIntroViewModel()
+    var viewModel: IntroViewModel?
     var navigator: Navigator!
     
     // MARK: - UI Properties
-    var viewBackground = UIView().then({
-        $0.backgroundColor = .white
+    let viewBackground = UIView().then({
+        $0.backgroundColor = Asset.Color.priMain.color
     })
     
-    var lblTitle = UILabel().then({
-        $0.font = .systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = .black
-        $0.text = "엄마의 잔소리"
+    let imgvLogo = UIImageView().then({
+        $0.image = Asset.Assets.logo.image
     })
     
     // MARK: - init
-    init(viewModel: SampleIntroViewModel, navigator: Navigator) {
+    init(viewModel: IntroViewModel, navigator: Navigator) {
         self.viewModel = viewModel
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
@@ -43,7 +42,6 @@ class IntroViewController: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        Log.debug("Debug Log Sample")
     }
     
     // MARK: - initUI
@@ -54,33 +52,40 @@ class IntroViewController: BaseViewController, Navigatable {
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewBackground)
-        viewBackground.addSubview(lblTitle)
+        viewBackground.addSubview(imgvLogo)
         
         viewBackground.snp.makeConstraints({
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.leading.equalTo(view.snp.leading)
-            $0.trailing.equalTo(view.snp.trailing)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.top.leading.trailing.bottom.equalTo(view)
         })
-        lblTitle.snp.makeConstraints({
+        
+        imgvLogo.snp.makeConstraints({
             $0.center.equalTo(viewBackground.snp.center)
         })
     }
     
     // MARK: - Bind
     override func bind() {
-        Observable.just(Void())
-            .subscribe(onNext: {
-                self.viewModel.getLoginInfo()
-            }).disposed(by: disposeBag)
+        guard let viewModel = viewModel else { return }
         
-        viewModel.isAutoLogin?.subscribe(onNext: { [weak self] isAutoLogin in
-            if isAutoLogin {
-                // TODO: - 메인 화면 이동
-            } else {
-                let viewModel = LoginViewModel()
-                self?.navigator.show(seque: .login(viewModel: viewModel), sender: self)
-            }
-        }).disposed(by: disposeBag)
+        let input = IntroViewModel.Input(didLoadIntro: rx.viewDidLoad.asDriver())
+        let output = viewModel.transform(input: input)
+
+        // TODO: - 앱 업데이트가 필요할 때 알럿 노출,
+        // TODO: - 첫 진입일 때, 튜토리얼 이동
+        // TODO: - 로그인 실패 -> 로그인 화면
+        // TODO: - 자동 로그인 -> 로그인 성공 -> 메인 화면
+//        Observable.just(Void())
+//            .subscribe(onNext: {
+//                self.viewModel.getLoginInfo()
+//            }).disposed(by: disposeBag)
+        
+//        viewModel.isAutoLogin?.subscribe(onNext: { [weak self] isAutoLogin in
+//            if isAutoLogin {
+//            } else {
+//                let viewModel = LoginViewModel()
+//                self?.navigator.show(seque: .login(viewModel: viewModel), sender: self)
+//            }
+//        }).disposed(by: disposeBag)
     }
+    
 }

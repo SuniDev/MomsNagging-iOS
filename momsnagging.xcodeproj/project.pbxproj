@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		78423E9A816288D6BC1EF082 /* Pods_momsnagging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */; };
+		8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8617642D28111AB400F7B254 /* Observable+Operators.swift */; };
 		868A11A4280F8F9F004DAC73 /* Icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868A11A3280F8F9F004DAC73 /* Icon.xcassets */; };
 		86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */; };
 		86D4BE2927F683D700E9EE8B /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D4BE2827F683D700E9EE8B /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -33,7 +34,7 @@
 		A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33827F0BA37005727AD /* BaseViewController.swift */; };
 		A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33C27F0BA72005727AD /* IntroViewController.swift */; };
 		A06BB34127F0BAA3005727AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34027F0BAA3005727AD /* LoginViewController.swift */; };
-		A06BB34327F0BABA005727AD /* SampleIntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34227F0BABA005727AD /* SampleIntroViewModel.swift */; };
+		A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34227F0BABA005727AD /* IntroViewModel.swift */; };
 		A06BB34F27F0C21E005727AD /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34E27F0C21E005727AD /* OnboardingViewController.swift */; };
 		A06BB35127F0D18B005727AD /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35027F0D18B005727AD /* Navigator.swift */; };
 		A06BB35327F0D1E6005727AD /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35227F0D1E6005727AD /* OnboardingViewModel.swift */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		2900CA227AEED8ABFD8BD259 /* Pods-momsnagging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.release.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.release.xcconfig"; sourceTree = "<group>"; };
 		7976B2BB96C29942DF65316A /* Pods-momsnagging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.debug.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.debug.xcconfig"; sourceTree = "<group>"; };
+		8617642D28111AB400F7B254 /* Observable+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Operators.swift"; sourceTree = "<group>"; };
 		868A11A3280F8F9F004DAC73 /* Icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icon.xcassets; sourceTree = "<group>"; };
 		86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
 		86D4BE2827F683D700E9EE8B /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
@@ -75,7 +77,7 @@
 		A06BB33827F0BA37005727AD /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A06BB33C27F0BA72005727AD /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		A06BB34027F0BAA3005727AD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		A06BB34227F0BABA005727AD /* SampleIntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleIntroViewModel.swift; sourceTree = "<group>"; };
+		A06BB34227F0BABA005727AD /* IntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
 		A06BB34E27F0C21E005727AD /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A06BB35027F0D18B005727AD /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		A06BB35227F0D1E6005727AD /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
@@ -108,6 +110,15 @@
 				2900CA227AEED8ABFD8BD259 /* Pods-momsnagging.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		8617642C28111A9A00F7B254 /* Rx */ = {
+			isa = PBXGroup;
+			children = (
+				A06BB35727F0E55C005727AD /* UIViewController+Rx.swift */,
+				8617642D28111AB400F7B254 /* Observable+Operators.swift */,
+			);
+			path = Rx;
 			sourceTree = "<group>";
 		};
 		86BD71BC280EAF270038200E /* Networking */ = {
@@ -299,7 +310,7 @@
 			children = (
 				8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */,
 				A06BB33C27F0BA72005727AD /* IntroViewController.swift */,
-				A06BB34227F0BABA005727AD /* SampleIntroViewModel.swift */,
+				A06BB34227F0BABA005727AD /* IntroViewModel.swift */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -325,7 +336,7 @@
 		A06BB35627F0E53B005727AD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				A06BB35727F0E55C005727AD /* UIViewController+Rx.swift */,
+				8617642C28111A9A00F7B254 /* Rx */,
 				86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */,
 			);
 			path = Extensions;
@@ -546,7 +557,7 @@
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
-				A06BB34327F0BABA005727AD /* SampleIntroViewModel.swift in Sources */,
+				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
@@ -556,6 +567,7 @@
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
+				8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,

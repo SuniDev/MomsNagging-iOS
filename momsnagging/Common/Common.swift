@@ -11,6 +11,22 @@ import UIKit
 import StoreKit
 
 class Common {
+    private static let configKey = "DeployPhase"
+    
+    enum DeployType: String {
+        case debug
+        case release
+    }
+    
+    static func getDeployPhase() -> DeployType {
+        guard let configValue = Bundle.main.object(forInfoDictionaryKey: configKey) as? String,
+                let phase = DeployType(rawValue: configValue) else {
+            return DeployType.release
+        }
+        
+        return phase
+    }
+    
     static func checkPhotoLibraryPermission(view: UIViewController){
         if #available(iOS 14, *) {
             PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: { status in
@@ -112,6 +128,7 @@ class Common {
         setBadgeNumber(count: 0)
     }
     
+    // MARK: - Store Review
     /**
      # requestStoreReview
      - Authors: suni
@@ -120,4 +137,45 @@ class Common {
     static func requestStoreReview() {
         SKStoreReviewController.requestReview()
     }
+    
+    
+    // MARK: - User Defaults
+    /**
+     # (E) UserDefaultsKey
+     - Authors: suni
+     */
+    enum UserDefaultsKey: String {
+        case isFirstEntryApp = "isFirstEntryApp"
+        case isAutoLogin = "isAutoLogin"
+    }
+    
+    /**
+     # getUserDefaultsObject
+     - parameters:
+        - defaultsKey : 반환할 value의 UserDefaults Key - (E) Common.UserDefaultsKey
+     - Authors: suni
+     - Note: UserDefaults 값을 반환하는 공용 함수
+     */
+    static func getUserDefaultsObject(forKey defaultsKey: UserDefaultsKey) -> Any {
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: defaultsKey.rawValue) == nil {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    /**
+     # setUserDefaults
+     - parameters:
+        - value : 저장할 값
+        - defaultsKey : 저장할 value의 UserDefaults Key - (E) Common.UserDefaultsKey
+     - Authors: suni
+     - Note: UserDefaults 값을 저장하는 공용 함수
+     */
+    static func setUserDefaults(_ value: Any?, forKey defaultsKey: UserDefaultsKey){
+        let defaults = UserDefaults.standard
+        defaults.set(value, forKey: defaultsKey.rawValue)
+    }
+        
 }

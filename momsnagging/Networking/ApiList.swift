@@ -8,23 +8,9 @@
 import Foundation
 
 class ApiList {
-    enum DeployType: String {
-        case debug
-        case release
-    }
     
-    private static let configKey = "DeployPhase"
     private static let kakaoNativeAppKey = "KakaoNativeAppKey"
     private static let googleClientIDKey = "GoogleClientID"
-
-    static func getDeployPhase() -> DeployType {
-        guard let configValue = Bundle.main.object(forInfoDictionaryKey: configKey) as? String,
-                let phase = DeployType(rawValue: configValue) else {
-            return DeployType.release
-        }
-        
-        return phase
-    }
     
     static func getKakaoNativeAppKey() -> String {
         guard let appKey = Bundle.main.object(forInfoDictionaryKey: kakaoNativeAppKey) as? String else {
@@ -41,7 +27,7 @@ class ApiList {
     }
     
     static func baseUrl() -> String {
-        switch getDeployPhase() {
+        switch Common.getDeployPhase() {
         case .debug:
             return "테스트서버주소"
         case .release:
