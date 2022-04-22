@@ -51,27 +51,27 @@ class CommonView {
      cancelTitle(Optional) : cancel버튼의 메세지 변경시 사용
      */
     // 220422 suni. doneTitle, cancelAction 추가 / UIAlertAction -> Handler로 변경 / .present 메인 스레드에서 처리하도록 변경.
-    static func showAlert(vc: UIViewController, type: AlertType, title: String? = "", message: String? = "", cancelTitle: String? = STR_CANCEL, doneTitle: String = STR_DONE,  cancelHandler:(() -> Void)? = nil, doneHandler:(() -> Void)? = nil) {
+    static func showAlert(vc: UIViewController, type: AlertType, title: String? = "", message: String? = "", cancelTitle: String? = STR_CANCEL, doneTitle: String = STR_DONE, cancelHandler:(() -> Void)? = nil, doneHandler:(() -> Void)? = nil) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
     //        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
             
-            let doneAction = UIAlertAction(title: doneTitle
-                                           , style: .default) { action in
-                doneHandler?()
-            }
-            let cancelAction = UIAlertAction(title: cancelTitle
-                                           , style: .cancel) { action in
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
                 cancelHandler?()
+            }
+            let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
+                doneHandler?()
             }
             
             switch type {
             case .oneButton:
                 alert.addAction(doneAction)
             case .twoButton:
-                alert.addAction(doneAction)
                 alert.addAction(cancelAction)
+                alert.addAction(doneAction)
             }
+            
+            Log.debug(alert.actions)
             vc.present(alert, animated: true, completion: nil)
         }
     }

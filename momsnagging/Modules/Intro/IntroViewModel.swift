@@ -15,66 +15,111 @@ enum AppUpdateStatus {
     case forceUpdate
     case selectUpdate
     case latestVersion
+    case error
 }
 
 class IntroViewModel: BaseViewModel, ViewModelType {
+    
+    var disposeBag = DisposeBag()
+    
+    // MARK: - Input
     struct Input {
         /// IntroViewController 진입
         let didLoadIntro: Driver<Void>
     }
     
+    // MARK: - Output
     struct Output {
         /// 앱 업데이트 상태
-        let appUpdateStatus: PublishSubject<AppUpdateStatus>
-        /// 로그인 상태
-        let isLogin: PublishSubject<Bool>
+        let forceUpdateStatus: Driver<Void>
+        let selectUpdateStatus: Driver<Void>
         /// 앱 첫 진입 여부
-        let firstEntryApp: PublishSubject<Void>
+        let firstEntryApp: Driver<Void>
+        /// 로그인 상태
+        // TODO: Request Login API
+//        let successLogin: Driver<Bool>
+        let failLogin: Driver<Void>
     }
     
-    var disposeBag = DisposeBag()
-    
-    
-    /// TODO: App Version API -> App Update Status Check -> firstEntryApp check -> AutoLogin check -> Login API Call
+    // MARK: - transform
     func transform(input: Input) -> Output {
         
-        let appUpdateStatus = PublishSubject<AppUpdateStatus>()
-        let isLogin = PublishSubject<Bool>()
-        let firstEntryApp = PublishSubject<Void>()
-                
-        input.didLoadIntro
-            .flatMap { requestAppVersion() }
-            .map { getAppUpdateStatus($0) }
-            .drive( onNext: {
-                
-            }).disposed(by: disposeBag)
-            
+        // MARK: - App Update Status
+        // TODO: Request App Version API
+        let appUpdateStatus = input.didLoadIntro
+            .asObservable()
+            .flatMapLatest { () -> Observable<AppUpdateStatus> in
+                return self.getAppUpdateStatus("1.0.0")
+            }.share()
         
+        let forceUpdateStatus = appUpdateStatus
+            .filter { status in status == .forceUpdate }
+            .mapToVoid()
+            .asDriverOnErrorJustComplete()
         
-        return Output(appUpdateStatus: appUpdateStatus, isLogin: isLogin, firstEntryApp: firstEntryApp)
+        let selectUpdateStatus = appUpdateStatus
+            .filter { status in status == .selectUpdate }
+            .mapToVoid()
+            .asDriverOnErrorJustComplete()
+        
+        // MARK: - First Entry App
+        let isFirstEntryApp = appUpdateStatus
+            .filter { status in status == .latestVersion }
+            .flatMapLatest { _ -> Observable<Bool> in
+                return self.isFirstEntryApp()
+            }.share()
+        
+        let firstEntryApp = isFirstEntryApp
+            .filter { isFirst in isFirst == true }
+            .mapToVoid()
+            .asDriverOnErrorJustComplete()
+        
+        // MARK: - Login
+        let isAutoLogin = isFirstEntryApp
+            .filter { isFirst in isFirst == false }
+            .flatMapLatest { _ -> Observable<Bool> in
+                return self.isAutoLogin()
+            }.share()
+        
+        let failLogin = isAutoLogin
+            .filter { isAuto in isAuto == false }
+            .mapToVoid()
+            .asDriverOnErrorJustComplete()
+        
+        return Output(forceUpdateStatus: forceUpdateStatus, selectUpdateStatus: selectUpdateStatus, firstEntryApp: firstEntryApp, failLogin: failLogin)
     }
 }
 
 extension IntroViewModel {
     
     // TODO: Request App Version
-    func requestAppVersion() -> Observable<String> {
-        return Observable<String>.create { observer -> Disposable in
-            observer.onNext("1.0.0")
+    
+    // TODO: App Update Status Logic
+    func getAppUpdateStatus(_ version: String) -> Observable<AppUpdateStatus> {
+        return Observable<AppUpdateStatus>.create { observer -> Disposable in
+            observer.onNext(AppUpdateStatus.latestVersion)
             observer.onCompleted()
             return Disposables.create()
-        }.share()
-    }
-    
-    // TODO: App Update Status Check
-    func getAppUpdateStatus(_ version: String) -> AppUpdateStatus {
-        return AppUpdateStatus.latestVersion
+        }
     }
     
     func isFirstEntryApp() -> Observable<Bool> {
         return Observable<Bool>.create { observer -> Disposable in
             if let isFirstEntry = Common.getUserDefaultsObject(forKey: .isFirstEntryApp) as? Bool {
                 observer.onNext(isFirstEntry)
+                observer.onCompleted()
+            } else {
+                observer.onNext(true)
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }.debug()
+    }
+    
+    func isAutoLogin() -> Observable<Bool> {
+        return Observable<Bool>.create { observer -> Disposable in
+            if let isAuto = Common.getUserDefaultsObject(forKey: .isAutoLogin) as? Bool {
+                observer.onNext(isAuto)
                 observer.onCompleted()
             } else {
                 observer.onNext(false)

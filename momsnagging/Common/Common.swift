@@ -169,12 +169,12 @@ class Common {
      - Authors: suni
      - Note: UserDefaults 값을 반환하는 공용 함수
      */
-    static func getUserDefaultsObject(forKey defaultsKey: UserDefaultsKey) -> Any {
+    static func getUserDefaultsObject(forKey defaultsKey: UserDefaultsKey) -> Any? {
         let defaults = UserDefaults.standard
-        if defaults.object(forKey: defaultsKey.rawValue) == nil {
-            return false
+        if let object = defaults.object(forKey: defaultsKey.rawValue) {
+            return object
         } else {
-            return true
+            return nil
         }
     }
     
@@ -190,5 +190,4 @@ class Common {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: defaultsKey.rawValue)
     }
-        
 }

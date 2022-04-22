@@ -14,7 +14,7 @@ class OnboardingViewController: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel = OnboardingViewModel()
+    var viewModel: OnboardingViewModel?
     var navigator: Navigator!
     
     // MARK: - UI Properties
@@ -31,10 +31,23 @@ class OnboardingViewController: BaseViewController, Navigatable {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
+    // MARK: - initUI
+    override func initUI() {
+        
+    }
+    
+    // MARK: - layoutSetting
+    override func layoutSetting() {
+        
+    }
+    
+    // MARK: - Bind
+    override func bind() {
+        guard let viewModel = viewModel else { return }
+    }
 }

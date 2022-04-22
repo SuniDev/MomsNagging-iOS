@@ -21,4 +21,4 @@ public let STR_DONE_UPDATE          = "업데이트 하러가기"
 public let STR_CANCEL_UPDATE        = "나중에"
 
 
-public let STA_UPDATE               = "업데이트가 필요합니다."
+public let STR_UPDATE               = "업데이트가 필요합니다."

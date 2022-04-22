@@ -67,44 +67,31 @@ class IntroViewController: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         
-        let input = IntroViewModel.Input(didLoadIntro: rx.viewDidLoad.asDriver())
+        let input = IntroViewModel.Input(didLoadIntro: rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
-
-        output.appUpdateStatus
-            .drive(onNext: { status in
-                switch status {
-                case .forceUpdate:
-                    CommonView.showAlert(vc: self, type: .oneButton, title: STA_UPDATE, message: "", doneTitle: STR_DONE_UPDATE, doneHandler: {
-                        // TODO: 업데이트 -> 앱 스토어 이동 처리.
-                    })
-                case .selectUpdate:
-                    CommonView.showAlert(vc: self, type: .twoButton, title: STA_UPDATE, message: "", cancelTitle: STR_CANCEL_UPDATE, doneTitle: STR_DONE_UPDATE, doneHandler: {
-                        // TODO: 업데이트 -> 앱 스토어 이동 처리.
-                    })
-                default: break
-                }
+        
+        output.forceUpdateStatus
+              .drive(onNext: { () in
+              CommonView.showAlert(vc: self, type: .oneButton, title: STR_UPDATE, message: "", doneTitle: STR_DONE_UPDATE, doneHandler: {
+                // TODO: 업데이트 -> 앱 스토어 이동 처리.
+              })
+              }).disposed(by: disposeBag)
+        
+        output.selectUpdateStatus
+              .drive(onNext: { () in
+                  CommonView.showAlert(vc: self, type: .twoButton, title: STR_UPDATE, message: "", cancelTitle: STR_CANCEL_UPDATE, doneTitle: STR_DONE_UPDATE, doneHandler: {
+                    // TODO: 업데이트 -> 앱 스토어 이동 처리.
+                  })
+              }).disposed(by: disposeBag)
+        
+        output.firstEntryApp
+            .drive(onNext: { () in
+                self.navigator.show(seque: .onboarding(viewModel: OnboardingViewModel()), sender: nil, transition: .root)
             }).disposed(by: disposeBag)
         
-        // TODO: - 첫 진입일 때, 튜토리얼 이동
-        // TODO: - 로그인 실패 -> 로그인 화면
-        // TODO: - 자동 로그인 -> 로그인 성공 -> 메인 화면
-//        Observable.just(Void())
-//            .subscribe(onNext: {
-//                self.viewModel.getLoginInfo()
-//            }).disposed(by: disposeBag)
-        
-//        viewModel.isAutoLogin?.subscribe(onNext: { [weak self] isAutoLogin in
-//            if isAutoLogin {
-//            } else {
-//                let viewModel = LoginViewModel()
-//                self?.navigator.show(seque: .login(viewModel: viewModel), sender: self)
-//            }
-//        }).disposed(by: disposeBag)
-    }
-}
-extension IntroViewController {
-    // MARK: Navigation
-    func showForceUpdateAlert() {
-
+        output.failLogin
+            .drive(onNext: { () in
+                self.navigator.show(seque: .login(viewModel: LoginViewModel()), sender: nil, transition: .root)
+            }).disposed(by: disposeBag)
     }
 }

@@ -15,7 +15,7 @@ class LoginViewController: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel = LoginViewModel()
+    var viewModel: LoginViewModel?
     var navigator: Navigator!
     
     // MARK: - UI Properties
@@ -119,76 +119,72 @@ class LoginViewController: BaseViewController, Navigatable {
     
     // MARK: - bind
     override func bind() {
+        guard let viewModel = viewModel else { return }
+        
+        let input = LoginViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
         // Bind Input
-        btnGoogleLogin.rx.tap
-            .bind {
-                self.viewModel.input.btnGoogleLoginTapped.accept(self)
-            }
-            .disposed(by: disposeBag)
-        
-        btnKakaoLogin.rx.tap
-            .bind(to: viewModel.input.btnKakaoLoginTapped)
-            .disposed(by: disposeBag)
-        
-        btnAppleLogin.rx.tap
-            .bind {
-                self.signInApple()
-            }
-            .disposed(by: disposeBag)
-        
-        // Bind Output
-        viewModel.output.shouldJoin
-            .observe(on: MainScheduler.instance)
-            .bind(onNext: goToJoin)
-            .disposed(by: disposeBag)
-        
-        viewModel.output.successLogin
-            .observe(on: MainScheduler.instance)
-            .bind(onNext: goToMain)
-            .disposed(by: disposeBag)
+//        btnGoogleLogin.rx.tap
+//            .bind {
+//                self.viewModel.input.btnGoogleLoginTapped.accept(self)
+//            }
+//            .disposed(by: disposeBag)
+//
+//        btnKakaoLogin.rx.tap
+//            .bind(to: viewModel.input.btnKakaoLoginTapped)
+//            .disposed(by: disposeBag)
+//
+//        btnAppleLogin.rx.tap
+//            .bind {
+//                self.signInApple()
+//            }
+//            .disposed(by: disposeBag)
+//
+//        // Bind Output
+//        viewModel.output.shouldJoin
+//            .observe(on: MainScheduler.instance)
+//            .bind(onNext: goToJoin)
+//            .disposed(by: disposeBag)
+//
+//        viewModel.output.successLogin
+//            .observe(on: MainScheduler.instance)
+//            .bind(onNext: goToMain)
+//            .disposed(by: disposeBag)
         
     }
     
 }
 
 extension LoginViewController {
-    private func goToMain() {
-        // TODO: - 로그인 성공 매인 이동
-        Log.debug("Success Login goToMain")
-    }
-    
-    private func goToJoin(loginInfo: LoginInfo) {
-        // TODO: - 로그인 실패 회원가입 이동
-        Log.debug("goToJoin")
-    }
 }
 
 // MARK: - Apple Login UI
-extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
-    
-    private func signInApple() {
-        let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.email]
-        
-        let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate = viewModel
-        controller.presentationContextProvider = self
-        controller.performRequests()
-    }
-    
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
-    }
-    
-    func performExistingAccountSetupFlows() {
-        // Prepare requests for both Apple ID and password providers.
-        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
-                        ASAuthorizationPasswordProvider().createRequest()]
-        
-        // Create an authorization controller with the given requests.
-        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
-        authorizationController.delegate = viewModel
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
-}
+// extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+//
+//    private func signInApple() {
+//        let request = ASAuthorizationAppleIDProvider().createRequest()
+//        request.requestedScopes = [.email]
+//
+//        let controller = ASAuthorizationController(authorizationRequests: [request])
+//        controller.delegate = viewModel
+//        controller.presentationContextProvider = self
+//        controller.performRequests()
+//    }
+//
+//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+//        return self.view.window!
+//    }
+//
+//    func performExistingAccountSetupFlows() {
+//        // Prepare requests for both Apple ID and password providers.
+//        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
+//                        ASAuthorizationPasswordProvider().createRequest()]
+//
+//        // Create an authorization controller with the given requests.
+//        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
+//        authorizationController.delegate = viewModel
+//        authorizationController.presentationContextProvider = self
+//        authorizationController.performRequests()
+//    }
+// }
