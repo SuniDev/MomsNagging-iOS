@@ -3,7 +3,8 @@
 # 린트 과정에서 무시할 파일 경로.
 excluded:
   - Pods
-  - momsnagging/AppDelegate.swift
+  - momsnagging/Application/AppDelegate.swift
+  - momsnagging/Common/StringDefinition.swift
 included:
   - momsnagging
 analyzer_rules:
@@ -98,6 +99,9 @@ identifier_name:
     - id
   min_length:
     warning: 1
+function_parameter_count:
+    warning: 10
+    error: 20
 # number_separator:
 #   minimum_length: 5
 # file_name:

@@ -27,7 +27,7 @@ class Common {
         return phase
     }
     
-    static func checkPhotoLibraryPermission(view: UIViewController){
+    static func checkPhotoLibraryPermission(view: UIViewController) {
         if #available(iOS 14, *) {
             PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: { status in
                 switch status {
@@ -35,14 +35,21 @@ class Common {
                     print("아직 선택하지 않음 notDetermined 14")
                 case .restricted:
                     print("아직 선택하지 않음 restricted 14")
-                case .denied: //권한 거부 상태
-                    DispatchQueue.main.async {
-                        let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
-                            guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                        })
-                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction, cancelTitle: "아니요")
+                case .denied: // 권한 거부 상태
+                    // 220422 suni. Alert 함수 변경에 맞게 수정.
+                    CommonView.showAlert(vc: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", cancelTitle: "아니요", doneTitle: "네") {
+                        
+                    } doneHandler: {
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
+//                    DispatchQueue.main.async {
+//                        let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
+//                            guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+//                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//                        })
+//                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction, cancelTitle: "아니요")
+//                    }
                 case .authorized: // 권한 허용 상태
                     DispatchQueue.main.async {
                         let imagePickerController = UIImagePickerController()
@@ -50,7 +57,7 @@ class Common {
                         imagePickerController.delegate = view.self as? UIImagePickerControllerDelegate & UINavigationControllerDelegate
                         view.present(imagePickerController, animated: true, completion: nil)
                     }
-                case .limited: //선택한 사진에 대해서만 허용 상태
+                case .limited: // 선택한 사진에 대해서만 허용 상태
                     DispatchQueue.main.async {
                         let imagePickerController = UIImagePickerController()
                         imagePickerController.sourceType = .photoLibrary
@@ -69,21 +76,28 @@ class Common {
                 case .restricted:
                     print("아직 선택하지 않음 restricted")
                 case .denied:// 권한 거부 상태
-                    DispatchQueue.main.async {
-                        let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
-                            guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                        })
-                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction, cancelTitle: "아니요")
+                    // 220422 suni. Alert 함수 변경에 맞게 수정.
+                    CommonView.showAlert(vc: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", cancelTitle: "아니요", doneTitle: "네") {
+                        
+                    } doneHandler: {
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
-                case .authorized://권한 허용 상태
+//                    DispatchQueue.main.async {
+//                        let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
+//                            guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+//                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//                        })
+//                        CommonView.systemAlert(view: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", doneAction: doneAction, cancelTitle: "아니요")
+//                    }
+                case .authorized: // 권한 허용 상태
                     DispatchQueue.main.async {
                         let imagePickerController = UIImagePickerController()
                         imagePickerController.sourceType = .photoLibrary
                         imagePickerController.delegate = view.self as? UIImagePickerControllerDelegate & UINavigationControllerDelegate
                         view.present(imagePickerController, animated: true, completion: nil)
                     }
-                case .limited: //선택한 사진에 대해서만 허용 상태
+                case .limited: // 선택한 사진에 대해서만 허용 상태
                     DispatchQueue.main.async {
                         let imagePickerController = UIImagePickerController()
                         imagePickerController.sourceType = .photoLibrary
@@ -138,15 +152,14 @@ class Common {
         SKStoreReviewController.requestReview()
     }
     
-    
     // MARK: - User Defaults
     /**
      # (E) UserDefaultsKey
      - Authors: suni
      */
     enum UserDefaultsKey: String {
-        case isFirstEntryApp = "isFirstEntryApp"
-        case isAutoLogin = "isAutoLogin"
+        case isFirstEntryApp
+        case isAutoLogin
     }
     
     /**
@@ -173,7 +186,7 @@ class Common {
      - Authors: suni
      - Note: UserDefaults 값을 저장하는 공용 함수
      */
-    static func setUserDefaults(_ value: Any?, forKey defaultsKey: UserDefaultsKey){
+    static func setUserDefaults(_ value: Any?, forKey defaultsKey: UserDefaultsKey) {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: defaultsKey.rawValue)
     }

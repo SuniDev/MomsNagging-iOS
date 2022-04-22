@@ -96,7 +96,9 @@ class Navigator {
             // TODO: - popup 처리
             return
         case .alert:
-            // TODO: - alert 처리
+            DispatchQueue.main.async {
+                sender.present(target, animated: true, completion: nil)
+            }
             return
         default: break
         }

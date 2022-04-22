@@ -70,7 +70,21 @@ class IntroViewController: BaseViewController, Navigatable {
         let input = IntroViewModel.Input(didLoadIntro: rx.viewDidLoad.asDriver())
         let output = viewModel.transform(input: input)
 
-        // TODO: - 앱 업데이트가 필요할 때 알럿 노출,
+        output.appUpdateStatus
+            .drive(onNext: { status in
+                switch status {
+                case .forceUpdate:
+                    CommonView.showAlert(vc: self, type: .oneButton, title: STA_UPDATE, message: "", doneTitle: STR_DONE_UPDATE, doneHandler: {
+                        // TODO: 업데이트 -> 앱 스토어 이동 처리.
+                    })
+                case .selectUpdate:
+                    CommonView.showAlert(vc: self, type: .twoButton, title: STA_UPDATE, message: "", cancelTitle: STR_CANCEL_UPDATE, doneTitle: STR_DONE_UPDATE, doneHandler: {
+                        // TODO: 업데이트 -> 앱 스토어 이동 처리.
+                    })
+                default: break
+                }
+            }).disposed(by: disposeBag)
+        
         // TODO: - 첫 진입일 때, 튜토리얼 이동
         // TODO: - 로그인 실패 -> 로그인 화면
         // TODO: - 자동 로그인 -> 로그인 성공 -> 메인 화면
@@ -87,5 +101,10 @@ class IntroViewController: BaseViewController, Navigatable {
 //            }
 //        }).disposed(by: disposeBag)
     }
-    
+}
+extension IntroViewController {
+    // MARK: Navigation
+    func showForceUpdateAlert() {
+
+    }
 }
