@@ -23,9 +23,8 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 internal enum Asset {
   internal enum Assets {
     internal static let accentColor = ColorAsset(name: "AccentColor")
-    internal static let apple = ImageAsset(name: "apple")
-    internal static let google = ImageAsset(name: "google")
-    internal static let kakao = ImageAsset(name: "kakao")
+    internal static let bubble224x60 = ImageAsset(name: "bubble_224x60")
+    internal static let bubble224x88 = ImageAsset(name: "bubble_224x88")
     internal static let emojiAngry = ImageAsset(name: "emoji_angry")
     internal static let emojiAngryDis = ImageAsset(name: "emoji_angry_dis")
     internal static let emojiDefault = ImageAsset(name: "emoji_default")
