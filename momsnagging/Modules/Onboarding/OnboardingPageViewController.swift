@@ -2,7 +2,7 @@
 //  OnboardingPageViewController.swift
 //  momsnagging
 //
-//  Created by suni on 2022/04/23.
+//  Created by suni on 2022/04/24.
 //
 
 import UIKit
@@ -11,70 +11,95 @@ import Then
 import RxSwift
 import RxCocoa
 
-class OnboardingPageViewController: BaseViewController {
+class OnboardingPageViewController: BasePageViewController {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
     var viewModel: OnboardingPageViewModel?
+
+    var itemsVCs: [OnboardingItemViewController] = [OnboardingItemViewController]()
     
     // MARK: - UI Properties
-    let viewBackground = UIView().then({
-        $0.backgroundColor = Asset.Color.monoWhite.color
-    })
-    
-    let lblTitle = UILabel().then({
-        $0.text = ""
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
-    })
-    
-    let imgvEmoji = UIImageView().then({
-        $0.image = Asset.Assets.emojiDefault.image
-    })
-    
-    let imgvBubble1 = UIImageView().then({
-        $0.image = Asset.Assets.emojiDefault.image
-    })
-    
-    let imgvBubble2 = UIImageView().then({
-        $0.image = Asset.Assets.emojiDefault.image
-    })
-    
-    let lblDescription = UILabel().then({
-        $0.text = ""
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.font = FontFamily.Pretendard.bold.font(size: 16)
-    })
     
     // MARK: - init
     init(viewModel: OnboardingPageViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: [:])
     }
     
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: - life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
     }
     
     // MARK: - initUI
     override func initUI() {
+        view.backgroundColor = Asset.Color.monoWhite.color
         
+        dataSource = self
+        delegate = nil
+        setViewControllers([itemsVCs[0]], direction: .forward, animated: false, completion: nil)
     }
     
     // MARK: - layoutSetting
     override func layoutSetting() {
-        
     }
     
     // MARK: - Bind
     override func bind() {
         guard let viewModel = viewModel else { return }
         
+        let input = OnboardingPageViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
+    }
+}
+
+extension OnboardingPageViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        guard let index = itemsVCs.firstIndex(of: vc) else { return nil }
+        
+        let previousIndex = index - 1
+        if previousIndex < 0 {
+            return nil
+        }
+        return itemsVCs[previousIndex]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        guard let index = itemsVCs.firstIndex(of: vc) else { return nil }
+        
+        let nextIndex = index + 1
+        if nextIndex == itemsVCs.count {
+            return nil
+        }
+        return itemsVCs[nextIndex]
+    }
+    
+}
+
+extension OnboardingPageViewController: UIPageViewControllerDelegate {
+
+    func presentationCount(for pageViewController: UIPageViewController) -> Int {
+        return itemsVCs.count
+    }
+
+    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
+
+        guard let firstVC = pageViewController.viewControllers?.first as? OnboardingItemViewController else {
+            return 0
+        }
+        guard let firstVCIndex = itemsVCs.firstIndex(of: firstVC) else {
+            return 0
+        }
+
+        return firstVCIndex
     }
 }

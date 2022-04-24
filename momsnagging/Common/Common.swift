@@ -190,4 +190,5 @@ class Common {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: defaultsKey.rawValue)
     }
+    
 }

@@ -11,7 +11,7 @@ import Foundation
  # StringDefinition.swift
  - Authors: suni 
  - Date: 22. 04. 22
- - Note: 문구 모음.
+ - Note: 공통 문구 모음.
  */
 
 // MARK: 알럿 문구
@@ -22,3 +22,6 @@ public let STR_CANCEL_UPDATE        = "나중에"
 
 
 public let STR_UPDATE               = "업데이트가 필요합니다."
+
+
+

@@ -18,6 +18,11 @@ class OnboardingViewController: BaseViewController, Navigatable {
     var navigator: Navigator!
     
     // MARK: - UI Properties
+    let viewBackground = UIView().then({
+        $0.backgroundColor = Asset.Color.monoWhite.color
+    })
+    
+    var pageVC: OnboardingItemViewController?
     
     // MARK: - init
     init(viewModel: OnboardingViewModel, navigator: Navigator) {
