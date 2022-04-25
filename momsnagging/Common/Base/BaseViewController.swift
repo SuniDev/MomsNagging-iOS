@@ -22,6 +22,12 @@ class BaseViewController: UIViewController {
         self.bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.reloadData()
+    }
+    
     /**
      # initUI
      - Authors: suni
@@ -43,4 +49,10 @@ class BaseViewController: UIViewController {
      */
     func bind() { }
     
+    /**
+     # reloadData
+     - Authors: suni
+     - Note: reload할 데이터를 설정하는 Override용 함수
+     */
+    func reloadData() { }
 }

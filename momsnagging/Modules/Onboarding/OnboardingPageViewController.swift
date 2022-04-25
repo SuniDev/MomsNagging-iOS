@@ -17,7 +17,7 @@ class OnboardingPageViewController: BasePageViewController {
     private var disposeBag = DisposeBag()
     var viewModel: OnboardingPageViewModel?
 
-    var itemsVCs: [OnboardingItemViewController] = [OnboardingItemViewController]()
+    var pages: [OnboardingItemViewController] = [OnboardingItemViewController]()
     
     // MARK: - UI Properties
     
@@ -34,16 +34,15 @@ class OnboardingPageViewController: BasePageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.dataSource = self
+        self.delegate = self
     }
     
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
         
-        dataSource = self
-        delegate = nil
-        setViewControllers([itemsVCs[0]], direction: .forward, animated: false, completion: nil)
     }
     
     // MARK: - layoutSetting
@@ -57,30 +56,38 @@ class OnboardingPageViewController: BasePageViewController {
         let input = OnboardingPageViewModel.Input()
         let output = viewModel.transform(input: input)
         
+        output.setPage
+            .drive(onNext: { page in
+                Log.debug("page \(page)")
+                self.pages.append(page)
+                if self.pages.count == 1 {
+                    self.setViewControllers([page], direction: .forward, animated: false, completion: nil)
+                }
+            }).disposed(by: disposeBag)
     }
 }
 
 extension OnboardingPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let vc = viewController as? OnboardingItemViewController else { return nil }
-        guard let index = itemsVCs.firstIndex(of: vc) else { return nil }
+        guard let index = pages.firstIndex(of: vc) else { return nil }
         
         let previousIndex = index - 1
         if previousIndex < 0 {
             return nil
         }
-        return itemsVCs[previousIndex]
+        return pages[previousIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let vc = viewController as? OnboardingItemViewController else { return nil }
-        guard let index = itemsVCs.firstIndex(of: vc) else { return nil }
+        guard let index = pages.firstIndex(of: vc) else { return nil }
         
         let nextIndex = index + 1
-        if nextIndex == itemsVCs.count {
+        if nextIndex == pages.count {
             return nil
         }
-        return itemsVCs[nextIndex]
+        return pages[nextIndex]
     }
     
 }
@@ -88,15 +95,17 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
 extension OnboardingPageViewController: UIPageViewControllerDelegate {
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return itemsVCs.count
+        Log.debug("pages.count \(pages.count)")
+        return pages.count
     }
 
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-
+        
+            Log.debug("presentationIndex")
         guard let firstVC = pageViewController.viewControllers?.first as? OnboardingItemViewController else {
             return 0
         }
-        guard let firstVCIndex = itemsVCs.firstIndex(of: firstVC) else {
+        guard let firstVCIndex = pages.firstIndex(of: firstVC) else {
             return 0
         }
 

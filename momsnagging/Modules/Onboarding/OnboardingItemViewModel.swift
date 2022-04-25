@@ -16,6 +16,7 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     private let data: Observable<Onboarding>
     
     init(data: Onboarding) {
+        Log.debug(data)
         self.data = Observable.just(data)
     }
     
