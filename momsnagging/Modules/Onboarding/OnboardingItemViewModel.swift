@@ -14,6 +14,7 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     var disposeBag = DisposeBag()
     
     private let data: Observable<Onboarding>
+    private let numberOfPages = BehaviorRelay<Int>(value: 5)
     
     init(data: Onboarding) {
         self.data = Observable.just(data)
@@ -25,17 +26,21 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
+        let setEmoji: Driver<UIImage>
         let setTile: Driver<String>
         let setDescription: Driver<String>
         let setImage: Driver<UIImage>
         let setBubble: Driver<UIImage>
-        // TODO: PageController 문의 사항 진행중
-//        let setIndex: Driver<Int>
-//        let setNumberOfPages: Driver<Int>
+        let setPageControl: Driver<(Int, Int)>
+        let isLastPage: Driver<Bool>
     }
     
     // MARK: - transform
     func transform(input: Input) -> Output {
+        
+        let setEmoji = data.map { data -> UIImage in
+            return data.getEmoji()
+        }
         let setTitle = data.map { data -> String in
             return data.getTitle()
         }
@@ -48,19 +53,26 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
         let setBubble = data.map { data -> UIImage  in
             return data.getBubbleImage()
         }
+                
+        let setPageControl = Observable.zip(self.numberOfPages, data.map { data -> Int in
+            return data.getCurrentPage()
+        })
         
-        // TODO: PageController 문의 사항 진행중
-//        let setIndex = data.map { data -> Int  in
-//            return data.getIndex()
-//        }
-//
-//        let setNumberOfPages = data.map { data -> Int  in
-//            return data.getNumberOfPages()
-//        }
+        let isLastPage = data
+            .map { data -> Bool in
+                if data.getCurrentPage() == self.numberOfPages.value - 1 {
+                    return false
+                }
+                return true
+            }
         
-        return Output(setTile: setTitle.asDriverOnErrorJustComplete(),
+        return Output(setEmoji: setEmoji.asDriverOnErrorJustComplete(),
+                      setTile: setTitle.asDriverOnErrorJustComplete(),
                       setDescription: setDescription.asDriverOnErrorJustComplete(),
                       setImage: setImage.asDriverOnErrorJustComplete(),
-                      setBubble: setBubble.asDriverOnErrorJustComplete())
+                      setBubble: setBubble.asDriverOnErrorJustComplete(),
+                      setPageControl: setPageControl.asDriverOnErrorJustComplete(),
+                      isLastPage: isLastPage.asDriverOnErrorJustComplete()
+        )
     }
 }

@@ -16,24 +16,33 @@ struct Onboarding {
         case threeLine
     }
     
-    var index: Int
+    var currentPage: Int
+    var emoji: UIImage?
     var title: String?
     var message: String?
     var image: UIImage?
-    // TODO: PageController 문의 사항 진행중
-//    var numberOfPages: Int
     
-    init(index: Int, title: String?, message: String?, image: UIImage?) {
-        self.index = index
+    init(_ currentPage: Int,
+         emoji: UIImage? = Asset.Assets.emojiDefault.image,
+         title: String?,
+         message: String?,
+         image: UIImage?) {
+        self.currentPage = currentPage
+        self.emoji = emoji
         self.title = title
         self.message = message
         self.image = image
-        
-//        self.numberOfPages = 5
     }
     
-    func getIndex() -> Int {
-        return self.index
+    func getCurrentPage() -> Int {
+        return self.currentPage
+    }
+    
+    func getEmoji() -> UIImage {
+        if let emoji = emoji {
+            return emoji
+        }
+        return Asset.Assets.emojiDefault.image
     }
     
     func getTitle() -> String {
@@ -68,9 +77,4 @@ struct Onboarding {
             return Asset.Assets.bubble224x88.image
         }
     }
-    
-//    func getNumberOfPages() -> Int {
-//        return self.numberOfPages
-//    }
-    
 }

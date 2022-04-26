@@ -58,7 +58,6 @@ class OnboardingPageViewController: BasePageViewController {
         
         output.setPage
             .drive(onNext: { page in
-                Log.debug("page \(page)")
                 self.pages.append(page)
                 if self.pages.count == 1 {
                     self.setViewControllers([page], direction: .forward, animated: false, completion: nil)
