@@ -20,6 +20,7 @@ struct User {
 
 struct LoginInfo {
     var authToken: String?
+    var authId: String?
     var email: String?
     var snsType: SnsType?
 }

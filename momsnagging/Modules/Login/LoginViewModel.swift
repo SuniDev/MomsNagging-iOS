@@ -21,7 +21,9 @@ class LoginViewModel: BaseViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
 //        /// 구글 로그인
-//        let btnGoogleLoginTapped = PublishRelay<LoginViewController>()
+        let btnGoogleLoginTapped: Driver<Void>
+        let getGoogleSignInUser: Driver<GIDGoogleUser?>
+        let getGoogleSignInError: Driver<Error?>
 //        /// 카카오 로그인
 //        let btnKakaoLoginTapped = PublishRelay<Void>()
 //        /// 애플 로그인
@@ -30,58 +32,61 @@ class LoginViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
+        let googleSignIn: Driver<GIDConfiguration>
 //        /// 회원가입으로 이동
 //        let shouldJoin = PublishSubject<LoginInfo>()
 //        /// 회원 인증 성공
 //        let successLogin = PublishSubject<Void>()
 //        /// 로그인 오류 발생 (네트워크 오류)
-//        let error = PublishSubject<String>()
+        let error: Driver<String>
     }
+    
+    private var googlgoogleSignInConfig = PublishRelay<GIDConfiguration>()
+    private var snsLoginInfo = PublishRelay<LoginInfo>()
+    private var error = PublishRelay<String>()
     
     func transform(input: Input) -> Output {
         
-        //        input.btnGoogleLoginTapped
-        //            .subscribe(onNext: { [weak self] vc in
-        //                guard let self = self else { return }
-        //                self.signInGoogle(vc: vc)
-        //            }).disposed(by: disposeBag)
-        //
-        //        input.btnKakaoLoginTapped
-        //            .bind(onNext: signInKakao)
-        //            .disposed(by: disposeBag)
-        //
-        //        input.btnAppleLoginTapped
-        //            .bind(onNext: signInApple)
-        //            .disposed(by: disposeBag)
-        return Output()
+        input.btnGoogleLoginTapped
+            .drive(onNext: {
+                self.googlgoogleSignInConfig.accept(GIDConfiguration(clientID: ApiList.getGooleClientID()))
+            }).disposed(by: disposeBag)
+        
+        let googleSignIn = self.googlgoogleSignInConfig.asDriverOnErrorJustComplete()
+        
+        input.getGoogleSignInUser
+            .drive(onNext: { user in
+                guard let user = user else { return }
+                user.authentication.do { authentication, error in
+                    guard error == nil else { return }
+                    guard let authentication = authentication else { return }
+
+                    if let token = authentication.idToken {
+                        let id = user.userID
+                        let loginInfo = LoginInfo(authToken: token, authId: id, email: user.profile?.email, snsType: .google)
+                        self.snsLoginInfo.accept(loginInfo)
+                    } else {
+                        self.error.accept("구글 로그인 토큰이 없습니다.")
+                    }
+                }
+            }).disposed(by: disposeBag)
+        
+        // TODO: Request Get UserInfo API
+        self.snsLoginInfo
+            .subscribe(onNext: { info in
+                self.error.accept("로그인 정보: \(info.snsType?.rawValue ?? "") / \(info.email ?? "") \n API 준비중.")
+        }).disposed(by: disposeBag)
+
+        let error = self.error.asDriverOnErrorJustComplete()
+        
+        return Output(googleSignIn: googleSignIn,
+                      error: error)
     }
     
 }
 extension LoginViewModel {
     
     // MARK: - business logic
-    
-//    func signInGoogle(vc: LoginViewController) {
-//        let signInConfig = GIDConfiguration(clientID: ApiList.getGooleClientID())
-//
-//        GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: vc) { user, error in
-//            guard error == nil else { return }
-//            guard let user = user else { return }
-//
-//            user.authentication.do { authentication, error in
-//                guard error == nil else { Log.error(error!); return }
-//                guard let authentication = authentication else { return }
-//
-//                if let token = authentication.idToken {
-////                    let id = user.userID
-//                    let loginInfo = LoginInfo(authToken: token, email: user.profile?.email, snsType: .google)
-//                    self.getUserInfo(loginInfo: loginInfo)
-//                } else {
-//                    Log.debug("Google Token nil")
-//                }
-//            }
-//        }
-//    }
 //
 //    func signInKakao() {
 //        if UserApi.isKakaoTalkLoginAvailable() {
@@ -118,11 +123,8 @@ extension LoginViewModel {
 //            .disposed(by: disposeBag)
 //    }
 //
-//    func getUserInfo(loginInfo: LoginInfo) {
-//        // TODO: 서버에 회원 정보 request, user 정보 저장
-//        Log.debug("Login Info \(loginInfo)")
-////        output.successLogin.accept(())
-//    }
+    
+    // TODO: 서버에 회원 정보 request, user 정보 저장
 
 }
 

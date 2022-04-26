@@ -97,34 +97,33 @@ class OnboardingItemViewController: BaseViewController {
         
         lblTitle.snp.makeConstraints({
             $0.top.equalTo(viewBackground.snp.top).offset(15.0)
-            $0.centerX.equalTo(viewBackground.snp.centerX)
+            $0.centerX.equalTo(viewBackground)
             $0.leading.trailing.greaterThanOrEqualToSuperview()
         })
         
         viewMessage.snp.makeConstraints({
             $0.top.equalTo(lblTitle.snp.bottom).offset(40.0)
-            $0.centerX.equalTo(viewBackground.snp.centerX)
+            $0.centerX.equalTo(viewBackground)
         })
         
         imgvEmoji.snp.makeConstraints({
             $0.height.width.equalTo(72.0)
-            $0.leading.equalTo(viewMessage.snp.leading)
-            $0.centerY.equalTo(viewMessage.snp.centerY)
+            $0.leading.equalTo(viewMessage)
+            $0.centerY.equalTo(viewMessage)
         })
         
         imgvBubble.snp.makeConstraints({
             $0.width.equalTo(245.0)
-            $0.top.equalTo(viewMessage.snp.top).offset(8.0)
+            $0.top.equalTo(viewMessage).offset(8.0)
             $0.leading.equalTo(imgvEmoji.snp.trailing).offset(2.0)
-            $0.trailing.equalTo(viewMessage.snp.trailing)
-            $0.bottom.equalTo(viewMessage.snp.bottom)
-            $0.centerY.equalTo(viewMessage.snp.centerY)
+            $0.trailing.bottom.equalTo(viewMessage)
+            $0.centerY.equalTo(viewMessage)
         })
         
         lblMessage.snp.makeConstraints({
-            $0.leading.equalTo(imgvBubble.snp.leading).offset(35.0)
-            $0.centerY.equalTo(viewMessage.snp.centerY)
-            $0.trailing.equalTo(imgvBubble.snp.trailing).offset(-15.0)
+            $0.leading.equalTo(imgvBubble).offset(35.0)
+            $0.centerY.equalTo(viewMessage)
+            $0.trailing.equalTo(imgvBubble).offset(-15.0)
         })
         
         imgvImage.snp.makeConstraints({

@@ -32,7 +32,11 @@ internal enum Asset {
     internal static let emojiDefaultDis = ImageAsset(name: "emoji_default_dis")
     internal static let emojiHappy = ImageAsset(name: "emoji_happy")
     internal static let emojiHappyDis = ImageAsset(name: "emoji_happy_dis")
+    internal static let apple = ImageAsset(name: "apple")
+    internal static let google = ImageAsset(name: "google")
+    internal static let kakao = ImageAsset(name: "kakao")
     internal static let logo = ImageAsset(name: "logo")
+    internal static let logoLight = ImageAsset(name: "logo_light")
   }
   internal enum Color {
     internal static let black = ColorAsset(name: "black")

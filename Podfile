@@ -12,6 +12,7 @@ target 'momsnagging' do
 	pod 'Kingfisher','~> 5.0'
 	pod 'SwiftLint'
 	pod 'SwiftGen', '~> 6.0'
+	pod 'Toast-Swift', '~> 5.0.1'
 
 	#Networking
 	pod 'Moya/RxSwift', '~> 15.0'

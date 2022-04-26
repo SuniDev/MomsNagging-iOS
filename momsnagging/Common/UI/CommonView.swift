@@ -7,6 +7,7 @@
 
 import UIKit
 import Then
+import Toast_Swift
 
 // MARK: - 공통되는 자주사용되는 2~3회 이상 사용되는 공통 속성의 UI설정해서 바로 가져다 쓰면 편할듯합니다.
 /// 공통뷰 모음 Class
@@ -74,5 +75,9 @@ class CommonView {
             Log.debug(alert.actions)
             vc.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    static func showToast(vc: UIViewController, message: String, duration: TimeInterval = ToastManager.shared.duration) {
+        vc.view.makeToast(message, duration: duration)
     }
 }

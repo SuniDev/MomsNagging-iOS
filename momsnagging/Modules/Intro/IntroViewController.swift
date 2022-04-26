@@ -24,7 +24,7 @@ class IntroViewController: BaseViewController, Navigatable {
     })
     
     let imgvLogo = UIImageView().then({
-        $0.image = Asset.Assets.logo.image
+        $0.image = Asset.Assets.logoLight.image
     })
     
     // MARK: - init
@@ -55,11 +55,11 @@ class IntroViewController: BaseViewController, Navigatable {
         viewBackground.addSubview(imgvLogo)
         
         viewBackground.snp.makeConstraints({
-            $0.top.leading.trailing.bottom.equalTo(view)
+            $0.top.leading.trailing.bottom.equalToSuperview()
         })
         
         imgvLogo.snp.makeConstraints({
-            $0.center.equalTo(viewBackground.snp.center)
+            $0.center.equalTo(viewBackground)
         })
     }
     

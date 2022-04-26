@@ -71,6 +71,6 @@ class OnboardingViewController: BaseViewController, Navigatable {
         guard let viewModel = viewModel else { return }
         
         let input = OnboardingViewModel.Input()
-        let output = viewModel.transform(input: input)
+        _ = viewModel.transform(input: input)
     }
 }
