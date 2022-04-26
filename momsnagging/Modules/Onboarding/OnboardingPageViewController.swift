@@ -24,7 +24,7 @@ class OnboardingPageViewController: BasePageViewController {
     // MARK: - init
     init(viewModel: OnboardingPageViewModel) {
         self.viewModel = viewModel
-        super.init(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: [:])
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [:])
     }
     
     @available(*, unavailable)
@@ -95,13 +95,11 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
 extension OnboardingPageViewController: UIPageViewControllerDelegate {
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        Log.debug("pages.count \(pages.count)")
         return pages.count
     }
 
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         
-            Log.debug("presentationIndex")
         guard let firstVC = pageViewController.viewControllers?.first as? OnboardingItemViewController else {
             return 0
         }

@@ -16,7 +16,6 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     private let data: Observable<Onboarding>
     
     init(data: Onboarding) {
-        Log.debug(data)
         self.data = Observable.just(data)
     }
     
@@ -30,6 +29,9 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
         let setDescription: Driver<String>
         let setImage: Driver<UIImage>
         let setBubble: Driver<UIImage>
+        // TODO: PageController 문의 사항 진행중
+//        let setIndex: Driver<Int>
+//        let setNumberOfPages: Driver<Int>
     }
     
     // MARK: - transform
@@ -46,6 +48,15 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
         let setBubble = data.map { data -> UIImage  in
             return data.getBubbleImage()
         }
+        
+        // TODO: PageController 문의 사항 진행중
+//        let setIndex = data.map { data -> Int  in
+//            return data.getIndex()
+//        }
+//
+//        let setNumberOfPages = data.map { data -> Int  in
+//            return data.getNumberOfPages()
+//        }
         
         return Output(setTile: setTitle.asDriverOnErrorJustComplete(),
                       setDescription: setDescription.asDriverOnErrorJustComplete(),
