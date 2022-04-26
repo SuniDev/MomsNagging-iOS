@@ -1,18 +1,18 @@
 //
-//  BaseViewController.swift
+//  BasePageViewController.swift
 //  momsnagging
 //
-//  Created by suni on 2022/03/27.
+//  Created by suni on 2022/04/24.
 //
 
 import UIKit
 
 /**
- # (C) BaseViewController
+ # (C) BasePageViewController
  - Authors: suni
- - Note: 모든 VC의 Base, 모든 ViewController의 기본 기능 정의.
+ - Note: 모든 PageVC의 Base, 모든 UIPageViewController의 기본 기능 정의.
  */
-class BaseViewController: UIViewController {
+class BasePageViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,12 +20,6 @@ class BaseViewController: UIViewController {
         self.initUI()
         self.layoutSetting()
         self.bind()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        self.reloadData()
     }
     
     /**
@@ -49,10 +43,4 @@ class BaseViewController: UIViewController {
      */
     func bind() { }
     
-    /**
-     # reloadData
-     - Authors: suni
-     - Note: reload할 데이터를 설정하는 Override용 함수
-     */
-    func reloadData() { }
 }

@@ -18,6 +18,11 @@ class OnboardingViewController: BaseViewController, Navigatable {
     var navigator: Navigator!
     
     // MARK: - UI Properties
+    let viewBackground = UIView().then({
+        $0.backgroundColor = Asset.Color.monoWhite.color
+    })
+    
+    var pageVC: OnboardingPageViewController?
     
     // MARK: - init
     init(viewModel: OnboardingViewModel, navigator: Navigator) {
@@ -38,16 +43,34 @@ class OnboardingViewController: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
+        pageVC = OnboardingPageViewController(viewModel: OnboardingPageViewModel())
         
+        view.backgroundColor = Asset.Color.monoWhite.color
     }
     
     // MARK: - layoutSetting
     override func layoutSetting() {
+        view.addSubview(viewBackground)
+        
+        guard let pageVC = pageVC else { return }
+        addChild(pageVC)
+        viewBackground.addSubview(pageVC.view)
+        
+        viewBackground.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        })
+        
+        pageVC.view.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(viewBackground)
+        })
         
     }
     
     // MARK: - Bind
     override func bind() {
         guard let viewModel = viewModel else { return }
+        
+        let input = OnboardingViewModel.Input()
+        let output = viewModel.transform(input: input)
     }
 }
