@@ -19,11 +19,11 @@ class IntroViewController: BaseViewController, Navigatable {
     var navigator: Navigator!
     
     // MARK: - UI Properties
-    let viewBackground = UIView().then({
+    lazy var viewBackground = UIView().then({
         $0.backgroundColor = Asset.Color.priMain.color
     })
     
-    let imgvLogo = UIImageView().then({
+    lazy var imgvLogo = UIImageView().then({
         $0.image = Asset.Assets.logoLight.image
     })
     

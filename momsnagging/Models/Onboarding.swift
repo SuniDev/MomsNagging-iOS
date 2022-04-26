@@ -11,27 +11,16 @@ import Alamofire
 
 struct Onboarding {
     
-    enum BubbleType: String {
-        case twoLine
-        case threeLine
-    }
-    
     var currentPage: Int
     var emoji: UIImage?
     var title: String?
-    var message: String?
     var image: UIImage?
     
-    init(_ currentPage: Int,
-         emoji: UIImage? = Asset.Assets.emojiDefault.image,
-         title: String?,
-         message: String?,
-         image: UIImage?) {
+    init(_ currentPage: Int) {
         self.currentPage = currentPage
-        self.emoji = emoji
-        self.title = title
-        self.message = message
-        self.image = image
+        self.emoji = self.getEmoji()
+        self.title = self.getTitle()
+        self.image = self.getImage()
     }
     
     func getCurrentPage() -> Int {
@@ -39,42 +28,36 @@ struct Onboarding {
     }
     
     func getEmoji() -> UIImage {
-        if let emoji = emoji {
-            return emoji
+        switch getCurrentPage() {
+        case 0: return Asset.Assets.onboardingEmoji1.image
+        case 1: return Asset.Assets.onboardingEmoji2.image
+        case 2: return Asset.Assets.onboardingEmoji3.image
+        case 3: return Asset.Assets.onboardingEmoji4.image
+        case 4: return Asset.Assets.onboardingEmoji5.image
+        default: return Asset.Assets.onboardingEmoji1.image
         }
-        return Asset.Assets.emojiDefault.image
     }
     
     func getTitle() -> String {
-        return title ?? ""
-    }
-    
-    func getMessage() -> String {
-        return message ?? ""
+        switch getCurrentPage() {
+        case 0: return "1. 습관/할일 추가"
+        case 1: return "2. 추천 습관"
+        case 2: return "3. 엄마가 잔소리 해주는 푸쉬 알림"
+        case 3: return "4. 3단계 잔소리 강도 설정"
+        case 4: return "5. 이 외 기능"
+        default: return ""
+        }
     }
     
     func getImage() -> UIImage {
-        if let image = image {
-            return image
-        }
-        return Asset.Assets.defautImage.image
-    }
-    
-    func getBubbleType() -> BubbleType {
-        let lines = getMessage().components(separatedBy: "\n")
-        switch lines.count {
-        case 2: return BubbleType.twoLine
-        case 3: return BubbleType.threeLine
-        default: return BubbleType.threeLine
+        switch getCurrentPage() {
+        case 0: return Asset.Assets.defautImage.image
+        case 1: return Asset.Assets.defautImage.image
+        case 2: return Asset.Assets.defautImage.image
+        case 3: return Asset.Assets.defautImage.image
+        case 4: return Asset.Assets.defautImage.image
+        default: return Asset.Assets.defautImage.image
         }
     }
     
-    func getBubbleImage() -> UIImage {
-        switch getBubbleType() {
-        case .twoLine:
-            return Asset.Assets.bubble224x60.image
-        case .threeLine:
-            return Asset.Assets.bubble224x88.image
-        }
-    }
 }

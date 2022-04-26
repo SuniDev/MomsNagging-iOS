@@ -26,11 +26,9 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
-        let setEmoji: Driver<UIImage>
         let setTile: Driver<String>
-        let setDescription: Driver<String>
+        let setEmoji: Driver<UIImage>
         let setImage: Driver<UIImage>
-        let setBubble: Driver<UIImage>
         let setPageControl: Driver<(Int, Int)>
         let isLastPage: Driver<Bool>
     }
@@ -38,20 +36,16 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     // MARK: - transform
     func transform(input: Input) -> Output {
         
-        let setEmoji = data.map { data -> UIImage in
-            return data.getEmoji()
-        }
         let setTitle = data.map { data -> String in
             return data.getTitle()
         }
-        let setDescription = data.map { data -> String in
-            return data.getMessage()
+        
+        let setEmoji = data.map { data -> UIImage in
+            return data.getEmoji()
         }
+        
         let setImage = data.map { data -> UIImage in
             return data.getImage()
-        }
-        let setBubble = data.map { data -> UIImage  in
-            return data.getBubbleImage()
         }
                 
         let setPageControl = Observable.zip(self.numberOfPages, data.map { data -> Int in
@@ -66,11 +60,9 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
                 return true
             }
         
-        return Output(setEmoji: setEmoji.asDriverOnErrorJustComplete(),
-                      setTile: setTitle.asDriverOnErrorJustComplete(),
-                      setDescription: setDescription.asDriverOnErrorJustComplete(),
+        return Output(setTile: setTitle.asDriverOnErrorJustComplete(),
+                      setEmoji: setEmoji.asDriverOnErrorJustComplete(),
                       setImage: setImage.asDriverOnErrorJustComplete(),
-                      setBubble: setBubble.asDriverOnErrorJustComplete(),
                       setPageControl: setPageControl.asDriverOnErrorJustComplete(),
                       isLastPage: isLastPage.asDriverOnErrorJustComplete()
         )

@@ -18,50 +18,38 @@ class OnboardingItemViewController: BaseViewController {
     var viewModel: OnboardingItemViewModel?
     
     // MARK: - UI Properties
-    let viewBackground = UIView().then({
+    lazy var viewBackground = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
     
-    let lblTitle = UILabel().then({
+    lazy var lblTitle = UILabel().then({
         $0.textColor = Asset.Color.monoDark010.color
         $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
         $0.numberOfLines = 1
         $0.textAlignment = .center
     })
     
-    let viewMessage = UIView().then({
+    lazy var viewMessage = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
     
-    let imgvEmoji = UIImageView().then({
+    lazy var imgvEmoji = UIImageView().then({
         $0.image = Asset.Assets.emojiDefault.image
     })
     
-    let imgvBubble = UIImageView().then({
-        $0.image = Asset.Assets.bubble224x60.image
-        $0.contentMode = .scaleAspectFill
-    })
-    
-    let imgvImage = UIImageView().then({
+    lazy var imgvImage = UIImageView().then({
         $0.image = Asset.Assets.defautImage.image
     })
     
-    let lblMessage = UILabel().then({
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.font = FontFamily.Pretendard.bold.font(size: 16)
-        $0.numberOfLines = 0
-        $0.textAlignment = .center
-    })
-    
-    let pageControl = UIPageControl().then({
+    lazy var pageControl = UIPageControl().then({
         $0.pageIndicatorTintColor = Asset.Color.monoLight030.color
         $0.currentPageIndicatorTintColor = Asset.Color.priLight030.color
         $0.isUserInteractionEnabled = false
     })
     
-    let btnLogin = UIButton()
+    lazy var btnLogin = UIButton()
     
-    let btnNext = UIButton().then({
+    lazy var btnNext = UIButton().then({
         $0.layer.cornerRadius = 26.0
         $0.backgroundColor = Asset.Color.priMain.color
         $0.setTitle("다음", for: .normal)
@@ -69,7 +57,7 @@ class OnboardingItemViewController: BaseViewController {
         $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
     })
     
-    let btnStart = UIButton().then({
+    lazy var btnStart = UIButton().then({
         $0.layer.cornerRadius = 26.0
         $0.backgroundColor = Asset.Color.priMain.color
         $0.setTitle("시작해볼래요!", for: .normal)
@@ -116,8 +104,6 @@ class OnboardingItemViewController: BaseViewController {
         viewBackground.addSubview(lblTitle)
         viewBackground.addSubview(viewMessage)
         viewMessage.addSubview(imgvEmoji)
-        viewMessage.addSubview(imgvBubble)
-        viewMessage.addSubview(lblMessage)
         viewBackground.addSubview(imgvImage)
         viewBackground.addSubview(pageControl)
         viewBackground.addSubview(btnLogin)
@@ -135,35 +121,23 @@ class OnboardingItemViewController: BaseViewController {
         })
         
         viewMessage.snp.makeConstraints({
-            $0.height.equalTo(179)
-            $0.top.equalTo(lblTitle.snp.bottom)
-            $0.centerX.equalToSuperview()
+            $0.height.equalTo(94)
+            $0.top.equalTo(lblTitle.snp.bottom).offset(40)
+            $0.leading.trailing.equalToSuperview()
         })
         
         imgvEmoji.snp.makeConstraints({
-            $0.height.width.equalTo(72.0)
-            $0.top.equalToSuperview().offset(39.0)
-            $0.leading.equalToSuperview()
-        })
-        
-        imgvBubble.snp.makeConstraints({
-            $0.width.equalTo(245.0)
-            $0.top.equalTo(imgvEmoji.snp.top).offset(-8.0)
-            $0.leading.equalTo(imgvEmoji.snp.trailing).offset(2.0)
-            $0.trailing.equalToSuperview()
-        })
-        
-        lblMessage.snp.makeConstraints({
-            $0.leading.equalTo(imgvBubble).offset(35.0)
-            $0.centerY.equalTo(imgvBubble).offset(-5.0)
-            $0.trailing.equalTo(imgvBubble).offset(-15.0)
+            $0.width.equalTo(319)
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.bottom.greaterThanOrEqualToSuperview()
         })
         
         imgvImage.snp.makeConstraints({
-            $0.top.equalTo(viewMessage.snp.bottom)
-            $0.leading.equalToSuperview().offset(30.0)
-            $0.trailing.equalToSuperview().offset(-30.0)
-            $0.height.equalTo(imgvImage.snp.width).multipliedBy(1 / 0.94)
+            $0.width.equalTo(312)
+            $0.height.equalTo(320)
+            $0.top.equalTo(viewMessage.snp.bottom).offset(45)
+            $0.centerX.equalToSuperview()
         })
         
         pageControl.snp.makeConstraints({
@@ -207,20 +181,12 @@ class OnboardingItemViewController: BaseViewController {
             self.lblTitle.text = pageTitle
         }).disposed(by: disposeBag)
         
-        output.setDescription.drive(onNext: { pageMsg in
-            self.lblMessage.text = pageMsg
-        }).disposed(by: disposeBag)
-        
         output.setEmoji.drive(onNext: { image in
             self.imgvEmoji.image = image
         }).disposed(by: disposeBag)
         
         output.setImage.drive(onNext: { image in
             self.imgvImage.image = image
-        }).disposed(by: disposeBag)
-        
-        output.setBubble.drive(onNext: { image in
-            self.imgvBubble.image = image
         }).disposed(by: disposeBag)
         
         output.setPageControl.drive(onNext: { numberOfPages, index in
