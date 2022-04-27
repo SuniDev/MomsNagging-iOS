@@ -203,7 +203,7 @@ class OnboardingItemViewController: BaseViewController, Navigatable {
         }).disposed(by: disposeBag)
         
         output.btnLoginTapped.drive(onNext: {
-            
+            self.navigator.show(seque: .login(viewModel: LoginViewModel()), sender: nil, transition: .root)
         }).disposed(by: disposeBag)
 
     }

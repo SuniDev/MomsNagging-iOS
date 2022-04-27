@@ -61,8 +61,7 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
                 }
                 return true
             }
-        
-        
+    
         return Output(setTile: setTitle.asDriverOnErrorJustComplete(),
                       setEmoji: setEmoji.asDriverOnErrorJustComplete(),
                       setImage: setImage.asDriverOnErrorJustComplete(),
