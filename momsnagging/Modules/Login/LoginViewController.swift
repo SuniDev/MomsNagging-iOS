@@ -31,40 +31,34 @@ class LoginViewController: BaseViewController, Navigatable {
     let imgvLogo = UIImageView().then({
         $0.image = Asset.Assets.logo.image
     })
-    
-    let viewGoogleLogin = UIView() .then({
-        $0.backgroundColor = Asset.Color.monoWhite.color
-        $0.layer.cornerRadius = 20.0
-        $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
-    })
-    
-    let lblGoogleLogin = UILabel().then({
-        $0.text = "Google로 로그인"
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.font = FontFamily.Pretendard.bold.font(size: 18)
-    })
 
     let imgvGoogleLogin = UIImageView().then({
-        $0.image = Asset.Assets.google.image
+        $0.image = Asset.Assets.loginGoogle.image
+        $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
+        $0.isUserInteractionEnabled = false
     })
     
     var btnGoogleLogin = UIButton().then({
         $0.backgroundColor = .clear
     })
+
+    let imgvKakaoLogin = UIImageView().then({
+        $0.image = Asset.Assets.loginKakao.image
+        $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
+    })
     
-//    var btnKakaoLogin = UIButton().then({
-//        $0.backgroundColor = .yellow
-//        $0.setTitle("카카오 로그인", for: .normal)
-//        $0.setTitleColor(.white, for: .normal)
-//        $0.titleLabel?.font = .systemFont(ofSize: 20)
-//    })
-//
-//    var btnAppleLogin = UIButton().then({
-//        $0.backgroundColor = .black
-//        $0.setTitle("애플 로그인", for: .normal)
-//        $0.setTitleColor(.white, for: .normal)
-//        $0.titleLabel?.font = .systemFont(ofSize: 20)
-//    })
+    var btnKakaoLogin = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    let imgvAppleLogin = UIImageView().then({
+        $0.image = Asset.Assets.loginApple.image
+        $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
+    })
+    
+    var btnAppleLogin = UIButton().then({
+        $0.backgroundColor = .clear
+    })
     
     // MARK: - init
     init(viewModel: LoginViewModel, navigator: Navigator) {
@@ -93,10 +87,15 @@ class LoginViewController: BaseViewController, Navigatable {
     override func layoutSetting() {
         view.addSubview(viewBackground)
         viewBackground.addSubview(imgvLogo)
-        viewBackground.addSubview(viewGoogleLogin)
-        viewGoogleLogin.addSubview(imgvGoogleLogin)
-        viewGoogleLogin.addSubview(lblGoogleLogin)
-        viewGoogleLogin.addSubview(btnGoogleLogin)
+        
+        viewBackground.addSubview(imgvGoogleLogin)
+        viewBackground.addSubview(btnGoogleLogin)
+        
+        viewBackground.addSubview(imgvKakaoLogin)
+        viewBackground.addSubview(btnKakaoLogin)
+        
+        viewBackground.addSubview(imgvAppleLogin)
+        viewBackground.addSubview(btnAppleLogin)
         
         viewBackground.snp.makeConstraints({
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -105,61 +104,43 @@ class LoginViewController: BaseViewController, Navigatable {
         
         imgvLogo.snp.makeConstraints({
             $0.width.height.equalTo(200)
-            $0.top.equalTo(viewBackground)
-            $0.centerX.equalTo(viewBackground)
-        })
-        
-        viewGoogleLogin.snp.makeConstraints({
-            $0.height.equalTo(56)
-            $0.top.equalTo(viewBackground.snp.bottom).offset(70)
-            $0.leading.trailing.equalToSuperview().offset(24)
-        })
-        
-        lblGoogleLogin.snp.makeConstraints({
-            $0.center.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
         })
         
         imgvGoogleLogin.snp.makeConstraints({
-            $0.width.height.equalTo(24)
-            $0.trailing.equalTo(lblGoogleLogin.snp.leading).offset(8)
-            $0.centerY.equalToSuperview()
+            $0.height.equalTo(imgvGoogleLogin.snp.width).multipliedBy(1 / 5.85)
+            $0.top.equalTo(imgvLogo.snp.bottom).offset(70)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
         })
         
         btnGoogleLogin.snp.makeConstraints({
-            $0.top.leading.trailing.bottom.equalToSuperview()
+            $0.top.leading.trailing.bottom.equalTo(imgvGoogleLogin)
         })
         
-//
-//        lblTitle.snp.makeConstraints({
-//            $0.centerX.equalTo(viewBackground)
-//            $0.top.equalTo(viewBackground).offset(20)
-//            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-//            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
-//        })
-//
-//        btnGoogleLogin.snp.makeConstraints({
-//            $0.centerX.equalTo(viewBackground)
-//            $0.top.equalTo(lblTitle.snp.bottom).offset(50)
-//            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-//            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
-//            $0.height.equalTo(50)
-//        })
-//
-//        btnKakaoLogin.snp.makeConstraints({
-//            $0.centerX.equalTo(viewBackground)
-//            $0.top.equalTo(btnGoogleLogin.snp.bottom).offset(20)
-//            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-//            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
-//            $0.height.equalTo(50)
-//        })
-//
-//        btnAppleLogin.snp.makeConstraints({
-//            $0.centerX.equalTo(viewBackground)
-//            $0.top.equalTo(btnKakaoLogin.snp.bottom).offset(20)
-//            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-//            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
-//            $0.height.equalTo(50)
-//        })
+        imgvKakaoLogin.snp.makeConstraints({
+            $0.height.equalTo(imgvKakaoLogin.snp.width).multipliedBy(1 / 5.85)
+            $0.top.equalTo(imgvGoogleLogin.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
+        })
+        
+        btnKakaoLogin.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(imgvKakaoLogin)
+        })
+        
+        imgvAppleLogin.snp.makeConstraints({
+            $0.height.equalTo(imgvAppleLogin.snp.width).multipliedBy(1 / 5.85)
+            $0.top.equalTo(imgvKakaoLogin.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
+            $0.bottom.equalToSuperview()
+        })
+        
+        btnAppleLogin.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(imgvAppleLogin)
+        })
     }
     
     // MARK: - bind
@@ -187,35 +168,6 @@ class LoginViewController: BaseViewController, Navigatable {
             .drive(onNext: { error in
                 CommonView.showToast(vc: self, message: error)
             }).disposed(by: disposeBag)
-        
-        // Bind Input
-//        input.btnGoogleLogin.rx.tap
-//            .bind {
-//                self.viewModel.input.btnGoogleLoginTapped.accept(self)
-//            }
-//            .disposed(by: disposeBag)
-
-//        btnKakaoLogin.rx.tap
-//            .bind(to: viewModel.input.btnKakaoLoginTapped)
-//            .disposed(by: disposeBag)
-//
-//        btnAppleLogin.rx.tap
-//            .bind {
-//                self.signInApple()
-//            }
-//            .disposed(by: disposeBag)
-//
-//        // Bind Output
-//        viewModel.output.shouldJoin
-//            .observe(on: MainScheduler.instance)
-//            .bind(onNext: goToJoin)
-//            .disposed(by: disposeBag)
-//
-//        viewModel.output.successLogin
-//            .observe(on: MainScheduler.instance)
-//            .bind(onNext: goToMain)
-//            .disposed(by: disposeBag)
-        
     }
     
 }
