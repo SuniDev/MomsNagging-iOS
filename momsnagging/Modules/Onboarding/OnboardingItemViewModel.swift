@@ -22,6 +22,7 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
+        let btnLoginTapped: Driver<Void>
     }
     
     // MARK: - Output
@@ -31,6 +32,7 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
         let setImage: Driver<UIImage>
         let setPageControl: Driver<(Int, Int)>
         let isLastPage: Driver<Bool>
+        let btnLoginTapped: Driver<Void>
     }
     
     // MARK: - transform
@@ -60,11 +62,13 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
                 return true
             }
         
+        
         return Output(setTile: setTitle.asDriverOnErrorJustComplete(),
                       setEmoji: setEmoji.asDriverOnErrorJustComplete(),
                       setImage: setImage.asDriverOnErrorJustComplete(),
                       setPageControl: setPageControl.asDriverOnErrorJustComplete(),
-                      isLastPage: isLastPage.asDriverOnErrorJustComplete()
+                      isLastPage: isLastPage.asDriverOnErrorJustComplete(),
+                      btnLoginTapped: input.btnLoginTapped
         )
     }
 }

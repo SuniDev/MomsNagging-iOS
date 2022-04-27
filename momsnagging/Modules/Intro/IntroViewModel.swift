@@ -25,7 +25,7 @@ class IntroViewModel: BaseViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
         /// IntroViewController 진입
-        let didLoadIntro: Driver<Void>
+        let willAppearIntro: Driver<Void>
     }
     
     // MARK: - Output
@@ -46,7 +46,7 @@ class IntroViewModel: BaseViewModel, ViewModelType {
         
         // MARK: - App Update Status
         // TODO: Request App Version API
-        let appUpdateStatus = input.didLoadIntro
+        let appUpdateStatus = input.willAppearIntro
             .asObservable()
             .flatMapLatest { () -> Observable<AppUpdateStatus> in
                 return self.getAppUpdateStatus("1.0.0")
@@ -113,7 +113,7 @@ extension IntroViewModel {
                 observer.onCompleted()
             }
             return Disposables.create()
-        }.debug()
+        }
     }
     
     func isAutoLogin() -> Observable<Bool> {
@@ -126,7 +126,7 @@ extension IntroViewModel {
                 observer.onCompleted()
             }
             return Disposables.create()
-        }.debug()
+        }
     }
     
 }

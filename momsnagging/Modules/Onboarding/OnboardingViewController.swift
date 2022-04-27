@@ -43,7 +43,9 @@ class OnboardingViewController: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
-        pageVC = OnboardingPageViewController(viewModel: OnboardingPageViewModel())
+        
+        guard let viewModel = viewModel else { return }
+        pageVC = OnboardingPageViewController(viewModel: viewModel.onboardingPageViewModel(), navigator: self.navigator)
         
         view.backgroundColor = Asset.Color.monoWhite.color
     }
@@ -61,7 +63,7 @@ class OnboardingViewController: BaseViewController, Navigatable {
         })
         
         pageVC.view.snp.makeConstraints({
-            $0.top.leading.trailing.bottom.equalTo(viewBackground)
+            $0.top.leading.trailing.bottom.equalToSuperview()
         })
         
     }

@@ -11,19 +11,19 @@ import Then
 import RxSwift
 import RxCocoa
 
-class OnboardingPageViewController: BasePageViewController {
+class OnboardingPageViewController: BasePageViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
     var viewModel: OnboardingPageViewModel?
+    var navigator: Navigator!
 
     var pages: [OnboardingItemViewController] = [OnboardingItemViewController]()
-    
-    // MARK: - UI Properties
-    
+        
     // MARK: - init
-    init(viewModel: OnboardingPageViewModel) {
+    init(viewModel: OnboardingPageViewModel, navigator: Navigator) {
         self.viewModel = viewModel
+        self.navigator = navigator
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [:])
     }
     
@@ -53,15 +53,21 @@ class OnboardingPageViewController: BasePageViewController {
     override func bind() {
         guard let viewModel = viewModel else { return }
         
-        let input = OnboardingPageViewModel.Input()
+        let appendPage = PublishRelay<Void>()
+        let input = OnboardingPageViewModel.Input(appendPage: appendPage.asObservable())
         let output = viewModel.transform(input: input)
         
-        output.setPage
-            .drive(onNext: { page in
+        output.setPageItemViewModel
+            .drive(onNext: { viewModel in
+                let page = OnboardingItemViewController(viewModel: viewModel, navigator: self.navigator)
                 self.pages.append(page)
-                if self.pages.count == 1 {
-                    self.setViewControllers([page], direction: .forward, animated: false, completion: nil)
-                }
+                appendPage.accept(())
+            }).disposed(by: disposeBag)
+        
+        output.appendFirstPage
+            .drive(onNext: { () in
+                let page = self.pages[0]
+                self.setViewControllers([page], direction: .forward, animated: false, completion: nil)
             }).disposed(by: disposeBag)
     }
 }

@@ -11,11 +11,12 @@ import Then
 import RxSwift
 import RxCocoa
 
-class OnboardingItemViewController: BaseViewController {
+class OnboardingItemViewController: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
     var viewModel: OnboardingItemViewModel?
+    var navigator: Navigator!
     
     // MARK: - UI Properties
     lazy var viewBackground = UIView().then({
@@ -66,8 +67,9 @@ class OnboardingItemViewController: BaseViewController {
     })
     
     // MARK: - init
-    init(viewModel: OnboardingItemViewModel) {
+    init(viewModel: OnboardingItemViewModel, navigator: Navigator) {
         self.viewModel = viewModel
+        self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -174,7 +176,7 @@ class OnboardingItemViewController: BaseViewController {
     override func bind() {
         guard let viewModel = viewModel else { return }
         
-        let input = OnboardingItemViewModel.Input()
+        let input = OnboardingItemViewModel.Input(btnLoginTapped: btnLogin.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.setTile.drive(onNext: { pageTitle in
@@ -198,6 +200,10 @@ class OnboardingItemViewController: BaseViewController {
             self.btnLogin.isHidden = !isLast
             self.btnNext.isHidden = !isLast
             self.btnStart.isHidden = isLast
+        }).disposed(by: disposeBag)
+        
+        output.btnLoginTapped.drive(onNext: {
+            
         }).disposed(by: disposeBag)
 
     }

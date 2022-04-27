@@ -18,31 +18,41 @@ class OnboardingPageViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
-        
+        let appendPage: Observable<Void>
     }
     
     // MARK: - Output
     struct Output {
-        let setPage: Driver<OnboardingItemViewController>
+        let setPageItemViewModel: Driver<OnboardingItemViewModel>
+        let appendFirstPage: Driver<Void>
     }
     
     // MARK: - transform
     func transform(input: Input) -> Output {
+        let cntPage = BehaviorRelay<Int>(value: 0)
         
         let getDatas = self.getOnboardDatas()
-                
-        let getPages = getDatas
-            .flatMapLatest { data -> Observable<OnboardingItemViewController> in
-                return self.getPageVC(data: data)
-            }.asDriverOnErrorJustComplete()
+                        
+        let onboardingPageItemViewModel = getDatas
+            .flatMapLatest { data -> Observable<OnboardingItemViewModel> in
+                return self.onboardingPageItemViewModel(data: data)
+            }
         
-        return Output(setPage: getPages)
+        input.appendPage
+            .take(1)
+            .bind(onNext: { _ in
+                cntPage.accept(cntPage.value + 1)
+            }).disposed(by: disposeBag)
+        
+        let appendFirstPage = cntPage.filter { cnt in cnt == 1 }.mapToVoid()
+                
+        return Output(setPageItemViewModel: onboardingPageItemViewModel.asDriverOnErrorJustComplete(),
+                      appendFirstPage: appendFirstPage.asDriverOnErrorJustComplete())
     }
 }
 
 extension OnboardingPageViewModel {
     
-        // TODO: 온보딩 이미지 초기화
     func getOnboardDatas() -> Observable<Onboarding> {
         return Observable<Onboarding>.create { observer -> Disposable in
             observer.onNext(Onboarding(0))
@@ -55,10 +65,10 @@ extension OnboardingPageViewModel {
         }
     }
     
-    func getPageVC(data: Onboarding) -> Observable<OnboardingItemViewController> {
-        return Observable<OnboardingItemViewController>.create { observer -> Disposable in
-            let vc = OnboardingItemViewController(viewModel: OnboardingItemViewModel(data: data))
-            observer.onNext(vc)
+    func onboardingPageItemViewModel(data: Onboarding) -> Observable<OnboardingItemViewModel> {
+        return Observable<OnboardingItemViewModel>.create { observer -> Disposable in
+            let viewModel = OnboardingItemViewModel(data: data)
+            observer.onNext(viewModel)
             observer.onCompleted()
             return Disposables.create()
         }

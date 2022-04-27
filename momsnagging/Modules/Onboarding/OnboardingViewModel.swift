@@ -18,7 +18,6 @@ class OnboardingViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
-        
     }
     
     // MARK: - Output
@@ -30,5 +29,13 @@ class OnboardingViewModel: BaseViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         
         return Output()
+    }
+}
+
+extension OnboardingViewModel {
+    
+    func onboardingPageViewModel() -> OnboardingPageViewModel {
+        let viewModel = OnboardingPageViewModel()
+        return viewModel
     }
 }

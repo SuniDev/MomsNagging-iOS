@@ -67,7 +67,7 @@ class IntroViewController: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         
-        let input = IntroViewModel.Input(didLoadIntro: rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete())
+        let input = IntroViewModel.Input(willAppearIntro: rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.forceUpdateStatus
