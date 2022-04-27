@@ -11,6 +11,10 @@ import Then
 import RxSwift
 import RxCocoa
 
+protocol OnboardingPageDelegate {
+    func goToNextPage(currentPage: Int)
+}
+
 class OnboardingPageViewController: BasePageViewController, Navigatable {
     
     // MARK: - Properties & Variable
@@ -59,7 +63,7 @@ class OnboardingPageViewController: BasePageViewController, Navigatable {
         
         output.setPageItemViewModel
             .drive(onNext: { viewModel in
-                let page = OnboardingItemViewController(viewModel: viewModel, navigator: self.navigator)
+                let page = OnboardingItemViewController(viewModel: viewModel, navigator: self.navigator, delegate: self)
                 self.pages.append(page)
                 appendPage.accept(())
             }).disposed(by: disposeBag)
@@ -113,5 +117,15 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
         }
 
         return firstVCIndex
+    }
+}
+extension OnboardingPageViewController: OnboardingPageDelegate {
+    func goToNextPage(currentPage: Int) {
+        var nextPage = currentPage + 1
+        if nextPage >= self.pages.count {
+            nextPage -= 1
+        }
+        
+        self.setViewControllers([self.pages[nextPage]], direction: .forward, animated: true)
     }
 }

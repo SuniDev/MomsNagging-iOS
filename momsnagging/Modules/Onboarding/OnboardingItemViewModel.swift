@@ -23,6 +23,8 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
         let btnLoginTapped: Driver<Void>
+        let btnNextTapped: Driver<Void>
+        let btnStartTapped: Driver<Void>
     }
     
     // MARK: - Output
@@ -32,21 +34,23 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
         let setImage: Driver<UIImage>
         let setPageControl: Driver<(Int, Int)>
         let isLastPage: Driver<Bool>
-        let btnLoginTapped: Driver<Void>
+        let goToLogin: Driver<Void>
+        let goToNextPage: Driver<Int>
+        let goToMain: Driver<Void>
     }
     
     // MARK: - transform
     func transform(input: Input) -> Output {
         
-        let setTitle = data.map { data -> String in
+        let currentTitle = data.map { data -> String in
             return data.getTitle()
         }
         
-        let setEmoji = data.map { data -> UIImage in
+        let currentEmoji = data.map { data -> UIImage in
             return data.getEmoji()
         }
         
-        let setImage = data.map { data -> UIImage in
+        let currentImage = data.map { data -> UIImage in
             return data.getImage()
         }
                 
@@ -61,13 +65,23 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
                 }
                 return true
             }
-    
-        return Output(setTile: setTitle.asDriverOnErrorJustComplete(),
-                      setEmoji: setEmoji.asDriverOnErrorJustComplete(),
-                      setImage: setImage.asDriverOnErrorJustComplete(),
+        
+        let currentPage = data.map { data -> Int in
+            return data.getCurrentPage()
+        }
+        
+        let goToNextPage = input.btnNextTapped
+            .asObservable()
+            .flatMapLatest { currentPage }
+        
+        return Output(setTile: currentTitle.asDriverOnErrorJustComplete(),
+                      setEmoji: currentEmoji.asDriverOnErrorJustComplete(),
+                      setImage: currentImage.asDriverOnErrorJustComplete(),
                       setPageControl: setPageControl.asDriverOnErrorJustComplete(),
                       isLastPage: isLastPage.asDriverOnErrorJustComplete(),
-                      btnLoginTapped: input.btnLoginTapped
+                      goToLogin: input.btnLoginTapped,
+                      goToNextPage: goToNextPage.asDriverOnErrorJustComplete(),
+                      goToMain: input.btnStartTapped
         )
     }
 }

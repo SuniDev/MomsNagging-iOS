@@ -17,6 +17,7 @@ class OnboardingItemViewController: BaseViewController, Navigatable {
     private var disposeBag = DisposeBag()
     var viewModel: OnboardingItemViewModel?
     var navigator: Navigator!
+    var delegate: OnboardingPageDelegate?
     
     // MARK: - UI Properties
     lazy var viewBackground = UIView().then({
@@ -67,9 +68,10 @@ class OnboardingItemViewController: BaseViewController, Navigatable {
     })
     
     // MARK: - init
-    init(viewModel: OnboardingItemViewModel, navigator: Navigator) {
+    init(viewModel: OnboardingItemViewModel, navigator: Navigator, delegate: OnboardingPageDelegate) {
         self.viewModel = viewModel
         self.navigator = navigator
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -176,7 +178,7 @@ class OnboardingItemViewController: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         
-        let input = OnboardingItemViewModel.Input(btnLoginTapped: btnLogin.rx.tap.asDriverOnErrorJustComplete())
+        let input = OnboardingItemViewModel.Input(btnLoginTapped: btnLogin.rx.tap.asDriverOnErrorJustComplete(), btnNextTapped: btnNext.rx.tap.asDriverOnErrorJustComplete(), btnStartTapped: btnStart.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.setTile.drive(onNext: { pageTitle in
@@ -202,10 +204,17 @@ class OnboardingItemViewController: BaseViewController, Navigatable {
             self.btnStart.isHidden = isLast
         }).disposed(by: disposeBag)
         
-        output.btnLoginTapped.drive(onNext: {
+        output.goToLogin.drive(onNext: {
             self.navigator.show(seque: .login(viewModel: LoginViewModel()), sender: nil, transition: .root)
         }).disposed(by: disposeBag)
-
+        
+        output.goToNextPage.drive(onNext: { page in
+            self.delegate?.goToNextPage(currentPage: page)
+        }).disposed(by: disposeBag)
+        
+        output.goToMain.drive(onNext: {
+            // TODO: Main 이동
+        }).disposed(by: disposeBag)
     }
      
 }
