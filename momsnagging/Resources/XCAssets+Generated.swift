@@ -45,7 +45,6 @@ internal enum Asset {
   internal enum Color {
     internal static let black = ColorAsset(name: "black")
     internal static let error = ColorAsset(name: "error")
-    internal static let kakao = ColorAsset(name: "kakao")
     internal static let monoDark010 = ColorAsset(name: "mono_dark_010")
     internal static let monoDark020 = ColorAsset(name: "mono_dark_020")
     internal static let monoDark030 = ColorAsset(name: "mono_dark_030")
@@ -61,6 +60,7 @@ internal enum Asset {
     internal static let priLight020 = ColorAsset(name: "pri_light_020")
     internal static let priLight030 = ColorAsset(name: "pri_light_030")
     internal static let priMain = ColorAsset(name: "pri_main")
+    internal static let skyblue = ColorAsset(name: "skyblue")
     internal static let subDark010 = ColorAsset(name: "sub_dark_010")
     internal static let subDark020 = ColorAsset(name: "sub_dark_020")
     internal static let subLight010 = ColorAsset(name: "sub_light_010")

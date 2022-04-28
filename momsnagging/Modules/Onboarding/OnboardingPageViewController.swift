@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-protocol OnboardingPageDelegate {
+protocol OnboardingPageDelegate: AnyObject {
     func goToNextPage(currentPage: Int)
 }
 
