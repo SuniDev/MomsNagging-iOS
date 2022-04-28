@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigator = Navigator.default
         
-        let viewModel = SampleIntroViewModel()
+        let viewModel = IntroViewModel()
         navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
         
         window?.windowScene = windowScene

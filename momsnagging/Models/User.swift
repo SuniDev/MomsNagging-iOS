@@ -8,9 +8,9 @@
 import Foundation
 
 enum SnsType: String {
-    case google = "Google"
-    case kakao = "Kakao"
-    case apple = "Apple"
+    case google = "구글"
+    case kakao = "카카오"
+    case apple = "애플"
 }
 
 struct User {
@@ -20,6 +20,7 @@ struct User {
 
 struct LoginInfo {
     var authToken: String?
+    var authId: String?
     var email: String?
     var snsType: SnsType?
 }

@@ -9,46 +9,58 @@ import UIKit
 import SnapKit
 import Then
 import RxSwift
+import RxCocoa
+
+import GoogleSignIn
+import RxKakaoSDKUser
+import KakaoSDKUser
 import AuthenticationServices
 
 class LoginViewController: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel = LoginViewModel()
+    var viewModel: LoginViewModel?
     var navigator: Navigator!
+    
+    let appleSignInAuthorization = PublishRelay<ASAuthorization>()
+    let appleSignInError = PublishRelay<Error?>()
     
     // MARK: - UI Properties
     var viewBackground = UIView().then({
         $0.backgroundColor = .white
     })
     
-    var lblTitle = UILabel().then({
-        $0.font = .systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = .black
-        $0.text = "로그인 화면"
-        $0.textAlignment = .center
+    let imgvLogo = UIImageView().then({
+        $0.image = Asset.Assets.logo.image
+    })
+
+    let imgvGoogleLogin = UIImageView().then({
+        $0.image = Asset.Assets.loginGoogle.image
+        $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
+        $0.isUserInteractionEnabled = false
     })
     
     var btnGoogleLogin = UIButton().then({
-        $0.backgroundColor = .red
-        $0.setTitle("구글 로그인", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .systemFont(ofSize: 20)
+        $0.backgroundColor = .clear
+    })
+
+    let imgvKakaoLogin = UIImageView().then({
+        $0.image = Asset.Assets.loginKakao.image
+        $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
     })
     
     var btnKakaoLogin = UIButton().then({
-        $0.backgroundColor = .yellow
-        $0.setTitle("카카오 로그인", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .systemFont(ofSize: 20)
+        $0.backgroundColor = .clear
+    })
+    
+    let imgvAppleLogin = UIImageView().then({
+        $0.image = Asset.Assets.loginApple.image
+        $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
     })
     
     var btnAppleLogin = UIButton().then({
-        $0.backgroundColor = .black
-        $0.setTitle("애플 로그인", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .systemFont(ofSize: 20)
+        $0.backgroundColor = .clear
     })
     
     // MARK: - init
@@ -70,125 +82,155 @@ class LoginViewController: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
+        view.backgroundColor = Asset.Color.monoWhite.color
         
     }
     
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewBackground)
-        viewBackground.addSubview(lblTitle)
+        viewBackground.addSubview(imgvLogo)
+        
+        viewBackground.addSubview(imgvGoogleLogin)
         viewBackground.addSubview(btnGoogleLogin)
+        
+        viewBackground.addSubview(imgvKakaoLogin)
         viewBackground.addSubview(btnKakaoLogin)
+        
+        viewBackground.addSubview(imgvAppleLogin)
         viewBackground.addSubview(btnAppleLogin)
         
         viewBackground.snp.makeConstraints({
-            $0.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.centerY.equalTo(view.safeAreaLayoutGuide)
         })
         
-        lblTitle.snp.makeConstraints({
-            $0.centerX.equalTo(viewBackground)
-            $0.top.equalTo(viewBackground).offset(20)
-            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
+        imgvLogo.snp.makeConstraints({
+            $0.width.height.equalTo(200)
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        })
+        
+        imgvGoogleLogin.snp.makeConstraints({
+            $0.height.equalTo(imgvGoogleLogin.snp.width).multipliedBy(1 / 5.85)
+            $0.top.equalTo(imgvLogo.snp.bottom).offset(70)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
         })
         
         btnGoogleLogin.snp.makeConstraints({
-            $0.centerX.equalTo(viewBackground)
-            $0.top.equalTo(lblTitle.snp.bottom).offset(50)
-            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
-            $0.height.equalTo(50)
+            $0.top.leading.trailing.bottom.equalTo(imgvGoogleLogin)
+        })
+        
+        imgvKakaoLogin.snp.makeConstraints({
+            $0.height.equalTo(imgvKakaoLogin.snp.width).multipliedBy(1 / 5.85)
+            $0.top.equalTo(imgvGoogleLogin.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
         })
         
         btnKakaoLogin.snp.makeConstraints({
-            $0.centerX.equalTo(viewBackground)
-            $0.top.equalTo(btnGoogleLogin.snp.bottom).offset(20)
-            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
-            $0.height.equalTo(50)
+            $0.top.leading.trailing.bottom.equalTo(imgvKakaoLogin)
+        })
+        
+        imgvAppleLogin.snp.makeConstraints({
+            $0.height.equalTo(imgvAppleLogin.snp.width).multipliedBy(1 / 5.85)
+            $0.top.equalTo(imgvKakaoLogin.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
+            $0.bottom.equalToSuperview()
         })
         
         btnAppleLogin.snp.makeConstraints({
-            $0.centerX.equalTo(viewBackground)
-            $0.top.equalTo(btnKakaoLogin.snp.bottom).offset(20)
-            $0.leading.equalTo(viewBackground.snp.leading).offset(20)
-            $0.trailing.equalTo(viewBackground.snp.trailing).offset(-20)
-            $0.height.equalTo(50)
+            $0.top.leading.trailing.bottom.equalTo(imgvAppleLogin)
         })
     }
     
     // MARK: - bind
     override func bind() {
-        // Bind Input
-        btnGoogleLogin.rx.tap
-            .bind {
-                self.viewModel.input.btnGoogleLoginTapped.accept(self)
-            }
-            .disposed(by: disposeBag)
+        guard let viewModel = viewModel else { return }
         
-        btnKakaoLogin.rx.tap
-            .bind(to: viewModel.input.btnKakaoLoginTapped)
-            .disposed(by: disposeBag)
+        let googleSignInUser = PublishRelay<GIDGoogleUser?>()
+        let googleSignInError = PublishRelay<Error?>()
         
-        btnAppleLogin.rx.tap
-            .bind {
+        let input = LoginViewModel.Input(
+            btnGoogleLoginTapped: btnGoogleLogin.rx.tap.asDriverOnErrorJustComplete(),
+            getGoogleSignInUser: googleSignInUser.asDriverOnErrorJustComplete(),
+            getGoogleSignInError: googleSignInError.asDriverOnErrorJustComplete(),
+            btnKakaoLoginTapped: btnKakaoLogin.rx.tap.asDriverOnErrorJustComplete(),
+            btnAppleLoginTapped: btnAppleLogin.rx.tap.asDriverOnErrorJustComplete(),
+            appleSignInAuthorization: self.appleSignInAuthorization.asDriverOnErrorJustComplete(),
+            getAppleSignInError: self.appleSignInError.asDriverOnErrorJustComplete())
+        let output = viewModel.transform(input: input)
+        
+        output.googleSignIn
+            .drive(onNext: { config in
+                GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { user, error in
+                    googleSignInUser.accept(user)
+                    googleSignInError.accept(error)
+                }
+            }).disposed(by: disposeBag)
+        
+        output.appleSignIn
+            .drive(onNext: {
                 self.signInApple()
-            }
-            .disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
         
-        // Bind Output
-        viewModel.output.shouldJoin
-            .observe(on: MainScheduler.instance)
-            .bind(onNext: goToJoin)
-            .disposed(by: disposeBag)
+        output.error
+            .drive(onNext: { error in
+                Log.error(error)
+                CommonView.showAlert(vc: self, type: .oneButton, title: STR_LOGIN_ERROR_TITLE, message: STR_LOGIN_ERROR_MESSAGE, doneTitle: STR_DONE)
+            }).disposed(by: disposeBag)
         
-        viewModel.output.successLogin
-            .observe(on: MainScheduler.instance)
-            .bind(onNext: goToMain)
-            .disposed(by: disposeBag)
-        
+        output.needToJoin
+            .drive(onNext: { info in
+                let viewModel = IDSettingViewModel(loginInfo: info)
+                // TODO: ID/호칭 설정 뒤로가기 가능 여부 확인 필요. (root or push)
+                self.navigator.show(seque: .idSetting(viewModel: viewModel), sender: nil, transition: .root)
+            }).disposed(by: disposeBag)
     }
     
-}
-
-extension LoginViewController {
-    private func goToMain() {
-        // TODO: - 로그인 성공 매인 이동
-        Log.debug("Success Login goToMain")
-    }
-    
-    private func goToJoin(loginInfo: LoginInfo) {
-        // TODO: - 로그인 실패 회원가입 이동
-        Log.debug("goToJoin")
-    }
 }
 
 // MARK: - Apple Login UI
 extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
-    
+
     private func signInApple() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.email]
-        
+
         let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate = viewModel
+        controller.delegate = self
         controller.presentationContextProvider = self
         controller.performRequests()
     }
-    
+
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.view.window!
     }
-    
+
     func performExistingAccountSetupFlows() {
         // Prepare requests for both Apple ID and password providers.
-        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
-                        ASAuthorizationPasswordProvider().createRequest()]
-        
+        let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
+        appleIDRequest.requestedScopes = [.email]
+        let applePaaswordRequest = ASAuthorizationPasswordProvider().createRequest()
+        let requests = [appleIDRequest,
+                        applePaaswordRequest]
+
         // Create an authorization controller with the given requests.
         let authorizationController = ASAuthorizationController(authorizationRequests: requests)
-        authorizationController.delegate = viewModel
+        authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
+    }
+}
+
+extension LoginViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        self.appleSignInError.accept(error)
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        self.appleSignInAuthorization.accept(authorization)
     }
 }

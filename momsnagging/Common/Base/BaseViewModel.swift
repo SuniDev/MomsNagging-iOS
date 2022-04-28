@@ -6,13 +6,19 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
-protocol BaseViewModelType {
-    associatedtype Input    // ViewModel to UI
-    associatedtype Output   // UI to ViewModel
+protocol ViewModelType {
+
+    associatedtype Input    // UI to ViewModel
+    associatedtype Output   // ViewModel to UI
+    
+    var disposeBag: DisposeBag { get set }
+    
+    func transform(input: Input) -> Output
 }
 
-class BaseViewModel: NSObject {
-
-    // TODO: Loading, Service 정의
+class BaseViewModel {
+    // TODO: API 통신 처리.
 }

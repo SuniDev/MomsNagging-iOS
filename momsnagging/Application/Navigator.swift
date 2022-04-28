@@ -27,9 +27,10 @@ class Navigator {
     
     // MARK: - all app scenes
     enum Scene {
-        case intro(viewModel: SampleIntroViewModel)
+        case intro(viewModel: IntroViewModel)
         case onboarding(viewModel: OnboardingViewModel)
         case login(viewModel: LoginViewModel)
+        case idSetting(viewModel: IDSettingViewModel)
         case calendar(viewModel: CalendarViewModel)
     }
     
@@ -48,6 +49,7 @@ class Navigator {
         case .intro(let viewModel): return IntroViewController(viewModel: viewModel, navigator: self)
         case .onboarding(let viewModel): return OnboardingViewController(viewModel: viewModel, navigator: self)
         case .login(let viewModel): return LoginViewController(viewModel: viewModel, navigator: self)
+        case .idSetting(let viewModel): return IDSettingViewController(viewModel: viewModel, navigator: self)
         case .calendar(viewModel: let viewModel): return CalendarView(viewModel: viewModel, navigator: self)
         }
     }
@@ -96,7 +98,9 @@ class Navigator {
             // TODO: - popup 처리
             return
         case .alert:
-            // TODO: - alert 처리
+            DispatchQueue.main.async {
+                sender.present(target, animated: true, completion: nil)
+            }
             return
         default: break
         }

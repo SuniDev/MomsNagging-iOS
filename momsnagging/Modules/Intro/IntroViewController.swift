@@ -9,27 +9,26 @@ import UIKit
 import SnapKit
 import Then
 import RxSwift
+import RxCocoa
 
 class IntroViewController: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel = SampleIntroViewModel()
+    var viewModel: IntroViewModel?
     var navigator: Navigator!
     
     // MARK: - UI Properties
-    var viewBackground = UIView().then({
-        $0.backgroundColor = .white
+    lazy var viewBackground = UIView().then({
+        $0.backgroundColor = Asset.Color.priMain.color
     })
     
-    var lblTitle = UILabel().then({
-        $0.font = .systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = .black
-        $0.text = "엄마의 잔소리"
+    lazy var imgvLogo = UIImageView().then({
+        $0.image = Asset.Assets.logoLight.image
     })
     
     // MARK: - init
-    init(viewModel: SampleIntroViewModel, navigator: Navigator) {
+    init(viewModel: IntroViewModel, navigator: Navigator) {
         self.viewModel = viewModel
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
@@ -43,7 +42,6 @@ class IntroViewController: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        Log.debug("Debug Log Sample")
     }
     
     // MARK: - initUI
@@ -54,33 +52,46 @@ class IntroViewController: BaseViewController, Navigatable {
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewBackground)
-        viewBackground.addSubview(lblTitle)
+        viewBackground.addSubview(imgvLogo)
         
         viewBackground.snp.makeConstraints({
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.leading.equalTo(view.snp.leading)
-            $0.trailing.equalTo(view.snp.trailing)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.top.leading.trailing.bottom.equalToSuperview()
         })
-        lblTitle.snp.makeConstraints({
-            $0.center.equalTo(viewBackground.snp.center)
+        
+        imgvLogo.snp.makeConstraints({
+            $0.center.equalTo(viewBackground)
         })
     }
     
     // MARK: - Bind
     override func bind() {
-        Observable.just(Void())
-            .subscribe(onNext: {
-                self.viewModel.getLoginInfo()
+        guard let viewModel = viewModel else { return }
+        
+        let input = IntroViewModel.Input(willAppearIntro: rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete())
+        let output = viewModel.transform(input: input)
+        
+        output.forceUpdateStatus
+              .drive(onNext: { () in
+              CommonView.showAlert(vc: self, type: .oneButton, title: STR_UPDATE, message: "", doneTitle: STR_DONE_UPDATE, doneHandler: {
+                // TODO: 업데이트 -> 앱 스토어 이동 처리.
+              })
+              }).disposed(by: disposeBag)
+        
+        output.selectUpdateStatus
+              .drive(onNext: { () in
+                  CommonView.showAlert(vc: self, type: .twoButton, title: STR_UPDATE, message: "", cancelTitle: STR_CANCEL_UPDATE, doneTitle: STR_DONE_UPDATE, doneHandler: {
+                    // TODO: 업데이트 -> 앱 스토어 이동 처리.
+                  })
+              }).disposed(by: disposeBag)
+        
+        output.firstEntryApp
+            .drive(onNext: { () in
+                self.navigator.show(seque: .onboarding(viewModel: OnboardingViewModel()), sender: nil, transition: .root)
             }).disposed(by: disposeBag)
         
-        viewModel.isAutoLogin?.subscribe(onNext: { [weak self] isAutoLogin in
-            if isAutoLogin {
-                // TODO: - 메인 화면 이동
-            } else {
-                let viewModel = LoginViewModel()
-                self?.navigator.show(seque: .login(viewModel: viewModel), sender: self)
-            }
-        }).disposed(by: disposeBag)
+        output.failLogin
+            .drive(onNext: { () in
+                self.navigator.show(seque: .login(viewModel: LoginViewModel()), sender: nil, transition: .root)
+            }).disposed(by: disposeBag)
     }
 }
