@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		78423E9A816288D6BC1EF082 /* Pods_momsnagging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */; };
 		8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8617642D28111AB400F7B254 /* Observable+Operators.swift */; };
+		867C140A281A6325007E5590 /* AppleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1409281A6325007E5590 /* AppleSignInManager.swift */; };
+		867C1411281A7602007E5590 /* IDSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1410281A7602007E5590 /* IDSettingViewController.swift */; };
+		867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1412281A7615007E5590 /* IDSettingViewModel.swift */; };
 		868A11A4280F8F9F004DAC73 /* Icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868A11A3280F8F9F004DAC73 /* Icon.xcassets */; };
 		86B36F722817756800655059 /*  UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B36F712817756800655059 /*  UIView+Extension.swift */; };
 		86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */; };
@@ -57,6 +60,9 @@
 		2900CA227AEED8ABFD8BD259 /* Pods-momsnagging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.release.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.release.xcconfig"; sourceTree = "<group>"; };
 		7976B2BB96C29942DF65316A /* Pods-momsnagging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.debug.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.debug.xcconfig"; sourceTree = "<group>"; };
 		8617642D28111AB400F7B254 /* Observable+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Operators.swift"; sourceTree = "<group>"; };
+		867C1409281A6325007E5590 /* AppleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInManager.swift; sourceTree = "<group>"; };
+		867C1410281A7602007E5590 /* IDSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingViewController.swift; sourceTree = "<group>"; };
+		867C1412281A7615007E5590 /* IDSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingViewModel.swift; sourceTree = "<group>"; };
 		868A11A3280F8F9F004DAC73 /* Icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icon.xcassets; sourceTree = "<group>"; };
 		86B36F712817756800655059 /*  UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " UIView+Extension.swift"; sourceTree = "<group>"; };
 		86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
@@ -137,6 +143,30 @@
 			path = Rx;
 			sourceTree = "<group>";
 		};
+		867C1408281A6318007E5590 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				867C1409281A6325007E5590 /* AppleSignInManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		867C140C281A7514007E5590 /* IDSetting */ = {
+			isa = PBXGroup;
+			children = (
+				867C1410281A7602007E5590 /* IDSettingViewController.swift */,
+				867C1412281A7615007E5590 /* IDSettingViewModel.swift */,
+			);
+			path = IDSetting;
+			sourceTree = "<group>";
+		};
+		867C140F281A75B6007E5590 /* NicknameSetting */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NicknameSetting;
+			sourceTree = "<group>";
+		};
 		86BD71BC280EAF270038200E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +234,7 @@
 		8F06EC0527D892D900A17FF2 /* momsnagging */ = {
 			isa = PBXGroup;
 			children = (
+				867C1408281A6318007E5590 /* Manager */,
 				86BD71BD280EAF840038200E /* Application */,
 				8F8DAE9727D8944F00F2E78F /* Common */,
 				86D4BE2C27F6BE1100E9EE8B /* Models */,
@@ -339,6 +370,8 @@
 			children = (
 				A06BB34027F0BAA3005727AD /* LoginViewController.swift */,
 				A06BB35427F0D216005727AD /* LoginViewModel.swift */,
+				867C140C281A7514007E5590 /* IDSetting */,
+				867C140F281A75B6007E5590 /* NicknameSetting */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -585,9 +618,12 @@
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
+				867C1411281A7602007E5590 /* IDSettingViewController.swift in Sources */,
+				867C140A281A6325007E5590 /* AppleSignInManager.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */,
+				867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */,
 				A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */,
 				A0024DDD2813227800645F25 /* OnboardingItemViewController.swift in Sources */,
 				A035B0762812A0A100747389 /* StringDefinition.swift in Sources */,

@@ -9,12 +9,12 @@ import UIKit
 import SnapKit
 import Then
 import RxSwift
+import RxCocoa
 
 import GoogleSignIn
 import RxKakaoSDKUser
 import KakaoSDKUser
 import AuthenticationServices
-import RxRelay
 
 class LoginViewController: BaseViewController, Navigatable {
     
@@ -22,6 +22,9 @@ class LoginViewController: BaseViewController, Navigatable {
     private var disposeBag = DisposeBag()
     var viewModel: LoginViewModel?
     var navigator: Navigator!
+    
+    let appleSignInAuthorization = PublishRelay<ASAuthorization>()
+    let appleSignInError = PublishRelay<Error?>()
     
     // MARK: - UI Properties
     var viewBackground = UIView().then({
@@ -153,7 +156,11 @@ class LoginViewController: BaseViewController, Navigatable {
         let input = LoginViewModel.Input(
             btnGoogleLoginTapped: btnGoogleLogin.rx.tap.asDriverOnErrorJustComplete(),
             getGoogleSignInUser: googleSignInUser.asDriverOnErrorJustComplete(),
-            getGoogleSignInError: googleSignInError.asDriverOnErrorJustComplete())
+            getGoogleSignInError: googleSignInError.asDriverOnErrorJustComplete(),
+            btnKakaoLoginTapped: btnKakaoLogin.rx.tap.asDriverOnErrorJustComplete(),
+            btnAppleLoginTapped: btnAppleLogin.rx.tap.asDriverOnErrorJustComplete(),
+            appleSignInAuthorization: self.appleSignInAuthorization.asDriverOnErrorJustComplete(),
+            getAppleSignInError: self.appleSignInError.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.googleSignIn
@@ -164,27 +171,36 @@ class LoginViewController: BaseViewController, Navigatable {
                 }
             }).disposed(by: disposeBag)
         
+        output.appleSignIn
+            .drive(onNext: {
+                self.signInApple()
+            }).disposed(by: disposeBag)
+        
         output.error
             .drive(onNext: { error in
-                CommonView.showToast(vc: self, message: error)
+                Log.error(error)
+                CommonView.showAlert(vc: self, type: .oneButton, title: STR_LOGIN_ERROR_TITLE, message: STR_LOGIN_ERROR_MESSAGE, doneTitle: STR_DONE)
+            }).disposed(by: disposeBag)
+        
+        output.needToJoin
+            .drive(onNext: { info in
+                let viewModel = IDSettingViewModel(loginInfo: info)
+                // TODO: ID/호칭 설정 뒤로가기 가능 여부 확인 필요. (root or push)
+                self.navigator.show(seque: .idSetting(viewModel: viewModel), sender: nil, transition: .root)
             }).disposed(by: disposeBag)
     }
     
 }
 
-extension LoginViewController {
-    
-}
-
 // MARK: - Apple Login UI
- extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
 
     private func signInApple() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.email]
 
         let controller = ASAuthorizationController(authorizationRequests: [request])
-//        controller.delegate = self
+        controller.delegate = self
         controller.presentationContextProvider = self
         controller.performRequests()
     }
@@ -195,13 +211,26 @@ extension LoginViewController {
 
     func performExistingAccountSetupFlows() {
         // Prepare requests for both Apple ID and password providers.
-        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
-                        ASAuthorizationPasswordProvider().createRequest()]
+        let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
+        appleIDRequest.requestedScopes = [.email]
+        let applePaaswordRequest = ASAuthorizationPasswordProvider().createRequest()
+        let requests = [appleIDRequest,
+                        applePaaswordRequest]
 
         // Create an authorization controller with the given requests.
         let authorizationController = ASAuthorizationController(authorizationRequests: requests)
-//        authorizationController.delegate = self
+        authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
     }
- }
+}
+
+extension LoginViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        self.appleSignInError.accept(error)
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        self.appleSignInAuthorization.accept(authorization)
+    }
+}

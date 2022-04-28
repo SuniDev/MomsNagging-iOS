@@ -8,9 +8,9 @@
 import Foundation
 
 enum SnsType: String {
-    case google = "Google"
-    case kakao = "Kakao"
-    case apple = "Apple"
+    case google = "구글"
+    case kakao = "카카오"
+    case apple = "애플"
 }
 
 struct User {

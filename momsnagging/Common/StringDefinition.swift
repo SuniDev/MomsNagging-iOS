@@ -22,6 +22,5 @@ public let STR_CANCEL_UPDATE        = "나중에"
 
 
 public let STR_UPDATE               = "업데이트가 필요합니다."
-
-
-
+public let STR_LOGIN_ERROR_TITLE    = "로그인 실패"
+public let STR_LOGIN_ERROR_MESSAGE  = "로그인에 실패 했습니다.\n다시 시도해주세요."
