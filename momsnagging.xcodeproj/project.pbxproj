@@ -51,7 +51,8 @@
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A035B0762812A0A100747389 /* StringDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035B0752812A0A100747389 /* StringDefinition.swift */; };
 		A040E621281D325C00CC0ABE /* NicknameSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */; };
-		A040E624281D328800CC0ABE /* NicknameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A040E623281D328800CC0ABE /* NicknameSettingViewController.swift */; };
+		A067E592281D93F70017EF53 /* NicknameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E590281D93F70017EF53 /* NicknameSettingViewController.swift */; };
+		A067E593281D93F70017EF53 /* NicknameSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */; };
 		A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33827F0BA37005727AD /* BaseViewController.swift */; };
 		A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33C27F0BA72005727AD /* IntroViewController.swift */; };
 		A06BB34127F0BAA3005727AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34027F0BAA3005727AD /* LoginViewController.swift */; };
@@ -118,7 +119,8 @@
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A035B0752812A0A100747389 /* StringDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDefinition.swift; sourceTree = "<group>"; };
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
-		A040E623281D328800CC0ABE /* NicknameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewController.swift; sourceTree = "<group>"; };
+		A067E590281D93F70017EF53 /* NicknameSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewController.swift; sourceTree = "<group>"; };
+		A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewModel.swift; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		A06BB33827F0BA37005727AD /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A06BB33C27F0BA72005727AD /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				8F06EC0427D892D900A17FF2 /* Products */,
 				3022C1F3C21435DC7A457ECC /* Pods */,
 				E2B7BEA15ACF83AA558CED4E /* Frameworks */,
+				A067E589281D92360017EF53 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -473,6 +476,23 @@
 			path = MainContainer;
 			sourceTree = "<group>";
 		};
+		A067E589281D92360017EF53 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		A067E58F281D93E70017EF53 /* NicknameSetting */ = {
+			isa = PBXGroup;
+			children = (
+				A067E590281D93F70017EF53 /* NicknameSettingViewController.swift */,
+				A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */,
+			);
+			path = NicknameSetting;
+			sourceTree = "<group>";
+		};
 		A06BB33727F0BA1F005727AD /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -512,10 +532,10 @@
 		A06BB33F27F0BA92005727AD /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				A067E58F281D93E70017EF53 /* NicknameSetting */,
 				A06BB34027F0BAA3005727AD /* LoginViewController.swift */,
 				A06BB35427F0D216005727AD /* LoginViewModel.swift */,
 				867C140C281A7514007E5590 /* IDSetting */,
-				A040E622281D326800CC0ABE /* NicknameSetting */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -767,7 +787,6 @@
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
 				867C1411281A7602007E5590 /* IDSettingViewController.swift in Sources */,
-				867C140A281A6325007E5590 /* AppleSignInManager.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				8F22F834281D0B3800AB4180 /* ReportCardModel.swift in Sources */,
@@ -781,6 +800,7 @@
 				A035B0762812A0A100747389 /* StringDefinition.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
+				A067E592281D93F70017EF53 /* NicknameSettingViewController.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
@@ -790,6 +810,7 @@
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F22F832281D0B2E00AB4180 /* ReportCardViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
+				A067E593281D93F70017EF53 /* NicknameSettingViewModel.swift in Sources */,
 				8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */,
 				8F22F838281D0B4B00AB4180 /* MyModel.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,
