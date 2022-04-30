@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  LoginView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/03/28.
@@ -16,7 +16,7 @@ import RxKakaoSDKUser
 import KakaoSDKUser
 import AuthenticationServices
 
-class LoginViewController: BaseViewController, Navigatable {
+class LoginView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
@@ -193,7 +193,7 @@ class LoginViewController: BaseViewController, Navigatable {
 }
 
 // MARK: - Apple Login UI
-extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+extension LoginView: ASAuthorizationControllerPresentationContextProviding {
 
     private func signInApple() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
@@ -225,7 +225,7 @@ extension LoginViewController: ASAuthorizationControllerPresentationContextProvi
     }
 }
 
-extension LoginViewController: ASAuthorizationControllerDelegate {
+extension LoginView: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         self.appleSignInError.accept(error)
     }

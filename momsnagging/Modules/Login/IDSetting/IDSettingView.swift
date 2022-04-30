@@ -1,5 +1,5 @@
 //
-//  IDSettingViewController.swift
+//  IDSettingView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/04/28.
@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import RxSwift
 
-class IDSettingViewController: BaseViewController, Navigatable {
+class IDSettingView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
@@ -214,7 +214,7 @@ class IDSettingViewController: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
     }
 }
-extension IDSettingViewController {
+extension IDSettingView {
     private func setIDErrorMessage(_ message: String) {
         self.lblAvailableID.isHidden = false
         self.lblAvailableID.textColor = Asset.Color.error.color

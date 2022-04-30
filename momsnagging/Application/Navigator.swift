@@ -49,11 +49,11 @@ class Navigator {
     // MARK: - get a single viewcontroller
     func get(seque: Scene) -> UIViewController? {
         switch seque {
-        case .intro(let viewModel): return IntroViewController(viewModel: viewModel, navigator: self)
-        case .onboarding(let viewModel): return OnboardingViewController(viewModel: viewModel, navigator: self)
-        case .login(let viewModel): return LoginViewController(viewModel: viewModel, navigator: self)
-        case .idSetting(let viewModel): return IDSettingViewController(viewModel: viewModel, navigator: self)
-        case .nicknameSetting(let viewModel): return NicknameSettingViewController(viewModel: viewModel, navigator: self)
+        case .intro(let viewModel): return IntroView(viewModel: viewModel, navigator: self)
+        case .onboarding(let viewModel): return OnboardingView(viewModel: viewModel, navigator: self)
+        case .login(let viewModel): return LoginView(viewModel: viewModel, navigator: self)
+        case .idSetting(let viewModel): return IDSettingView(viewModel: viewModel, navigator: self)
+        case .nicknameSetting(let viewModel): return NicknameSettingView(viewModel: viewModel, navigator: self)
         case .mainContainer(viewModel: let viewModel): return MainContainerView(viewModel: viewModel, navigator: self)
         case .home(viewModel: let viewModel): return HomeView(viewModel: viewModel, navigator: self)
         case .calendar(viewModel: let viewModel): return CalendarView(viewModel: viewModel, navigator: self)

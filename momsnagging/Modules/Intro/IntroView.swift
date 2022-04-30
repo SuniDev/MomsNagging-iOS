@@ -1,5 +1,5 @@
 //
-//  IntroViewController.swift
+//  IntroView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/03/28.
@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-class IntroViewController: BaseViewController, Navigatable {
+class IntroView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()

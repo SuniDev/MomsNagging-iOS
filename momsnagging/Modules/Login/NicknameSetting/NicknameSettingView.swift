@@ -1,5 +1,5 @@
 //
-//  NicknameSettingViewController.swift
+//  NicknameSettingView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/04/30.
@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import RxSwift
 
-class NicknameSettingViewController: BaseViewController, Navigatable {
+class NicknameSettingView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()

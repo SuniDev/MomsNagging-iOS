@@ -1,5 +1,5 @@
 //
-//  OnboardingPageViewController.swift
+//  OnboardingPageView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/04/24.
@@ -15,14 +15,14 @@ protocol OnboardingPageDelegate: AnyObject {
     func goToNextPage(currentPage: Int)
 }
 
-class OnboardingPageViewController: BasePageViewController, Navigatable {
+class OnboardingPageView: BasePageViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
     var viewModel: OnboardingPageViewModel?
     var navigator: Navigator!
 
-    var pages: [OnboardingItemViewController] = [OnboardingItemViewController]()
+    var pages: [OnboardingItemView] = [OnboardingItemView]()
         
     // MARK: - init
     init(viewModel: OnboardingPageViewModel, navigator: Navigator) {
@@ -63,7 +63,7 @@ class OnboardingPageViewController: BasePageViewController, Navigatable {
         
         output.setPageItemViewModel
             .drive(onNext: { viewModel in
-                let page = OnboardingItemViewController(viewModel: viewModel, navigator: self.navigator, delegate: self)
+                let page = OnboardingItemView(viewModel: viewModel, navigator: self.navigator, delegate: self)
                 self.pages.append(page)
                 appendPage.accept(())
             }).disposed(by: disposeBag)
@@ -76,9 +76,9 @@ class OnboardingPageViewController: BasePageViewController, Navigatable {
     }
 }
 
-extension OnboardingPageViewController: UIPageViewControllerDataSource {
+extension OnboardingPageView: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        guard let vc = viewController as? OnboardingItemView else { return nil }
         guard let index = pages.firstIndex(of: vc) else { return nil }
         
         let previousIndex = index - 1
@@ -89,7 +89,7 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        guard let vc = viewController as? OnboardingItemView else { return nil }
         guard let index = pages.firstIndex(of: vc) else { return nil }
         
         let nextIndex = index + 1
@@ -101,7 +101,7 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
     
 }
 
-extension OnboardingPageViewController: UIPageViewControllerDelegate {
+extension OnboardingPageView: UIPageViewControllerDelegate {
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
         return pages.count
@@ -109,7 +109,7 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
 
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         
-        guard let firstVC = pageViewController.viewControllers?.first as? OnboardingItemViewController else {
+        guard let firstVC = pageViewController.viewControllers?.first as? OnboardingItemView else {
             return 0
         }
         guard let firstVCIndex = pages.firstIndex(of: firstVC) else {
@@ -119,7 +119,7 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
         return firstVCIndex
     }
 }
-extension OnboardingPageViewController: OnboardingPageDelegate {
+extension OnboardingPageView: OnboardingPageDelegate {
     func goToNextPage(currentPage: Int) {
         var nextPage = currentPage + 1
         if nextPage >= self.pages.count {
