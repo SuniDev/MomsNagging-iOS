@@ -179,7 +179,7 @@ class LoginViewController: BaseViewController, Navigatable {
         output.error
             .drive(onNext: { error in
                 Log.error(error)
-                CommonView.showAlert(vc: self, type: .oneButton, title: STR_LOGIN_ERROR_TITLE, message: STR_LOGIN_ERROR_MESSAGE, doneTitle: STR_DONE)
+                CommonView.showAlert(vc: self, type: .oneBtn, title: STR_LOGIN_ERROR_TITLE, message: STR_LOGIN_ERROR_MESSAGE, doneTitle: STR_DONE)
             }).disposed(by: disposeBag)
         
         output.needToJoin

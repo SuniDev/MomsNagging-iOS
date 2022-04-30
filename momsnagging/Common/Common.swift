@@ -37,7 +37,7 @@ class Common {
                     print("아직 선택하지 않음 restricted 14")
                 case .denied: // 권한 거부 상태
                     // 220422 suni. Alert 함수 변경에 맞게 수정.
-                    CommonView.showAlert(vc: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", cancelTitle: "아니요", doneTitle: "네") {
+                    CommonView.showAlert(vc: view, type: .twoBtn, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", cancelTitle: "아니요", doneTitle: "네") {
                         
                     } doneHandler: {
                         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
@@ -77,7 +77,7 @@ class Common {
                     print("아직 선택하지 않음 restricted")
                 case .denied:// 권한 거부 상태
                     // 220422 suni. Alert 함수 변경에 맞게 수정.
-                    CommonView.showAlert(vc: view, type: .twoButton, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", cancelTitle: "아니요", doneTitle: "네") {
+                    CommonView.showAlert(vc: view, type: .twoBtn, title: "앨범 권한", message: "앨범 사용을 위해 권한이 필요합니다.\n설정으로 이동할까요?", cancelTitle: "아니요", doneTitle: "네") {
                         
                     } doneHandler: {
                         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }

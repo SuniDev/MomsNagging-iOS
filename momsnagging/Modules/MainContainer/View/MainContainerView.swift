@@ -29,13 +29,14 @@ class MainContainerView: BaseViewController, Navigatable {
         fatalError("init(coder:) has not been implemented")
     }
     // MARK: - Tabbar Child View
-    let tab0 = HomeView()
+    let tab0 = HomeView(viewModel: HomeViewModel(), navigator: Navigator())
     let tab1 = ReportCardView()
     let tab2 = MyView()
     // MARK: - Properties & Variable
     var disposedBag = DisposeBag()
     var navigator: Navigator!
     var viewModel: MainContainerViewModel!
+    
     // MARK: - UI Properties
     var tabbarBtn1 = UIButton()
     var tabbarIc1 = UIImageView()

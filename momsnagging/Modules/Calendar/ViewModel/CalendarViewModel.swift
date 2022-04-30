@@ -52,4 +52,23 @@ class CalendarViewModel {
     func weekDayList(currentMonth: Int, currentYear: Int) {
         weekDayListObservable.onNext(model.getWeek(currentMonth: currentMonth, currentYear: currentYear))
     }
+    /// 월~일 String 호출
+    func getWeekDayList() -> [String] {
+        return model.weekDayList
+    }
+    
+    ///오늘날짜 yy,MM,dd 형태로 string return
+    func todayFormatteryyMMdd() -> String {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy.MM.dd"
+        return formatter.string(from: date)
+    }
+    ///오늘날짜 dd 형태로 string return
+    func todaydd() -> String {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
+        return formatter.string(from: date)
+    }
 }
