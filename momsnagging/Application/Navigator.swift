@@ -31,6 +31,7 @@ class Navigator {
         case onboarding(viewModel: OnboardingViewModel)
         case login(viewModel: LoginViewModel)
         case idSetting(viewModel: IDSettingViewModel)
+        case nicknameSetting(viewModel: NicknameSettingViewModel)
         case calendar(viewModel: CalendarViewModel)
     }
     
@@ -50,6 +51,7 @@ class Navigator {
         case .onboarding(let viewModel): return OnboardingViewController(viewModel: viewModel, navigator: self)
         case .login(let viewModel): return LoginViewController(viewModel: viewModel, navigator: self)
         case .idSetting(let viewModel): return IDSettingViewController(viewModel: viewModel, navigator: self)
+        case .nicknameSetting(let viewModel): return NicknameSettingViewController(viewModel: viewModel, navigator: self)
         case .calendar(viewModel: let viewModel): return CalendarView(viewModel: viewModel, navigator: self)
         }
     }

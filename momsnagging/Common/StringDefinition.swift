@@ -24,3 +24,8 @@ public let STR_CANCEL_UPDATE        = "나중에"
 public let STR_UPDATE               = "업데이트가 필요합니다."
 public let STR_LOGIN_ERROR_TITLE    = "로그인 실패"
 public let STR_LOGIN_ERROR_MESSAGE  = "로그인에 실패 했습니다.\n다시 시도해주세요."
+
+public let STR_ID_INVALID           = "아이디에는 한글과 특수 문자를 사용할 수 없단다."
+public let STR_ID_DUPLICATE         = "이미 사용중인 아이디란다."
+public let STR_ID_AVAILABLE         = "그것 참 좋은 아이디구나!"
+
