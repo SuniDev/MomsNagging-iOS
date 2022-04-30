@@ -8,40 +8,61 @@
 import UIKit
 import Then
 import Toast_Swift
+import SnapKit
 
 // MARK: - 공통되는 자주사용되는 2~3회 이상 사용되는 공통 속성의 UI설정해서 바로 가져다 쓰면 편할듯합니다.
 /// 공통뷰 모음 Class
 class CommonView {
-    // ex. 공통 버튼 형태 등
-    static func testButton() -> UIButton {
-        let button = UIButton().then({
-            $0.backgroundColor = .black
+    
+    static func homeHeadFrame(listIconBtn: UIButton, headTitle: UILabel, dropDownButton: UIButton, diaryBtn: UIButton) -> UIView {
+        let view = UIView().then({
+            $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         })
-        return button
-    }
-    // ex. 공통 헤드 뷰
-    enum HeadViewButtonType {
-        case closeBtn
-        case backBtn
-    }
-    static func headFrame(headTitle: String, type: HeadViewButtonType) -> UIView {
-        let view = UIView()
-        _ = UILabel().then({
-            $0.text = headTitle
+        headTitle.then({
+            $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+            $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
         })
-        switch type {
-        case .closeBtn:
-            print("닫기 버튼일때 레이아웃 설정")
-        case .backBtn:
-            print("뒤로가기 버튼일때 레이아웃 설정")
-        }
+        let dropDownImageView = UIImageView().then({
+            $0.image = UIImage(asset: Asset.Icon.chevronDown)
+        })
+        listIconBtn.then({
+            $0.setImage(UIImage(asset: Asset.Icon.list), for: .normal)
+        })
+        diaryBtn.then({
+            $0.setImage(UIImage(asset: Asset.Icon.diary), for: .normal)
+        })
+        
+        view.addSubview(headTitle)
+        view.addSubview(dropDownImageView)
+        view.addSubview(listIconBtn)
+        view.addSubview(diaryBtn)
+        
+        headTitle.snp.makeConstraints({
+            $0.center.equalTo(view.snp.center)
+        })
+        dropDownImageView.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.centerY.equalTo(view.snp.centerY)
+            $0.leading.equalTo(headTitle.snp.trailing).offset(5.5)
+        })
+        listIconBtn.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.leading.equalTo(view.snp.leading).offset(16)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        diaryBtn.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.trailing.equalTo(view.snp.trailing).offset(-16)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        
         return view
     }
     
     // Alert의 버튼 타입에 사용할 enum으로 Alert의 버튼 1개 또는 2개일때를 구분하기 위하여 생성함.
     enum AlertType {
-        case oneButton
-        case twoButton
+        case oneBtn
+        case twoBtn
     }
     /*
      vc : 이 메서드를 사용할 vc
@@ -65,9 +86,9 @@ class CommonView {
             }
             
             switch type {
-            case .oneButton:
+            case .oneBtn:
                 alert.addAction(doneAction)
-            case .twoButton:
+            case .twoBtn:
                 alert.addAction(cancelAction)
                 alert.addAction(doneAction)
             }

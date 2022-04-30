@@ -72,14 +72,14 @@ class IntroViewController: BaseViewController, Navigatable {
         
         output.forceUpdateStatus
               .drive(onNext: { () in
-              CommonView.showAlert(vc: self, type: .oneButton, title: STR_UPDATE, message: "", doneTitle: STR_DONE_UPDATE, doneHandler: {
+              CommonView.showAlert(vc: self, type: .oneBtn, title: STR_UPDATE, message: "", doneTitle: STR_DONE_UPDATE, doneHandler: {
                 // TODO: 업데이트 -> 앱 스토어 이동 처리.
               })
               }).disposed(by: disposeBag)
         
         output.selectUpdateStatus
               .drive(onNext: { () in
-                  CommonView.showAlert(vc: self, type: .twoButton, title: STR_UPDATE, message: "", cancelTitle: STR_CANCEL_UPDATE, doneTitle: STR_DONE_UPDATE, doneHandler: {
+                  CommonView.showAlert(vc: self, type: .twoBtn, title: STR_UPDATE, message: "", cancelTitle: STR_CANCEL_UPDATE, doneTitle: STR_DONE_UPDATE, doneHandler: {
                     // TODO: 업데이트 -> 앱 스토어 이동 처리.
                   })
               }).disposed(by: disposeBag)
