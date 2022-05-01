@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		78423E9A816288D6BC1EF082 /* Pods_momsnagging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */; };
 		8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8617642D28111AB400F7B254 /* Observable+Operators.swift */; };
-		867C140A281A6325007E5590 /* AppleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1409281A6325007E5590 /* AppleSignInManager.swift */; };
-		867C1411281A7602007E5590 /* IDSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1410281A7602007E5590 /* IDSettingViewController.swift */; };
+		8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8638A551281B7874003D771B /* UITextField+Extension.swift */; };
+		867C1411281A7602007E5590 /* IDSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1410281A7602007E5590 /* IDSettingView.swift */; };
 		867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1412281A7615007E5590 /* IDSettingViewModel.swift */; };
 		868A11A4280F8F9F004DAC73 /* Icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868A11A3280F8F9F004DAC73 /* Icon.xcassets */; };
 		86B36F722817756800655059 /*  UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B36F712817756800655059 /*  UIView+Extension.swift */; };
@@ -47,14 +47,17 @@
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
 		8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA6873F281CF39400F91EB8 /* MainContainerView.swift */; };
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
-		A0024DDD2813227800645F25 /* OnboardingItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemViewController.swift */; };
+		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A035B0762812A0A100747389 /* StringDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035B0752812A0A100747389 /* StringDefinition.swift */; };
+		A040E621281D325C00CC0ABE /* NicknameSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */; };
+		A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E590281D93F70017EF53 /* NicknameSettingView.swift */; };
+		A067E593281D93F70017EF53 /* NicknameSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */; };
 		A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33827F0BA37005727AD /* BaseViewController.swift */; };
-		A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33C27F0BA72005727AD /* IntroViewController.swift */; };
-		A06BB34127F0BAA3005727AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34027F0BAA3005727AD /* LoginViewController.swift */; };
+		A06BB33D27F0BA72005727AD /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33C27F0BA72005727AD /* IntroView.swift */; };
+		A06BB34127F0BAA3005727AD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34027F0BAA3005727AD /* LoginView.swift */; };
 		A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34227F0BABA005727AD /* IntroViewModel.swift */; };
-		A06BB34F27F0C21E005727AD /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34E27F0C21E005727AD /* OnboardingViewController.swift */; };
+		A06BB34F27F0C21E005727AD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB34E27F0C21E005727AD /* OnboardingView.swift */; };
 		A06BB35127F0D18B005727AD /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35027F0D18B005727AD /* Navigator.swift */; };
 		A06BB35327F0D1E6005727AD /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35227F0D1E6005727AD /* OnboardingViewModel.swift */; };
 		A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35427F0D216005727AD /* LoginViewModel.swift */; };
@@ -63,7 +66,7 @@
 		A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */; };
 		A0A674242813EC6900E0223B /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A674232813EC6900E0223B /* Onboarding.swift */; };
 		A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */; };
-		A0BC330A28153A0A00F04B58 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330928153A0A00F04B58 /* OnboardingPageViewController.swift */; };
+		A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330928153A0A00F04B58 /* OnboardingPageView.swift */; };
 		A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330B28153A5900F04B58 /* BasePageViewController.swift */; };
 		A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -72,8 +75,8 @@
 		2900CA227AEED8ABFD8BD259 /* Pods-momsnagging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.release.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.release.xcconfig"; sourceTree = "<group>"; };
 		7976B2BB96C29942DF65316A /* Pods-momsnagging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.debug.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.debug.xcconfig"; sourceTree = "<group>"; };
 		8617642D28111AB400F7B254 /* Observable+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Operators.swift"; sourceTree = "<group>"; };
-		867C1409281A6325007E5590 /* AppleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInManager.swift; sourceTree = "<group>"; };
-		867C1410281A7602007E5590 /* IDSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingViewController.swift; sourceTree = "<group>"; };
+		8638A551281B7874003D771B /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		867C1410281A7602007E5590 /* IDSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingView.swift; sourceTree = "<group>"; };
 		867C1412281A7615007E5590 /* IDSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingViewModel.swift; sourceTree = "<group>"; };
 		868A11A3280F8F9F004DAC73 /* Icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icon.xcassets; sourceTree = "<group>"; };
 		86B36F712817756800655059 /*  UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -112,15 +115,18 @@
 		8F8DAE9927D8948800F2E78F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		8FA6873F281CF39400F91EB8 /* MainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerView.swift; sourceTree = "<group>"; };
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
-		A0024DDC2813227800645F25 /* OnboardingItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewController.swift; sourceTree = "<group>"; };
+		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A035B0752812A0A100747389 /* StringDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDefinition.swift; sourceTree = "<group>"; };
+		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
+		A067E590281D93F70017EF53 /* NicknameSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingView.swift; sourceTree = "<group>"; };
+		A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewModel.swift; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		A06BB33827F0BA37005727AD /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		A06BB33C27F0BA72005727AD /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
-		A06BB34027F0BAA3005727AD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		A06BB33C27F0BA72005727AD /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		A06BB34027F0BAA3005727AD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A06BB34227F0BABA005727AD /* IntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
-		A06BB34E27F0C21E005727AD /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		A06BB34E27F0C21E005727AD /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A06BB35027F0D18B005727AD /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		A06BB35227F0D1E6005727AD /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		A06BB35427F0D216005727AD /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -130,7 +136,7 @@
 		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0A674232813EC6900E0223B /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
-		A0BC330928153A0A00F04B58 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		A0BC330928153A0A00F04B58 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
 		A0BC330B28153A5900F04B58 /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewModel.swift; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,28 +173,13 @@
 			path = Rx;
 			sourceTree = "<group>";
 		};
-		867C1408281A6318007E5590 /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-				867C1409281A6325007E5590 /* AppleSignInManager.swift */,
-			);
-			path = Manager;
-			sourceTree = "<group>";
-		};
 		867C140C281A7514007E5590 /* IDSetting */ = {
 			isa = PBXGroup;
 			children = (
-				867C1410281A7602007E5590 /* IDSettingViewController.swift */,
+				867C1410281A7602007E5590 /* IDSettingView.swift */,
 				867C1412281A7615007E5590 /* IDSettingViewModel.swift */,
 			);
 			path = IDSetting;
-			sourceTree = "<group>";
-		};
-		867C140F281A75B6007E5590 /* NicknameSetting */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = NicknameSetting;
 			sourceTree = "<group>";
 		};
 		86BD71BC280EAF270038200E /* Networking */ = {
@@ -244,6 +235,7 @@
 				8F06EC0427D892D900A17FF2 /* Products */,
 				3022C1F3C21435DC7A457ECC /* Pods */,
 				E2B7BEA15ACF83AA558CED4E /* Frameworks */,
+				A067E589281D92360017EF53 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -258,7 +250,6 @@
 		8F06EC0527D892D900A17FF2 /* momsnagging */ = {
 			isa = PBXGroup;
 			children = (
-				867C1408281A6318007E5590 /* Manager */,
 				86BD71BD280EAF840038200E /* Application */,
 				8F8DAE9727D8944F00F2E78F /* Common */,
 				86D4BE2C27F6BE1100E9EE8B /* Models */,
@@ -485,6 +476,23 @@
 			path = MainContainer;
 			sourceTree = "<group>";
 		};
+		A067E589281D92360017EF53 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		A067E58F281D93E70017EF53 /* NicknameSetting */ = {
+			isa = PBXGroup;
+			children = (
+				A067E590281D93F70017EF53 /* NicknameSettingView.swift */,
+				A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */,
+			);
+			path = NicknameSetting;
+			sourceTree = "<group>";
+		};
 		A06BB33727F0BA1F005727AD /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,7 +523,7 @@
 			isa = PBXGroup;
 			children = (
 				8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */,
-				A06BB33C27F0BA72005727AD /* IntroViewController.swift */,
+				A06BB33C27F0BA72005727AD /* IntroView.swift */,
 				A06BB34227F0BABA005727AD /* IntroViewModel.swift */,
 			);
 			path = Intro;
@@ -524,10 +532,10 @@
 		A06BB33F27F0BA92005727AD /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				A06BB34027F0BAA3005727AD /* LoginViewController.swift */,
+				A067E58F281D93E70017EF53 /* NicknameSetting */,
+				A06BB34027F0BAA3005727AD /* LoginView.swift */,
 				A06BB35427F0D216005727AD /* LoginViewModel.swift */,
 				867C140C281A7514007E5590 /* IDSetting */,
-				867C140F281A75B6007E5590 /* NicknameSetting */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -535,11 +543,11 @@
 		A06BB34D27F0C20D005727AD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				A06BB34E27F0C21E005727AD /* OnboardingViewController.swift */,
+				A06BB34E27F0C21E005727AD /* OnboardingView.swift */,
 				A06BB35227F0D1E6005727AD /* OnboardingViewModel.swift */,
-				A0BC330928153A0A00F04B58 /* OnboardingPageViewController.swift */,
+				A0BC330928153A0A00F04B58 /* OnboardingPageView.swift */,
 				A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */,
-				A0024DDC2813227800645F25 /* OnboardingItemViewController.swift */,
+				A0024DDC2813227800645F25 /* OnboardingItemView.swift */,
 				A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */,
 			);
 			path = Onboarding;
@@ -551,6 +559,7 @@
 				8617642C28111A9A00F7B254 /* Rx */,
 				86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */,
 				86B36F712817756800655059 /*  UIView+Extension.swift */,
+				8638A551281B7874003D771B /* UITextField+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -762,14 +771,14 @@
 			files = (
 				8F22F83A281D0B5800AB4180 /* MyView.swift in Sources */,
 				A06BB35327F0D1E6005727AD /* OnboardingViewModel.swift in Sources */,
-				A0BC330A28153A0A00F04B58 /* OnboardingPageViewController.swift in Sources */,
-				A06BB34127F0BAA3005727AD /* LoginViewController.swift in Sources */,
+				A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */,
+				A06BB34127F0BAA3005727AD /* LoginView.swift in Sources */,
 				8F1F93A527EEF2C6000F08AF /* CalendarDayCell.swift in Sources */,
 				86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */,
 				A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */,
 				8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */,
 				8F1F93A327EC8A3C000F08AF /* CalendarModel.swift in Sources */,
-				A06BB34F27F0C21E005727AD /* OnboardingViewController.swift in Sources */,
+				A06BB34F27F0C21E005727AD /* OnboardingView.swift in Sources */,
 				86B36F722817756800655059 /*  UIView+Extension.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
@@ -777,19 +786,21 @@
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
-				867C1411281A7602007E5590 /* IDSettingViewController.swift in Sources */,
-				867C140A281A6325007E5590 /* AppleSignInManager.swift in Sources */,
-				A06BB33D27F0BA72005727AD /* IntroViewController.swift in Sources */,
+				867C1411281A7602007E5590 /* IDSettingView.swift in Sources */,
+				A06BB33D27F0BA72005727AD /* IntroView.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				8F22F834281D0B3800AB4180 /* ReportCardModel.swift in Sources */,
 				A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */,
+				8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */,
+				A040E621281D325C00CC0ABE /* NicknameSettingViewModel.swift in Sources */,
 				867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */,
 				A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */,
-				A0024DDD2813227800645F25 /* OnboardingItemViewController.swift in Sources */,
+				A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */,
 				8F22F830281D0B1D00AB4180 /* HomeViewModel.swift in Sources */,
 				A035B0762812A0A100747389 /* StringDefinition.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
+				A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
@@ -799,6 +810,7 @@
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F22F832281D0B2E00AB4180 /* ReportCardViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
+				A067E593281D93F70017EF53 /* NicknameSettingViewModel.swift in Sources */,
 				8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */,
 				8F22F838281D0B4B00AB4180 /* MyModel.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,

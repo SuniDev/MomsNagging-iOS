@@ -24,7 +24,7 @@ class IntroViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
-        /// IntroViewController 진입
+        /// IntroView 진입
         let willAppearIntro: Driver<Void>
     }
     

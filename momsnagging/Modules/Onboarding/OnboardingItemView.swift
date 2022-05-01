@@ -1,5 +1,5 @@
 //
-//  OnboardingPageViewController.swift
+//  OnboardingPageView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/04/23.
@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-class OnboardingItemViewController: BaseViewController, Navigatable {
+class OnboardingItemView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()

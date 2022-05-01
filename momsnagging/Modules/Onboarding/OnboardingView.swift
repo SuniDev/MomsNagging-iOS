@@ -1,5 +1,5 @@
 //
-//  OnboardingViewController.swift
+//  OnboardingView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/03/28.
@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import RxSwift
 
-class OnboardingViewController: BaseViewController, Navigatable {
+class OnboardingView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
@@ -22,7 +22,7 @@ class OnboardingViewController: BaseViewController, Navigatable {
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
     
-    var pageVC: OnboardingPageViewController?
+    var pageVC: OnboardingPageView?
     
     // MARK: - init
     init(viewModel: OnboardingViewModel, navigator: Navigator) {
@@ -45,7 +45,7 @@ class OnboardingViewController: BaseViewController, Navigatable {
     override func initUI() {
         
         guard let viewModel = viewModel else { return }
-        pageVC = OnboardingPageViewController(viewModel: viewModel.onboardingPageViewModel(), navigator: self.navigator)
+        pageVC = OnboardingPageView(viewModel: viewModel.onboardingPageViewModel(), navigator: self.navigator)
         
         view.backgroundColor = Asset.Color.monoWhite.color
     }

@@ -1,8 +1,8 @@
 //
-//  IDSettingViewController.swift
+//  NicknameSettingView.swift
 //  momsnagging
 //
-//  Created by suni on 2022/04/28.
+//  Created by suni on 2022/04/30.
 //
 
 import UIKit
@@ -10,20 +10,17 @@ import SnapKit
 import Then
 import RxSwift
 
-class IDSettingViewController: BaseViewController, Navigatable {
+class NicknameSettingView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel: IDSettingViewModel?
+    var viewModel: NicknameSettingViewModel?
     var navigator: Navigator!
     
     // MARK: - UI Properties
-    var viewBackground = UIView().then({
-        $0.backgroundColor = .yellow
-    })
     
     // MARK: - init
-    init(viewModel: IDSettingViewModel, navigator: Navigator) {
+    init(viewModel: NicknameSettingViewModel, navigator: Navigator) {
         self.viewModel = viewModel
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
@@ -43,8 +40,8 @@ class IDSettingViewController: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
-        view.backgroundColor = Asset.Color.monoWhite.color
-        
+        view.backgroundColor = Asset.Color.skyblue.color
+               
     }
     
     // MARK: - layoutSetting
@@ -53,6 +50,7 @@ class IDSettingViewController: BaseViewController, Navigatable {
     
     // MARK: - bind
     override func bind() {
-        guard let viewModel = viewModel else { return }
+        
     }
+
 }
