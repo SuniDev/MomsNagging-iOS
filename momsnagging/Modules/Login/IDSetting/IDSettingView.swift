@@ -44,7 +44,7 @@ class IDSettingView: BaseViewController, Navigatable {
         $0.returnKeyType = .done
     })
     
-    lazy var lblAvailableID = UILabel().then({
+    lazy var lblHintID = UILabel().then({
         $0.text = ""
         $0.font = FontFamily.Pretendard.regular.font(size: 12)
         $0.textColor = Asset.Color.success.color
@@ -58,9 +58,11 @@ class IDSettingView: BaseViewController, Navigatable {
         $0.image = Asset.Assets.idsettingConfirm.image
     })
     
-    lazy var btnDone = UIButton().then({
+    lazy var btnDone = CommontButton().then({
+        $0.normalBackgroundColor = Asset.Color.priMain.color
+        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
+        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.isEnabled = false
-        $0.backgroundColor = Asset.Color.priMain.color
         $0.setTitle("네!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
         $0.layer.cornerRadius = 20
@@ -99,7 +101,7 @@ class IDSettingView: BaseViewController, Navigatable {
         viewBackground.addSubview(imgvQuestion)
         viewBackground.addSubview(imgvAnswer)
         viewBackground.addSubview(tfID)
-        viewBackground.addSubview(lblAvailableID)
+        viewBackground.addSubview(lblHintID)
         
         viewBackground.addSubview(viewConfirm)
         viewConfirm.addSubview(imgvConfirm)
@@ -135,7 +137,7 @@ class IDSettingView: BaseViewController, Navigatable {
             $0.trailing.equalTo(imgvAnswer).offset(-28)
         })
         
-        lblAvailableID.snp.makeConstraints({
+        lblHintID.snp.makeConstraints({
             $0.top.equalTo(tfID.snp.bottom).offset(5)
             $0.leading.trailing.equalTo(tfID)
         })
@@ -176,7 +178,7 @@ class IDSettingView: BaseViewController, Navigatable {
         output.editingID
             .drive(onNext: {
                 self.tfID.addBorder(color: Asset.Color.priMain.color, width: 1)
-                self.lblAvailableID.isHidden = true
+                self.lblHintID.isHidden = true
             }).disposed(by: disposeBag)
         
         output.defaultID
@@ -197,10 +199,10 @@ class IDSettingView: BaseViewController, Navigatable {
         output.availableID
             .drive(onNext: { _ in
                 self.setEnabledConfirm(true)
-                self.lblAvailableID.isHidden = false
+                self.lblHintID.isHidden = false
                 self.tfID.addBorder(color: Asset.Color.monoLight030.color, width: 1)
-                self.lblAvailableID.textColor = Asset.Color.success.color
-                self.lblAvailableID.text = STR_ID_AVAILABLE
+                self.lblHintID.textColor = Asset.Color.success.color
+                self.lblHintID.text = STR_ID_AVAILABLE
             }).disposed(by: disposeBag)
         
         output.unavailableID
@@ -210,21 +212,20 @@ class IDSettingView: BaseViewController, Navigatable {
         
         output.successIDSetting
             .drive(onNext: { loginInfo in
-                self.navigator.show(seque: .nicknameSetting(viewModel: NicknameSettingViewModel(loginInfo: loginInfo)), sender: nil, transition: .root)
+                self.navigator.show(seque: .nicknameSetting(viewModel: NicknameSettingViewModel(loginInfo: loginInfo)), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
     }
 }
 extension IDSettingView {
     private func setIDErrorMessage(_ message: String) {
-        self.lblAvailableID.isHidden = false
-        self.lblAvailableID.textColor = Asset.Color.error.color
-        self.lblAvailableID.text = message
+        self.lblHintID.isHidden = false
+        self.lblHintID.textColor = Asset.Color.error.color
+        self.lblHintID.text = message
         self.tfID.addBorder(color: Asset.Color.error.color, width: 1)
     }
     
     private func setEnabledConfirm(_ isEnabled: Bool) {
         btnDone.isEnabled = isEnabled
-        btnDone.backgroundColor = isEnabled ? Asset.Color.priMain.color : Asset.Color.priLight018Dis.color
         imgvConfirm.image = isEnabled ? Asset.Assets.idsettingConfirm.image : Asset.Assets.idsettingConfirmDis.image
     }
 }
