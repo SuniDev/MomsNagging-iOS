@@ -34,6 +34,7 @@ class CommonView {
         
         view.addSubview(headTitle)
         view.addSubview(dropDownImageView)
+        view.addSubview(dropDownButton)
         view.addSubview(listIconBtn)
         view.addSubview(diaryBtn)
         
@@ -44,6 +45,12 @@ class CommonView {
             $0.width.height.equalTo(24)
             $0.centerY.equalTo(view.snp.centerY)
             $0.leading.equalTo(headTitle.snp.trailing).offset(5.5)
+        })
+        dropDownButton.snp.makeConstraints({
+            $0.top.equalTo(headTitle.snp.top)
+            $0.leading.equalTo(headTitle.snp.leading)
+            $0.trailing.equalTo(dropDownImageView.snp.trailing)
+            $0.bottom.equalTo(headTitle.snp.bottom)
         })
         listIconBtn.snp.makeConstraints({
             $0.width.height.equalTo(24)

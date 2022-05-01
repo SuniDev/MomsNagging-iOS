@@ -109,6 +109,10 @@ class HomeView: BaseViewController, Navigatable {
                 }
             }
         }).disposed(by: disposedBag)
+        
+        headDropDownBtn.rx.tap.bind(onNext: { _ in
+            print("dropDownClick")
+        }).disposed(by: disposedBag)
     }
     
     // MARK: - Action Bind _ Input
