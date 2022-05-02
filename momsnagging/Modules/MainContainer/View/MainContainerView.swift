@@ -52,6 +52,7 @@ class MainContainerView: BaseViewController, Navigatable {
     var containerView: UIContentContainer?
     // MARK: - InitUI
     override func initUI() {
+        view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         bottomTabbar = tabbarLayout(tabButton1: tabbarBtn1, tabButton2: tabbarBtn2, tabButton3: tabbarBtn3, tabIcon1: tabbarIc1, tabIcon2: tabbarIc2, tabIcon3: tabbarIc3, tabLabel1: tabbarLbl1, tabLabel2: tabbarLbl2, tabLabel3: tabbarLbl3)
         bottomTabbar.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
     }
