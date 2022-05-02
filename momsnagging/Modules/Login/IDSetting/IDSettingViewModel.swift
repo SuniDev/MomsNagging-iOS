@@ -125,7 +125,7 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
             .filter { isGood in isGood == false }
             .mapToVoid()
     
-        let successLogin = input.btnDoneTapped
+        let successIDSetting = input.btnDoneTapped
             .asObservable()
             .flatMapLatest { () -> BehaviorRelay<LoginInfo> in
                 return self.loginInfo
@@ -137,7 +137,7 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
                       duplicateID: duplicateID.asDriverOnErrorJustComplete(),
                       availableID: availableID.asDriverOnErrorJustComplete(),
                       unavailableID: unavailableID.asDriverOnErrorJustComplete(),
-                      successIDSetting: successLogin.asDriverOnErrorJustComplete()
+                      successIDSetting: successIDSetting.asDriverOnErrorJustComplete()
         )
     }
 }

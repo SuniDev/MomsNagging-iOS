@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "_namesetting_confirm_m.png",
+      "filename" : "namesetting_confirm_s.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "_namesetting_confirm_m@2x.png",
+      "filename" : "namesetting_confirm_s@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "_namesetting_confirm_m@3x.png",
+      "filename" : "namesetting_confirm_s@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

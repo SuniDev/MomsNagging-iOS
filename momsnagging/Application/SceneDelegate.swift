@@ -25,10 +25,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let viewModel = IntroViewModel()
 //        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
         
-//        let viewModel = NicknameSettingViewModel(loginInfo: LoginInfo(authToken: nil, authId: nil, email: nil, snsType: nil))
-//        navigator.show(seque: .nicknameSetting(viewModel: viewModel), sender: nil, transition: .root)
-        let viewModel = IDSettingViewModel(loginInfo: LoginInfo(authToken: nil, authId: nil, email: nil, snsType: nil))
-        navigator.show(seque: .idSetting(viewModel: viewModel), sender: nil, transition: .root)
+        let viewModel = NicknameSettingViewModel(loginInfo: LoginInfo(authToken: nil, authId: nil, email: nil, snsType: nil))
+        navigator.show(seque: .nicknameSetting(viewModel: viewModel), sender: nil, transition: .root)
+//        let viewModel = IDSettingViewModel(loginInfo: LoginInfo(authToken: nil, authId: nil, email: nil, snsType: nil))
+//        navigator.show(seque: .idSetting(viewModel: viewModel), sender: nil, transition: .root)
         
         window?.windowScene = windowScene
         window?.rootViewController = navigator.root
