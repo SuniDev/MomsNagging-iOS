@@ -191,4 +191,12 @@ class Common {
         defaults.set(value, forKey: defaultsKey.rawValue)
     }
     
+    static func getSafeareaHeight() -> CGFloat {
+        let height = UIScreen.main.bounds.height
+        let window = UIApplication.shared.windows.first
+        guard let topPadding = window?.safeAreaInsets.top else { return 0 }
+        guard let bottomPadding = window?.safeAreaInsets.bottom else { return 0 }
+        
+        return height - topPadding - bottomPadding
+    }
 }

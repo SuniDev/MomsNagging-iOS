@@ -49,6 +49,7 @@
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
+		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
 		A035B0762812A0A100747389 /* StringDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035B0752812A0A100747389 /* StringDefinition.swift */; };
 		A040E621281D325C00CC0ABE /* NicknameSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */; };
 		A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E590281D93F70017EF53 /* NicknameSettingView.swift */; };
@@ -117,6 +118,7 @@
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
+		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
 		A035B0752812A0A100747389 /* StringDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDefinition.swift; sourceTree = "<group>"; };
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A067E590281D93F70017EF53 /* NicknameSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingView.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				8F82E72E27D8A89F008CDC22 /* CommonView.swift */,
+				A024E04F281EA3F600AA60D6 /* CommonButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -532,10 +535,10 @@
 		A06BB33F27F0BA92005727AD /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				A067E58F281D93E70017EF53 /* NicknameSetting */,
 				A06BB34027F0BAA3005727AD /* LoginView.swift */,
 				A06BB35427F0D216005727AD /* LoginViewModel.swift */,
 				867C140C281A7514007E5590 /* IDSetting */,
+				A067E58F281D93E70017EF53 /* NicknameSetting */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -778,6 +781,7 @@
 				A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */,
 				8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */,
 				8F1F93A327EC8A3C000F08AF /* CalendarModel.swift in Sources */,
+				A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */,
 				A06BB34F27F0C21E005727AD /* OnboardingView.swift in Sources */,
 				86B36F722817756800655059 /*  UIView+Extension.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
