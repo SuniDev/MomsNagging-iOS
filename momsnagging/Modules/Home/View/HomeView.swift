@@ -225,11 +225,7 @@ class HomeView: BaseViewController, Navigatable {
                 }
                 if self.dateCheck == 0 && (("\(item)" == self.calendarViewModel.todaydd()) || "0\(item)" == self.calendarViewModel.todaydd()) {
                     cell.isToday = true
-                    if (index % 7) == 6 {
-                        cell.number.textColor = UIColor(asset: Asset.Color.monoWhite)
-                    } else {
-                        cell.number.textColor = UIColor(asset: Asset.Color.monoDark010)
-                    }
+                    cell.number.textColor = UIColor(asset: Asset.Color.monoWhite)
                 } else {
                     cell.isToday = false
                     if (index % 7) == 6 {
