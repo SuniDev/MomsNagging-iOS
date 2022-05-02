@@ -319,32 +319,71 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         output.selectedNicknameType
             .drive(onNext: { type in
-                self.setNicknameType(type)
+                self.imgvSon.image = Asset.Assets.namesettingSonDis.image
+                self.imgvDaughter.image = Asset.Assets.namesettingDaughterDis.image
+                self.imgvEtc.image = Asset.Assets.namesettingEtcDis.image
+                        
+                switch type {
+                case .none:
+                    break
+                case .son:
+                    self.imgvSon.image = Asset.Assets.namesettingSon.image
+                case .daughter:
+                    self.imgvDaughter.image = Asset.Assets.namesettingDaughter.image
+                case .etc:
+                    self.imgvEtc.image = Asset.Assets.namesettingEtc.image
+                }
             }).disposed(by: disposeBag)
         
         output.isHiddenTfName
             .drive(onNext: { isHidden in
-                self.setHiddenTfName(isHidden)
+                self.imgvAnswer.image = isHidden ? Asset.Assets.namesettingAnswer.image : Asset.Assets.namesettingAnswerEtc.image
+                
+                self.tfNickname.isHidden = isHidden
+                self.tfNickname.text = ""
+                
+                self.lblHint.text = ""
+                self.lblHint.isHidden = true
             }).disposed(by: disposeBag)
         
         output.confirmName
+            .debug()
             .drive(onNext: { text in
-                self.setConfirmName(text)
+                let lblMargin = text.count > 0 ? 10 : 0
+                self.lblNickname.snp.updateConstraints({
+                    $0.leading.equalTo(self.lblConfirm.snp.trailing).offset(lblMargin)
+                })
+                
+                if text.isEmpty {
+                    self.imgvConfirm.image = Asset.Assets.namesettingConfirmS.image
+                    self.lblNickname.text = ""
+                    return
+                } else if NicknameType.son.rawValue == text || NicknameType.daughter.rawValue == text {
+                    self.imgvConfirm.image = Asset.Assets.namesettingConfirmM.image
+                } else {
+                    self.imgvConfirm.image = Asset.Assets.namesettingConfirmL.image
+                }
+                
+                self.lblNickname.attributedText = NSMutableAttributedString(string: text, attributes: self.nicknameAttributes)
             }).disposed(by: disposeBag)
         
         output.editingName
+            .debug()
             .drive(onNext: {
                 self.tfNickname.addBorder(color: Asset.Color.priMain.color, width: 1)
                 self.lblHint.isHidden = true
             }).disposed(by: disposeBag)
         
         output.defaultName
+            .debug()
             .drive(onNext: {
                 self.tfNickname.addBorder(color: Asset.Color.monoLight030.color, width: 1)
                 self.lblHint.isHidden = true
+                self.btnDone.isEnabled = false
             }).disposed(by: disposeBag)
         
-        output.availableName
+        output.availableCustomName
+            .debug()
             .drive(onNext: { _ in
                 self.btnDone.isEnabled = true
                 self.lblHint.isHidden = false
@@ -353,7 +392,14 @@ class NicknameSettingView: BaseViewController, Navigatable {
                 self.tfNickname.addBorder(color: Asset.Color.monoLight030.color, width: 1)
             }).disposed(by: disposeBag)
         
-        output.unavailableName
+        output.availableName
+            .debug()
+            .drive(onNext: { _ in
+                self.btnDone.isEnabled = true
+            }).disposed(by: disposeBag)
+        
+        output.unavailableCustomName
+            .debug()
             .drive(onNext: { _ in
                 self.btnDone.isEnabled = false
                 self.lblHint.isHidden = false
@@ -362,61 +408,11 @@ class NicknameSettingView: BaseViewController, Navigatable {
                 self.tfNickname.addBorder(color: Asset.Color.error.color, width: 1)
             }).disposed(by: disposeBag)
         
-    }
-
-}
-extension NicknameSettingView {
-    private func setNicknameType(_ type: NicknameType) {
-        self.imgvSon.image = Asset.Assets.namesettingSonDis.image
-        self.imgvDaughter.image = Asset.Assets.namesettingDaughterDis.image
-        self.imgvEtc.image = Asset.Assets.namesettingEtcDis.image
-                
-        switch type {
-        case .none:
-            break
-        case .son:
-            self.imgvSon.image = Asset.Assets.namesettingSon.image
-        case .daughter:
-            self.imgvDaughter.image = Asset.Assets.namesettingDaughter.image
-        case .etc:
-            self.imgvEtc.image = Asset.Assets.namesettingEtc.image
-        }
-    }
-    
-    private func setHiddenTfName(_ isHidden: Bool) {
-        self.imgvAnswer.image = isHidden ? Asset.Assets.namesettingAnswer.image : Asset.Assets.namesettingAnswerEtc.image
-        
-        self.tfNickname.isHidden = isHidden
-        self.tfNickname.text = ""
-        
-        self.lblHint.text = ""
-        self.lblHint.isHidden = true
-    }
-    
-    private func setConfirmName(_ text: String = "") {
-        
-        let lblMargin = text.count > 0 ? 10 : 0
-        self.lblNickname.snp.updateConstraints({
-            $0.leading.equalTo(self.lblConfirm.snp.trailing).offset(lblMargin)
-        })
-        
-        if text.isEmpty {
-            self.imgvConfirm.image = Asset.Assets.namesettingConfirmS.image
-            self.lblNickname.text = ""
-            return
-        } else if NicknameType.son.rawValue == text || NicknameType.daughter.rawValue == text {
-            self.imgvConfirm.image = Asset.Assets.namesettingConfirmM.image
-        } else {
-            self.imgvConfirm.image = Asset.Assets.namesettingConfirmL.image
-        }
-        
-        self.lblNickname.attributedText = NSMutableAttributedString(string: text, attributes: nicknameAttributes)
-    }
-        
-    private func setNameErrorMessage(_ message: String) {
-        self.lblHint.isHidden = false
-        self.lblHint.textColor = Asset.Color.error.color
-        self.lblHint.text = message
-        self.tfNickname.addBorder(color: Asset.Color.error.color, width: 1)
+        output.successNameSetting
+            .drive(onNext: { _ in
+                CommonView.showAlert(vc: self, type: .oneBtn, title: "", message: STR_NICKNAME_SUCCESS, doneTitle: STR_DONE, doneHandler: {
+                  // TODO: 메인 이동.
+                })
+            }).disposed(by: disposeBag)
     }
 }

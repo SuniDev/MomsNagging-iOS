@@ -20,7 +20,6 @@ public let STR_DONE                 = "확인"
 public let STR_DONE_UPDATE          = "업데이트 하러가기"
 public let STR_CANCEL_UPDATE        = "나중에"
 
-
 public let STR_UPDATE               = "업데이트가 필요합니다."
 public let STR_LOGIN_ERROR_TITLE    = "로그인 실패"
 public let STR_LOGIN_ERROR_MESSAGE  = "로그인에 실패 했습니다.\n다시 시도해주세요."
@@ -31,4 +30,4 @@ public let STR_ID_AVAILABLE         = "그것 참 좋은 아이디구나!"
 
 public let STR_NICKNAME_AVAILABLE   = "그것 참 재밌는 호칭이구나!"
 public let STR_NICKNAME_UNAVAILABLE = "다른 이름을 생각해보겠니?"
-
+public let STR_NICKNAME_SUCCESS     = "굿 네이밍~^^\n참고로 개명 신청은 마이에서 가능하단다."

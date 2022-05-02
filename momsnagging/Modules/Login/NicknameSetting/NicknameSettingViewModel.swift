@@ -48,10 +48,12 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         let editingName: Driver<Void>
         /// 디폴트 상태
         let defaultName: Driver<Void>
-        /// 사용 가능 호칭
+        /// 사용 가능 호칭 (아들 OR 딸)
         let availableName: Driver<Void>
-        /// 사용 불가 호칭
-        let unavailableName: Driver<Void>
+        /// 사용 가능 호칭 (커스텀 이름)
+        let availableCustomName: Driver<Void>
+        /// 사용 불가 호칭 (커스텀 이름)
+        let unavailableCustomName: Driver<Void>
         /// 호칭 설정 완료
         let successNameSetting: Driver<LoginInfo>
     }
@@ -60,9 +62,9 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         let selectedNicknameType = BehaviorRelay<NicknameType>(value: .none)
         let textName = BehaviorRelay<String>(value: "")
         let isEditingName = BehaviorRelay<Bool>(value: false)
-        let isEmptyName = BehaviorRelay<Bool>(value: false)
-//        let isGoodName = BehaviorRelay<Bool>(value: false)
+        let isEmptyName = BehaviorRelay<Bool>(value: true)
         let isGoodName = PublishRelay<Bool>()
+        let isGoodCustomName = PublishRelay<Bool>()
         let confirmName = BehaviorRelay<String>(value: "")
         
         input.btnSonTapped
@@ -80,15 +82,29 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
                 selectedNicknameType.accept(.etc)
             }).disposed(by: disposeBag)
         
+        textName
+            .bind { text in
+                isEmptyName.accept(text.isEmpty)
+            }.disposed(by: disposeBag)
+        
+        selectedNicknameType
+            .distinctUntilChanged()
+            .filter({ $0 != .none })
+            .bind(onNext: { type in
+                if type == .son || type == .daughter {
+                    isGoodName.accept(true)
+                    confirmName.accept(type.rawValue)
+                } else {
+                    textName.accept("")
+                    isGoodName.accept(false)
+                }
+            }).disposed(by: disposeBag)
+        
         let isHiddenTfName = selectedNicknameType
             .distinctUntilChanged()
             .filter({ $0 != .none })
-            .do(onNext: { type in
-                confirmName.accept(type.rawValue)
-                isGoodName.accept(type != .etc)
-            })
             .flatMapLatest({ type -> Observable<Bool> in
-                return type == .etc ? Observable.just(false) : Observable.just(true)
+                return Observable.just(type != .etc)
             })
             .distinctUntilChanged()
         
@@ -96,55 +112,59 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
             .drive(onNext: { text in
                 let text = text ?? ""
                 textName.accept(text)
-                isEmptyName.accept(text.isEmpty)
             }).disposed(by: disposeBag)
         
         input.editingDidBeginName
             .drive(onNext: { () in
                 isEditingName.accept(true)
-                isGoodName.accept(false)
             }).disposed(by: disposeBag)
         
         input.editingDidEndName
             .drive(onNext: { () in
                 isEditingName.accept(false)
+                textName.accept(textName.value)
             }).disposed(by: disposeBag)
         
         let editingName = isEditingName
             .filter { isEditing in  isEditing == true }
             .mapToVoid()
-        
-        let isDefaultName = input.editingDidEndName
+                
+        let defaultName = isEmptyName
+            .filter({ $0 == true })
+            .mapToVoid()
+            .do(onNext: { _ in  confirmName.accept("") })
+                
+        let checkDefaultName = input.editingDidEndName
             .asObservable()
             .flatMapLatest { _ -> Observable<Bool> in
                 Observable.just(isEmptyName.value)
             }
         
-        let defaultName = isDefaultName
-            .filter { isDefault in isDefault == true }
-            .mapToVoid()
-        
         // 사용 가능 여부 확인 (띄어쓰기 포함 한/영/숫자 1-10글자)
-        isDefaultName
-            .filter { isDefault in isDefault == false }
+        checkDefaultName
+            .filter { isEmpty in isEmpty == false }
             .flatMapLatest { _ -> Observable<Bool> in
                 let name = textName.value
                 return self.isValidName(name)
-            }.bind(onNext: { isValid in isGoodName.accept(isValid) })
+            }.bind(onNext: { isValid in isGoodCustomName.accept(isValid) })
             .disposed(by: disposeBag)
                     
         let availableName = isGoodName
-            .distinctUntilChanged()
             .filter { isGood in isGood == true }
-            .do(onNext: { _ in confirmName.accept(textName.value) })
             .mapToVoid()
+                
+        let availableCustomName = isGoodCustomName
+            .filter { isGood in isGood == true }
+            .do(onNext: { _ in
+                confirmName.accept(textName.value)
+            }).mapToVoid()
         
-        let unavailableName = isGoodName
-            .distinctUntilChanged()
+        let unavailableCustomName = isGoodCustomName
             .filter { isGood in isGood == false }
             .do(onNext: { _ in confirmName.accept("") })
             .mapToVoid()
     
+        // TODO: Request 호칭 설정 API
         let successNameSetting = input.btnDoneTapped
             .asObservable()
             .flatMapLatest { () -> BehaviorRelay<LoginInfo> in
@@ -158,7 +178,8 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
             editingName: editingName.asDriverOnErrorJustComplete(),
             defaultName: defaultName.asDriverOnErrorJustComplete(),
             availableName: availableName.asDriverOnErrorJustComplete(),
-            unavailableName: unavailableName.asDriverOnErrorJustComplete(),
+            availableCustomName: availableCustomName.asDriverOnErrorJustComplete(),
+            unavailableCustomName: unavailableCustomName.asDriverOnErrorJustComplete(),
             successNameSetting: successNameSetting.asDriverOnErrorJustComplete())
     }
     
