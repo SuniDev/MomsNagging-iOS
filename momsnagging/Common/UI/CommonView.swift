@@ -14,7 +14,7 @@ import SnapKit
 /// 공통뷰 모음 Class
 class CommonView {
     
-    static func homeHeadFrame(listIconBtn: UIButton, headTitle: UILabel, dropDownButton: UIButton, diaryBtn: UIButton) -> UIView {
+    static func homeHeadFrame(listIconBtn: UIButton, headTitle: UILabel, dropDownImageView: UIImageView, dropDownButton: UIButton, diaryBtn: UIButton) -> UIView {
         let view = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         })
@@ -22,7 +22,7 @@ class CommonView {
             $0.textColor = UIColor(asset: Asset.Color.monoDark010)
             $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
         })
-        let dropDownImageView = UIImageView().then({
+        dropDownImageView.then({
             $0.image = UIImage(asset: Asset.Icon.chevronDown)
         })
         listIconBtn.then({

@@ -47,6 +47,7 @@ class HomeView: BaseViewController, Navigatable {
     var listBtn = UIButton()
     var headTitleLbl = UILabel()
     var headDropDownBtn = UIButton()
+    var headDropDownIc = UIImageView()
     var diaryBtn = UIButton()
     var headFrame = UIView()
     
@@ -128,7 +129,7 @@ class HomeView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         headTitleLbl.text = calendarViewModel.todayFormatteryyMMdd()
-        headFrame = CommonView.homeHeadFrame(listIconBtn: listBtn, headTitle: headTitleLbl, dropDownButton: headDropDownBtn, diaryBtn: diaryBtn)
+        headFrame = CommonView.homeHeadFrame(listIconBtn: listBtn, headTitle: headTitleLbl, dropDownImageView: headDropDownIc, dropDownButton: headDropDownBtn, diaryBtn: diaryBtn)
         
         calendarYear = calendarViewModel.getYear()
         calendarMonth = calendarViewModel.getMonth()
@@ -251,33 +252,35 @@ class HomeView: BaseViewController, Navigatable {
                 let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
                 if i == indexPath.row {
                     cell?.selectDayRoundFrame.isHidden = false
-                    print("cell.number.text : \(cell?.number.text ?? "")")
                 } else {
                     cell?.selectDayRoundFrame.isHidden = true
                 }
             }
             self.selectMonth = self.dateCheck
         }).disposed(by: disposedBag)
-        
-        headDropDownBtn.rx.tap.bind(onNext: { _ in
-            self.calendarFrame.isHidden = false
-        }).disposed(by: disposedBag)
-        
-        calendarCloseBtn.rx.tap.bind(onNext: { _ in
-            self.calendarFrame.isHidden = true
-        }).disposed(by: disposedBag)
-        
     }
     
     // MARK: - Action Bind _ Input
     func actionBind() {
         
         headDropDownBtn.rx.tap.bind(onNext: { _ in
-            self.calendarFrame.isHidden = false
+            if self.headDropDownBtn.isSelected {
+                print("headDropDownBtn : \(self.headDropDownBtn.isSelected)")
+                self.calendarFrame.isHidden = true
+                self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
+                self.headDropDownBtn.isSelected = false
+            } else {
+                print("headDropDownBtn : \(self.headDropDownBtn.isSelected)")
+                self.calendarFrame.isHidden = false
+                self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronUp)
+                self.headDropDownBtn.isSelected = true
+            }
         }).disposed(by: disposedBag)
         
         calendarCloseBtn.rx.tap.bind(onNext: { _ in
             self.calendarFrame.isHidden = true
+            self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
+            self.headDropDownBtn.isSelected = false
         }).disposed(by: disposedBag)
         
         self.btnPrev.rx.tap.bind {
@@ -330,7 +333,7 @@ extension HomeView {
         })
         calendarDateLbl.snp.makeConstraints({
             $0.centerX.equalTo(view.snp.centerX)
-            $0.top.equalTo(view.snp.top).offset(36)
+            $0.top.equalTo(view.snp.top).offset(16)
         })
         btnPrev.snp.makeConstraints({
             $0.centerY.equalTo(calendarDateLbl.snp.centerY)
