@@ -9,16 +9,23 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-enum NicknameType: String {
-    case son = "아들!"
-    case daughter = "딸!"
-    case etc = ""
-    case none
-}
-
 class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         
+    enum NicknameType: String {
+        case son = "아들!"
+        case daughter = "딸!"
+        case custom = ""
+        case none
+    }
+
+    enum TextHintType: String {
+        case success = "그것 참 재밌는 호칭이구나!"
+        case error = "다른 이름을 생각해보겠니?"
+        case none = ""
+    }
+    
     var disposeBag = DisposeBag()
+    
     private let loginInfo: BehaviorRelay<LoginInfo>
     
     init(loginInfo: LoginInfo) {
@@ -29,7 +36,7 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
     struct Input {
         let btnSonTapped: Driver<Void>
         let btnDaughterTapped: Driver<Void>
-        let btnEtcTapped: Driver<Void>
+        let btnCustomTapped: Driver<Void>
         let textName: Driver<String?>
         let editingDidBeginName: Driver<Void>
         let editingDidEndName: Driver<Void>
@@ -40,20 +47,12 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
     struct Output {
         /// 호칭 타입 선택
         let selectedNicknameType: Driver<NicknameType>
-        /// 텍스트필드 숨김/보임
-        let isHiddenTfName: Driver<Bool>
         /// 이름 확인
         let confirmName: Driver<String>
         /// 이름 수정 중
-        let editingName: Driver<Void>
-        /// 디폴트 상태
-        let defaultName: Driver<Void>
-        /// 사용 가능 호칭 (아들 OR 딸)
-        let availableName: Driver<Void>
-        /// 사용 가능 호칭 (커스텀 이름)
-        let availableCustomName: Driver<Void>
-        /// 사용 불가 호칭 (커스텀 이름)
-        let unavailableCustomName: Driver<Void>
+        let isEditingName: Driver<Bool>
+        /// 텍스트 힌트
+        let textHint: Driver<TextHintType>
         /// 호칭 설정 완료
         let successNameSetting: Driver<LoginInfo>
     }
@@ -62,10 +61,8 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         let selectedNicknameType = BehaviorRelay<NicknameType>(value: .none)
         let textName = BehaviorRelay<String>(value: "")
         let isEditingName = BehaviorRelay<Bool>(value: false)
-        let isEmptyName = BehaviorRelay<Bool>(value: true)
-        let isGoodName = PublishRelay<Bool>()
-        let isGoodCustomName = PublishRelay<Bool>()
         let confirmName = BehaviorRelay<String>(value: "")
+        let textHint = BehaviorRelay<TextHintType>(value: .none)
         
         input.btnSonTapped
             .drive(onNext: { _ in
@@ -77,36 +74,17 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
                 selectedNicknameType.accept(.daughter)
             }).disposed(by: disposeBag)
         
-        input.btnEtcTapped
+        input.btnCustomTapped
             .drive(onNext: { _ in
-                selectedNicknameType.accept(.etc)
+                selectedNicknameType.accept(.custom)
             }).disposed(by: disposeBag)
-        
-        textName
-            .bind { text in
-                isEmptyName.accept(text.isEmpty)
-            }.disposed(by: disposeBag)
         
         selectedNicknameType
             .distinctUntilChanged()
             .filter({ $0 != .none })
             .bind(onNext: { type in
-                if type == .son || type == .daughter {
-                    isGoodName.accept(true)
-                    confirmName.accept(type.rawValue)
-                } else {
-                    textName.accept("")
-                    isGoodName.accept(false)
-                }
+                confirmName.accept(type.rawValue)
             }).disposed(by: disposeBag)
-        
-        let isHiddenTfName = selectedNicknameType
-            .distinctUntilChanged()
-            .filter({ $0 != .none })
-            .flatMapLatest({ type -> Observable<Bool> in
-                return Observable.just(type != .etc)
-            })
-            .distinctUntilChanged()
         
         input.textName
             .drive(onNext: { text in
@@ -116,6 +94,7 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         
         input.editingDidBeginName
             .drive(onNext: { () in
+                textHint.accept(.none)
                 isEditingName.accept(true)
             }).disposed(by: disposeBag)
         
@@ -125,45 +104,37 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
                 textName.accept(textName.value)
             }).disposed(by: disposeBag)
         
-        let editingName = isEditingName
-            .filter { isEditing in  isEditing == true }
-            .mapToVoid()
-                
-        let defaultName = isEmptyName
-            .filter({ $0 == true })
-            .mapToVoid()
-            .do(onNext: { _ in  confirmName.accept("") })
-                
-        let checkDefaultName = input.editingDidEndName
-            .asObservable()
-            .flatMapLatest { _ -> Observable<Bool> in
-                Observable.just(isEmptyName.value)
-            }
+        let isEmptyName = input.editingDidEndName
+                    .asObservable()
+                    .flatMapLatest { _ -> Observable<Bool> in
+                        Observable.just(textName.value.isEmpty)
+                    }
+        
+        isEmptyName.filter({ $0 == true })
+            .bind(onNext: { _ in
+                confirmName.accept("")
+                textHint.accept(.none)
+            }).disposed(by: disposeBag)
         
         // 사용 가능 여부 확인 (띄어쓰기 포함 한/영/숫자 1-10글자)
-        checkDefaultName
-            .filter { isEmpty in isEmpty == false }
+        let isValidName = isEmptyName
+            .filter({ $0 == false })
             .flatMapLatest { _ -> Observable<Bool> in
                 let name = textName.value
                 return self.isValidName(name)
-            }.bind(onNext: { isValid in isGoodCustomName.accept(isValid) })
-            .disposed(by: disposeBag)
-                    
-        let availableName = isGoodName
-            .filter { isGood in isGood == true }
-            .mapToVoid()
-                
-        let availableCustomName = isGoodCustomName
-            .filter { isGood in isGood == true }
-            .do(onNext: { _ in
-                confirmName.accept(textName.value)
-            }).mapToVoid()
+            }
         
-        let unavailableCustomName = isGoodCustomName
-            .filter { isGood in isGood == false }
-            .do(onNext: { _ in confirmName.accept("") })
-            .mapToVoid()
-    
+        isValidName
+            .bind(onNext: { isValid in
+                if isValid {
+                    textHint.accept(.success)
+                    confirmName.accept(textName.value)
+                } else {
+                    textHint.accept(.error)
+                    confirmName.accept("")
+                }
+            }).disposed(by: disposeBag)
+                
         // TODO: Request 호칭 설정 API
         let successNameSetting = input.btnDoneTapped
             .asObservable()
@@ -173,13 +144,9 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         
         return Output(
             selectedNicknameType: selectedNicknameType.asDriverOnErrorJustComplete(),
-            isHiddenTfName: isHiddenTfName.asDriverOnErrorJustComplete(),
             confirmName: confirmName.asDriverOnErrorJustComplete(),
-            editingName: editingName.asDriverOnErrorJustComplete(),
-            defaultName: defaultName.asDriverOnErrorJustComplete(),
-            availableName: availableName.asDriverOnErrorJustComplete(),
-            availableCustomName: availableCustomName.asDriverOnErrorJustComplete(),
-            unavailableCustomName: unavailableCustomName.asDriverOnErrorJustComplete(),
+            isEditingName: isEditingName.asDriverOnErrorJustComplete(),
+            textHint: textHint.asDriverOnErrorJustComplete(),
             successNameSetting: successNameSetting.asDriverOnErrorJustComplete())
     }
     
