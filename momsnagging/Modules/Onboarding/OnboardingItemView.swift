@@ -49,19 +49,25 @@ class OnboardingItemView: BaseViewController, Navigatable {
         $0.isUserInteractionEnabled = false
     })
     
-    lazy var btnLogin = UIButton()
-    
-    lazy var btnNext = UIButton().then({
+    lazy var btnLogin = CommonButton().then({
+        $0.normalBackgroundColor = Asset.Color.monoWhite.color
+        $0.highlightedBackgroundColor = Asset.Color.monoLight020.color
         $0.layer.cornerRadius = 26.0
-        $0.backgroundColor = Asset.Color.priMain.color
+    })
+    
+    lazy var btnNext = CommonButton().then({
+        $0.normalBackgroundColor = Asset.Color.priMain.color
+        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
+        $0.layer.cornerRadius = 26.0
         $0.setTitle("다음", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
         $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
     })
     
-    lazy var btnStart = UIButton().then({
+    lazy var btnStart = CommonButton().then({
+        $0.normalBackgroundColor = Asset.Color.priMain.color
+        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
         $0.layer.cornerRadius = 26.0
-        $0.backgroundColor = Asset.Color.priMain.color
         $0.setTitle("시작해볼래요!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
         $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)

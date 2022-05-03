@@ -7,10 +7,10 @@
 
 import UIKit
 
-class CommontButton: UIButton {
+class CommonButton: UIButton {
     
-    var highlightDuration: TimeInterval = 0.25
-    var enableDuration: TimeInterval = 0.25
+    var highlightDuration: TimeInterval = 0.15
+    var enableDuration: TimeInterval = 0.15
     
     @IBInspectable var normalBackgroundColor: UIColor? {
         didSet {

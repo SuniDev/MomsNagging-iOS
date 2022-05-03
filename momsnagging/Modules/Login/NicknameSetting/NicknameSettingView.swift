@@ -109,7 +109,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
         $0.text = ""
     })
     
-    lazy var btnDone = CommontButton().then({
+    lazy var btnDone = CommonButton().then({
         $0.normalBackgroundColor = Asset.Color.priMain.color
         $0.highlightedBackgroundColor = Asset.Color.priDark010.color
         $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
