@@ -34,6 +34,7 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
+        let btnBackTapped: Driver<Void>
         let btnSonTapped: Driver<Void>
         let btnDaughterTapped: Driver<Void>
         let btnCustomTapped: Driver<Void>
@@ -45,6 +46,8 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
+        /// 뒤로 가기
+        let goToBack: Driver<Void>
         /// 호칭 타입 선택
         let selectedNicknameType: Driver<NicknameType>
         /// 이름 확인
@@ -53,6 +56,8 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         let isEditingName: Driver<Bool>
         /// 텍스트 힌트
         let textHint: Driver<TextHintType>
+        /// 사용 가능 아이디
+        let isAvailableName: Driver<Bool>
         /// 호칭 설정 완료
         let successNameSetting: Driver<LoginInfo>
     }
@@ -63,6 +68,7 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         let isEditingName = BehaviorRelay<Bool>(value: false)
         let confirmName = BehaviorRelay<String>(value: "")
         let textHint = BehaviorRelay<TextHintType>(value: .none)
+        let isAvailableName = BehaviorRelay<Bool>(value: false)
         
         input.btnSonTapped
             .drive(onNext: { _ in
@@ -83,6 +89,7 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
             .distinctUntilChanged()
             .filter({ $0 != .none })
             .bind(onNext: { type in
+                isAvailableName.accept(type == .son || type == .daughter)
                 confirmName.accept(type.rawValue)
             }).disposed(by: disposeBag)
         
@@ -130,6 +137,14 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
                 confirmName.accept(isValid ? textName.value : "")
             }).disposed(by: disposeBag)
                 
+        textHint
+            .bind(onNext: { type in
+                switch type {
+                case .success: isAvailableName.accept(true)
+                case .none, .error: isAvailableName.accept(false)
+                }
+            }).disposed(by: disposeBag)
+
         // TODO: Request 호칭 설정 API
         let successNameSetting = input.btnDoneTapped
             .asObservable()
@@ -138,10 +153,12 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
             }
         
         return Output(
+            goToBack: input.btnBackTapped,
             selectedNicknameType: selectedNicknameType.asDriverOnErrorJustComplete(),
             confirmName: confirmName.asDriverOnErrorJustComplete(),
             isEditingName: isEditingName.asDriverOnErrorJustComplete(),
             textHint: textHint.asDriverOnErrorJustComplete(),
+            isAvailableName: isAvailableName.asDriverOnErrorJustComplete(),
             successNameSetting: successNameSetting.asDriverOnErrorJustComplete())
     }
     

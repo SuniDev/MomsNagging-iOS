@@ -28,6 +28,14 @@ class NicknameSettingView: BaseViewController, Navigatable {
         $0.backgroundColor = .clear
     })
     
+    lazy var btnBack = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var imgvBack = UIImageView().then({
+        $0.image = Asset.Icon.straightLeft.image
+    })
+    
     lazy var viewBottom = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
@@ -167,6 +175,8 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         scrollView.addSubview(viewContants)
         
+        viewContants.addSubview(imgvBack)
+        viewContants.addSubview(btnBack)
         viewContants.addSubview(imgvQuestion)
         viewContants.addSubview(viewAnswer)
         
@@ -201,10 +211,21 @@ class NicknameSettingView: BaseViewController, Navigatable {
             $0.width.equalTo(UIScreen.main.bounds.width)
         })
         
+        imgvBack.snp.makeConstraints({
+            $0.width.height.equalTo(30)
+            $0.top.equalToSuperview().offset(12)
+            $0.leading.equalToSuperview().offset(16)
+        })
+        
+        btnBack.snp.makeConstraints({
+            $0.top.leading.equalTo(imgvBack).offset(-5)
+            $0.bottom.trailing.equalTo(imgvBack).offset(5)
+        })
+
         imgvQuestion.snp.makeConstraints({
             $0.width.equalTo(270)
             $0.height.equalTo(72)
-            $0.top.equalToSuperview().offset(50)
+            $0.top.equalTo(imgvBack.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(15)
         })
         
@@ -259,7 +280,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
         })
         
         let safeareaHeight = Common.getSafeareaHeight()
-        let marginHeight = safeareaHeight <= 736 ? 16 : safeareaHeight - 720
+        let marginHeight = safeareaHeight <= 744 ? 16 : safeareaHeight - 728
         
         viewConfirm.snp.makeConstraints({
             $0.height.equalTo(288)
@@ -306,6 +327,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         let input = NicknameSettingViewModel
             .Input(
+                btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
                 btnSonTapped: self.btnSon.rx.tap.asDriverOnErrorJustComplete(),
                 btnDaughterTapped: self.btnDaughter.rx.tap.asDriverOnErrorJustComplete(),
                 btnCustomTapped: self.btnCustom.rx.tap.asDriverOnErrorJustComplete(),
@@ -317,6 +339,11 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         let output = viewModel.transform(input: input)
         
+        output.goToBack
+            .drive(onNext: {
+                self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
+
         output.selectedNicknameType
             .drive(onNext: { type in
                 self.imgvSon.image = Asset.Assets.namesettingSonDis.image
@@ -378,6 +405,11 @@ class NicknameSettingView: BaseViewController, Navigatable {
                     self.lblHint.textColor = Asset.Color.error.color
                     self.tfNickname.addBorder(color: Asset.Color.error.color, width: 1)
                 }
+            }).disposed(by: disposeBag)
+        
+        output.isAvailableName
+            .drive(onNext: { isAvailable in
+                self.btnDone.isEnabled = isAvailable
             }).disposed(by: disposeBag)
         
         output.successNameSetting
