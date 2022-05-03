@@ -71,4 +71,13 @@ class CalendarViewModel {
         formatter.dateFormat = "dd"
         return formatter.string(from: date)
     }
+    func getToday() -> Int {
+        return model.getToday()
+    }
+    func getMonth() -> Int {
+        return model.getMonth()
+    }
+    func getYear() -> Int {
+        return model.getYear()
+    }
 }
