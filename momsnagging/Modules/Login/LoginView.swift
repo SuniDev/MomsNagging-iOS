@@ -84,6 +84,8 @@ class LoginView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
         
+        btnKakaoLogin.setImage(Asset.Assets.loginKakaoHighlight.image, for: .highlighted)
+        btnGoogleLogin.setImage(Asset.Assets.loginGoogleHighlight.image, for: .highlighted)
     }
     
     // MARK: - layoutSetting
