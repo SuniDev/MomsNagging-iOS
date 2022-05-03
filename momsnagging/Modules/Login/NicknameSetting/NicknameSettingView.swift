@@ -415,7 +415,8 @@ class NicknameSettingView: BaseViewController, Navigatable {
         output.successNameSetting
             .drive(onNext: { _ in
                 CommonView.showAlert(vc: self, type: .oneBtn, title: "", message: STR_NICKNAME_SUCCESS, doneTitle: STR_DONE, doneHandler: {
-                  // TODO: 메인 이동.
+                    let viewModel = MainContainerViewModel()
+                    self.navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
                 })
             }).disposed(by: disposeBag)
     }
