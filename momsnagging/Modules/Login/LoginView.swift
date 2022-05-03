@@ -41,8 +41,10 @@ class LoginView: BaseViewController, Navigatable {
         $0.isUserInteractionEnabled = false
     })
     
-    var btnGoogleLogin = UIButton().then({
-        $0.backgroundColor = .clear
+    var btnGoogleLogin = CommonButton().then({
+        $0.normalBackgroundColor = .clear
+        $0.highlightedBackgroundColor = Asset.Color.selected.color
+        $0.layer.cornerRadius = 20
     })
 
     let imgvKakaoLogin = UIImageView().then({
@@ -50,8 +52,10 @@ class LoginView: BaseViewController, Navigatable {
         $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
     })
     
-    var btnKakaoLogin = UIButton().then({
-        $0.backgroundColor = .clear
+    var btnKakaoLogin = CommonButton().then({
+        $0.normalBackgroundColor = .clear
+        $0.highlightedBackgroundColor = Asset.Color.selected.color
+        $0.layer.cornerRadius = 20
     })
     
     let imgvAppleLogin = UIImageView().then({
@@ -59,8 +63,10 @@ class LoginView: BaseViewController, Navigatable {
         $0.addShadow(color: Asset.Color.monoDark020.color, alpha: 0.2, x: 0, y: 4, blur: 17, spread: 0)
     })
     
-    var btnAppleLogin = UIButton().then({
-        $0.backgroundColor = .clear
+    var btnAppleLogin = CommonButton().then({
+        $0.normalBackgroundColor = .clear
+        $0.highlightedBackgroundColor = Asset.Color.selected.color
+        $0.layer.cornerRadius = 20
     })
     
     // MARK: - init
@@ -83,9 +89,6 @@ class LoginView: BaseViewController, Navigatable {
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
-        
-        btnKakaoLogin.setImage(Asset.Assets.loginKakaoHighlight.image, for: .highlighted)
-        btnGoogleLogin.setImage(Asset.Assets.loginGoogleHighlight.image, for: .highlighted)
     }
     
     // MARK: - layoutSetting
