@@ -74,12 +74,14 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
             .asObservable()
             .flatMapLatest { currentPage }
         
+        let goToLogin = Observable.of(input.btnLoginTapped, input.btnStartTapped).merge()
+        
         return Output(setTile: currentTitle.asDriverOnErrorJustComplete(),
                       setEmoji: currentEmoji.asDriverOnErrorJustComplete(),
                       setImage: currentImage.asDriverOnErrorJustComplete(),
                       setPageControl: setPageControl.asDriverOnErrorJustComplete(),
                       isLastPage: isLastPage.asDriverOnErrorJustComplete(),
-                      goToLogin: input.btnLoginTapped,
+                      goToLogin: goToLogin.asDriverOnErrorJustComplete() ,
                       goToNextPage: goToNextPage.asDriverOnErrorJustComplete(),
                       goToMain: input.btnStartTapped
         )

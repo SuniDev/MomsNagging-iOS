@@ -103,6 +103,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
     }
     
     // MARK: - layoutSetting
+    // TODO: 디바이스 높이 667 사이즈 대응 작업 필요.
     override func layoutSetting() {
         view.addSubview(viewBackground)
         viewBackground.addSubview(lblTitle)
@@ -119,29 +120,27 @@ class OnboardingItemView: BaseViewController, Navigatable {
         })
         
         lblTitle.snp.makeConstraints({
-            $0.top.equalToSuperview().offset(15.0)
+            $0.top.equalToSuperview().offset(15)
             $0.centerX.equalTo(viewBackground)
-            $0.leading.trailing.greaterThanOrEqualToSuperview()
         })
         
         viewMessage.snp.makeConstraints({
-            $0.height.equalTo(94)
+            $0.height.equalTo(100)
             $0.top.equalTo(lblTitle.snp.bottom).offset(40)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.equalToSuperview().offset(30)
+            $0.trailing.equalToSuperview().offset(-30)
         })
         
         imgvEmoji.snp.makeConstraints({
-            $0.width.equalTo(319)
-            $0.top.equalToSuperview()
-            $0.centerX.equalToSuperview()
+            $0.top.trailing.leading.equalToSuperview()
             $0.bottom.greaterThanOrEqualToSuperview()
         })
         
         imgvImage.snp.makeConstraints({
-            $0.width.equalTo(312)
-            $0.height.equalTo(320)
-            $0.top.equalTo(viewMessage.snp.bottom).offset(45)
-            $0.centerX.equalToSuperview()
+            $0.height.equalTo(imgvImage.snp.width).multipliedBy(1 / 0.94)
+            $0.leading.equalToSuperview().offset(30)
+            $0.trailing.equalToSuperview().offset(-30)
+            $0.top.greaterThanOrEqualTo(viewMessage.snp.bottom).offset(32)
         })
         
         pageControl.snp.makeConstraints({
@@ -154,7 +153,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.height.equalTo(56)
             $0.bottom.equalToSuperview().offset(-32)
             $0.leading.equalToSuperview().offset(20)
-            $0.top.greaterThanOrEqualTo(pageControl.snp.bottom).offset(32)
+            $0.top.equalTo(pageControl.snp.bottom).offset(32)
         })
         
         btnNext.snp.makeConstraints({
@@ -211,10 +210,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
         output.goToNextPage.drive(onNext: { page in
             self.delegate?.goToNextPage(currentPage: page)
         }).disposed(by: disposeBag)
-        
-        output.goToMain.drive(onNext: {
-            // TODO: Main 이동
-        }).disposed(by: disposeBag)
+    
     }
      
 }
