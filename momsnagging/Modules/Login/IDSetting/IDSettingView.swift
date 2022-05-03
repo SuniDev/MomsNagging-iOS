@@ -22,6 +22,14 @@ class IDSettingView: BaseViewController, Navigatable {
         $0.backgroundColor = Asset.Color.skyblue.color
     })
     
+    lazy var btnBack = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var imgvBack = UIImageView().then({
+        $0.image = Asset.Icon.straightLeft.image
+    })
+    
     lazy var viewBottom = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
@@ -37,14 +45,14 @@ class IDSettingView: BaseViewController, Navigatable {
     lazy var tfID = UITextField().then({
         $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
         $0.layer.cornerRadius = 4
-        $0.placeholder = "여기에 아이디를 입력해보렴"
+        $0.placeholder = "밑줄, 띄어쓰기 제외 영어/숫자 4-15 글자"
         $0.addLeftPadding(width: 8)
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.clearButtonMode = .whileEditing
         $0.returnKeyType = .done
     })
     
-    lazy var lblHintID = UILabel().then({
+    lazy var lblHint = UILabel().then({
         $0.text = ""
         $0.font = FontFamily.Pretendard.regular.font(size: 12)
         $0.textColor = Asset.Color.success.color
@@ -98,10 +106,12 @@ class IDSettingView: BaseViewController, Navigatable {
     override func layoutSetting() {
         view.addSubview(viewBackground)
         view.addSubview(viewBottom)
+        viewBackground.addSubview(imgvBack)
+        viewBackground.addSubview(btnBack)
         viewBackground.addSubview(imgvQuestion)
         viewBackground.addSubview(imgvAnswer)
         viewBackground.addSubview(tfID)
-        viewBackground.addSubview(lblHintID)
+        viewBackground.addSubview(lblHint)
         
         viewBackground.addSubview(viewConfirm)
         viewConfirm.addSubview(imgvConfirm)
@@ -109,6 +119,17 @@ class IDSettingView: BaseViewController, Navigatable {
         
         viewBackground.snp.makeConstraints({
             $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        })
+        
+        imgvBack.snp.makeConstraints({
+            $0.width.height.equalTo(30)
+            $0.top.equalToSuperview().offset(12)
+            $0.leading.equalToSuperview().offset(16)
+        })
+        
+        btnBack.snp.makeConstraints({
+            $0.top.leading.equalTo(imgvBack).offset(-5)
+            $0.bottom.trailing.equalTo(imgvBack).offset(5)
         })
         
         viewBottom.snp.makeConstraints({
@@ -119,7 +140,7 @@ class IDSettingView: BaseViewController, Navigatable {
         imgvQuestion.snp.makeConstraints({
             $0.width.equalTo(319)
             $0.height.equalTo(72)
-            $0.top.equalToSuperview().offset(50)
+            $0.top.equalTo(imgvBack.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(15)
         })
         
@@ -137,7 +158,7 @@ class IDSettingView: BaseViewController, Navigatable {
             $0.trailing.equalTo(imgvAnswer).offset(-28)
         })
         
-        lblHintID.snp.makeConstraints({
+        lblHint.snp.makeConstraints({
             $0.top.equalTo(tfID.snp.bottom).offset(5)
             $0.leading.trailing.equalTo(tfID)
         })
@@ -169,63 +190,48 @@ class IDSettingView: BaseViewController, Navigatable {
         
         let input = IDSettingViewModel
             .Input(
+                btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
                 textID: self.tfID.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
                 editingDidBeginID: self.tfID.rx.controlEvent(.editingDidBegin).mapToVoid().asDriverOnErrorJustComplete(),
                 editingDidEndID: self.tfID.rx.controlEvent(.editingDidEnd).mapToVoid().asDriverOnErrorJustComplete(),
                 btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
-        output.editingID
+        output.goToBack
             .drive(onNext: {
-                self.tfID.addBorder(color: Asset.Color.priMain.color, width: 1)
-                self.lblHintID.isHidden = true
+                self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
         
-        output.defaultID
-            .drive(onNext: {
-                self.tfID.addBorder(color: Asset.Color.monoLight030.color, width: 1)
-            }).disposed(by: disposeBag)
-
-        output.invalidID
-            .drive(onNext: { _ in
-                self.setIDErrorMessage(STR_ID_INVALID)
+        output.isEditingID
+            .drive(onNext: { isEditing in
+                self.tfID.addBorder(color: isEditing ? Asset.Color.priMain.color : Asset.Color.monoLight030.color, width: 1)
             }).disposed(by: disposeBag)
         
-        output.duplicateID
-            .drive(onNext: { _ in
-                self.setIDErrorMessage(STR_ID_DUPLICATE)
+        output.textHint
+            .drive(onNext: { type in
+                self.lblHint.isHidden = type == .none
+                self.lblHint.text = type.rawValue
+                
+                switch type {
+                case .none: break
+                case .invalid, .duplicate:
+                    self.lblHint.textColor = Asset.Color.error.color
+                    self.tfID.addBorder(color: Asset.Color.error.color, width: 1)
+                case .succes:
+                    self.lblHint.textColor = Asset.Color.success.color
+                    self.tfID.addBorder(color: Asset.Color.monoLight030.color, width: 1)
+                }
             }).disposed(by: disposeBag)
         
-        output.availableID
-            .drive(onNext: { _ in
-                self.setEnabledConfirm(true)
-                self.lblHintID.isHidden = false
-                self.tfID.addBorder(color: Asset.Color.monoLight030.color, width: 1)
-                self.lblHintID.textColor = Asset.Color.success.color
-                self.lblHintID.text = STR_ID_AVAILABLE
-            }).disposed(by: disposeBag)
-        
-        output.unavailableID
-            .drive(onNext: {
-                self.setEnabledConfirm(false)
+        output.isAvailableID
+            .drive(onNext: { isAvailable in
+                self.btnDone.isEnabled = isAvailable
+                self.imgvConfirm.image = isAvailable ? Asset.Assets.idsettingConfirm.image : Asset.Assets.idsettingConfirmDis.image
             }).disposed(by: disposeBag)
         
         output.successIDSetting
             .drive(onNext: { loginInfo in
                 self.navigator.show(seque: .nicknameSetting(viewModel: NicknameSettingViewModel(loginInfo: loginInfo)), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
-    }
-}
-extension IDSettingView {
-    private func setIDErrorMessage(_ message: String) {
-        self.lblHintID.isHidden = false
-        self.lblHintID.textColor = Asset.Color.error.color
-        self.lblHintID.text = message
-        self.tfID.addBorder(color: Asset.Color.error.color, width: 1)
-    }
-    
-    private func setEnabledConfirm(_ isEnabled: Bool) {
-        btnDone.isEnabled = isEnabled
-        imgvConfirm.image = isEnabled ? Asset.Assets.idsettingConfirm.image : Asset.Assets.idsettingConfirmDis.image
     }
 }

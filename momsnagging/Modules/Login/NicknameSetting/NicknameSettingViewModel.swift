@@ -126,13 +126,8 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         
         isValidName
             .bind(onNext: { isValid in
-                if isValid {
-                    textHint.accept(.success)
-                    confirmName.accept(textName.value)
-                } else {
-                    textHint.accept(.error)
-                    confirmName.accept("")
-                }
+                textHint.accept(isValid ? .success : .error)
+                confirmName.accept(isValid ? textName.value : "")
             }).disposed(by: disposeBag)
                 
         // TODO: Request 호칭 설정 API

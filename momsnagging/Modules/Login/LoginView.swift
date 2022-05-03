@@ -190,8 +190,7 @@ class LoginView: BaseViewController, Navigatable {
         output.needToJoin
             .drive(onNext: { info in
                 let viewModel = IDSettingViewModel(loginInfo: info)
-                // TODO: ID/호칭 설정 뒤로가기 가능 여부 확인 필요. (root or push)
-                self.navigator.show(seque: .idSetting(viewModel: viewModel), sender: nil, transition: .root)
+                self.navigator.show(seque: .idSetting(viewModel: viewModel), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
     }
     

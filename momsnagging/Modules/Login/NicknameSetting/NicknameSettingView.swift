@@ -188,7 +188,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
         viewConfirm.addSubview(btnDone)
         
         viewBottom.snp.makeConstraints({
-            $0.top.equalTo(scrollView.snp.bottom).offset(0)
+            $0.top.equalTo(scrollView.snp.bottom)
             $0.bottom.leading.trailing.equalToSuperview()
         })
         
