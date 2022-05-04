@@ -191,6 +191,11 @@ class Common {
         defaults.set(value, forKey: defaultsKey.rawValue)
     }
     
+    /**
+     # getSafeareaHeight
+     - Authors: suni
+     - Note:디바이스 Safe Area 영역 높이를 반환하는 공용 함수
+    */
     static func getSafeareaHeight() -> CGFloat {
         let height = UIScreen.main.bounds.height
         let window = UIApplication.shared.windows.first
