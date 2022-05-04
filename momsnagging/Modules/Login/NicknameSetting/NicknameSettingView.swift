@@ -19,12 +19,20 @@ class NicknameSettingView: BaseViewController, Navigatable {
     
     var nicknameAttributes: [NSAttributedString.Key: Any]?
     
+    let defaultCustomNameHeight: CGFloat = 100
+    let defaultAnswerHeight: CGFloat = 190
+    let defaultAnswerToConfirmMargin: CGFloat = 16
+    var answerToConfirmMargin: CGFloat = 16
+    
+    var defaultViewContentsHeight: CGFloat = 0
+    var safeAreaHeight: CGFloat = 0
+    
     // MARK: - UI Properties
     lazy var scrollView = UIScrollView().then({
         $0.bounces = false
     })
     
-    lazy var viewContants = UIView().then({
+    lazy var viewContents = UIView().then({
         $0.backgroundColor = .clear
     })
     
@@ -65,6 +73,10 @@ class NicknameSettingView: BaseViewController, Navigatable {
     })
     
     lazy var btnDaughter = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var viewCustomName = UIView().then({
         $0.backgroundColor = .clear
     })
     
@@ -173,12 +185,12 @@ class NicknameSettingView: BaseViewController, Navigatable {
         view.addSubview(viewBottom)
         view.addSubview(scrollView)
         
-        scrollView.addSubview(viewContants)
+        scrollView.addSubview(viewContents)
         
-        viewContants.addSubview(imgvBack)
-        viewContants.addSubview(btnBack)
-        viewContants.addSubview(imgvQuestion)
-        viewContants.addSubview(viewAnswer)
+        viewContents.addSubview(imgvBack)
+        viewContents.addSubview(btnBack)
+        viewContents.addSubview(imgvQuestion)
+        viewContents.addSubview(viewAnswer)
         
         viewAnswer.addSubview(imgvAnswer)
         viewAnswer.addSubview(imgvSon)
@@ -187,10 +199,12 @@ class NicknameSettingView: BaseViewController, Navigatable {
         viewAnswer.addSubview(btnDaughter)
         viewAnswer.addSubview(imgvCustom)
         viewAnswer.addSubview(btnCustom)
-        viewAnswer.addSubview(tfNickname)
-        viewAnswer.addSubview(lblHint)
         
-        viewContants.addSubview(viewConfirm)
+        viewAnswer.addSubview(viewCustomName)
+        viewCustomName.addSubview(tfNickname)
+        viewCustomName.addSubview(lblHint)
+        
+        viewContents.addSubview(viewConfirm)
         viewConfirm.addSubview(imgvConfirm)
         viewConfirm.addSubview(viewLblConfirm)
         viewLblConfirm.addSubview(lblConfirm)
@@ -206,7 +220,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
             $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         })
         
-        viewContants.snp.makeConstraints({
+        viewContents.snp.makeConstraints({
             $0.top.leading.trailing.bottom.equalToSuperview()
             $0.width.equalTo(UIScreen.main.bounds.width)
         })
@@ -231,7 +245,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         viewAnswer.snp.makeConstraints({
             $0.width.equalTo(300)
-            $0.height.equalTo(280)
+//            $0.height.equalTo(defaultAnswerHeight)
             $0.top.equalTo(imgvQuestion.snp.bottom).offset(30)
             $0.trailing.equalToSuperview().offset(-15)
         })
@@ -267,9 +281,15 @@ class NicknameSettingView: BaseViewController, Navigatable {
             $0.top.leading.trailing.bottom.equalTo(imgvCustom)
         })
         
+        viewCustomName.snp.makeConstraints({
+            $0.height.equalTo(0)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.equalTo(imgvSon.snp.bottom).offset(15)
+        })
+        
         tfNickname.snp.makeConstraints({
             $0.height.equalTo(48)
-            $0.top.equalTo(imgvSon.snp.bottom).offset(15)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-30)
         })
@@ -277,14 +297,12 @@ class NicknameSettingView: BaseViewController, Navigatable {
         lblHint.snp.makeConstraints({
             $0.top.equalTo(tfNickname.snp.bottom).offset(5)
             $0.leading.trailing.equalTo(tfNickname)
+            $0.bottom.greaterThanOrEqualToSuperview()
         })
-        
-        let safeareaHeight = Common.getSafeareaHeight()
-        let marginHeight = safeareaHeight <= 744 ? 16 : safeareaHeight - 728
         
         viewConfirm.snp.makeConstraints({
             $0.height.equalTo(288)
-            $0.top.equalTo(viewAnswer.snp.bottom).offset(marginHeight)
+            $0.top.equalTo(viewAnswer.snp.bottom).offset(defaultAnswerToConfirmMargin)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         })
@@ -319,6 +337,18 @@ class NicknameSettingView: BaseViewController, Navigatable {
             $0.trailing.equalToSuperview().offset(-24)
             $0.bottom.equalToSuperview().offset(-40)
         })
+        
+        view.layoutIfNeeded()
+        
+        safeAreaHeight = Common.getSafeareaHeight()
+        defaultViewContentsHeight = viewContents.bounds.height
+        
+        if safeAreaHeight > defaultViewContentsHeight {
+            answerToConfirmMargin = safeAreaHeight - defaultViewContentsHeight + defaultAnswerToConfirmMargin
+            viewConfirm.snp.updateConstraints({
+                $0.top.equalTo(viewAnswer.snp.bottom).offset(answerToConfirmMargin)
+            })
+        }
     }
     
     // MARK: - bind
@@ -424,12 +454,40 @@ class NicknameSettingView: BaseViewController, Navigatable {
 
 extension NicknameSettingView {
     func setHiddenCustomNameField(_ isHidden: Bool) {
+        self.view.layoutIfNeeded()
+        
+        let customNameHeight = isHidden ? 0 : defaultCustomNameHeight
+        
+        self.viewCustomName.snp.updateConstraints({
+            $0.height.equalTo(customNameHeight)
+        })
+        
+        let viewContentsHeight = self.defaultViewContentsHeight + customNameHeight
+        
+        if self.safeAreaHeight > viewContentsHeight {
+            self.answerToConfirmMargin = self.safeAreaHeight - viewContentsHeight + self.defaultAnswerToConfirmMargin
+            self.viewConfirm.snp.updateConstraints({
+                $0.top.equalTo(self.viewAnswer.snp.bottom).offset(self.answerToConfirmMargin)
+            })
+        }
         self.imgvAnswer.image = isHidden ? Asset.Assets.namesettingAnswer.image : Asset.Assets.namesettingAnswerEtc.image
         
-        self.tfNickname.isHidden = isHidden
         self.tfNickname.text = ""
-        
-        self.lblHint.isHidden = isHidden
         self.lblHint.text = ""
+    
+        if isHidden {
+            self.tfNickname.isHidden = true
+            self.lblHint.isHidden = true
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            if !isHidden {
+                self.tfNickname.isHidden = false
+                self.lblHint.isHidden = false
+            }
+        }
+
     }
 }
