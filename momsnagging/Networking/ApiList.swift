@@ -26,19 +26,19 @@ class ApiList {
         return id
     }
     
-    static func baseUrl() -> String {
-        switch Common.getDeployPhase() {
-        case .debug:
-            return "테스트서버주소"
-        case .release:
-            return "실서버주소"
-        }
-    }
-    
-    static var apiPath: String = "Api Path 를 적는 부분~~~~~!!"
-    
-    /*
-     ex.
-     static var login : String = "/login"
-     */
+//    static func baseUrl() -> String {
+//        switch Common.getDeployPhase() {
+//        case .debug:
+//            return "테스트서버주소"
+//        case .release:
+//            return "실서버주소"
+//        }
+//    }
+//
+//    static var apiPath: String = "Api Path 를 적는 부분~~~~~!!"
+//
+//    /*
+//     ex.
+//     static var login : String = "/login"
+//     */
 }

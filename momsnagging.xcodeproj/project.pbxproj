@@ -22,6 +22,16 @@
 		86E3920E280FC92B007D3C04 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */; };
 		86E39210280FC931007D3C04 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920F280FC931007D3C04 /* Pretendard-SemiBold.otf */; };
 		86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */; };
+		86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */; };
+		86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */; };
+		86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */; };
+		86E699F2282264B600EA6BC3 /* MomsNaggingAPI+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F1282264B600EA6BC3 /* MomsNaggingAPI+Request.swift */; };
+		86E699F42822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F32822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift */; };
+		86E699F62822683000EA6BC3 /* MomsNaggingAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F52822683000EA6BC3 /* MomsNaggingAPI+Method.swift */; };
+		86E699F828226AC500EA6BC3 /* MomsNaggingAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F728226AC500EA6BC3 /* MomsNaggingAPI+Path.swift */; };
+		86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699FC2822724100EA6BC3 /* ModelType.swift */; };
+		86E699FF2822727D00EA6BC3 /* UserInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699FE2822727D00EA6BC3 /* UserInfoRequest.swift */; };
+		86E69A01282272F500EA6BC3 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E69A00282272F500EA6BC3 /* UserInfo.swift */; };
 		8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0627D892D900A17FF2 /* AppDelegate.swift */; };
 		8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */; };
 		8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */; };
@@ -90,6 +100,16 @@
 		86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		86E3920F280FC931007D3C04 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Fonts+Generated.swift"; sourceTree = "<group>"; };
+		86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomsNaggingAPI.swift; sourceTree = "<group>"; };
+		86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Moya+NetworkError.swift"; sourceTree = "<group>"; };
+		86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Task.swift"; sourceTree = "<group>"; };
+		86E699F1282264B600EA6BC3 /* MomsNaggingAPI+Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Request.swift"; sourceTree = "<group>"; };
+		86E699F32822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+BaseURL.swift"; sourceTree = "<group>"; };
+		86E699F52822683000EA6BC3 /* MomsNaggingAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Method.swift"; sourceTree = "<group>"; };
+		86E699F728226AC500EA6BC3 /* MomsNaggingAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Path.swift"; sourceTree = "<group>"; };
+		86E699FC2822724100EA6BC3 /* ModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelType.swift; sourceTree = "<group>"; };
+		86E699FE2822727D00EA6BC3 /* UserInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoRequest.swift; sourceTree = "<group>"; };
+		86E69A00282272F500EA6BC3 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		8F06EC0327D892D900A17FF2 /* momsnagging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = momsnagging.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F06EC0627D892D900A17FF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -189,6 +209,8 @@
 		86BD71BC280EAF270038200E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				86E699FA28226ED700EA6BC3 /* Moya */,
+				86E699F928226C6300EA6BC3 /* API */,
 				8F82E73027D8AA9C008CDC22 /* ApiList.swift */,
 			);
 			path = Networking;
@@ -216,8 +238,11 @@
 		86D4BE2C27F6BE1100E9EE8B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				86E699FB2822722E00EA6BC3 /* Request */,
+				86E69A00282272F500EA6BC3 /* UserInfo.swift */,
 				86D4BE2D27F6BE2000E9EE8B /* User.swift */,
 				A0A674232813EC6900E0223B /* Onboarding.swift */,
+				86E699FC2822724100EA6BC3 /* ModelType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -230,6 +255,35 @@
 				86E3920B280FC922007D3C04 /* Pretendard-Bold.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		86E699F928226C6300EA6BC3 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */,
+				86E699F1282264B600EA6BC3 /* MomsNaggingAPI+Request.swift */,
+				86E699F32822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift */,
+				86E699F728226AC500EA6BC3 /* MomsNaggingAPI+Path.swift */,
+				86E699F52822683000EA6BC3 /* MomsNaggingAPI+Method.swift */,
+				86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		86E699FA28226ED700EA6BC3 /* Moya */ = {
+			isa = PBXGroup;
+			children = (
+				86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */,
+			);
+			path = Moya;
+			sourceTree = "<group>";
+		};
+		86E699FB2822722E00EA6BC3 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				86E699FE2822727D00EA6BC3 /* UserInfoRequest.swift */,
+			);
+			path = Request;
 			sourceTree = "<group>";
 		};
 		8F06EBFA27D892D900A17FF2 = {
@@ -778,6 +832,7 @@
 				8F22F83A281D0B5800AB4180 /* MyView.swift in Sources */,
 				A06BB35327F0D1E6005727AD /* OnboardingViewModel.swift in Sources */,
 				A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */,
+				86E699FF2822727D00EA6BC3 /* UserInfoRequest.swift in Sources */,
 				A06BB34127F0BAA3005727AD /* LoginView.swift in Sources */,
 				8F1F93A527EEF2C6000F08AF /* CalendarDayCell.swift in Sources */,
 				86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */,
@@ -794,6 +849,7 @@
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
 				867C1411281A7602007E5590 /* IDSettingView.swift in Sources */,
+				86E69A01282272F500EA6BC3 /* UserInfo.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroView.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				8F22F834281D0B3800AB4180 /* ReportCardModel.swift in Sources */,
@@ -806,13 +862,18 @@
 				8F22F830281D0B1D00AB4180 /* HomeViewModel.swift in Sources */,
 				A035B0762812A0A100747389 /* StringDefinition.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
+				86E699F828226AC500EA6BC3 /* MomsNaggingAPI+Path.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
+				86E699F2282264B600EA6BC3 /* MomsNaggingAPI+Request.swift in Sources */,
 				A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */,
+				86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F22F82E281D0B1200AB4180 /* HomeModel.swift in Sources */,
+				86E699F62822683000EA6BC3 /* MomsNaggingAPI+Method.swift in Sources */,
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
+				86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F22F832281D0B2E00AB4180 /* ReportCardViewModel.swift in Sources */,
@@ -822,10 +883,13 @@
 				8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */,
 				8F22F838281D0B4B00AB4180 /* MyModel.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,
+				86E699F42822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift in Sources */,
 				8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
+				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
+				86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */,
 				8F22F83E281D0BB100AB4180 /* HomeView.swift in Sources */,
 				A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */,
 				8F22F81C281D006700AB4180 /* MainContainerViewModel.swift in Sources */,

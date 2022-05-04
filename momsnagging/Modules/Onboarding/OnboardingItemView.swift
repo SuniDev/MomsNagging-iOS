@@ -142,10 +142,12 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.bottom.greaterThanOrEqualToSuperview()
         })
         
+        let isLowHeightDevice = Common.getSafeareaHeight() < 736
+        
         imgvImage.snp.makeConstraints({
             $0.height.equalTo(imgvImage.snp.width).multipliedBy(1 / 0.94)
-            $0.leading.equalToSuperview().offset(30)
-            $0.trailing.equalToSuperview().offset(-30)
+            $0.leading.equalToSuperview().offset(isLowHeightDevice ? 65 : 30)
+            $0.trailing.equalToSuperview().offset(isLowHeightDevice ? -65 : -30)
             $0.top.greaterThanOrEqualTo(viewMessage.snp.bottom).offset(32)
         })
         
@@ -159,7 +161,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.height.equalTo(56)
             $0.bottom.equalToSuperview().offset(-32)
             $0.leading.equalToSuperview().offset(20)
-            $0.top.equalTo(pageControl.snp.bottom).offset(32)
+            $0.top.greaterThanOrEqualTo(pageControl.snp.bottom).offset(12)
         })
         
         btnNext.snp.makeConstraints({
@@ -174,7 +176,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalToSuperview().offset(-32)
-            $0.top.greaterThanOrEqualTo(pageControl.snp.bottom).offset(32)
+            $0.top.greaterThanOrEqualTo(pageControl.snp.bottom).offset(12)
         })
         
     }
