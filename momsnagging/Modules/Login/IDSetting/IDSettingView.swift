@@ -43,6 +43,7 @@ class IDSettingView: BaseViewController, Navigatable {
     })
     
     lazy var tfID = UITextField().then({
+        $0.textColor = Asset.Color.monoDark010.color
         $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
         $0.layer.cornerRadius = 4
         $0.placeholder = "밑줄, 띄어쓰기 제외 영어/숫자 4-15 글자"

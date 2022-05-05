@@ -35,6 +35,7 @@ class Navigator {
         case mainContainer(viewModel: MainContainerViewModel)
         case home(viewModel: HomeViewModel)
         case calendar(viewModel: CalendarViewModel)
+        case writingDiary(viewModel: WritingDiaryViewModel)
     }
     
     enum Transition {
@@ -57,6 +58,7 @@ class Navigator {
         case .mainContainer(viewModel: let viewModel): return MainContainerView(viewModel: viewModel, navigator: self)
         case .home(viewModel: let viewModel): return HomeView(viewModel: viewModel, navigator: self)
         case .calendar(viewModel: let viewModel): return CalendarView(viewModel: viewModel, navigator: self)
+        case .writingDiary(viewModel: let viewModel): return WritingDiaryView(viewModel: viewModel, navigator: self)
         }
     }
     
