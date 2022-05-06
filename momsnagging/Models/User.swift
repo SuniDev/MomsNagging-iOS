@@ -13,9 +13,16 @@ enum SnsType: String {
     case apple = "애플"
 }
 
+enum NaggingIntensity: String {
+    case fondMom = "다정한 엄마"
+    case coolMom = "냉정한 엄마"
+    case coldMom = "차가운 엄마"
+}
+
 struct User {
     var loginInfo: LoginInfo?
     var nickname: String?
+    var naggingIntensity: NaggingIntensity?
 }
 
 struct LoginInfo {

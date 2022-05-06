@@ -12,14 +12,14 @@ class CommonButton: UIButton {
     var highlightDuration: TimeInterval = 0.15
     var enableDuration: TimeInterval = 0.15
     
-    @IBInspectable var normalBackgroundColor: UIColor? {
+    @IBInspectable var normalBackgroundColor: UIColor = Asset.Color.priMain.color {
         didSet {
             backgroundColor = normalBackgroundColor
         }
     }
     
-    @IBInspectable var highlightedBackgroundColor: UIColor?
-    @IBInspectable var disabledBackgroundColor: UIColor?
+    @IBInspectable var highlightedBackgroundColor: UIColor = Asset.Color.priDark020.color
+    @IBInspectable var disabledBackgroundColor: UIColor = Asset.Color.monoDark040.color
     
     override var isEnabled: Bool {
         didSet {
