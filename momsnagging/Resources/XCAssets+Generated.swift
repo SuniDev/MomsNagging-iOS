@@ -106,6 +106,7 @@ internal enum Asset {
     internal static let home = ImageAsset(name: "home")
     internal static let list = ImageAsset(name: "list")
     internal static let medal = ImageAsset(name: "medal")
+    internal static let more = ImageAsset(name: "more")
     internal static let my = ImageAsset(name: "my")
     internal static let reportCard = ImageAsset(name: "reportCard")
     internal static let sliders = ImageAsset(name: "sliders")
