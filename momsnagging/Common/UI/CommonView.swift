@@ -108,4 +108,132 @@ class CommonView {
     static func showToast(vc: UIViewController, message: String, duration: TimeInterval = ToastManager.shared.duration) {
         vc.view.makeToast(message, duration: duration)
     }
+    
+    /**
+     # detailHeadFrame
+     - parameters:
+        - btnBack : HeadFrame 왼쪽 '뒤로가기' 버튼
+        - lblTitle : HeadFrame 가운데 타이틀
+        - btnDone:HeadFrame 오른쪽 '완료' 버튼
+        - btnMore:HeadFrame 오른쪽 '미트볼/more' 이미지 버튼
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세 화면 헤더
+     */
+    static func detailHeadFrame(btnBack: UIButton, lblTitle: UILabel, btnDone: UIButton, btnMore: UIButton) -> UIView {
+        lazy var viewHeader = UIView().then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+        })
+        
+        _ = btnBack.then({
+            $0.setImage(Asset.Icon.straightLeft.image, for: .normal)
+        })
+        
+        _ = btnDone.then({
+            $0.isEnabled = false
+            $0.setTitle("완료", for: .normal)
+            $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
+            $0.setTitleColor(Asset.Color.monoDark040.color, for: .disabled)
+            $0.setTitleColor(Asset.Color.priDark020.color, for: .highlighted)
+        })
+        
+        _ = btnMore.then({
+            $0.isHidden = true
+            $0.setImage(Asset.Icon.more.image, for: .normal)
+        })
+        
+        _ = lblTitle.then({
+            $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+            $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
+        })
+        
+        viewHeader.addSubview(btnBack)
+        viewHeader.addSubview(lblTitle)
+        viewHeader.addSubview(btnDone)
+        
+        viewHeader.snp.makeConstraints({
+            $0.height.equalTo(60)
+        })
+        
+        btnBack.snp.makeConstraints({
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
+        })
+        
+        lblTitle.snp.makeConstraints({
+            $0.center.equalToSuperview()
+        })
+        
+        btnDone.snp.makeConstraints({
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-20)
+        })
+        
+        return viewHeader
+    }
+    
+    static func textField(placeHolder: String = "") -> UITextField {
+        lazy var textField = UITextField().then({
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.layer.cornerRadius = 4
+            $0.attributedPlaceholder = NSAttributedString(string: placeHolder,
+                                                          attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
+            $0.addLeftPadding(width: 8)
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+            $0.addBorder(color: Asset.Color.monoLight010.color, width: 1)
+        })
+        
+        return textField
+    }
+    
+    static func requiredTitleFrame(_ text: String) -> UIView {
+        lazy var viewTitle = UIView().then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+        })
+        
+        lazy var lblTitle = UILabel().then({
+            $0.text = text
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.bold.font(size: 16)
+        })
+        
+        lazy var lblRequired = UILabel().then({
+            $0.text = "필수"
+            $0.textColor = Asset.Color.priMain.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 12)
+        })
+        
+        viewTitle.addSubview(lblTitle)
+        viewTitle.addSubview(lblRequired)
+        
+        lblTitle.snp.makeConstraints({
+            $0.leading.top.bottom.equalToSuperview()
+        })
+        
+        lblRequired.snp.makeConstraints({
+            $0.leading.equalTo(lblTitle.snp.trailing).offset(6)
+            $0.centerY.equalTo(lblTitle)
+        })
+        
+        return viewTitle
+    }
+    
+    static func scrollView(viewContents: UIView, bounces: Bool) -> UIScrollView {
+        lazy var scrollView = UIScrollView().then({
+            $0.bounces = bounces
+        })
+        
+        _ = viewContents.then({
+            $0.backgroundColor = .clear
+        })
+        
+        scrollView.addSubview(viewContents)
+        
+        viewContents.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width)
+        })
+        
+        return scrollView
+    }
 }
