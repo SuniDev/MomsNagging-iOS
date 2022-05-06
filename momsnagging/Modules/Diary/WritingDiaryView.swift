@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import RxSwift
+import RxKeyboard
 
 class WritingDiaryView: BaseViewController, Navigatable {
     
@@ -39,9 +40,12 @@ class WritingDiaryView: BaseViewController, Navigatable {
         $0.backgroundColor = .clear
     })
     
-    lazy var btnComplete = UIButton().then({
+    lazy var btnDone = UIButton().then({
+        $0.isEnabled = false
         $0.setTitle("완료", for: .normal)
-        $0.setTitleColor(Asset.Color.monoDark040.color, for: .normal)
+        $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
+        $0.setTitleColor(Asset.Color.monoDark040.color, for: .disabled)
+        $0.setTitleColor(Asset.Color.priDark020.color, for: .highlighted)
     })
     
     lazy var viewBackground = UIView().then({
@@ -61,7 +65,7 @@ class WritingDiaryView: BaseViewController, Navigatable {
     lazy var tvContents = UITextView().then({
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.textColor = Asset.Color.monoDark010.color
-        $0.returnKeyType = .done
+        $0.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     })
     
     // MARK: - init
@@ -95,7 +99,7 @@ class WritingDiaryView: BaseViewController, Navigatable {
         viewHeader.addSubview(lblDate)
         viewHeader.addSubview(imgvDropDown)
         viewHeader.addSubview(btnCalendar)
-        viewHeader.addSubview(btnComplete)
+        viewHeader.addSubview(btnDone)
         
         view.addSubview(viewBackground)
         viewBackground.addSubview(tfTitle)
@@ -127,7 +131,7 @@ class WritingDiaryView: BaseViewController, Navigatable {
             $0.bottom.equalTo(lblDate).offset(5)
         })
         
-        btnComplete.snp.makeConstraints({
+        btnDone.snp.makeConstraints({
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-16)
         })
@@ -146,8 +150,8 @@ class WritingDiaryView: BaseViewController, Navigatable {
         
         tvContents.snp.makeConstraints({
             $0.top.equalTo(tfTitle.snp.bottom).offset(30)
-            $0.leading.equalToSuperview().offset(24)
-            $0.trailing.equalToSuperview().offset(-24)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-24)
         })
     }
@@ -158,13 +162,21 @@ class WritingDiaryView: BaseViewController, Navigatable {
         
         let input = WritingDiaryViewModel
             .Input(
+                willApearWritingDiary: rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
                 btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
                 textTitle: self.tfTitle.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
+                textContents: self.tvContents.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
                 editingDidEndOnExitTitle: self.tfTitle.rx.controlEvent(.editingDidEndOnExit).asDriverOnErrorJustComplete(),
                 didBeginContents: self.tvContents.rx.didBeginEditing.asDriverOnErrorJustComplete(),
-                didEndEditingContents: self.tvContents.rx.didEndEditing.asDriverOnErrorJustComplete())
+                didEndEditingContents: self.tvContents.rx.didEndEditing.asDriverOnErrorJustComplete(),
+                btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
         
         let output = viewModel.transform(input: input)
+        
+        output.goToBack
+            .drive(onNext: {
+                self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
         
         output.endEditingTitle
             .drive(onNext: {
@@ -175,33 +187,30 @@ class WritingDiaryView: BaseViewController, Navigatable {
         output.setContentsPlaceholder
             .drive(onNext: { text in
                 self.tvContents.text = text
+                self.tvContents.textColor = text.isEmpty ? Asset.Color.monoDark010.color : Asset.Color.monoDark030.color
+            }).disposed(by: disposeBag)
+        
+        output.canBeDone
+            .debug()
+            .drive(onNext: { isEnabled in
+                self.btnDone.isEnabled = isEnabled
+            }).disposed(by: disposeBag)
+        
+        output.successDoneDiary
+            .drive(onNext: { title in
+                CommonView.showAlert(vc: self, type: .oneBtn, title: title, message: "", doneTitle: STR_DONE, doneHandler: {
+                    self.navigator.pop(sender: self)
+                })
+            }).disposed(by: disposeBag)
                 
+        RxKeyboard.instance.visibleHeight
+            .skip(1)
+            .drive(onNext: { height in
+                let margin = height + 16
+                self.tvContents.snp.updateConstraints({
+                    $0.bottom.equalToSuperview().offset(-margin)
+                })
+                self.view.layoutIfNeeded()
             }).disposed(by: disposeBag)
     }
 }
-//extension WritingDiaryView: UITextViewDelegate {
-//
-//    func initTextView() {
-//        tvContents.delegate = self
-//        tvContents.text = getContentsPlaceholder(.fondMom)
-//        tvContents.textColor = .lightGray
-//    }
-//
-//    // TextView Place Holder
-//    func textViewDidBeginEditing(_ textView: UITextView) {
-//        if textView.textColor == .lightGray {
-//            textView.text = nil
-//            textView.font = FontFamily.Pretendard.regular.font(size: 14)
-//            textView.textColor = Asset.Color.monoDark010.color
-//        }
-//
-//    }
-//    // TextView Place Holder
-//    func textViewDidEndEditing(_ textView: UITextView) {
-//        if textView.text.isEmpty {
-//            textView.text = getContentsPlaceholder(.fondMom)
-//            textView.font = FontFamily.Pretendard.regular.font(size: 14)
-//            textView.textColor = .lightGray
-//        }
-//    }
-//}
