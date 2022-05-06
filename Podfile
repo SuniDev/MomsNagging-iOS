@@ -28,6 +28,7 @@ target 'momsnagging' do
   pod 'RxViewController', '~> 2.0' # https://github.com/devxoul/RxViewController
   pod 'RxOptional', '~> 5.0'  # https://github.com/RxSwiftCommunity/RxOptional
   pod 'RxSwiftExt', '~> 6.0'  # https://github.com/RxSwiftCommunity/RxSwiftExt
+  pod 'RxKeyboard'
 
 	#firebase
 	pod 'Firebase/Analytics'
