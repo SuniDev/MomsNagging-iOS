@@ -9,7 +9,10 @@ import UIKit
 import Then
 import SnapKit
 import RxSwift
-
+/*
+ - 참고 사항 -> 월간달력 새로운 파일로 뷰를 생성하여 표시하는게 아닌 Hidden 상태를 True, False로 컨트롤 하고있습니다 :)
+        by) tavi
+ */
 class HomeView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -32,17 +35,26 @@ class HomeView: BaseViewController, Navigatable {
     var viewModel: HomeViewModel!
     var calendarViewModel = CalendarViewModel()
     var disposedBag = DisposeBag()
+    /*
+     prefix : head
+     Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일
+     */
     var headYear: Int = 0
     var headMonth: Int = 0
     var headDay: Int = 0
-    var selectDayIndex: Int?
+    var selectDayIndex: Int?// 주간달력 달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
+    /*
+     prefix : calendar
+     Year, Month, Day 월간달력의 Lbl에 표시하기 위한 날짜 연, 월, 일
+     */
     var calendarYear: Int?
     var calendarMonth: Int?
     var calendarDay: Int?
-    var monthCollectionViewHeight: Int?
-    var dateCheck: Int = 0
-    var calendarSelectIndex: Int?
-    var selectMonth: Int = 0
+    
+    var monthCollectionViewHeight: Int? // 월별로 주(4주~6주)수를 카운팅하여 CollectionView의 높이를 remake하기 위함.
+    var dateCheck: Int = 0 //현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
+    var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
+    var selectMonth: Int = 0 //현재 월(0) 인지 확인 하는 변수
     // MARK: - UI Properties
     var listBtn = UIButton()
     var headTitleLbl = UILabel()
@@ -68,7 +80,7 @@ class HomeView: BaseViewController, Navigatable {
     var btnNext = UIButton().then({
         $0.setImage(UIImage(asset: Asset.Icon.chevronRight), for: .normal)
     })
-    
+    /// 월간달력의 월~ 일 컬렉션뷰
     var weekDayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: weekDayCellLayout())
         collectionView.register(CalendarWeekDayCell.self, forCellWithReuseIdentifier: "CalendarWeekDayCell")
@@ -76,7 +88,7 @@ class HomeView: BaseViewController, Navigatable {
         collectionView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         return collectionView
     }()
-    
+    /// 월간 달력의 일(1 ~ 28,29,30,31)에 해당하는 컬렉션뷰
     var dayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: dayDayCellLayout())
         collectionView.register(HomeCalendarCell.self, forCellWithReuseIdentifier: "HomeCalendarCell")
@@ -85,7 +97,7 @@ class HomeView: BaseViewController, Navigatable {
         collectionView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         return collectionView
     }()
-    
+    ///주간달력 컬렉션뷰
     var weekCalendarCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: weekCalendarDayCellLayout())
         collectionView.register(WeekDayCalendarCell.self, forCellWithReuseIdentifier: "WeekDayCalendarCell")
@@ -94,7 +106,7 @@ class HomeView: BaseViewController, Navigatable {
         collectionView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         return collectionView
     }()
-    
+    /// 홈화면의 주간 달력의 셀 레이아웃
     static func weekCalendarDayCellLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -104,7 +116,7 @@ class HomeView: BaseViewController, Navigatable {
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 21 - (10 * 6)) / 7, height: 56)
         return layout
     }
-    
+    /// 월~일 에 해당하는 셀 레이아웃
     static func weekDayCellLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -114,7 +126,7 @@ class HomeView: BaseViewController, Navigatable {
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 52 - (32.83 * 6)) / 7, height: 18)
         return layout
     }
-    
+    /// 월간 달력의 일(1 ~ 28,29,30,31)에 해당하는 셀 레이아웃
     static func dayDayCellLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -129,7 +141,7 @@ class HomeView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         headTitleLbl.text = calendarViewModel.todayFormatteryyMMdd()
-        headFrame = CommonView.homeHeadFrame(listIconBtn: listBtn, headTitle: headTitleLbl, dropDownImageView: headDropDownIc, dropDownButton: headDropDownBtn, diaryBtn: diaryBtn)
+        headFrame = CommonView.dropDownHeadFrame(leftIcBtn: listBtn, headTitle: headTitleLbl, dropDownImageView: headDropDownIc, dropDownBtn: headDropDownBtn, rightIcBtn: diaryBtn)
         
         calendarYear = calendarViewModel.getYear()
         calendarMonth = calendarViewModel.getMonth()
@@ -263,6 +275,7 @@ class HomeView: BaseViewController, Navigatable {
     // MARK: - Action Bind _ Input
     func actionBind() {
         
+        // dropDown Ic ClickEvent
         headDropDownBtn.rx.tap.bind(onNext: { _ in
             if self.headDropDownBtn.isSelected {
                 print("headDropDownBtn : \(self.headDropDownBtn.isSelected)")
@@ -277,16 +290,19 @@ class HomeView: BaseViewController, Navigatable {
             }
         }).disposed(by: disposedBag)
         
+        // 월간달력 Close Event
         calendarCloseBtn.rx.tap.bind(onNext: { _ in
             self.calendarFrame.isHidden = true
             self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
             self.headDropDownBtn.isSelected = false
         }).disposed(by: disposedBag)
         
+        //월 달력 이전달 ClickEvent
         self.btnPrev.rx.tap.bind {
             self.dateCheck -= 1
             self.calendarViewModel.getLastMonth(currentMonth: self.calendarMonth!, currentYear: self.calendarYear!)
         }.disposed(by: disposedBag)
+        //월 달력 다음달 ClickEvent
         self.btnNext.rx.tap.bind {
             self.dateCheck += 1
             self.calendarViewModel.getNextMonth(currentMonth: self.calendarMonth!, currentYear: self.calendarYear!)
@@ -368,6 +384,7 @@ extension HomeView {
     }
     
     // MARK: - Other
+    /// 일(1 ~ 28,29,30,31)표시 컬렉션뷰를 주(4주~6주)수에 따라 컬렉션뷰 레이아웃 재설정 함수
     func dayCollectionViewRemakeConstraint(count: Int) {
         dayCollectionView.snp.remakeConstraints({
             $0.top.equalTo(weekDayCollectionView.snp.bottom).offset(16)

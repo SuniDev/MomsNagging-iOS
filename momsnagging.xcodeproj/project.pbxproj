@@ -55,6 +55,9 @@
 		8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E72E27D8A89F008CDC22 /* CommonView.swift */; };
 		8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E73027D8AA9C008CDC22 /* ApiList.swift */; };
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
+		8F927A5B2824D5AC000FFA75 /* DiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A5A2824D5AC000FFA75 /* DiaryView.swift */; };
+		8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A5D2824D5B9000FFA75 /* DiaryViewModel.swift */; };
+		8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A602824D5C7000FFA75 /* DiaryModel.swift */; };
 		8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA6873F281CF39400F91EB8 /* MainContainerView.swift */; };
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
 		8FBA852C281E4C940013C91C /* HomeCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */; };
@@ -135,6 +138,9 @@
 		8F82E72E27D8A89F008CDC22 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
 		8F82E73027D8AA9C008CDC22 /* ApiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiList.swift; sourceTree = "<group>"; };
 		8F8DAE9927D8948800F2E78F /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		8F927A5A2824D5AC000FFA75 /* DiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryView.swift; sourceTree = "<group>"; };
+		8F927A5D2824D5B9000FFA75 /* DiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewModel.swift; sourceTree = "<group>"; };
+		8F927A602824D5C7000FFA75 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
 		8FA6873F281CF39400F91EB8 /* MainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerView.swift; sourceTree = "<group>"; };
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
 		8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCalendarCell.swift; sourceTree = "<group>"; };
@@ -527,6 +533,40 @@
 			path = FBConfig;
 			sourceTree = "<group>";
 		};
+		8F927A552824D52A000FFA75 /* Diary */ = {
+			isa = PBXGroup;
+			children = (
+				8F927A582824D539000FFA75 /* Model */,
+				8F927A572824D536000FFA75 /* View */,
+				8F927A562824D531000FFA75 /* ViewModel */,
+			);
+			path = Diary;
+			sourceTree = "<group>";
+		};
+		8F927A562824D531000FFA75 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8F927A5D2824D5B9000FFA75 /* DiaryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8F927A572824D536000FFA75 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8F927A5A2824D5AC000FFA75 /* DiaryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8F927A582824D539000FFA75 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8F927A602824D5C7000FFA75 /* DiaryModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		8FA6873E281CEDA900F91EB8 /* MainContainer */ = {
 			isa = PBXGroup;
 			children = (
@@ -567,6 +607,7 @@
 		A06BB33B27F0BA5E005727AD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8F927A552824D52A000FFA75 /* Diary */,
 				A06BB33E27F0BA74005727AD /* Intro */,
 				A06BB34D27F0C20D005727AD /* Onboarding */,
 				A06BB33F27F0BA92005727AD /* Login */,
@@ -845,6 +886,7 @@
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
+				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
@@ -877,8 +919,10 @@
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F22F832281D0B2E00AB4180 /* ReportCardViewModel.swift in Sources */,
+				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				A067E593281D93F70017EF53 /* NicknameSettingViewModel.swift in Sources */,
+				8F927A5B2824D5AC000FFA75 /* DiaryView.swift in Sources */,
 				8FBA852C281E4C940013C91C /* HomeCalendarCell.swift in Sources */,
 				8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */,
 				8F22F838281D0B4B00AB4180 /* MyModel.swift in Sources */,
