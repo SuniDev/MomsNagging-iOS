@@ -1,5 +1,5 @@
 //
-//  WritingDiaryViewModel.swift
+//  DetailDiaryViewModel.swift
 //  momsnagging
 //
 //  Created by suni on 2022/05/05.
@@ -10,18 +10,17 @@ import RxSwift
 import RxCocoa
 import simd
 
-class WritingDiaryViewModel: BaseViewModel, ViewModelType {
+class DetailDiaryViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
-    private let isModify: BehaviorRelay<Bool>
+    private let isNew: BehaviorRelay<Bool>
     
-    init(isModify: Bool) {
-        self.isModify = BehaviorRelay<Bool>(value: isModify)
+    init(isNew: Bool) {
+        self.isNew = BehaviorRelay<Bool>(value: isNew)
     }
     
     // MARK: - Input
     struct Input {
-        let willApearWritingDiary: Driver<Void>
         let btnBackTapped: Driver<Void>
         let textTitle: Driver<String?>
         let textContents: Driver<String?>
@@ -29,12 +28,14 @@ class WritingDiaryViewModel: BaseViewModel, ViewModelType {
         let didBeginContents: Driver<Void>
         let didEndEditingContents: Driver<Void>
         let btnDoneTapped: Driver<Void>
+        let btnModifyTapped: Driver<Void>
+        let doneAlertDoneHandler: Driver<Void>
     }
     
     // MARK: - Output
     struct Output {
-        /// 수정 상태
-        let isModify: Driver<Bool>
+        /// 작성 모드
+        let isWriting: Driver<Bool>
         /// 뒤로 가기
         let goToBack: Driver<Void>
         /// 제목 리턴
@@ -49,18 +50,31 @@ class WritingDiaryViewModel: BaseViewModel, ViewModelType {
     
     func transform(input: Input) -> Output {
         
+        let isWriting = BehaviorRelay<Bool>(value: false)
         let contentsPlaceHolder = BehaviorRelay<String>(value: "")
         let textTitle = BehaviorRelay<String>(value: "")
         let textContents = BehaviorRelay<String>(value: "")
         
-        input.willApearWritingDiary
-            .asObservable()
+        self.isNew
+            .bind(onNext: {
+                isWriting.accept($0)
+            }).disposed(by: disposeBag)
+        
+        isWriting
+            .filter { $0 == true }
             .flatMapLatest({ _ -> Observable<String> in
                 // TODO: 사용자 잔소리 강도
                 return self.getContentsPlaceholder(.fondMom)
             })
             .subscribe(onNext: { text in
-                contentsPlaceHolder.accept(text)
+                if textContents.value.isEmpty {
+                    contentsPlaceHolder.accept(text)
+                }
+            }).disposed(by: disposeBag)
+        
+        input.btnModifyTapped
+            .drive(onNext: {
+                isWriting.accept(true)
             }).disposed(by: disposeBag)
         
         input.textTitle
@@ -96,7 +110,7 @@ class WritingDiaryViewModel: BaseViewModel, ViewModelType {
         
         let canBeDone = Observable.combineLatest(textTitle.asObservable(), textContents.asObservable())
             .map({ dTitle, dContents -> Bool in
-                if !dTitle.isEmpty && !dContents.isEmpty {
+                if !dTitle.isEmpty && !dContents.isEmpty && contentsPlaceHolder.value.isEmpty {
                     return true
                 }
                 return false
@@ -110,7 +124,12 @@ class WritingDiaryViewModel: BaseViewModel, ViewModelType {
                 return self.getDoneAlertTitle(.fondMom)
             }
         
-        return Output(isModify: isModify.asDriverOnErrorJustComplete(),
+        input.doneAlertDoneHandler
+            .drive(onNext: {
+                isWriting.accept(false)
+            }).disposed(by: disposeBag)
+        
+        return Output(isWriting: isWriting.asDriverOnErrorJustComplete(),
                       goToBack: input.btnBackTapped,
                       endEditingTitle: input.editingDidEndOnExitTitle,
                       setContentsPlaceholder: contentsPlaceHolder.asDriverOnErrorJustComplete(),
@@ -118,7 +137,7 @@ class WritingDiaryViewModel: BaseViewModel, ViewModelType {
                       successDoneDiary: successDoneDiary.asDriverOnErrorJustComplete())
     }
 }
-extension WritingDiaryViewModel {
+extension DetailDiaryViewModel {
     
     private func getContentsPlaceholder( _ type: NaggingIntensity) -> Observable<String> {
         return Observable<String>.create { observer -> Disposable in

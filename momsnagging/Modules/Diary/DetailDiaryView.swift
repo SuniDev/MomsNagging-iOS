@@ -1,5 +1,5 @@
 //
-//  WritingDiaryView.swift
+//  DetailDiaryView.swift
 //  momsnagging
 //
 //  Created by suni on 2022/05/05.
@@ -10,12 +10,13 @@ import SnapKit
 import Then
 import RxSwift
 import RxKeyboard
+import RxCocoa
 
-class WritingDiaryView: BaseViewController, Navigatable {
+class DetailDiaryView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel: WritingDiaryViewModel?
+    var viewModel: DetailDiaryViewModel?
     var navigator: Navigator!
     
     // MARK: - UI Properties
@@ -48,6 +49,13 @@ class WritingDiaryView: BaseViewController, Navigatable {
         $0.setTitleColor(Asset.Color.priDark020.color, for: .highlighted)
     })
     
+    lazy var btnModify = UIButton().then({
+        $0.isHidden = true
+        $0.setTitle("수정", for: .normal)
+        $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
+        $0.setTitleColor(Asset.Color.priDark020.color, for: .highlighted)
+    })
+    
     lazy var viewBackground = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
@@ -66,11 +74,11 @@ class WritingDiaryView: BaseViewController, Navigatable {
     lazy var tvContents = UITextView().then({
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.textColor = Asset.Color.monoDark010.color
-        $0.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        $0.textContainerInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
     })
     
     // MARK: - init
-    init(viewModel: WritingDiaryViewModel, navigator: Navigator) {
+    init(viewModel: DetailDiaryViewModel, navigator: Navigator) {
         self.viewModel = viewModel
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
@@ -101,6 +109,7 @@ class WritingDiaryView: BaseViewController, Navigatable {
         viewHeader.addSubview(imgvDropDown)
         viewHeader.addSubview(btnCalendar)
         viewHeader.addSubview(btnDone)
+        viewHeader.addSubview(btnModify)
         
         view.addSubview(viewBackground)
         viewBackground.addSubview(tfTitle)
@@ -113,7 +122,7 @@ class WritingDiaryView: BaseViewController, Navigatable {
         
         btnBack.snp.makeConstraints({
             $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
         })
         
         lblDate.snp.makeConstraints({
@@ -134,12 +143,17 @@ class WritingDiaryView: BaseViewController, Navigatable {
         
         btnDone.snp.makeConstraints({
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-16)
+            $0.trailing.equalToSuperview().offset(-20)
+        })
+        
+        btnModify.snp.makeConstraints({
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-20)
         })
         
         viewBackground.snp.makeConstraints({
             $0.top.equalTo(viewHeader.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         })
         
         tfTitle.snp.makeConstraints({
@@ -160,19 +174,29 @@ class WritingDiaryView: BaseViewController, Navigatable {
     // MARK: - bind
     override func bind() {
         guard let viewModel = viewModel else { return }
+        let doneAlertDoneHandler = PublishRelay<Void>()
         
-        let input = WritingDiaryViewModel
+        let input = DetailDiaryViewModel
             .Input(
-                willApearWritingDiary: rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
                 btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
                 textTitle: self.tfTitle.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
                 textContents: self.tvContents.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
                 editingDidEndOnExitTitle: self.tfTitle.rx.controlEvent(.editingDidEndOnExit).asDriverOnErrorJustComplete(),
                 didBeginContents: self.tvContents.rx.didBeginEditing.asDriverOnErrorJustComplete(),
                 didEndEditingContents: self.tvContents.rx.didEndEditing.asDriverOnErrorJustComplete(),
-                btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
+                btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete(),
+                btnModifyTapped: self.btnModify.rx.tap.asDriverOnErrorJustComplete(),
+                doneAlertDoneHandler: doneAlertDoneHandler.asDriverOnErrorJustComplete())
         
         let output = viewModel.transform(input: input)
+        
+        output.isWriting
+            .drive(onNext: { isWriting in
+                self.tfTitle.isEnabled = isWriting
+                self.tvContents.isEditable = isWriting
+                self.btnDone.isHidden = !isWriting
+                self.btnModify.isHidden = isWriting
+            }).disposed(by: disposeBag)
         
         output.goToBack
             .drive(onNext: {
@@ -192,15 +216,15 @@ class WritingDiaryView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         output.canBeDone
-            .debug()
             .drive(onNext: { isEnabled in
                 self.btnDone.isEnabled = isEnabled
             }).disposed(by: disposeBag)
         
         output.successDoneDiary
             .drive(onNext: { title in
+                self.view.endEditing(true)
                 CommonView.showAlert(vc: self, type: .oneBtn, title: title, message: "", doneTitle: STR_DONE, doneHandler: {
-                    self.navigator.pop(sender: self)
+                    doneAlertDoneHandler.accept(())
                 })
             }).disposed(by: disposeBag)
                 
