@@ -97,7 +97,7 @@ class CommonView {
             $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
         })
         leftIcBtn.setImage(UIImage(asset: Asset.Icon.straightLeft), for: .normal)
-        rightIcBtn.setImage(UIImage(asset: Asset.Icon.), for: .normal)
+        rightIcBtn.setImage(UIImage(asset: Asset.Icon.diaryWrite), for: .normal)
         
         view.addSubview(headTitle)
         view.addSubview(leftIcBtn)

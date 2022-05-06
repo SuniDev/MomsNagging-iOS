@@ -329,7 +329,6 @@ class HomeView: BaseViewController, Navigatable {
 }
 
 extension HomeView {
-    // MARK: - HomeCalendarView
     /**
      # homeCalendarView
      - Authors: tavi

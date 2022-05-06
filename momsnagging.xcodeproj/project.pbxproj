@@ -58,6 +58,7 @@
 		8F927A5B2824D5AC000FFA75 /* DiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A5A2824D5AC000FFA75 /* DiaryView.swift */; };
 		8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A5D2824D5B9000FFA75 /* DiaryViewModel.swift */; };
 		8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A602824D5C7000FFA75 /* DiaryModel.swift */; };
+		8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F927A622824FF83000FFA75 /* DiaryCalendarCell.swift */; };
 		8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA6873F281CF39400F91EB8 /* MainContainerView.swift */; };
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
 		8FBA852C281E4C940013C91C /* HomeCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */; };
@@ -141,6 +142,7 @@
 		8F927A5A2824D5AC000FFA75 /* DiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryView.swift; sourceTree = "<group>"; };
 		8F927A5D2824D5B9000FFA75 /* DiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewModel.swift; sourceTree = "<group>"; };
 		8F927A602824D5C7000FFA75 /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
+		8F927A622824FF83000FFA75 /* DiaryCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCalendarCell.swift; sourceTree = "<group>"; };
 		8FA6873F281CF39400F91EB8 /* MainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerView.swift; sourceTree = "<group>"; };
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
 		8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCalendarCell.swift; sourceTree = "<group>"; };
@@ -555,6 +557,7 @@
 			isa = PBXGroup;
 			children = (
 				8F927A5A2824D5AC000FFA75 /* DiaryView.swift */,
+				8F927A622824FF83000FFA75 /* DiaryCalendarCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -887,6 +890,7 @@
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
+				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
