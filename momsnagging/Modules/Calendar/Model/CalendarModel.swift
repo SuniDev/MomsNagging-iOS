@@ -112,7 +112,6 @@ class CalendarModel {
                 count = 6
             }
         }
-        print("이번달 시작 요일 : \(count)")
         return count
     }
     /// 입력 날짜의 요일 가져오기 월:0 ~ 일:6

@@ -96,8 +96,8 @@ class CommonView {
             $0.textColor = UIColor(asset: Asset.Color.monoDark010)
             $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
         })
-        leftIcBtn.setImage(UIImage(asset: Asset.Icon.list), for: .normal)
-        rightIcBtn.setImage(UIImage(asset: Asset.Icon.diary), for: .normal)
+        leftIcBtn.setImage(UIImage(asset: Asset.Icon.straightLeft), for: .normal)
+        rightIcBtn.setImage(UIImage(asset: Asset.Icon.), for: .normal)
         
         view.addSubview(headTitle)
         view.addSubview(leftIcBtn)

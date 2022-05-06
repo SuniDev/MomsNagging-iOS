@@ -8,9 +8,25 @@
 import Foundation
 import Moya
 import SwiftyJSON
+import RxSwift
+import RxCocoa
 
-class DiaryViewModel {
+class DiaryViewModel: BaseViewModel, ViewModelType {
     
+    var disposeBag = DisposeBag()
+
+    override init() {
+    }
+    // MARK: - Input
+    struct Input {
+    }
+    // MARK: - Output
+    struct Output {
+    }
+    
+    func transform(input: Input) -> Output {
+        return Output()
+    }
 }
 // MARK: - API
 extension DiaryViewModel {

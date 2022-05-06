@@ -52,9 +52,9 @@ class HomeView: BaseViewController, Navigatable {
     var calendarDay: Int?
     
     var monthCollectionViewHeight: Int? // 월별로 주(4주~6주)수를 카운팅하여 CollectionView의 높이를 remake하기 위함.
-    var dateCheck: Int = 0 //현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
+    var dateCheck: Int = 0 // 현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
-    var selectMonth: Int = 0 //현재 월(0) 인지 확인 하는 변수
+    var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
     // MARK: - UI Properties
     var listBtn = UIButton()
     var headTitleLbl = UILabel()
@@ -97,7 +97,7 @@ class HomeView: BaseViewController, Navigatable {
         collectionView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         return collectionView
     }()
-    ///주간달력 컬렉션뷰
+    /// 주간달력 컬렉션뷰
     var weekCalendarCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: weekCalendarDayCellLayout())
         collectionView.register(WeekDayCalendarCell.self, forCellWithReuseIdentifier: "WeekDayCalendarCell")
@@ -297,16 +297,25 @@ class HomeView: BaseViewController, Navigatable {
             self.headDropDownBtn.isSelected = false
         }).disposed(by: disposedBag)
         
-        //월 달력 이전달 ClickEvent
+        // 월 달력 이전달 ClickEvent
         self.btnPrev.rx.tap.bind {
             self.dateCheck -= 1
             self.calendarViewModel.getLastMonth(currentMonth: self.calendarMonth!, currentYear: self.calendarYear!)
         }.disposed(by: disposedBag)
-        //월 달력 다음달 ClickEvent
+        // 월 달력 다음달 ClickEvent
         self.btnNext.rx.tap.bind {
             self.dateCheck += 1
             self.calendarViewModel.getNextMonth(currentMonth: self.calendarMonth!, currentYear: self.calendarYear!)
         }.disposed(by: disposedBag)
+        
+        // 일기장 ClickEvent
+        self.diaryBtn.rx.tap.bind {
+            print("diary Click")
+            let viewModel = DiaryViewModel()
+            let vc = self.navigator.get(seque: .diary(viewModel: viewModel))
+            self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)
+        }.disposed(by: disposedBag)
+        // 정렬 ClickEvent
     }
     // MARK: - Other
     func cellSelectInit() {
