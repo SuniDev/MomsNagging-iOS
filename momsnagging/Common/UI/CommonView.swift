@@ -13,8 +13,19 @@ import SnapKit
 // MARK: - 공통되는 자주사용되는 2~3회 이상 사용되는 공통 속성의 UI설정해서 바로 가져다 쓰면 편할듯합니다.
 /// 공통뷰 모음 Class
 class CommonView {
-    
-    static func homeHeadFrame(listIconBtn: UIButton, headTitle: UILabel, dropDownImageView: UIImageView, dropDownButton: UIButton, diaryBtn: UIButton) -> UIView {
+    /**
+     # dropDownHeadFrame
+     - parameters:
+        - leftIcBtn : HeadFrame 왼쪽 IconBtn
+        - headTitle : 헤더의 타이틀
+        - dropDwonImageView: 타이틀 바로 옆 아이콘 ImageView
+        - dropDownBtn: 드롭다운 액션을 받을 버튼으로 속성없이 범위 지정을 위해 parameter로 받음
+        - rightIcBtn:HeadFrame 오르쪽 IconBtn
+     - Authors: Tavi
+     - Returns: UIView
+     - Note: 타이틀옆에  드롭다운 등의 Icon이 존재할때의 HeadFrame
+     */
+    static func dropDownHeadFrame(leftIcBtn: UIButton, headTitle: UILabel, dropDownImageView: UIImageView, dropDownBtn: UIButton, rightIcBtn: UIButton) -> UIView {
         let view = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         })
@@ -25,18 +36,18 @@ class CommonView {
         dropDownImageView.then({
             $0.image = UIImage(asset: Asset.Icon.chevronDown)
         })
-        listIconBtn.then({
+        leftIcBtn.then({
             $0.setImage(UIImage(asset: Asset.Icon.list), for: .normal)
         })
-        diaryBtn.then({
+        rightIcBtn.then({
             $0.setImage(UIImage(asset: Asset.Icon.diary), for: .normal)
         })
         
         view.addSubview(headTitle)
         view.addSubview(dropDownImageView)
-        view.addSubview(dropDownButton)
-        view.addSubview(listIconBtn)
-        view.addSubview(diaryBtn)
+        view.addSubview(dropDownBtn)
+        view.addSubview(leftIcBtn)
+        view.addSubview(rightIcBtn)
         
         headTitle.snp.makeConstraints({
             $0.center.equalTo(view.snp.center)
@@ -46,18 +57,61 @@ class CommonView {
             $0.centerY.equalTo(view.snp.centerY)
             $0.leading.equalTo(headTitle.snp.trailing).offset(5.5)
         })
-        dropDownButton.snp.makeConstraints({
+        dropDownBtn.snp.makeConstraints({
             $0.top.equalTo(headTitle.snp.top)
             $0.leading.equalTo(headTitle.snp.leading)
             $0.trailing.equalTo(dropDownImageView.snp.trailing)
             $0.bottom.equalTo(headTitle.snp.bottom)
         })
-        listIconBtn.snp.makeConstraints({
+        leftIcBtn.snp.makeConstraints({
             $0.width.height.equalTo(24)
             $0.leading.equalTo(view.snp.leading).offset(16)
             $0.centerY.equalTo(view.snp.centerY)
         })
-        diaryBtn.snp.makeConstraints({
+        rightIcBtn.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.trailing.equalTo(view.snp.trailing).offset(-16)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        
+        return view
+    }
+    
+    /**
+     # defaultHeadFrame
+     - parameters:
+        - leftIcBtn : HeadFrame 왼쪽 IconBtn
+        - headTitle : 헤더의 타이틀
+        - rightIcBtn:HeadFrame 오르쪽 IconBtn
+     - Authors: Tavi
+     - Returns: UIView
+     - Note: 기본형태의 HeadFrame
+     */
+    static func defaultHeadFrame(leftIcBtn: UIButton, headTitle: String, rightIcBtn: UIButton) -> UIView {
+        let view = UIView().then({
+            $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+        })
+        let headTitle = UILabel().then({
+            $0.text = headTitle
+            $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+            $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
+        })
+        leftIcBtn.setImage(UIImage(asset: Asset.Icon.straightLeft), for: .normal)
+        rightIcBtn.setImage(UIImage(asset: Asset.Icon.diaryWrite), for: .normal)
+        
+        view.addSubview(headTitle)
+        view.addSubview(leftIcBtn)
+        view.addSubview(rightIcBtn)
+        
+        headTitle.snp.makeConstraints({
+            $0.center.equalTo(view.snp.center)
+        })
+        leftIcBtn.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.leading.equalTo(view.snp.leading).offset(16)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        rightIcBtn.snp.makeConstraints({
             $0.width.height.equalTo(24)
             $0.trailing.equalTo(view.snp.trailing).offset(-16)
             $0.centerY.equalTo(view.snp.centerY)
