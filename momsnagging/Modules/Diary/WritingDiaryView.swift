@@ -53,7 +53,8 @@ class WritingDiaryView: BaseViewController, Navigatable {
     })
     
     lazy var tfTitle = UITextField().then({
-        $0.placeholder = "제목"
+        $0.attributedPlaceholder = NSAttributedString(string: "제목",
+                                                      attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
         $0.textColor = Asset.Color.monoDark010.color
         $0.addRightAndLeftPadding(width: 8)

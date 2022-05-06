@@ -90,9 +90,11 @@ class NicknameSettingView: BaseViewController, Navigatable {
     
     lazy var tfNickname = UITextField().then({
         $0.isHidden = true
+        $0.textColor = Asset.Color.monoDark010.color
         $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
         $0.layer.cornerRadius = 4
-        $0.placeholder = "띄어쓰기 포함 한/영/숫자 1-10글자"
+        $0.attributedPlaceholder = NSAttributedString(string: "띄어쓰기 포함 한/영/숫자 1-10글자",
+                                                      attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
         $0.addLeftPadding(width: 8)
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.clearButtonMode = .whileEditing
