@@ -278,12 +278,10 @@ class HomeView: BaseViewController, Navigatable {
         // dropDown Ic ClickEvent
         headDropDownBtn.rx.tap.bind(onNext: { _ in
             if self.headDropDownBtn.isSelected {
-                print("headDropDownBtn : \(self.headDropDownBtn.isSelected)")
                 self.calendarFrame.isHidden = true
                 self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
                 self.headDropDownBtn.isSelected = false
             } else {
-                print("headDropDownBtn : \(self.headDropDownBtn.isSelected)")
                 self.calendarFrame.isHidden = false
                 self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronUp)
                 self.headDropDownBtn.isSelected = true
@@ -310,7 +308,6 @@ class HomeView: BaseViewController, Navigatable {
         
         // 일기장 ClickEvent
         self.diaryBtn.rx.tap.bind {
-            print("diary Click")
             let viewModel = DiaryViewModel()
             let vc = self.navigator.get(seque: .diary(viewModel: viewModel))
             self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)
@@ -319,7 +316,6 @@ class HomeView: BaseViewController, Navigatable {
     }
     // MARK: - Other
     func cellSelectInit() {
-        print("select init")
         for i in 0..<37 {
             let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
             cell?.selectDayRoundFrame.isHidden = true
