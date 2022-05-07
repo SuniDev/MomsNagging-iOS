@@ -42,17 +42,7 @@ class IDSettingView: BaseViewController, Navigatable {
         $0.image = Asset.Assets.idsettingAnswer.image
     })
     
-    lazy var tfID = UITextField().then({
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
-        $0.layer.cornerRadius = 4
-        $0.attributedPlaceholder = NSAttributedString(string: "밑줄, 띄어쓰기 제외 영어/숫자 4-15 글자",
-                                                      attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
-        $0.addLeftPadding(width: 8)
-        $0.font = FontFamily.Pretendard.regular.font(size: 14)
-        $0.clearButtonMode = .whileEditing
-        $0.returnKeyType = .done
-    })
+    lazy var tfID = UITextField()
     
     lazy var lblHint = UILabel().then({
         $0.text = ""
@@ -69,9 +59,6 @@ class IDSettingView: BaseViewController, Navigatable {
     })
     
     lazy var btnDone = CommonButton().then({
-        $0.normalBackgroundColor = Asset.Color.priMain.color
-        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
-        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.isEnabled = false
         $0.setTitle("네!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
@@ -94,14 +81,19 @@ class IDSettingView: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.skyblue.color
-               
+        
+        tfID = CommonView.textField(placeHolder: "밑줄, 띄어쓰기 제외 영어/숫자 4-15 글자").then({
+            $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
+            $0.clearButtonMode = .whileEditing
+            $0.returnKeyType = .done
+            
+        })
+        
     }
     
     // MARK: - layoutSetting

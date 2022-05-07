@@ -28,13 +28,8 @@ class NicknameSettingView: BaseViewController, Navigatable {
     var safeAreaHeight: CGFloat = 0
     
     // MARK: - UI Properties
-    lazy var scrollView = UIScrollView().then({
-        $0.bounces = false
-    })
-    
-    lazy var viewContents = UIView().then({
-        $0.backgroundColor = .clear
-    })
+    lazy var scrollView = UIScrollView()
+    lazy var viewContents = UIView()
     
     lazy var btnBack = UIButton().then({
         $0.backgroundColor = .clear
@@ -88,18 +83,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
         $0.backgroundColor = .clear
     })
     
-    lazy var tfNickname = UITextField().then({
-        $0.isHidden = true
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
-        $0.layer.cornerRadius = 4
-        $0.attributedPlaceholder = NSAttributedString(string: "띄어쓰기 포함 한/영/숫자 1-10글자",
-                                                      attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
-        $0.addLeftPadding(width: 8)
-        $0.font = FontFamily.Pretendard.regular.font(size: 14)
-        $0.clearButtonMode = .whileEditing
-        $0.returnKeyType = .done
-    })
+    lazy var tfNickname = UITextField()
     
     lazy var lblHint = UILabel().then({
         $0.text = ""
@@ -132,9 +116,6 @@ class NicknameSettingView: BaseViewController, Navigatable {
     })
     
     lazy var btnDone = CommonButton().then({
-        $0.normalBackgroundColor = Asset.Color.priMain.color
-        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
-        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.isEnabled = false
         $0.setTitle("네 엄마!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
@@ -180,14 +161,20 @@ class NicknameSettingView: BaseViewController, Navigatable {
             .foregroundColor: Asset.Color.priMain.color,
             .underlineStyle: NSUnderlineStyle.single.rawValue
         ]
+        
+        scrollView = CommonView.scrollView(viewContents: viewContents, bounces: false)
+        tfNickname = CommonView.textField(placeHolder: "띄어쓰기 포함 한/영/숫자 1-10글자").then({
+            $0.isHidden = true
+            $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
+            $0.clearButtonMode = .whileEditing
+            $0.returnKeyType = .done
+        })
     }
     
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewBottom)
         view.addSubview(scrollView)
-        
-        scrollView.addSubview(viewContents)
         
         viewContents.addSubview(imgvBack)
         viewContents.addSubview(btnBack)
@@ -220,11 +207,6 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         scrollView.snp.makeConstraints({
             $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-        })
-        
-        viewContents.snp.makeConstraints({
-            $0.top.leading.trailing.bottom.equalToSuperview()
-            $0.width.equalTo(UIScreen.main.bounds.width)
         })
         
         imgvBack.snp.makeConstraints({

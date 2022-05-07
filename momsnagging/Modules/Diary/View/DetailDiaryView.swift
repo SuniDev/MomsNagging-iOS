@@ -20,33 +20,16 @@ class DetailDiaryView: BaseViewController, Navigatable {
     var navigator: Navigator!
     
     // MARK: - UI Properties
-    lazy var viewHeader = UIView().then({
-        $0.backgroundColor = Asset.Color.monoWhite.color
-    })
-    
-    lazy var btnBack = UIButton().then({
-        $0.setImage(Asset.Icon.straightLeft.image, for: .normal)
-    })
-    
-    lazy var lblDate = UILabel().then({
-        $0.textColor = UIColor(asset: Asset.Color.monoDark010)
-        $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
-    })
+    lazy var viewHeader = UIView()
+    lazy var btnBack = UIButton()
+    lazy var lblDate = UILabel()
+    lazy var btnDone = UIButton()
     
     lazy var imgvDropDown = UIImageView().then({
         $0.image = Asset.Icon.chevronDown.image
     })
-    
     lazy var btnCalendar = UIButton().then({
         $0.backgroundColor = .clear
-    })
-    
-    lazy var btnDone = UIButton().then({
-        $0.isEnabled = false
-        $0.setTitle("완료", for: .normal)
-        $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
-        $0.setTitleColor(Asset.Color.monoDark040.color, for: .disabled)
-        $0.setTitleColor(Asset.Color.priDark020.color, for: .highlighted)
     })
     
     lazy var btnModify = UIButton().then({
@@ -60,16 +43,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
     
-    lazy var tfTitle = UITextField().then({
-        $0.attributedPlaceholder = NSAttributedString(string: "제목",
-                                                      attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
-        $0.font = FontFamily.Pretendard.regular.font(size: 16)
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.addRightAndLeftPadding(width: 8)
-        $0.contentVerticalAlignment = .center
-        $0.borderStyle = .none
-        $0.returnKeyType = .next
-    })
+    lazy var tfTitle = UITextField()
     
     lazy var tvContents = UITextView().then({
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
@@ -99,16 +73,21 @@ class DetailDiaryView: BaseViewController, Navigatable {
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
+        
+        tfTitle = CommonView.textField(placeHolder: "제목", FontFamily.Pretendard.regular.font(size: 16)).then({
+            $0.contentVerticalAlignment = .center
+            $0.borderStyle = .none
+            $0.returnKeyType = .next
+        })
+        viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: lblDate, btnDone: btnDone)
+        
     }
     
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewHeader)
-        viewHeader.addSubview(btnBack)
-        viewHeader.addSubview(lblDate)
         viewHeader.addSubview(imgvDropDown)
         viewHeader.addSubview(btnCalendar)
-        viewHeader.addSubview(btnDone)
         viewHeader.addSubview(btnModify)
         
         view.addSubview(viewBackground)
@@ -118,15 +97,6 @@ class DetailDiaryView: BaseViewController, Navigatable {
         viewHeader.snp.makeConstraints({
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(60)
-        })
-        
-        btnBack.snp.makeConstraints({
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(20)
-        })
-        
-        lblDate.snp.makeConstraints({
-            $0.center.equalToSuperview()
         })
         
         imgvDropDown.snp.makeConstraints({
@@ -139,11 +109,6 @@ class DetailDiaryView: BaseViewController, Navigatable {
             $0.top.leading.equalTo(lblDate).offset(-5)
             $0.trailing.equalTo(imgvDropDown).offset(5)
             $0.bottom.equalTo(lblDate).offset(5)
-        })
-        
-        btnDone.snp.makeConstraints({
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-20)
         })
         
         btnModify.snp.makeConstraints({
