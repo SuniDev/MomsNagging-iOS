@@ -120,6 +120,45 @@ class CommonView {
         return view
     }
     
+    /**
+     # defaultHeadFrame
+     - parameters:
+        - btnBack : HeadFrame 왼쪽 '뒤로가기' 버튼
+        - headTitle : HeadFrame 가운데 타이틀
+     - Authors: Tavi
+     - Returns: UIView
+     - Note: 기본형태의 HeadFrame
+     */
+    static func defaultHeadFrame(leftIcBtn: UIButton, headTitle: String) -> UIView {
+        
+        let view = UIView().then({
+            $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+        })
+        
+        let headTitle = UILabel().then({
+            $0.text = headTitle
+            $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+            $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
+        })
+        
+        leftIcBtn.setImage(UIImage(asset: Asset.Icon.straightLeft), for: .normal)
+        
+        view.addSubview(headTitle)
+        view.addSubview(leftIcBtn)
+        
+        headTitle.snp.makeConstraints({
+            $0.center.equalTo(view.snp.center)
+        })
+        
+        leftIcBtn.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.leading.equalTo(view.snp.leading).offset(16)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        
+        return view
+    }
+    
     // Alert의 버튼 타입에 사용할 enum으로 Alert의 버튼 1개 또는 2개일때를 구분하기 위하여 생성함.
     enum AlertType {
         case oneBtn
