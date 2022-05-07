@@ -108,18 +108,18 @@ internal enum Asset {
     internal static let list = ImageAsset(name: "list")
     internal static let medal = ImageAsset(name: "medal")
     internal static let more = ImageAsset(name: "more")
+    internal static let moreVertical = ImageAsset(name: "moreVertical")
     internal static let my = ImageAsset(name: "my")
     internal static let plus = ImageAsset(name: "plus")
     internal static let reportCard = ImageAsset(name: "reportCard")
     internal static let sliders = ImageAsset(name: "sliders")
     internal static let straightLeft = ImageAsset(name: "straight_left")
     internal static let todoAddFloating = ImageAsset(name: "todoAddFloating")
+    internal static let todoNonSelect = ImageAsset(name: "todoNonSelect")
+    internal static let todoSelect = ImageAsset(name: "todoSelect")
     internal static let x = ImageAsset(name: "x")
     internal static let xFloating = ImageAsset(name: "xFloating")
     internal static let xCircle = ImageAsset(name: "x_circle")
-    internal static let todoSelect = ImageAsset(name: "todoSelect")
-    internal static let todoNonSelect = ImageAsset(name: "todoNonSelect")
-    internal static let moreVertical = ImageAsset(name: "moreVertical")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

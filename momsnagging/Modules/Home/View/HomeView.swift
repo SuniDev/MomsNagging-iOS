@@ -18,6 +18,7 @@ class HomeView: BaseViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         actionBind()
+        setTodoTableView()
         setFloatingBtn()
     }
     // MARK: - Temp
@@ -137,13 +138,18 @@ class HomeView: BaseViewController, Navigatable {
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 42 - (23 * 6)) / 7, height: 28)
         return layout
     }
+    
     var floatingBtn = UIButton() // 플로팅 버튼
     var addHabitBtn = UIButton() // 플로팅 아이템 버튼
     var addTodoBtn = UIButton() // 플로팅 아이템 버튼
     
+    var tableViewTopDivider = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoLight020)
+    })
     var todoListTableView = UITableView().then({
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         $0.separatorStyle = .none
+        $0.register(HomeTodoListCell.self, forCellReuseIdentifier: "HomeTodoListCell")
     })
     
     // MARK: - InitUI
