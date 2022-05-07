@@ -73,67 +73,117 @@ extension HomeView {
                 cell.todoIsSelected = item.isSelected ?? false
                 cell.timeBtn.setTitle(item.time ?? "", for: .normal)
                 cell.titleLbl.text = item.title ?? ""
-//                cell.cellType = item.type ?? .normal
                 cell.prefixLbl.text = item.prefix ?? ""
-                if index == 2 {
-                    cell.cellType = .todo
-                } else if index == 3 {
-                    cell.count = 4
-                    cell.cellType = .count
+                cell.cellType = item.type
+                /*
+                 select colorList
+                 0 : contentViewColor
+                 1 : timeBtnbackground
+                 2 : timeLbl
+                 3 : prefixBackground
+                 4 : prefixLbl
+                 */
+                if item.type == .todo {
+                    print("itemType: \(item.type)")
+                    cell.toggleIc.rx.tap.bind { colorList in
+                        if cell.toggleIc.isSelected {
+                            cell.toggleIc.isSelected = false
+                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: false, cellType: .todo)
+                            lazy var output = viewModel.transform(input: input)
+                            output.toggleImage.drive { img in
+                                cell.toggleIc.setImage(img, for: .normal)
+                            }.disposed(by: self.disposedBag)
+                            output.cellColorList.drive { colorList in
+                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
+                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
+                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
+                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
+                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
+                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
+                            }.disposed(by: self.disposedBag)
+                        } else {
+                            cell.toggleIc.isSelected = true
+                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: true, cellType: .todo)
+                            lazy var output = viewModel.transform(input: input)
+                            output.toggleImage.drive { img in
+                                cell.toggleIc.setImage(img, for: .normal)
+                            }.disposed(by: self.disposedBag)
+                            output.cellColorList.drive { colorList in
+                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
+                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
+                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
+                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
+                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
+                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
+                            }.disposed(by: self.disposedBag)
+                        }
+                    }.disposed(by: self.disposedBag)
+                } else if item.type == .count {
+                    cell.toggleIc.rx.tap.bind { colorList in
+                        if cell.toggleIc.isSelected {
+                            cell.toggleIc.isSelected = false
+                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: false, cellType: .count)
+                            lazy var output = viewModel.transform(input: input)
+                            output.toggleImage.drive { img in
+                                cell.toggleIc.setImage(img, for: .normal)
+                            }.disposed(by: self.disposedBag)
+                            output.cellColorList.drive { colorList in
+                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
+                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
+                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
+                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
+                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
+                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
+                            }.disposed(by: self.disposedBag)
+                        } else {
+                            cell.toggleIc.isSelected = true
+                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: true, cellType: .count)
+                            lazy var output = viewModel.transform(input: input)
+                            output.toggleImage.drive { img in
+                                cell.toggleIc.setImage(img, for: .normal)
+                            }.disposed(by: self.disposedBag)
+                            output.cellColorList.drive { colorList in
+                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
+                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
+                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
+                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
+                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
+                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
+                            }.disposed(by: self.disposedBag)
+                        }
+                    }.disposed(by: self.disposedBag)
                 } else {
-                    cell.cellType = .normal
+                    cell.toggleIc.rx.tap.bind { colorList in
+                        if cell.toggleIc.isSelected {
+                            cell.toggleIc.isSelected = false
+                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: false, cellType: .normal)
+                            lazy var output = viewModel.transform(input: input)
+                            output.toggleImage.drive { img in
+                                cell.toggleIc.setImage(img, for: .normal)
+                            }.disposed(by: self.disposedBag)
+                            output.cellColorList.drive { colorList in
+                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
+                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
+                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
+                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
+                            }.disposed(by: self.disposedBag)
+                        } else {
+                            cell.toggleIc.isSelected = true
+                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: true, cellType: .normal)
+                            lazy var output = viewModel.transform(input: input)
+                            output.toggleImage.drive { img in
+                                cell.toggleIc.setImage(img, for: .normal)
+                            }.disposed(by: self.disposedBag)
+                            output.cellColorList.drive { colorList in
+                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
+                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
+                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
+                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
+                            }.disposed(by: self.disposedBag)
+                        }
+                    }.disposed(by: self.disposedBag)
                 }
-                cell.toggleIc.rx.tap.bind {
-                    if cell.toggleIc.isSelected {
-                        cell.toggleIc.isSelected = false
-                        Log.debug("isSelected", "true")
-                        lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: false)
-                        lazy var output = viewModel.transform(input: input)
-                        output.toggleImage.drive { img in
-                            cell.toggleIc.setImage(img, for: .normal)
-                        }.disposed(by: self.disposedBag)
-                        output.cellColorList.drive { colorList in
-                            /*
-                             select colorList
-                             0 : contentViewColor
-                             1 : timeBtnbackground
-                             2 : timeLbl
-                             3 : prefixBackground
-                             4 : prefixLbl
-                             */
-                            cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-                            cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-                            cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-                            cell.titleLbl.textColor = UIColor(asset: colorList[2])
-                            cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
-                            cell.prefixLbl.textColor = UIColor(asset: colorList[4])
-                        }.disposed(by: self.disposedBag)
-                    } else {
-                        cell.toggleIc.isSelected = true
-                        Log.debug("isSelected", "false")
-                        lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: true)
-                        lazy var output = viewModel.transform(input: input)
-                        output.toggleImage.drive { img in
-                            cell.toggleIc.setImage(img, for: .normal)
-                        }.disposed(by: self.disposedBag)
-                        output.cellColorList.drive { colorList in
-                            /*
-                             select colorList
-                             0 : contentViewColor
-                             1 : timeBtnbackground
-                             2 : timeLbl
-                             3 : prefixBackground
-                             4 : prefixLbl
-                             */
-                            cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-                            cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-                            cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-                            cell.titleLbl.textColor = UIColor(asset: colorList[2])
-                            cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
-                            cell.prefixLbl.textColor = UIColor(asset: colorList[4])
-                        }.disposed(by: self.disposedBag)
-                    }
-                }.disposed(by: self.disposedBag)
+            
             }.disposed(by: disposedBag)
         }
         todoListTableView.rx.setDelegate(self).disposed(by: disposedBag)

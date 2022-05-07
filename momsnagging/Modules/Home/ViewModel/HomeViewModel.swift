@@ -67,6 +67,9 @@ class HomeViewModel: BaseViewModel, ViewModelType {
             } else if input.cellType == .count {
                 colorList.append(Asset.Color.subLight030)
                 colorList.append(Asset.Color.monoDark010)
+            } else {
+                colorList.append(Asset.Color.monoLight010)
+                colorList.append(Asset.Color.monoDark010)
             }
             colorListOb.accept(colorList)
             
@@ -86,10 +89,13 @@ class HomeViewModel: BaseViewModel, ViewModelType {
             model.title = "Title"
             if i == 2 {
                 model.prefix = "할일"
+                model.type = .todo
             } else if i == 3 {
                 model.prefix = "4회"
+                model.type = .count
+            } else {
+                model.type = .normal
             }
-            model.type = .normal
             list.append(model)
         }
         returnList.accept(list)
