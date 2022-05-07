@@ -216,19 +216,10 @@
 		86523C9E2824F44C00F243A8 /* Habit */ = {
 			isa = PBXGroup;
 			children = (
-				86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */,
-				86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */,
+				A0B6AD8D2826392800F02E71 /* View */,
+				A0B6AD8E2826392C00F02E71 /* ViewModel */,
 			);
 			path = Habit;
-			sourceTree = "<group>";
-		};
-		867C140C281A7514007E5590 /* IDSetting */ = {
-			isa = PBXGroup;
-			children = (
-				867C1410281A7602007E5590 /* IDSettingView.swift */,
-				867C1412281A7615007E5590 /* IDSettingViewModel.swift */,
-			);
-			path = IDSetting;
 			sourceTree = "<group>";
 		};
 		86BD71BC280EAF270038200E /* Networking */ = {
@@ -555,9 +546,9 @@
 		8F927A552824D52A000FFA75 /* Diary */ = {
 			isa = PBXGroup;
 			children = (
-				8F927A582824D539000FFA75 /* Model */,
 				8F927A572824D536000FFA75 /* View */,
 				8F927A562824D531000FFA75 /* ViewModel */,
+				8F927A582824D539000FFA75 /* Model */,
 			);
 			path = Diary;
 			sourceTree = "<group>";
@@ -606,15 +597,6 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		A067E58F281D93E70017EF53 /* NicknameSetting */ = {
-			isa = PBXGroup;
-			children = (
-				A067E590281D93F70017EF53 /* NicknameSettingView.swift */,
-				A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */,
-			);
-			path = NicknameSetting;
-			sourceTree = "<group>";
-		};
 		A06BB33727F0BA1F005727AD /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,6 +614,7 @@
 				A06BB33E27F0BA74005727AD /* Intro */,
 				A06BB34D27F0C20D005727AD /* Onboarding */,
 				A06BB33F27F0BA92005727AD /* Login */,
+				A0B6AD87282638CE00F02E71 /* Join */,
 				8FA6873E281CEDA900F91EB8 /* MainContainer */,
 				8F22F81D281D08E600AB4180 /* Home */,
 				8F22F823281D0A4E00AB4180 /* ReportCard */,
@@ -646,9 +629,8 @@
 		A06BB33E27F0BA74005727AD /* Intro */ = {
 			isa = PBXGroup;
 			children = (
-				8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */,
-				A06BB33C27F0BA72005727AD /* IntroView.swift */,
-				A06BB34227F0BABA005727AD /* IntroViewModel.swift */,
+				A0B6AD812826388B00F02E71 /* View */,
+				A0B6AD822826389100F02E71 /* ViewModel */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -656,10 +638,8 @@
 		A06BB33F27F0BA92005727AD /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				A06BB34027F0BAA3005727AD /* LoginView.swift */,
-				A06BB35427F0D216005727AD /* LoginViewModel.swift */,
-				867C140C281A7514007E5590 /* IDSetting */,
-				A067E58F281D93E70017EF53 /* NicknameSetting */,
+				A0B6AD85282638B200F02E71 /* View */,
+				A0B6AD86282638BC00F02E71 /* ViewModel */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -667,12 +647,8 @@
 		A06BB34D27F0C20D005727AD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				A06BB34E27F0C21E005727AD /* OnboardingView.swift */,
-				A06BB35227F0D1E6005727AD /* OnboardingViewModel.swift */,
-				A0BC330928153A0A00F04B58 /* OnboardingPageView.swift */,
-				A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */,
-				A0024DDC2813227800645F25 /* OnboardingItemView.swift */,
-				A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */,
+				A0B6AD83282638A000F02E71 /* View */,
+				A0B6AD84282638A800F02E71 /* ViewModel */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -686,6 +662,102 @@
 				8638A551281B7874003D771B /* UITextField+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A0B6AD812826388B00F02E71 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */,
+				A06BB33C27F0BA72005727AD /* IntroView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A0B6AD822826389100F02E71 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A06BB34227F0BABA005727AD /* IntroViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A0B6AD83282638A000F02E71 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A06BB34E27F0C21E005727AD /* OnboardingView.swift */,
+				A0BC330928153A0A00F04B58 /* OnboardingPageView.swift */,
+				A0024DDC2813227800645F25 /* OnboardingItemView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A0B6AD84282638A800F02E71 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A06BB35227F0D1E6005727AD /* OnboardingViewModel.swift */,
+				A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */,
+				A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A0B6AD85282638B200F02E71 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A06BB34027F0BAA3005727AD /* LoginView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A0B6AD86282638BC00F02E71 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A06BB35427F0D216005727AD /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A0B6AD87282638CE00F02E71 /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				A0B6AD88282638D500F02E71 /* View */,
+				A0B6AD89282638D800F02E71 /* ViewModel */,
+			);
+			path = Join;
+			sourceTree = "<group>";
+		};
+		A0B6AD88282638D500F02E71 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				867C1410281A7602007E5590 /* IDSettingView.swift */,
+				A067E590281D93F70017EF53 /* NicknameSettingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A0B6AD89282638D800F02E71 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				867C1412281A7615007E5590 /* IDSettingViewModel.swift */,
+				A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A0B6AD8D2826392800F02E71 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A0B6AD8E2826392C00F02E71 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		E2B7BEA15ACF83AA558CED4E /* Frameworks */ = {
