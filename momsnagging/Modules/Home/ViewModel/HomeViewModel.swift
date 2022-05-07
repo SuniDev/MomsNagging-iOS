@@ -19,7 +19,6 @@ class HomeViewModel: BaseViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
         var floatingBtnStatus: Bool?
-//        var floatingBtnIcStatus = PublishSubject<Bool>()
     }
     // MARK: - Output
     struct Output {

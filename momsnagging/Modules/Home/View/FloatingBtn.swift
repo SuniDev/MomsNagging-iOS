@@ -17,7 +17,6 @@ import RxSwift
  - Note: HomeView의 FloatingBtn만 따로 빼서 처리하기 위해 빼놨습니다
  */
 extension HomeView {
-    
     /**
      # setFloatingBtn
      - Authors: tavi
@@ -145,14 +144,14 @@ extension HomeView {
             lbl.textColor = UIColor(asset: Asset.Color.priDark020)
             ic.image = UIImage(asset: Asset.Icon.habitAddFloating)
             btn.rx.tap.bind {
-                print("습관추가 클릭")
+                Log.debug("클릭이벤트", "습관추가 클릭")
             }.disposed(by: disposedBag)
         case .todo:
             lbl.text = "할일 추가"
             lbl.textColor = UIColor(asset: Asset.Color.monoDark010)
             ic.image = UIImage(asset: Asset.Icon.todoAddFloating)
             btn.rx.tap.bind {
-                print("할일추가 클릭")
+                Log.debug("클릭이벤트", "할일추가 클릭")
             }.disposed(by: disposedBag)
         }
         

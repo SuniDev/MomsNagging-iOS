@@ -137,10 +137,15 @@ class HomeView: BaseViewController, Navigatable {
         layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 42 - (23 * 6)) / 7, height: 28)
         return layout
     }
+    var floatingBtn = UIButton() // 플로팅 버튼
+    var addHabitBtn = UIButton() // 플로팅 아이템 버튼
+    var addTodoBtn = UIButton() // 플로팅 아이템 버튼
     
-    var floatingBtn = UIButton()
-    var addHabitBtn = UIButton()
-    var addTodoBtn = UIButton()
+    var todoListTableView = UITableView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+        $0.separatorStyle = .none
+    })
+    
     // MARK: - InitUI
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
