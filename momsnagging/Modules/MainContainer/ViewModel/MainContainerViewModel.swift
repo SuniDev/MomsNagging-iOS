@@ -47,7 +47,7 @@ class MainContainerViewModel: BaseViewModel, ViewModelType {
             }
         }).disposed(by: disposeBag)
         
-        return Output(buttonLabelColorList: [tabBar1.asDriver(),tabBar2.asDriver(),tabBar3.asDriver()])
+        return Output(buttonLabelColorList: [tabBar1.asDriver(), tabBar2.asDriver(), tabBar3.asDriver()])
     }
     
 }

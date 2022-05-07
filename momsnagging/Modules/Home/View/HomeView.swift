@@ -18,6 +18,7 @@ class HomeView: BaseViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         actionBind()
+        setFloatingBtn()
     }
     // MARK: - Temp
     // MARK: - Init
@@ -137,6 +138,9 @@ class HomeView: BaseViewController, Navigatable {
         return layout
     }
     
+    var floatingBtn = UIButton()
+    var addHabitBtn = UIButton()
+    var addTodoBtn = UIButton()
     // MARK: - InitUI
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
