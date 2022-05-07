@@ -169,12 +169,11 @@ class CommonView {
         - btnBack : HeadFrame 왼쪽 '뒤로가기' 버튼
         - lblTitle : HeadFrame 가운데 타이틀
         - btnDone:HeadFrame 오른쪽 '완료' 버튼
-        - btnMore:HeadFrame 오른쪽 '미트볼/more' 이미지 버튼
      - Authors: suni
      - Returns: UIView
      - Note: 상세 화면 헤더
      */
-    static func detailHeadFrame(btnBack: UIButton, lblTitle: UILabel, btnDone: UIButton, btnMore: UIButton) -> UIView {
+    static func detailHeadFrame(btnBack: UIButton, lblTitle: UILabel, btnDone: UIButton) -> UIView {
         lazy var viewHeader = UIView().then({
             $0.backgroundColor = Asset.Color.monoWhite.color
         })
@@ -189,11 +188,6 @@ class CommonView {
             $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
             $0.setTitleColor(Asset.Color.monoDark040.color, for: .disabled)
             $0.setTitleColor(Asset.Color.priDark020.color, for: .highlighted)
-        })
-        
-        _ = btnMore.then({
-            $0.isHidden = true
-            $0.setImage(Asset.Icon.more.image, for: .normal)
         })
         
         _ = lblTitle.then({
@@ -211,7 +205,7 @@ class CommonView {
         
         btnBack.snp.makeConstraints({
             $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(16)
         })
         
         lblTitle.snp.makeConstraints({
@@ -226,20 +220,35 @@ class CommonView {
         return viewHeader
     }
     
-    static func textField(placeHolder: String = "") -> UITextField {
+    /**
+     # textField
+     - parameters:
+        - placeHolder : 텍스트필드 플레이스홀더
+     - Authors: suni
+     - Returns: UITextField
+     - Note: 공통 텍스트 필드 함수
+     */
+    static func textField(placeHolder: String = "", _ font: UIFont = FontFamily.Pretendard.regular.font(size: 14)) -> UITextField {
         lazy var textField = UITextField().then({
             $0.textColor = Asset.Color.monoDark010.color
             $0.layer.cornerRadius = 4
             $0.attributedPlaceholder = NSAttributedString(string: placeHolder,
                                                           attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
             $0.addLeftPadding(width: 8)
-            $0.font = FontFamily.Pretendard.regular.font(size: 14)
-            $0.addBorder(color: Asset.Color.monoLight010.color, width: 1)
+            $0.font = font
         })
         
         return textField
     }
     
+    /**
+     # requiredTitleFrame
+     - parameters:
+        - text : 타이틀 텍스트
+     - Authors: suni
+     - Returns: UIView
+     - Note: '필수' 표시가 포함된 타이틀
+     */
     static func requiredTitleFrame(_ text: String) -> UIView {
         lazy var viewTitle = UIView().then({
             $0.backgroundColor = Asset.Color.monoWhite.color
@@ -272,6 +281,15 @@ class CommonView {
         return viewTitle
     }
     
+    /**
+     # scrollView
+     - parameters:
+        - viewContents : 컨텐츠 View
+        - bounces : 스크롤뷰 바운스 여부
+     - Authors: suni
+     - Returns: UIScrollView
+     - Note: 공통 스크롤 뷰 함수
+     */
     static func scrollView(viewContents: UIView, bounces: Bool) -> UIScrollView {
         lazy var scrollView = UIScrollView().then({
             $0.bounces = bounces

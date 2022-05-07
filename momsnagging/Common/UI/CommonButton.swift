@@ -19,7 +19,7 @@ class CommonButton: UIButton {
     }
     
     @IBInspectable var highlightedBackgroundColor: UIColor = Asset.Color.priDark020.color
-    @IBInspectable var disabledBackgroundColor: UIColor = Asset.Color.monoDark040.color
+    @IBInspectable var disabledBackgroundColor: UIColor = Asset.Color.priLight018Dis.color
     
     override var isEnabled: Bool {
         didSet {

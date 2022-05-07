@@ -34,7 +34,6 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var tfName = UITextField()
     lazy var lblTime = UILabel()
     
-    
     // MARK: - init
     init(viewModel: DetailHabitViewModel, navigator: Navigator) {
         self.viewModel = viewModel
@@ -58,7 +57,7 @@ class DetailHabitView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
         
-        viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: lblTitle, btnDone: btnDone, btnMore: btnMore)
+        viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: lblTitle, btnDone: btnDone)
         scrollView = CommonView.scrollView(viewContents: viewContents, bounces: true)
         viewNameTitle = CommonView.requiredTitleFrame("습관 이름")
         tfName = CommonView.textField()
