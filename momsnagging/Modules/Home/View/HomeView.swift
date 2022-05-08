@@ -59,6 +59,7 @@ class HomeView: BaseViewController, Navigatable {
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
     var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
     // MARK: - UI Properties
+    //헤드프레임 UI Properties
     var listBtn = UIButton()
     var headTitleLbl = UILabel()
     var headDropDownBtn = UIButton()
@@ -66,6 +67,22 @@ class HomeView: BaseViewController, Navigatable {
     var diaryBtn = UIButton()
     var headFrame = UIView()
     
+    var headCancel = UIButton().then({
+        $0.setTitle("취소", for: .normal)
+        $0.setTitleColor(UIColor(asset: Asset.Color.black), for: .normal)
+        $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 18)
+        $0.tag = 0
+        $0.isHidden = true
+    })
+    var headSave = UIButton().then({
+        $0.setTitle("저장", for: .normal)
+        $0.setTitleColor(UIColor(asset: Asset.Color.success), for: .normal)
+        $0.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 18)
+        $0.tag = 1
+        $0.isHidden = true
+    })
+    
+    //캘린더 UI Properties
     var calendarFrame = UIView()
     var calendarView = UIView().then({
         $0.layer.cornerRadius = 8
@@ -169,6 +186,8 @@ class HomeView: BaseViewController, Navigatable {
     // MARK: - LayoutSetting
     override func layoutSetting() {
         view.addSubview(headFrame)
+        view.addSubview(headCancel)
+        view.addSubview(headSave)
         view.addSubview(weekCalendarCollectionView)
         headFrame.snp.makeConstraints({
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -181,6 +200,14 @@ class HomeView: BaseViewController, Navigatable {
             $0.leading.equalTo(view.snp.leading).offset(10.5)
             $0.trailing.equalTo(view.snp.trailing).offset(-10.5)
             $0.height.equalTo(68)
+        })
+        headCancel.snp.makeConstraints({
+            $0.centerY.equalTo(headFrame.snp.centerY)
+            $0.leading.equalTo(headFrame.snp.leading).offset(20)
+        })
+        headSave.snp.makeConstraints({
+            $0.centerY.equalTo(headFrame.snp.centerY)
+            $0.trailing.equalTo(headFrame.snp.trailing).offset(-20)
         })
     }
     // MARK: - Bind _ Output
@@ -283,7 +310,7 @@ class HomeView: BaseViewController, Navigatable {
     
     // MARK: - Action Bind _ Input
     func actionBind() {
-        
+        guard let viewModel = viewModel else { return }
         // dropDown Ic ClickEvent
         headDropDownBtn.rx.tap.bind(onNext: { _ in
             if self.headDropDownBtn.isSelected {
@@ -322,8 +349,35 @@ class HomeView: BaseViewController, Navigatable {
             self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)
         }.disposed(by: disposedBag)
         // 정렬 ClickEvent
+        self.listBtn.rx.tap.bind {
+            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: true)
+            self.headBtnBind(input: input)
+        }.disposed(by: disposedBag)
+        self.headCancel.rx.tap.bind {
+            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: false)
+            self.headBtnBind(input: input)
+        }.disposed(by: disposedBag)
+        self.headSave.rx.tap.bind {
+            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: false)
+            self.headBtnBind(input: input)
+        }.disposed(by: disposedBag)
     }
     // MARK: - Other
+    func headBtnBind(input: HomeViewModel.Input) {
+        lazy var output = viewModel.transform(input: input)
+        output.diaryBtnStatus?.drive { bool in
+            self.diaryBtn.isHidden = bool
+        }.disposed(by: self.disposedBag)
+        output.listBtnStatus?.drive { bool in
+            self.listBtn.isHidden = bool
+        }.disposed(by: self.disposedBag)
+        output.cancelBtnStatus?.drive { bool in
+            self.headCancel.isHidden = bool
+        }.disposed(by: self.disposedBag)
+        output.saveBtnStatus?.drive { bool in
+            self.headSave.isHidden = bool
+        }.disposed(by: self.disposedBag)
+    }
     func cellSelectInit() {
         for i in 0..<37 {
             let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
