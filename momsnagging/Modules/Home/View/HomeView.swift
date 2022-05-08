@@ -19,6 +19,7 @@ class HomeView: BaseViewController, Navigatable {
         super.viewDidLoad()
         actionBind()
         setTodoTableView()
+        setHomeCalendarView()
         setFloatingBtn()
     }
     // MARK: - Temp
@@ -169,7 +170,6 @@ class HomeView: BaseViewController, Navigatable {
     override func layoutSetting() {
         view.addSubview(headFrame)
         view.addSubview(weekCalendarCollectionView)
-        view.addSubview(calendarFrame)
         headFrame.snp.makeConstraints({
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(view.snp.leading)
@@ -181,12 +181,6 @@ class HomeView: BaseViewController, Navigatable {
             $0.leading.equalTo(view.snp.leading).offset(10.5)
             $0.trailing.equalTo(view.snp.trailing).offset(-10.5)
             $0.height.equalTo(68)
-        })
-        calendarFrame.snp.makeConstraints({
-            $0.top.equalTo(headFrame.snp.bottom)
-            $0.leading.equalTo(view.snp.leading)
-            $0.trailing.equalTo(view.snp.trailing)
-            $0.bottom.equalTo(view.snp.bottom)
         })
     }
     // MARK: - Bind _ Output
@@ -340,6 +334,15 @@ class HomeView: BaseViewController, Navigatable {
 }
 
 extension HomeView {
+    func setHomeCalendarView() {
+        view.addSubview(calendarFrame)
+        calendarFrame.snp.makeConstraints({
+            $0.top.equalTo(headFrame.snp.bottom)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.bottom.equalTo(view.snp.bottom)
+        })
+    }
     /**
      # homeCalendarView
      - Authors: tavi
