@@ -18,6 +18,10 @@ class AddHabitView: BaseViewController, Navigatable {
     var viewModel: AddHabitViewModel?
     var navigator: Navigator!
     
+    private let recommendTitleCellSpacing: CGFloat = 16
+    private let recommendTitleCellHeight: CGFloat = 96
+    private let recommendTitleIdentifier = "RecommendHabitTitleCell"
+    
     // MARK: - UI Properties
     lazy var viewHeader = UIView()
     lazy var btnBack = UIButton()
@@ -53,14 +57,40 @@ class AddHabitView: BaseViewController, Navigatable {
         $0.textColor = Asset.Color.monoDark010.color
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
     })
-//    lazy var imgvTip = UIImageView().then({
-//
-//    })
+    lazy var imgvTipIcon = UIImageView().then({
+        $0.image = Asset.Icon.tip.image
+    })
     lazy var btnTip = UIButton().then({
         $0.backgroundColor = .clear
     })
+    lazy var imgvTipView = UIImageView().then({
+        $0.isHidden = true
+        $0.image = Asset.Assets.addhabitTip.image
+    })
+    lazy var lblTip = UILabel().then({
+        $0.isHidden = true
+        $0.font = FontFamily.Pretendard.regular.font(size: 12)
+        $0.numberOfLines = 2
+        $0.text = "추천 습관 목록에 있는 습관을 추가하면\n맞춤형 잔소리 푸쉬 알림을 제공해준단다."
+    })
     
-    lazy var cvRecommend = UICollectionView()
+    lazy var recommendTitleCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: recommendTitleCellLayout())
+        collectionView.register(RecommendHabitTitleCell.self, forCellWithReuseIdentifier: recommendTitleIdentifier)
+        collectionView.backgroundColor = Asset.Color.monoWhite.color
+        collectionView.contentInset = .zero
+        return collectionView
+    }()
+    
+    private func recommendTitleCellLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = .zero
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = recommendTitleCellSpacing
+        layout.minimumLineSpacing = recommendTitleCellSpacing
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - (recommendTitleCellSpacing * 3)) / 2, height: recommendTitleCellHeight)
+        return layout
+    }
     
     // MARK: - init
     init(viewModel: AddHabitViewModel, navigator: Navigator) {
@@ -83,8 +113,9 @@ class AddHabitView: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
+        self.view.backgroundColor = Asset.Color.monoWhite.color
         viewHeader = CommonView.defaultHeadFrame(leftIcBtn: btnBack, headTitle: "습관 추가")
-        scrollView = CommonView.scrollView(viewContents: viewContents, bounces: true)
+        scrollView = CommonView.scrollView(viewContents: viewContents, bounces: false)
     }
     
     // MARK: - layoutSetting
@@ -93,26 +124,33 @@ class AddHabitView: BaseViewController, Navigatable {
         view.addSubview(scrollView)
         
         viewContents.addSubview(lblTitleDirect)
-        viewContents.addSubview(btnMyOwnHabit)
         viewContents.addSubview(viewMyOwnHabit)
         viewMyOwnHabit.addSubview(imgvPlus)
         viewMyOwnHabit.addSubview(lblMyOwnHabit)
+        viewContents.addSubview(btnMyOwnHabit)
         
         viewContents.addSubview(lblTitleRecommend)
-//        viewContents.addSubview(imgvTip)
+        viewContents.addSubview(imgvTipIcon)
         viewContents.addSubview(btnTip)
-//        viewContents.addSubview(cvRecommend)
+        viewContents.addSubview(imgvTipView)
+        viewContents.addSubview(lblTip)
+        viewContents.addSubview(recommendTitleCollectionView)
         
         viewHeader.snp.makeConstraints({
             $0.height.equalTo(60)
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         })
         
+        scrollView.snp.makeConstraints({
+            $0.top.equalTo(viewHeader.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        })
+        
         lblTitleDirect.snp.makeConstraints({
             $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(18)
         })
-        
+
         btnMyOwnHabit.snp.makeConstraints({
             $0.height.equalTo(55)
             $0.top.equalTo(lblTitleDirect.snp.bottom).offset(16)
@@ -141,15 +179,97 @@ class AddHabitView: BaseViewController, Navigatable {
             $0.leading.equalToSuperview().offset(18)
         })
         
-//        cvRecommend.snp.makeConstraints({
-//            $0.top.leading.equalTo(lblTitleRecommend.snp.bottom).offset(16)
-//            $0.trailing.bottom.equalToSuperview().offset(-16)
-//        })
+        imgvTipIcon.snp.makeConstraints({
+            $0.width.height.equalTo(18)
+            $0.centerY.equalTo(lblTitleRecommend)
+            $0.leading.equalTo(lblTitleRecommend.snp.trailing).offset(4)
+        })
         
+        btnTip.snp.makeConstraints({
+            $0.top.leading.equalTo(imgvTipIcon).offset(-5)
+            $0.bottom.equalTo(imgvTipIcon).offset(5)
+            $0.trailing.equalTo(imgvTipView).offset(5)
+        })
+        
+        imgvTipView.snp.makeConstraints({
+            $0.width.equalTo(217)
+            $0.height.equalTo(38)
+            $0.leading.equalTo(imgvTipIcon.snp.trailing).offset(2)
+            $0.top.equalTo(imgvTipIcon.snp.top).offset(-14)
+        })
+        
+        lblTip.snp.makeConstraints({
+            $0.leading.equalTo(imgvTipView).offset(18)
+            $0.centerY.equalTo(imgvTipView)
+        })
+        
+        recommendTitleCollectionView.snp.makeConstraints({
+            $0.top.equalTo(lblTitleRecommend.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.bottom.equalToSuperview().offset(-16)
+        })
+        
+        view.layoutIfNeeded()
     }
     
     // MARK: - bind
     override func bind() {
+        guard let viewModel = viewModel else { return }
         
+        let input = AddHabitViewModel.Input(
+            willAppearAddHabit: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
+            btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
+            btnMyOwnHabitTapped: self.btnMyOwnHabit.rx.tap.asDriverOnErrorJustComplete(),
+            btnTipTapped: self.btnTip.rx.tap.asDriverOnErrorJustComplete(),
+            recommendTitleItemSelected: self.recommendTitleCollectionView.rx.itemSelected.asDriver()
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.goToBack
+            .drive(onNext: {
+                self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
+        
+        output.goToMyOwnHabit
+            .drive(onNext: {
+                // TODO: 습관 상세 이동
+                Log.debug("TODO: 습관 상세 이동")
+            }).disposed(by: disposeBag)
+        
+        output.isHiddenTip
+            .drive(onNext: { isHidden in
+                if isHidden {
+                    self.imgvTipView.fadeOut()
+                    self.lblTip.fadeOut()
+                } else {
+                    self.imgvTipView.fadeIn()
+                    self.lblTip.fadeIn()
+                }
+            }).disposed(by: disposeBag)
+        
+        output.cntRecommendTitle
+            .drive(onNext: { count in
+                let line = ( count / 2 ) + ( count % 2 )
+                var height = line * Int(self.recommendTitleCellHeight)
+                height += Int(self.recommendTitleCellSpacing) * (line - 1)
+                self.recommendTitleCollectionView.snp.makeConstraints({
+                    $0.height.equalTo(height)
+                })
+            }).disposed(by: disposeBag)
+        
+        output.recommendTitleItems
+            .bind(to: recommendTitleCollectionView.rx.items(cellIdentifier: recommendTitleIdentifier, cellType: RecommendHabitTitleCell.self)) { _, item, cell in
+                cell.lblTitle.text = item.title
+                cell.normalBackgroundColor = UIColor(hexString: item.normalColor ?? "")
+                cell.highlightedBackgroundColor = UIColor(hexString: item.highlightColor ?? "")
+            }.disposed(by: disposeBag)
+        
+        output.recommendTitleItemSelected
+            .drive(onNext: { indexPath in
+                Log.debug(indexPath)
+            }).disposed(by: disposeBag)
+
     }
 }

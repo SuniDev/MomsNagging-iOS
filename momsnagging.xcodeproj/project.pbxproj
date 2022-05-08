@@ -84,6 +84,10 @@
 		A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35927F0E982005727AD /* BaseNavigationController.swift */; };
 		A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */; };
 		A0A674242813EC6900E0223B /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A674232813EC6900E0223B /* Onboarding.swift */; };
+		A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */; };
+		A0B581B02827A0010099C9BA /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */; };
+		A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */; };
+		A0B581B62827A5780099C9BA /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581B52827A5780099C9BA /* UIColor+Extension.swift */; };
 		A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */; };
 		A0B6AD90282639D100F02E71 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B6AD8F282639D100F02E71 /* AddHabitView.swift */; };
 		A0B6AD92282639E400F02E71 /* AddHabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B6AD91282639E400F02E71 /* AddHabitViewModel.swift */; };
@@ -176,6 +180,10 @@
 		A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0A674232813EC6900E0223B /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitleCell.swift; sourceTree = "<group>"; };
+		A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitle.swift; sourceTree = "<group>"; };
+		A0B581B52827A5780099C9BA /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		A0B6AD8F282639D100F02E71 /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
 		A0B6AD91282639E400F02E71 /* AddHabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitViewModel.swift; sourceTree = "<group>"; };
@@ -262,6 +270,7 @@
 				86D4BE2D27F6BE2000E9EE8B /* User.swift */,
 				A0A674232813EC6900E0223B /* Onboarding.swift */,
 				86E699FC2822724100EA6BC3 /* ModelType.swift */,
+				A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -607,6 +616,7 @@
 				A06BB35927F0E982005727AD /* BaseNavigationController.swift */,
 				A0B5C37E27F890BF001EB062 /* BaseViewModel.swift */,
 				A0BC330B28153A5900F04B58 /* BasePageViewController.swift */,
+				A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -663,6 +673,7 @@
 				86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */,
 				86B36F712817756800655059 /* UIView+Extension.swift */,
 				8638A551281B7874003D771B /* UITextField+Extension.swift */,
+				A0B581B52827A5780099C9BA /* UIColor+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -752,6 +763,7 @@
 			children = (
 				86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */,
 				A0B6AD8F282639D100F02E71 /* AddHabitView.swift */,
+				A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -984,6 +996,7 @@
 				A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */,
 				8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */,
 				86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */,
+				A0B581B62827A5780099C9BA /* UIColor+Extension.swift in Sources */,
 				8F1F93A327EC8A3C000F08AF /* CalendarModel.swift in Sources */,
 				A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */,
 				A06BB34F27F0C21E005727AD /* OnboardingView.swift in Sources */,
@@ -994,6 +1007,7 @@
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
+				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
 				867C1411281A7602007E5590 /* IDSettingView.swift in Sources */,
@@ -1018,6 +1032,7 @@
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F22F82E281D0B1200AB4180 /* HomeModel.swift in Sources */,
+				A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */,
 				86E699F62822683000EA6BC3 /* MomsNaggingAPI+Method.swift in Sources */,
 				A0B6AD90282639D100F02E71 /* AddHabitView.swift in Sources */,
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
@@ -1034,6 +1049,7 @@
 				8F22F838281D0B4B00AB4180 /* MyModel.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,
 				86E699F42822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift in Sources */,
+				A0B581B02827A0010099C9BA /* BaseCollectionViewCell.swift in Sources */,
 				8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,

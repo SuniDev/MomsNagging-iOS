@@ -31,4 +31,21 @@ extension UIView {
         self.layer.borderColor = color.cgColor
         self.layer.borderWidth = width
     }
+    
+    func fadeIn(_ duration: TimeInterval = 0.15) {
+        self.alpha = 0.0
+        self.isHidden = false
+        
+        UIView.animate(withDuration: duration) {
+            self.alpha = 1.0
+        }
+    }
+    
+    func fadeOut(_ duration: TimeInterval = 0.15) {
+        UIView.animate(withDuration: duration) {
+            self.alpha = 0.0
+        } completion: { _ in
+            self.isHidden = true
+        }
+    }
 }
