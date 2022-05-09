@@ -234,8 +234,7 @@ class AddHabitView: BaseViewController, Navigatable {
         
         output.goToMyOwnHabit
             .drive(onNext: {
-                // TODO: 습관 상세 이동
-                Log.debug("TODO: 습관 상세 이동")
+                self.navigator.show(seque: .detailHabit(viewModl: DetailHabitViewModel()), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
         
         output.isHiddenTip
@@ -263,12 +262,12 @@ class AddHabitView: BaseViewController, Navigatable {
             .bind(to: recommendTitleCollectionView.rx.items(cellIdentifier: recommendTitleIdentifier, cellType: RecommendHabitTitleCell.self)) { _, item, cell in
                 cell.lblTitle.text = item.title
                 cell.normalBackgroundColor = UIColor(hexString: item.normalColor ?? "")
-                cell.highlightedBackgroundColor = UIColor(hexString: item.highlightColor ?? "")
+                cell.selectedBackgroundColor = UIColor(hexString: item.highlightColor ?? "")
             }.disposed(by: disposeBag)
         
         output.recommendTitleItemSelected
             .drive(onNext: { indexPath in
-                Log.debug(indexPath)
+                Log.debug("TODO: 추천 습관 연결 \(indexPath)")
             }).disposed(by: disposeBag)
 
     }

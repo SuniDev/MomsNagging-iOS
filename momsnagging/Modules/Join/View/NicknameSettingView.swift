@@ -119,6 +119,8 @@ class NicknameSettingView: BaseViewController, Navigatable {
     })
     
     lazy var btnDone = CommonButton().then({
+        $0.highlightedBackgroundColor = Asset.Color.priDark020.color
+        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.isEnabled = false
         $0.setTitle("네 엄마!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
@@ -274,19 +276,6 @@ class NicknameSettingView: BaseViewController, Navigatable {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-30)
         })
-        
-//        tfNickname.snp.makeConstraints({
-//            $0.height.equalTo(48)
-//            $0.top.equalToSuperview()
-//            $0.leading.equalToSuperview().offset(20)
-//            $0.trailing.equalToSuperview().offset(-30)
-//        })
-//
-//        lblHint.snp.makeConstraints({
-//            $0.top.equalTo(tfNickname.snp.bottom).offset(5)
-//            $0.leading.trailing.equalTo(tfNickname)
-//            $0.bottom.greaterThanOrEqualToSuperview()
-//        })
         
         viewConfirm.snp.makeConstraints({
             $0.height.equalTo(288)

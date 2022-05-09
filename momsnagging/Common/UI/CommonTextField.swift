@@ -63,5 +63,6 @@ class CommonTextField: UITextField {
         self.layer.cornerRadius = 4
         self.addLeftPadding(width: 8)
         self.font = FontFamily.Pretendard.regular.font(size: 14)
+        self.normal()
     }
 }

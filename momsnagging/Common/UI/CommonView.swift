@@ -223,6 +223,7 @@ class CommonView {
         
         _ = btnDone.then({
             $0.isEnabled = false
+            $0.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 16)
             $0.setTitle("완료", for: .normal)
             $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
             $0.setTitleColor(Asset.Color.monoDark040.color, for: .disabled)
@@ -375,5 +376,124 @@ class CommonView {
         })
         
         return divider
+    }
+    
+    /**
+     # detailNameFrame
+     - parameters:
+        - viewNameTitle : 이름 타이틀 뷰
+        - viewHintTextField : 텍스트 필드 + 텍스트 힌트 뷰
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 이름 공통 뷰
+     */
+    static func detailNameFrame(viewNameTitle: UIView, viewHintTextField: UIView) -> UIView {
+        lazy var view = UIView()
+        lazy var divider = CommonView.divider()
+        
+        view.addSubview(viewNameTitle)
+        view.addSubview(viewHintTextField)
+        view.addSubview(divider)
+        
+        viewNameTitle.snp.makeConstraints({
+            $0.top.leading.equalToSuperview()
+        })
+        viewHintTextField.snp.makeConstraints({
+            $0.top.equalTo(viewNameTitle.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview()
+        })
+        divider.snp.makeConstraints({
+            $0.top.equalTo(viewHintTextField.snp.bottom).offset(20)
+            $0.leading.trailing.bottom.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    /**
+     # detailPerformTimeFrame
+     - parameters:
+        - viewTimeTitle : 수행 시간 타이틀 뷰
+        - lblTime : 시간 Label
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 '수행 시간' 공통 뷰
+     */
+    static func detailPerformTimeFrame(viewTimeTitle: UIView, lblTime: UILabel) -> UIView {
+        lazy var view = UIView()
+        lazy var icon = UIImageView().then({
+            $0.image = Asset.Icon.chevronRight.image
+        })
+        lazy var divider = CommonView.divider()
+        
+        view.addSubview(viewTimeTitle)
+        view.addSubview(icon)
+        view.addSubview(lblTime)
+        view.addSubview(divider)
+        
+        viewTimeTitle.snp.makeConstraints({
+            $0.top.leading.equalToSuperview()
+        })
+        icon.snp.makeConstraints({
+            $0.width.height.equalTo(18)
+            $0.centerY.equalTo(viewTimeTitle)
+            $0.trailing.equalToSuperview()
+        })
+        lblTime.snp.makeConstraints({
+            $0.top.equalTo(viewTimeTitle.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview()
+        })
+        divider.snp.makeConstraints({
+            $0.top.equalTo(lblTime.snp.bottom).offset(32)
+            $0.leading.trailing.bottom.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    /**
+     # detailNaggingPushFrame
+     - parameters:
+        - lblPushTitle : 잔소리 알림 타이틀 UILabel
+        - switch : 잔소리 알림 UISwitch
+        - viewAddPushTime : 잔소리 알림 '시간 추가' 뷰
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 '잔소리 알림' 공통 뷰
+     */
+    static func detailNaggingPushFrame(lblTitle: UILabel, switchPush: UISwitch, viewAddPushTime: UIView) -> UIView {
+        lazy var view = UIView()
+        
+        view.addSubview(lblTitle)
+        view.addSubview(switchPush)
+        view.addSubview(viewAddPushTime)
+        
+        lblTitle.snp.makeConstraints({
+            $0.top.leading.equalToSuperview()
+        })
+        switchPush.snp.makeConstraints({
+            $0.centerY.equalTo(lblTitle)
+            $0.trailing.equalToSuperview()
+        })
+        viewAddPushTime.snp.makeConstraints({
+            $0.top.equalTo(lblTitle.snp.bottom).offset(20)
+            $0.leading.trailing.bottom.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    /**
+     # detailAddPushTimeFrame
+     - parameters:
+     
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 시간 추가 공통 뷰
+     */
+    static func detailAddPushTimeFrame() -> UIView {
+        lazy var view = UIView()
+        
+        return view
     }
 }

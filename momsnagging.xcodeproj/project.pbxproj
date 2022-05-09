@@ -17,6 +17,7 @@
 		868A11A4280F8F9F004DAC73 /* Icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868A11A3280F8F9F004DAC73 /* Icon.xcassets */; };
 		868A57512828A619004153BB /* CommonTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868A57502828A619004153BB /* CommonTextField.swift */; };
 		868A57532828B70F004153BB /* CommonHintLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868A57522828B70F004153BB /* CommonHintLabel.swift */; };
+		868A57562828CC7C004153BB /* CycleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868A57552828CC7C004153BB /* CycleCell.swift */; };
 		86B36F722817756800655059 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B36F712817756800655059 /* UIView+Extension.swift */; };
 		86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */; };
 		86D4BE2927F683D700E9EE8B /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D4BE2827F683D700E9EE8B /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -110,6 +111,7 @@
 		868A11A3280F8F9F004DAC73 /* Icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icon.xcassets; sourceTree = "<group>"; };
 		868A57502828A619004153BB /* CommonTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonTextField.swift; sourceTree = "<group>"; };
 		868A57522828B70F004153BB /* CommonHintLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonHintLabel.swift; sourceTree = "<group>"; };
+		868A57552828CC7C004153BB /* CycleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CycleCell.swift; sourceTree = "<group>"; };
 		86B36F712817756800655059 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
 		86D4BE2827F683D700E9EE8B /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
@@ -235,6 +237,15 @@
 				A0B6AD8E2826392C00F02E71 /* ViewModel */,
 			);
 			path = Habit;
+			sourceTree = "<group>";
+		};
+		868A57542828CC56004153BB /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */,
+				868A57552828CC7C004153BB /* CycleCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		86BD71BC280EAF270038200E /* Networking */ = {
@@ -767,9 +778,9 @@
 		A0B6AD8D2826392800F02E71 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */,
+				868A57542828CC56004153BB /* Cell */,
 				A0B6AD8F282639D100F02E71 /* AddHabitView.swift */,
-				A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */,
+				86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -777,8 +788,8 @@
 		A0B6AD8E2826392C00F02E71 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */,
 				A0B6AD91282639E400F02E71 /* AddHabitViewModel.swift */,
+				86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1014,6 +1025,7 @@
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
+				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
