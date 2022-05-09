@@ -66,24 +66,24 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var btnCycleWeek = CommonButton().then({
         $0.layer.cornerRadius = 5
         $0.normalBackgroundColor = Asset.Color.monoWhite.color
-        $0.highlightedBackgroundColor = .clear
         $0.selectedBackgroundColor = Asset.Color.priLight010.color
         $0.setTitle("요일", for: .normal)
         $0.setTitleColor(Asset.Color.monoDark030.color, for: .normal)
         $0.setTitleColor(Asset.Color.monoDark010.color, for: .selected)
-        $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 14)
+        $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.selectedFont = FontFamily.Pretendard.semiBold.font(size: 14)
         $0.isSelected = true
         
     })
     lazy var btnCycleNumber = CommonButton().then({
         $0.layer.cornerRadius = 5
         $0.normalBackgroundColor = Asset.Color.monoWhite.color
-        $0.highlightedBackgroundColor = .clear
         $0.selectedBackgroundColor = Asset.Color.priLight010.color
         $0.setTitle("N회", for: .normal)
         $0.setTitleColor(Asset.Color.monoDark030.color, for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .selected)
-        $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 14)
+        $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.selectedFont = FontFamily.Pretendard.semiBold.font(size: 14)
     })
     lazy var cycleCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: cycleCellLayout())
@@ -155,6 +155,7 @@ class DetailHabitView: BaseViewController, Navigatable {
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
+        viewContents.backgroundColor = .red
         
         viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: lblTitle, btnDone: btnDone)
         scrollView = CommonView.scrollView(viewContents: viewContents, bounces: true)
@@ -184,6 +185,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         viewContents.addSubview(detailNameFrame)
         viewContents.addSubview(detailPerformTimeFrame)
+        viewContents.addSubview(btnPerformTime)
         viewContents.addSubview(cycleFrame)
         
         /// 이행 주기
@@ -208,6 +210,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 습관 이름
         detailNameFrame.snp.makeConstraints({
+            $0.height.equalTo(105)
             $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -215,13 +218,18 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 수행 시간
         detailPerformTimeFrame.snp.makeConstraints({
+            $0.height.equalTo(101)
             $0.top.equalTo(detailNameFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
         })
+        btnPerformTime.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(detailPerformTimeFrame)
+        })
         
         /// 이행 주기
         cycleFrame.snp.makeConstraints({
+            $0.height.equalTo(143 + self.cycleCellHeight)
             $0.top.equalTo(detailPerformTimeFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -264,10 +272,23 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         detailNaggingPushFrame.snp.makeConstraints({
+            $0.height.equalTo(104)
             $0.top.equalTo(cycleFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(20)
         })
+        
+        view.layoutIfNeeded()
+        
+        Log.debug("\(self.viewContents.bounds.height)")
+    }
+    
+    // MARK: - bind
+    override func bind() {
+        guard let viewModel = viewModel else { return }
+        
+        let input = DetailHabitViewModel.Input()
+        let output = viewModel.transform(input: input)
     }
 }

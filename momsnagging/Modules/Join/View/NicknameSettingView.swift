@@ -119,6 +119,8 @@ class NicknameSettingView: BaseViewController, Navigatable {
     })
     
     lazy var btnDone = CommonButton().then({
+        $0.highlightedBackgroundColor = Asset.Color.priDark020.color
+        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.isEnabled = false
         $0.setTitle("네 엄마!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)

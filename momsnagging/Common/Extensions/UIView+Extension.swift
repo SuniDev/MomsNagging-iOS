@@ -2,13 +2,13 @@
 //   UIView+Extension.swift
 //  momsnagging
 //
-//  Created by KBIZ on 2022/04/26.
+//  Created by suni on 2022/04/26.
 //
 
 import UIKit
 
 extension UIView {
-    
+       
     func addShadow(color: UIColor = .black, alpha: Float = 0.5, x: CGFloat = 0, y: CGFloat = 2, blur: CGFloat = 4, spread: CGFloat = 0) {
         
         self.layer.masksToBounds = false

@@ -11,7 +11,12 @@ import SnapKit
 
 class RecommendHabitTitleCell: BaseCollectionViewCell {
     
-    override func initUI() {
+    override func initView() {
+        normalTitleColor = Asset.Color.monoDark020.color
+        selectedTitleColor = Asset.Color.monoWhite.color
+        
+        lblTitle.font = FontFamily.Pretendard.bold.font(size: 16)
+        
         contentView.layer.cornerRadius = 12
         contentView.addSubview(lblTitle)
         

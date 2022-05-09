@@ -223,6 +223,7 @@ class CommonView {
         
         _ = btnDone.then({
             $0.isEnabled = false
+            $0.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 16)
             $0.setTitle("완료", for: .normal)
             $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
             $0.setTitleColor(Asset.Color.monoDark040.color, for: .disabled)
