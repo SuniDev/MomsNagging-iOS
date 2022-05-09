@@ -60,7 +60,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: lblTitle, btnDone: btnDone)
         scrollView = CommonView.scrollView(viewContents: viewContents, bounces: true)
         viewNameTitle = CommonView.requiredTitleFrame("습관 이름")
-        tfName = CommonView.textField()
+//        tfName = CommonView.textField()
         
     }
     
