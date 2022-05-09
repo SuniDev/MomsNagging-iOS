@@ -60,6 +60,7 @@ class HomeView: BaseViewController, Navigatable {
     var dateCheck: Int = 0 // 현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
     var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
+    var selectDate: String = ""
     // MARK: - UI Properties
     //헤드프레임 UI Properties
     var listBtn = UIButton()
@@ -254,6 +255,35 @@ class HomeView: BaseViewController, Navigatable {
                     cell?.selectDayRoundFrame.isHidden = true
                 }
             }
+            let cell = self.weekCalendarCollectionView.cellForItem(at: [0, indexPath.row]) as? WeekDayCalendarCell
+            self.headTitleLbl.text = self.calendarViewModel.todayFormatteryyyyMM()
+            var day: String = cell?.numberLbl.text ?? ""
+            var month: String = "\(self.calendarMonth ?? 0)"
+            var calendarMonth: Int = Int(exactly: self.calendarMonth ?? 0)!
+            if Int(month)! < 10 {
+                month = "0\(month)"
+            }
+            if Int(day)! < 10 {
+                day = "0\(day)"
+            }
+            self.selectDate = "\(self.headTitleLbl.text ?? "")\(day)"
+            self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
+            
+            let currentYearMonth = self.calendarViewModel.todayFormatteryyyyMM()
+            var calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
+            print("__\(calendarYearMonth)__\(currentYearMonth)")
+            if calendarYearMonth == "\(currentYearMonth)" {
+                print("이번달!")
+                for i in 0..<37 {
+                    let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
+                    if cell?.number.text == day {
+                        cell?.selectDayRoundFrame.isHidden = false
+                    } else {
+                        cell?.selectDayRoundFrame.isHidden = true
+                    }
+                }
+            }
+            
         }).disposed(by: disposedBag)
         
         calendarViewModel.weekDay // 월 ~ 일
@@ -311,7 +341,30 @@ class HomeView: BaseViewController, Navigatable {
                     cell?.selectDayRoundFrame.isHidden = true
                 }
             }
-            Log.debug("daySelectDebug", "\(indexPath.row), \(self.calendarMonth), \(self.calendarYear)")
+            let cell = self.dayCollectionView.cellForItem(at: [0, indexPath.row]) as? HomeCalendarCell
+            var day: String = cell?.number.text ?? ""
+            var month: String = "\(self.calendarMonth ?? 0)"
+            if Int(day)! < 10 {
+                day = "0\(day)"
+            }
+            if self.calendarMonth ?? 0 < 10 {
+                month = "0\(self.calendarMonth ?? 0)"
+            }
+            self.selectDate = "\(self.calendarYear ?? 0)\(month)\(day)"
+            if self.calendarViewModel.todayFormatteryyyyMM() == "\(self.calendarYear ?? 0)\(month)" {
+                for i in 0..<7 {
+                    let cell = self.weekCalendarCollectionView.cellForItem(at: [0, i]) as? WeekDayCalendarCell
+                    if cell?.numberLbl.text == day {
+                        cell?.selectDayRoundFrame.isHidden = false
+                    } else {
+                        cell?.selectDayRoundFrame.isHidden = true
+                    }
+                }
+                Log.debug("이번달인지 테스트", "true")
+            } else {
+                self.weekDaySelectClear()
+            }
+            self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             self.selectMonth = self.dateCheck
         }).disposed(by: disposedBag)
     }
@@ -399,6 +452,18 @@ class HomeView: BaseViewController, Navigatable {
         }.disposed(by: self.disposedBag)
     }
     func cellSelectInit() {
+        for i in 0..<37 {
+            let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
+            cell?.selectDayRoundFrame.isHidden = true
+        }
+    }
+    func weekDaySelectClear() {
+        for i in 0..<7 {
+            let cell = self.weekCalendarCollectionView.cellForItem(at: [0, i]) as? WeekDayCalendarCell
+            cell?.selectDayRoundFrame.isHidden = true
+        }
+    }
+    func calendarSelectClear() {
         for i in 0..<37 {
             let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
             cell?.selectDayRoundFrame.isHidden = true
