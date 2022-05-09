@@ -50,7 +50,6 @@ class DiaryCalendarCell: UICollectionViewCell {
         $0.isHidden = true
     })
     
-
 }
 extension DiaryCalendarCell {
     private func setUI() {

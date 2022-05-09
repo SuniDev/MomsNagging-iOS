@@ -28,13 +28,8 @@ class NicknameSettingView: BaseViewController, Navigatable {
     var safeAreaHeight: CGFloat = 0
     
     // MARK: - UI Properties
-    lazy var scrollView = UIScrollView().then({
-        $0.bounces = false
-    })
-    
-    lazy var viewContents = UIView().then({
-        $0.backgroundColor = .clear
-    })
+    lazy var scrollView = UIScrollView()
+    lazy var viewContents = UIView()
     
     lazy var btnBack = UIButton().then({
         $0.backgroundColor = .clear
@@ -88,24 +83,16 @@ class NicknameSettingView: BaseViewController, Navigatable {
         $0.backgroundColor = .clear
     })
     
-    lazy var tfNickname = UITextField().then({
+    lazy var viewHintTextField = UIView()
+    lazy var tfNickname = CommonTextField().then({
+        $0.placeholder = "띄어쓰기 포함 한/영/숫자 1-10글자"
         $0.isHidden = true
-        $0.textColor = Asset.Color.monoDark010.color
-        $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
-        $0.layer.cornerRadius = 4
-        $0.attributedPlaceholder = NSAttributedString(string: "띄어쓰기 포함 한/영/숫자 1-10글자",
-                                                      attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
-        $0.addLeftPadding(width: 8)
-        $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.normalBorderColor = Asset.Color.monoLight030.color
+        $0.successBorderColor = Asset.Color.monoLight030.color
         $0.clearButtonMode = .whileEditing
         $0.returnKeyType = .done
     })
-    
-    lazy var lblHint = UILabel().then({
-        $0.text = ""
-        $0.font = FontFamily.Pretendard.regular.font(size: 12)
-        $0.textColor = Asset.Color.success.color
-    })
+    lazy var lblHint = CommonHintLabel()
     
     lazy var viewConfirm = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
@@ -132,8 +119,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
     })
     
     lazy var btnDone = CommonButton().then({
-        $0.normalBackgroundColor = Asset.Color.priMain.color
-        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
+        $0.highlightedBackgroundColor = Asset.Color.priDark020.color
         $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.isEnabled = false
         $0.setTitle("네 엄마!", for: .normal)
@@ -180,14 +166,15 @@ class NicknameSettingView: BaseViewController, Navigatable {
             .foregroundColor: Asset.Color.priMain.color,
             .underlineStyle: NSUnderlineStyle.single.rawValue
         ]
+        
+        scrollView = CommonView.scrollView(viewContents: viewContents, bounces: false)
+        viewHintTextField = CommonView.hintTextFieldFrame(tf: tfNickname, lblHint: lblHint)
     }
     
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewBottom)
         view.addSubview(scrollView)
-        
-        scrollView.addSubview(viewContents)
         
         viewContents.addSubview(imgvBack)
         viewContents.addSubview(btnBack)
@@ -203,8 +190,9 @@ class NicknameSettingView: BaseViewController, Navigatable {
         viewAnswer.addSubview(btnCustom)
         
         viewAnswer.addSubview(viewCustomName)
-        viewCustomName.addSubview(tfNickname)
-        viewCustomName.addSubview(lblHint)
+        viewCustomName.addSubview(viewHintTextField)
+//        viewCustomName.addSubview(tfNickname)
+//        viewCustomName.addSubview(lblHint)
         
         viewContents.addSubview(viewConfirm)
         viewConfirm.addSubview(imgvConfirm)
@@ -220,11 +208,6 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         scrollView.snp.makeConstraints({
             $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-        })
-        
-        viewContents.snp.makeConstraints({
-            $0.top.leading.trailing.bottom.equalToSuperview()
-            $0.width.equalTo(UIScreen.main.bounds.width)
         })
         
         imgvBack.snp.makeConstraints({
@@ -247,7 +230,6 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         viewAnswer.snp.makeConstraints({
             $0.width.equalTo(300)
-//            $0.height.equalTo(defaultAnswerHeight)
             $0.top.equalTo(imgvQuestion.snp.bottom).offset(30)
             $0.trailing.equalToSuperview().offset(-15)
         })
@@ -289,17 +271,10 @@ class NicknameSettingView: BaseViewController, Navigatable {
             $0.top.equalTo(imgvSon.snp.bottom).offset(15)
         })
         
-        tfNickname.snp.makeConstraints({
-            $0.height.equalTo(48)
+        viewHintTextField.snp.makeConstraints({
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-30)
-        })
-        
-        lblHint.snp.makeConstraints({
-            $0.top.equalTo(tfNickname.snp.bottom).offset(5)
-            $0.leading.trailing.equalTo(tfNickname)
-            $0.bottom.greaterThanOrEqualToSuperview()
         })
         
         viewConfirm.snp.makeConstraints({
@@ -419,23 +394,24 @@ class NicknameSettingView: BaseViewController, Navigatable {
         
         output.isEditingName
             .drive(onNext: { isEditing in
-                self.tfNickname.addBorder(color: isEditing ? Asset.Color.priMain.color : Asset.Color.monoLight030.color, width: 1)
+                if isEditing {
+                    self.tfNickname.edit()
+                } else {
+                    self.tfNickname.normal()
+                }
             }).disposed(by: disposeBag)
         
         output.textHint
             .drive(onNext: { type in
-                self.lblHint.isHidden = type == .none
-                self.lblHint.text = type.rawValue
-                
                 switch type {
                 case .none:
-                    break
+                    self.lblHint.normal()
                 case .success:
-                    self.lblHint.textColor = Asset.Color.success.color
-                    self.tfNickname.addBorder(color: Asset.Color.monoLight030.color, width: 1)
+                    self.lblHint.success(type.rawValue)
+                    self.tfNickname.success()
                 case .error:
-                    self.lblHint.textColor = Asset.Color.error.color
-                    self.tfNickname.addBorder(color: Asset.Color.error.color, width: 1)
+                    self.lblHint.error(type.rawValue)
+                    self.tfNickname.error()
                 }
             }).disposed(by: disposeBag)
         
@@ -474,22 +450,26 @@ extension NicknameSettingView {
         }
         self.imgvAnswer.image = isHidden ? Asset.Assets.namesettingAnswer.image : Asset.Assets.namesettingAnswerEtc.image
         
-        self.tfNickname.text = ""
-        self.lblHint.text = ""
-    
-        if isHidden {
-            self.tfNickname.isHidden = true
-            self.lblHint.isHidden = true
-        }
-        
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.15) {
             self.view.layoutIfNeeded()
-        } completion: { _ in
-            if !isHidden {
-                self.tfNickname.isHidden = false
-                self.lblHint.isHidden = false
-            }
         }
 
+        if isHidden {
+            self.viewHintTextField.fadeOut()
+            self.tfNickname.fadeOut(completion: {
+                self.tfNickname.text = ""
+            })
+            self.lblHint.fadeOut(completion: {
+                self.lblHint.text = ""
+            })
+        } else {
+            self.viewHintTextField.fadeIn()
+            self.tfNickname.fadeIn(completion: {
+                self.tfNickname.text = ""
+            })
+            self.lblHint.fadeIn(completion: {
+                self.lblHint.text = ""
+            })
+        }
     }
 }
