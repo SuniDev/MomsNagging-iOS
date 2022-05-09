@@ -275,19 +275,6 @@ class NicknameSettingView: BaseViewController, Navigatable {
             $0.trailing.equalToSuperview().offset(-30)
         })
         
-//        tfNickname.snp.makeConstraints({
-//            $0.height.equalTo(48)
-//            $0.top.equalToSuperview()
-//            $0.leading.equalToSuperview().offset(20)
-//            $0.trailing.equalToSuperview().offset(-30)
-//        })
-//
-//        lblHint.snp.makeConstraints({
-//            $0.top.equalTo(tfNickname.snp.bottom).offset(5)
-//            $0.leading.trailing.equalTo(tfNickname)
-//            $0.bottom.greaterThanOrEqualToSuperview()
-//        })
-        
         viewConfirm.snp.makeConstraints({
             $0.height.equalTo(288)
             $0.top.equalTo(viewAnswer.snp.bottom).offset(defaultAnswerToConfirmMargin)

@@ -234,8 +234,7 @@ class AddHabitView: BaseViewController, Navigatable {
         
         output.goToMyOwnHabit
             .drive(onNext: {
-                // TODO: 습관 상세 이동
-                Log.debug("TODO: 습관 상세 이동")
+                self.navigator.show(seque: .detailHabit(viewModl: DetailHabitViewModel()), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
         
         output.isHiddenTip

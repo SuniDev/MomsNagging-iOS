@@ -38,6 +38,7 @@ class Navigator {
         case diary(viewModel: DiaryViewModel)
         case detailDiary(viewModel: DetailDiaryViewModel)
         case addHabit(viewModel: AddHabitViewModel)
+        case detailHabit(viewModl: DetailHabitViewModel)
     }
     
     enum Transition {
@@ -63,6 +64,7 @@ class Navigator {
         case .diary(viewModel: let viewModel): return DiaryView(viewModel: viewModel, navigator: self)
         case .detailDiary(viewModel: let viewModel): return DetailDiaryView(viewModel: viewModel, navigator: self)
         case .addHabit(viewModel: let viewModel): return AddHabitView(viewModel: viewModel, navigator: self)
+        case .detailHabit(viewModl: let viewModel): return DetailHabitView(viewModel: viewModel, navigator: self)
         }
     }
     

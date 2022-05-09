@@ -75,11 +75,11 @@ class CommonButton: UIButton {
     }
 
     func select() {
-        animateBackground(to: selectedBackgroundColor, duration: highlightDuration)
+        animateBackground(to: selectedBackgroundColor, duration: selectDuration)
     }
 
     func deSelect() {
-        animateBackground(to: normalBackgroundColor, duration: highlightDuration)
+        animateBackground(to: normalBackgroundColor, duration: selectDuration)
     }
     
     private func animateBackground(to color: UIColor?, duration: TimeInterval) {
