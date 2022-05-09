@@ -106,6 +106,7 @@ internal enum Asset {
     internal static let habitAddFloating = ImageAsset(name: "habitAddFloating")
     internal static let home = ImageAsset(name: "home")
     internal static let list = ImageAsset(name: "list")
+    internal static let listSortIc = ImageAsset(name: "listSortIc")
     internal static let medal = ImageAsset(name: "medal")
     internal static let more = ImageAsset(name: "more")
     internal static let moreVertical = ImageAsset(name: "moreVertical")
@@ -120,7 +121,6 @@ internal enum Asset {
     internal static let x = ImageAsset(name: "x")
     internal static let xFloating = ImageAsset(name: "xFloating")
     internal static let xCircle = ImageAsset(name: "x_circle")
-    internal static let listSortIc = ImageAsset(name: "listSortIc")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

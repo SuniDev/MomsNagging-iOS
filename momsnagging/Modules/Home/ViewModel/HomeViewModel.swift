@@ -25,6 +25,8 @@ class HomeViewModel: BaseViewModel, ViewModelType {
         var selectStatus: Bool?
         var cellType: TodoCellType?
         var listBtnAction: Bool? // 리스트 버튼을 선택한 상태(취소, 저장버튼 보여짐) - true, 취소 또는 저장을 누른 상태 (리스트, 다이어리 버튼 보여짐) - false
+        var sourceIndex: Int?
+        var destinationIndex: Int?
     }
     // MARK: - Output
     struct Output {
@@ -38,6 +40,8 @@ class HomeViewModel: BaseViewModel, ViewModelType {
         var listBtnStatus: Driver<Bool>?
         var cancelBtnStatus: Driver<Bool>?
         var saveBtnStatus: Driver<Bool>?
+        
+        var inputValue: Driver<HomeViewModel.Input>?
     }
     
     func transform(input: Input) -> Output {
@@ -52,7 +56,6 @@ class HomeViewModel: BaseViewModel, ViewModelType {
         } else {
             
         }
-        
         let toggleImg = BehaviorRelay<UIImage>(value: UIImage(asset: Asset.Icon.todoNonSelect)!)
         let colorListOb = BehaviorRelay<[ColorAsset]>(value: [])
         var colorList: [ColorAsset] = []
@@ -90,22 +93,25 @@ class HomeViewModel: BaseViewModel, ViewModelType {
         let listBtnStatusOb = BehaviorRelay<Bool>(value: false)
         let cancelBtnStatusOb = BehaviorRelay<Bool>(value: false)
         let saveBtnStatusOb = BehaviorRelay<Bool>(value: false)
+        let inputValueOb = BehaviorRelay<HomeViewModel.Input>(value: HomeViewModel.Input())
         if input.listBtnAction ?? false {
             diaryBtnStatusOb.accept(true)
             listBtnStatusOb.accept(true)
             cancelBtnStatusOb.accept(false)
             saveBtnStatusOb.accept(false)
+            inputValueOb.accept(HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: false))
         } else {
             diaryBtnStatusOb.accept(false)
             listBtnStatusOb.accept(false)
             cancelBtnStatusOb.accept(true)
             saveBtnStatusOb.accept(true)
+            inputValueOb.accept(HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: true))
         }
-        
-        return Output(floatingBtnIc: floatingBtnIc.asDriver(), todoListData: todoList(), toggleImage: toggleImg.asDriver(), cellColorList: colorListOb.asDriver(), diaryBtnStatus: diaryBtnStatusOb.asDriver(), listBtnStatus: listBtnStatusOb.asDriver(), cancelBtnStatus: cancelBtnStatusOb.asDriver(), saveBtnStatus: saveBtnStatusOb.asDriver())
+        let todoListData = todoList(sourceIndex: input.sourceIndex, destIndex: input.destinationIndex)
+        return Output(floatingBtnIc: floatingBtnIc.asDriver(), todoListData: todoListData, toggleImage: toggleImg.asDriver(), cellColorList: colorListOb.asDriver(), diaryBtnStatus: diaryBtnStatusOb.asDriver(), listBtnStatus: listBtnStatusOb.asDriver(), cancelBtnStatus: cancelBtnStatusOb.asDriver(), saveBtnStatus: saveBtnStatusOb.asDriver(), inputValue: inputValueOb.asDriver())
     }
     
-    func todoList() -> Driver<[TodoListModel]> {
+    func todoList(sourceIndex: Int?=nil, destIndex: Int?=nil) -> Driver<[TodoListModel]> {
         // 더미데이터 입니다. API 오면 붙이면 될듯합니다.
         let returnList = BehaviorRelay<[TodoListModel]>(value: [])
         var list: [TodoListModel] = []
@@ -125,15 +131,21 @@ class HomeViewModel: BaseViewModel, ViewModelType {
             }
             list.append(model)
         }
+        
+//        if let sourceIndex = sourceIndex {
+//            let moveCell = list[sourceIndex]
+//            list.remove(at: sourceIndex)
+//            list.insert(moveCell, at: destIndex!)
+//        }
         returnList.accept(list)
         return returnList.asDriver()
     }
     
-//    func listSort() {
-//        //리스트, 다이어리 버튼 숨겨야함 (true)
-//        //저장,취소버튼 보여야함 (false)
-//        //cellIconChange 두줄 equal모양 버튼
-//    }
+    func listSort() {
+        //리스트, 다이어리 버튼 숨겨야함 (true)
+        //저장,취소버튼 보여야함 (false)
+        //cellIconChange 두줄 equal모양 버튼
+    }
 //    func cancelOrSave() {
 //        //리스트, 다이어리 버튼 보여야함 (false)
 //        //저장,취소버튼 숨겨야함 (true)

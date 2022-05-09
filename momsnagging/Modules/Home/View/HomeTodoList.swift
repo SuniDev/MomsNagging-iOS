@@ -34,6 +34,7 @@ extension HomeView {
             $0.trailing.equalTo(view.snp.trailing)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         })
+        
         todoBind()
     }
     
@@ -59,22 +60,28 @@ extension HomeView {
         return view
     }
     
+//    func listBtnActionInputData(listBtnAction: Bool) {
+//
+//    }
+    
     func todoBind() {
         guard let viewModel = viewModel else { return }
-        lazy var input = HomeViewModel.Input()
-        lazy var output = viewModel.transform(input: input)
-        var toggleStatus: Bool = false
-        output.todoListData?.drive(onNext: { list in
-            Log.debug("todoListData : ", "\(list)")
-        }).disposed(by: disposedBag)
-        output.todoListData?.drive { list in
-            list.bind(to: self.todoListTableView.rx.items(cellIdentifier: "HomeTodoListCell", cellType: HomeTodoListCell.self)) { index, item, cell in
+        
+        lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: false)
+        collectionViewOutput = viewModel.transform(input: input)
+        
+        collectionViewOutput?.todoListData?.drive { list in
+            list.bind(to: self.todoListTableView.rx.items(cellIdentifier: "HomeTodoListCell", cellType: HomeTodoListCell.self)) { _, item, cell in
+                self.todoList.append(item)
                 cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
                 cell.todoIsSelected = item.isSelected ?? false
                 cell.timeBtn.setTitle(item.time ?? "", for: .normal)
                 cell.titleLbl.text = item.title ?? ""
                 cell.prefixLbl.text = item.prefix ?? ""
-                cell.cellType = item.type
+                cell.cellType = item.type ?? .normal
+                self.collectionViewOutput?.listBtnStatus?.drive {
+                    cell.sortIc.isHidden = !$0
+                }.disposed(by: self.disposedBag)
                 /*
                  select colorList
                  0 : contentViewColor
@@ -183,15 +190,43 @@ extension HomeView {
                         }
                     }.disposed(by: self.disposedBag)
                 }
-            
             }.disposed(by: disposedBag)
         }
         todoListTableView.rx.setDelegate(self).disposed(by: disposedBag)
+        todoListTableView.dragDelegate = self
+        todoListTableView.dropDelegate = self
+        todoListTableView.dragInteractionEnabled = false
     }
 }
 
-extension HomeView: UITableViewDelegate {
+extension HomeView: UITableViewDelegate, UITableViewDragDelegate, UITableViewDropDelegate, UIDropInteractionDelegate {
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) { }
+    
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        if session.localDragSession != nil {
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        }
+        return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+    }
+    
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let dragItem = UIDragItem(itemProvider: NSItemProvider())
+        dragItem.localObject = todoList[indexPath.row]
+        return [ dragItem ]
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        lazy var input = HomeViewModel.Input(sourceIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
+        lazy var output = viewModel.transform(input: input)
+        output.todoListData?.drive { list in
+            Log.debug("List!!", "\(list)")
+        }.disposed(by: disposedBag)
+        print("moveRowAt !")
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
+    
 }

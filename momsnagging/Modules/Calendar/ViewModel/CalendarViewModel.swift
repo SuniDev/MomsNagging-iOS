@@ -56,15 +56,14 @@ class CalendarViewModel {
     func getWeekDayList() -> [String] {
         return model.weekDayList
     }
-    
-    ///오늘날짜 yy,MM,dd 형태로 string return
+    /// 오늘날짜 yy,MM,dd 형태로 string return
     func todayFormatteryyMMdd() -> String {
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yy.MM.dd"
         return formatter.string(from: date)
     }
-    ///오늘날짜 dd 형태로 string return
+    /// 오늘날짜 dd 형태로 string return
     func todaydd() -> String {
         let date = Date()
         let formatter = DateFormatter()
@@ -79,5 +78,13 @@ class CalendarViewModel {
     }
     func getYear() -> Int {
         return model.getYear()
+    }
+    func getSelectDate(date:String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yy.MM.dd"
+        let date = dateFormatter.date(from: date)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy.MM.dd"
+        return formatter.string(from: date!)
     }
 }

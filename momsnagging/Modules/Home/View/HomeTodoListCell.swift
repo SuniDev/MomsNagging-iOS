@@ -19,7 +19,7 @@ class HomeTodoListCell: UITableViewCell {
     // MARK: Properties & Variable
     var todoIsSelected: Bool = false // 투두리스트 완료,선택 여부
     var count: Int = 0 // 반복횟수
-    var cellType: TodoCellType!
+    var cellType: TodoCellType = .normal
     // MARK: UI Properties
     lazy var toggleIc = UIButton().then({
         if todoIsSelected {
@@ -45,6 +45,11 @@ class HomeTodoListCell: UITableViewCell {
     lazy var moreIc = UIButton().then({
         $0.setImage(UIImage(asset: Asset.Icon.moreVertical), for: .normal)
     })
+    lazy var sortIc = UIButton().then({
+        $0.isUserInteractionEnabled = false
+        $0.setImage(UIImage(asset: Asset.Icon.listSortIc), for: .normal)
+        $0.isHidden = true
+    })
     lazy var bottomDivider = UIView().then({
         $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
     })
@@ -57,6 +62,7 @@ extension HomeTodoListCell {
         contentView.addSubview(timeBtn)
         contentView.addSubview(titleLbl)
         contentView.addSubview(moreIc)
+        contentView.addSubview(sortIc)
         contentView.addSubview(bottomDivider)
         
         toggleIc.snp.makeConstraints({
@@ -83,11 +89,6 @@ extension HomeTodoListCell {
                 $0.leading.equalTo(timeBtn.snp.trailing).offset(12)
                 $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
             })
-            moreIc.snp.makeConstraints({
-                $0.width.height.equalTo(24)
-                $0.centerY.equalTo(contentView.snp.centerY)
-                $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
-            })
         case .todo:
             prefixView = HomeView.cellTodoIconView(lbl: prefixLbl, count: nil, isDone: todoIsSelected)
             contentView.addSubview(prefixView)
@@ -104,11 +105,6 @@ extension HomeTodoListCell {
                 $0.centerY.equalTo(contentView.snp.centerY)
                 $0.leading.equalTo(prefixLbl.snp.trailing).offset(8)
                 $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
-            })
-            moreIc.snp.makeConstraints({
-                $0.width.height.equalTo(24)
-                $0.centerY.equalTo(contentView.snp.centerY)
-                $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
             })
         case .count:
             prefixView = HomeView.cellTodoIconView(lbl: prefixLbl, count: count, isDone: todoIsSelected)
@@ -127,11 +123,18 @@ extension HomeTodoListCell {
                 $0.leading.equalTo(prefixLbl.snp.trailing).offset(8)
                 $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
             })
-            moreIc.snp.makeConstraints({
-                $0.width.height.equalTo(24)
-                $0.centerY.equalTo(contentView.snp.centerY)
-                $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
-            })
         }
+        
+        moreIc.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.centerY.equalTo(contentView.snp.centerY)
+            $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
+        })
+        
+        sortIc.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.centerY.equalTo(contentView.snp.centerY)
+            $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
+        })
     }
 }
