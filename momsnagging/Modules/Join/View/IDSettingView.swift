@@ -42,13 +42,15 @@ class IDSettingView: BaseViewController, Navigatable {
         $0.image = Asset.Assets.idsettingAnswer.image
     })
     
-    lazy var tfID = UITextField()
-    
-    lazy var lblHint = UILabel().then({
-        $0.text = ""
-        $0.font = FontFamily.Pretendard.regular.font(size: 12)
-        $0.textColor = Asset.Color.success.color
+    lazy var viewHintTextField = UIView()
+    lazy var tfID = CommonTextField().then({
+        $0.normalBorderColor = Asset.Color.monoLight030.color
+        $0.successBorderColor = Asset.Color.monoLight030.color
+        $0.placeholder = "밑줄, 띄어쓰기 제외 영어/숫자 4-15 글자"
+        $0.clearButtonMode = .whileEditing
+        $0.returnKeyType = .done
     })
+    lazy var lblHint = CommonHintLabel()
     
     lazy var viewConfirm = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
@@ -59,6 +61,8 @@ class IDSettingView: BaseViewController, Navigatable {
     })
     
     lazy var btnDone = CommonButton().then({
+        $0.highlightedBackgroundColor = Asset.Color.priDark020.color
+        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.isEnabled = false
         $0.setTitle("네!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
@@ -87,13 +91,7 @@ class IDSettingView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = Asset.Color.skyblue.color
         
-        tfID = CommonView.textField(placeHolder: "밑줄, 띄어쓰기 제외 영어/숫자 4-15 글자").then({
-            $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
-            $0.clearButtonMode = .whileEditing
-            $0.returnKeyType = .done
-            
-        })
-        
+        viewHintTextField = CommonView.hintTextFieldFrame(tf: tfID, lblHint: lblHint)
     }
     
     // MARK: - layoutSetting
@@ -104,8 +102,7 @@ class IDSettingView: BaseViewController, Navigatable {
         viewBackground.addSubview(btnBack)
         viewBackground.addSubview(imgvQuestion)
         viewBackground.addSubview(imgvAnswer)
-        viewBackground.addSubview(tfID)
-        viewBackground.addSubview(lblHint)
+        viewBackground.addSubview(viewHintTextField)
         
         viewBackground.addSubview(viewConfirm)
         viewConfirm.addSubview(imgvConfirm)
@@ -145,17 +142,22 @@ class IDSettingView: BaseViewController, Navigatable {
             $0.trailing.equalToSuperview().offset(-15)
         })
         
-        tfID.snp.makeConstraints({
-            $0.height.equalTo(48)
+        viewHintTextField.snp.makeConstraints({
             $0.top.equalTo(imgvAnswer).offset(26)
             $0.leading.equalTo(imgvAnswer).offset(20)
             $0.trailing.equalTo(imgvAnswer).offset(-28)
         })
-        
-        lblHint.snp.makeConstraints({
-            $0.top.equalTo(tfID.snp.bottom).offset(5)
-            $0.leading.trailing.equalTo(tfID)
-        })
+//        tfID.snp.makeConstraints({
+//            $0.height.equalTo(48)
+//            $0.top.equalTo(imgvAnswer).offset(26)
+//            $0.leading.equalTo(imgvAnswer).offset(20)
+//            $0.trailing.equalTo(imgvAnswer).offset(-28)
+//        })
+//
+//        lblHint.snp.makeConstraints({
+//            $0.top.equalTo(tfID.snp.bottom).offset(5)
+//            $0.leading.trailing.equalTo(tfID)
+//        })
                 
         viewConfirm.snp.makeConstraints({
             $0.height.equalTo(288)
@@ -198,22 +200,24 @@ class IDSettingView: BaseViewController, Navigatable {
         
         output.isEditingID
             .drive(onNext: { isEditing in
-                self.tfID.addBorder(color: isEditing ? Asset.Color.priMain.color : Asset.Color.monoLight030.color, width: 1)
+                if isEditing {
+                    self.tfID.edit()
+                } else {
+                    self.tfID.normal()
+                }
             }).disposed(by: disposeBag)
         
         output.textHint
             .drive(onNext: { type in
-                self.lblHint.isHidden = type == .none
-                self.lblHint.text = type.rawValue
-                
                 switch type {
-                case .none: break
+                case .none:
+                    self.lblHint.normal()
                 case .invalid, .duplicate:
-                    self.lblHint.textColor = Asset.Color.error.color
-                    self.tfID.addBorder(color: Asset.Color.error.color, width: 1)
+                    self.lblHint.error(type.rawValue)
+                    self.tfID.error()
                 case .succes:
-                    self.lblHint.textColor = Asset.Color.success.color
-                    self.tfID.addBorder(color: Asset.Color.monoLight030.color, width: 1)
+                    self.lblHint.success(type.rawValue)
+                    self.tfID.success()
                 }
             }).disposed(by: disposeBag)
         

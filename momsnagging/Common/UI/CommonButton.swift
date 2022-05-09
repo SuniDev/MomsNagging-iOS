@@ -7,10 +7,16 @@
 
 import UIKit
 
+/**
+ # (C) CommonButton
+ - Authors: suni
+ - Note: 공통 버튼 기본 기능 정의
+ */
 class CommonButton: UIButton {
     
-    var highlightDuration: TimeInterval = 0.15
-    var enableDuration: TimeInterval = 0.15
+    var highlightDuration: TimeInterval = 0.1
+    var enableDuration: TimeInterval = 0.1
+    var selectDuration: TimeInterval = 0.1
     
     @IBInspectable var normalBackgroundColor: UIColor = Asset.Color.priMain.color {
         didSet {
@@ -18,8 +24,16 @@ class CommonButton: UIButton {
         }
     }
     
-    @IBInspectable var highlightedBackgroundColor: UIColor = Asset.Color.priDark020.color
-    @IBInspectable var disabledBackgroundColor: UIColor = Asset.Color.priLight018Dis.color
+    @IBInspectable var highlightedBackgroundColor: UIColor?
+    @IBInspectable var disabledBackgroundColor: UIColor?
+    @IBInspectable var selectedBackgroundColor: UIColor?
+    
+    var normalFont: UIFont?
+    var selectedFont: UIFont? {
+        didSet {
+            normalFont = self.titleLabel?.font
+        }
+    }
     
     override var isEnabled: Bool {
         didSet {
@@ -32,11 +46,15 @@ class CommonButton: UIButton {
     }
     
     func enable() {
-        animateBackground(to: normalBackgroundColor, duration: enableDuration)
+        if disabledBackgroundColor != nil {
+            animateBackground(to: normalBackgroundColor, duration: enableDuration)
+        }
     }
 
     func disable() {
-        animateBackground(to: disabledBackgroundColor, duration: enableDuration)
+        if let disabledBackgroundColor = disabledBackgroundColor {
+            animateBackground(to: disabledBackgroundColor, duration: enableDuration)
+        }
     }
     
     override var isHighlighted: Bool {
@@ -50,16 +68,48 @@ class CommonButton: UIButton {
     }
 
     func highlight() {
-        animateBackground(to: highlightedBackgroundColor, duration: highlightDuration)
+        if let highlightedBackgroundColor = highlightedBackgroundColor {
+            animateBackground(to: highlightedBackgroundColor, duration: highlightDuration)
+        }
     }
 
     func unHighlight() {
-        animateBackground(to: normalBackgroundColor, duration: highlightDuration)
+        if highlightedBackgroundColor != nil {
+            animateBackground(to: normalBackgroundColor, duration: highlightDuration)
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            if oldValue == false && isSelected {
+                select()
+            } else if oldValue == true && !isSelected {
+                deSelect()
+            }
+        }
+    }
+
+    func select() {
+        if let selectedBackgroundColor = selectedBackgroundColor {
+            animateBackground(to: selectedBackgroundColor, duration: selectDuration)
+        }
+        if let selectedFont = selectedFont {
+            self.titleLabel?.font = selectedFont
+        }
+    }
+
+    func deSelect() {
+        if selectedBackgroundColor != nil {
+            animateBackground(to: normalBackgroundColor, duration: selectDuration)
+        }
+        if let normalFont = normalFont {
+            self.titleLabel?.font = normalFont
+        }
     }
     
     private func animateBackground(to color: UIColor?, duration: TimeInterval) {
         guard let color = color else { return }
-        UIView.animate(withDuration: highlightDuration) {
+        UIView.animate(withDuration: duration) {
             self.backgroundColor = color
         }
     }
