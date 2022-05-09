@@ -23,19 +23,19 @@ extension HomeView {
      - Note: HomeView에 플로팅 버튼 추가와 오토레이아웃 세팅 함수
      */
     func setFloatingBtn() {
-        let floatingBtnIc = UIImageView()
         let backgroundFrame = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
             $0.isHidden = true
         })
-        let habitItem = addFloatingItemView(btn: addHabitBtn, type: .habit)
-        let todoItem = addFloatingItemView(btn: addTodoBtn, type: .todo)
-        let floatingBtnView = floatingView(fb: floatingBtn, img: floatingBtnIc)
-        self.view.addSubview(backgroundFrame)
-        backgroundFrame.addSubview(habitItem)
-        backgroundFrame.addSubview(todoItem)
+        floatingBackgroundView = backgroundFrame
+        habitItem = addFloatingItemView(btn: addHabitBtn, type: .habit)
+        todoItem = addFloatingItemView(btn: addTodoBtn, type: .todo)
+        floatingBtnView = floatingView(fb: floatingBtn, img: floatingBtnIc)
+        self.view.addSubview(floatingBackgroundView)
+        floatingBackgroundView.addSubview(habitItem)
+        floatingBackgroundView.addSubview(todoItem)
         self.view.addSubview(floatingBtnView)
-        backgroundFrame.snp.makeConstraints({
+        floatingBackgroundView.snp.makeConstraints({
             $0.edges.equalTo(self.view.snp.edges)
             $0.top.equalTo(self.view.snp.top).offset(-60)
             $0.bottom.equalTo(self.view.snp.bottom)
@@ -60,27 +60,26 @@ extension HomeView {
         
         floatingBtn.rx.tap.bind {
             if self.floatingBtn.isSelected { // x 버튼 클릭시
-                backgroundFrame.isHidden = true
+                self.floatingBackgroundView.isHidden = true
                 self.floatingBtn.isSelected = false
-                self.floatingBind(btnSelected: true, img: floatingBtnIc)
+                self.floatingBind(btnSelected: true, img: self.floatingBtnIc)
                 UIView.animate(withDuration: 0.1) {
-                    todoItem.frame = todoItem.frame.offsetBy(dx: 0, dy: 80)
-                    habitItem.frame = habitItem.frame.offsetBy(dx: 0, dy: 160)
+                    self.todoItem.frame = self.todoItem.frame.offsetBy(dx: 0, dy: 80)
+                    self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: 160)
                 }
             } else { // + 버튼 클릭시
-                backgroundFrame.isHidden = false
+                self.floatingBackgroundView.isHidden = false
                 self.floatingBtn.isSelected = true
-                self.floatingBind(btnSelected: false, img: floatingBtnIc)
+                self.floatingBind(btnSelected: false, img: self.floatingBtnIc)
                 UIView.animate(withDuration: 0.1) {
-                    todoItem.frame = todoItem.frame.offsetBy(dx: 0, dy: -80)
+                    self.todoItem.frame = self.todoItem.frame.offsetBy(dx: 0, dy: -80)
                 }
                 UIView.animate(withDuration: 0.2) {
-                    habitItem.frame = habitItem.frame.offsetBy(dx: 0, dy: -160)
+                    self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: -160)
                 }
             }
         }.disposed(by: disposedBag)
     }
-    
     /**
      # floatingView
      - Authors: tavi
@@ -95,7 +94,7 @@ extension HomeView {
             $0.layer.cornerRadius = 28
             $0.layer.masksToBounds = true
         })
-        img.image = UIImage(asset: Asset.Icon.plus)
+        img.image = UIImage(asset: Asset.Icon.floatingPlus)
         view.addSubview(img)
         view.addSubview(fb)
         img.snp.makeConstraints({
@@ -145,6 +144,16 @@ extension HomeView {
             ic.image = UIImage(asset: Asset.Icon.habitAddFloating)
             btn.rx.tap.bind {
                 Log.debug("클릭이벤트", "습관추가 클릭")
+                self.floatingBackgroundView.isHidden = true
+                self.floatingBtn.isSelected = false
+                self.floatingBind(btnSelected: true, img: self.floatingBtnIc)
+                UIView.animate(withDuration: 0.1) {
+                    self.todoItem.frame = self.todoItem.frame.offsetBy(dx: 0, dy: 80)
+                    self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: 160)
+                }
+                let viewModel = AddHabitViewModel()
+                let vc = self.navigator.get(seque: .addHabit(viewModel: viewModel))
+                self.navigator.show(seque: .addHabit(viewModel: viewModel), sender: vc, transition: .navigation)
             }.disposed(by: disposedBag)
         case .todo:
             lbl.text = "할일 추가"
@@ -202,7 +211,7 @@ extension HomeView {
             if ic {
                 img.image = UIImage(asset: Asset.Icon.xFloating)
             } else {
-                img.image = UIImage(asset: Asset.Icon.plus)
+                img.image = UIImage(asset: Asset.Icon.floatingPlus)
             }
         }).disposed(by: disposedBag)
     }

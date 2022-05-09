@@ -159,6 +159,11 @@ class HomeView: BaseViewController, Navigatable {
         return layout
     }
     
+    var floatingBackgroundView = UIView()
+    var habitItem = UIView()
+    var todoItem = UIView()
+    var floatingBtnView = UIView()
+    let floatingBtnIc = UIImageView()
     var floatingBtn = UIButton() // 플로팅 버튼
     var addHabitBtn = UIButton() // 플로팅 아이템 버튼
     var addTodoBtn = UIButton() // 플로팅 아이템 버튼
