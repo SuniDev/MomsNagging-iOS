@@ -260,24 +260,35 @@ class CommonView {
     }
     
     /**
-     # textField
+     # hintTextFieldFrame
      - parameters:
-        - placeHolder : 텍스트필드 플레이스홀더
+        - tf : textField
+        - lblHint : 텍스트 힌트 Label
      - Authors: suni
      - Returns: UITextField
-     - Note: 공통 텍스트 필드 함수
+     - Note: 텍스트 힌트가 있는 텍스트 필드 프레임
      */
-    static func textField(placeHolder: String = "", _ font: UIFont = FontFamily.Pretendard.regular.font(size: 14)) -> UITextField {
-        lazy var textField = UITextField().then({
-            $0.textColor = Asset.Color.monoDark010.color
-            $0.layer.cornerRadius = 4
-            $0.attributedPlaceholder = NSAttributedString(string: placeHolder,
-                                                          attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
-            $0.addLeftPadding(width: 8)
-            $0.font = font
+    static func hintTextFieldFrame(tf: UITextField, lblHint: UILabel) -> UIView {
+        
+        lazy var viewHint = UIView().then({
+            $0.backgroundColor = .clear
+        })
+       
+        viewHint.addSubview(tf)
+        viewHint.addSubview(lblHint)
+        
+        tf.snp.makeConstraints({
+            $0.height.equalTo(48)
+            $0.top.leading.trailing.equalToSuperview()
         })
         
-        return textField
+        lblHint.snp.makeConstraints({
+            $0.top.equalTo(tf.snp.bottom).offset(5)
+            $0.leading.trailing.equalTo(tf)
+            $0.bottom.equalToSuperview()
+        })
+        
+        return viewHint
     }
     
     /**
@@ -286,7 +297,7 @@ class CommonView {
         - text : 타이틀 텍스트
      - Authors: suni
      - Returns: UIView
-     - Note: '필수' 표시가 포함된 타이틀
+     - Note: '*' 표시가 포함된 타이틀
      */
     static func requiredTitleFrame(_ text: String) -> UIView {
         lazy var viewTitle = UIView().then({
@@ -300,9 +311,9 @@ class CommonView {
         })
         
         lazy var lblRequired = UILabel().then({
-            $0.text = "필수"
+            $0.text = "*"
             $0.textColor = Asset.Color.priMain.color
-            $0.font = FontFamily.Pretendard.regular.font(size: 12)
+            $0.font = FontFamily.Pretendard.bold.font(size: 18)
         })
         
         viewTitle.addSubview(lblTitle)
@@ -313,7 +324,7 @@ class CommonView {
         })
         
         lblRequired.snp.makeConstraints({
-            $0.leading.equalTo(lblTitle.snp.trailing).offset(6)
+            $0.leading.equalTo(lblTitle.snp.trailing).offset(2)
             $0.centerY.equalTo(lblTitle)
         })
         
@@ -346,5 +357,23 @@ class CommonView {
         })
         
         return scrollView
+    }
+    
+    /**
+     # divider
+     - Authors: suni
+     - Returns: UIView
+     - Note: 공통 divider 뷰 함수
+     */
+    static func divider() -> UIView {
+        lazy var divider = UIView().then({
+            $0.backgroundColor = Asset.Color.monoLight010.color
+        })
+        
+        divider.snp.makeConstraints({
+            $0.height.equalTo(1)
+        })
+        
+        return divider
     }
 }

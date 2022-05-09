@@ -7,10 +7,16 @@
 
 import UIKit
 
+/**
+ # (C) CommonButton
+ - Authors: suni
+ - Note: 공통 버튼 기본 기능 정의
+ */
 class CommonButton: UIButton {
     
     var highlightDuration: TimeInterval = 0.15
     var enableDuration: TimeInterval = 0.15
+    var selectDuration: TimeInterval = 0.15
     
     @IBInspectable var normalBackgroundColor: UIColor = Asset.Color.priMain.color {
         didSet {
@@ -20,6 +26,7 @@ class CommonButton: UIButton {
     
     @IBInspectable var highlightedBackgroundColor: UIColor = Asset.Color.priDark020.color
     @IBInspectable var disabledBackgroundColor: UIColor = Asset.Color.priLight018Dis.color
+    @IBInspectable var selectedBackgroundColor: UIColor = Asset.Color.priLight010.color
     
     override var isEnabled: Bool {
         didSet {
@@ -57,9 +64,27 @@ class CommonButton: UIButton {
         animateBackground(to: normalBackgroundColor, duration: highlightDuration)
     }
     
+    override var isSelected: Bool {
+        didSet {
+            if oldValue == false && isSelected {
+                select()
+            } else if oldValue == true && !isSelected {
+                deSelect()
+            }
+        }
+    }
+
+    func select() {
+        animateBackground(to: selectedBackgroundColor, duration: highlightDuration)
+    }
+
+    func deSelect() {
+        animateBackground(to: normalBackgroundColor, duration: highlightDuration)
+    }
+    
     private func animateBackground(to color: UIColor?, duration: TimeInterval) {
         guard let color = color else { return }
-        UIView.animate(withDuration: highlightDuration) {
+        UIView.animate(withDuration: duration) {
             self.backgroundColor = color
         }
     }
