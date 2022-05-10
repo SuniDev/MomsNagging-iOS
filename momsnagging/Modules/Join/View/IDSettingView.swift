@@ -19,7 +19,7 @@ class IDSettingView: BaseViewController, Navigatable {
     
     // MARK: - UI Properties
     lazy var viewBackground = UIView().then({
-        $0.backgroundColor = Asset.Color.skyblue.color
+        $0.backgroundColor = Asset.Color.monoLight010.color
     })
     
     lazy var btnBack = UIButton().then({
@@ -89,7 +89,7 @@ class IDSettingView: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
-        view.backgroundColor = Asset.Color.skyblue.color
+        view.backgroundColor = Asset.Color.monoLight010.color
         
         viewHintTextField = CommonView.hintTextFieldFrame(tf: tfID, lblHint: lblHint)
     }

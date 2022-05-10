@@ -159,7 +159,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
-        view.backgroundColor = Asset.Color.skyblue.color
+        view.backgroundColor = Asset.Color.monoLight010.color
         
         nicknameAttributes = [
             .font: FontFamily.Pretendard.semiBold.font(size: 18),

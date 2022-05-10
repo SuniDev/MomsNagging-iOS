@@ -63,6 +63,11 @@ internal enum Asset {
     internal static let onboardingEmoji3 = ImageAsset(name: "onboarding_emoji3")
     internal static let onboardingEmoji4 = ImageAsset(name: "onboarding_emoji4")
     internal static let onboardingEmoji5 = ImageAsset(name: "onboarding_emoji5")
+    internal static let pagecontrol1 = ImageAsset(name: "pagecontrol1")
+    internal static let pagecontrol2 = ImageAsset(name: "pagecontrol2")
+    internal static let pagecontrol3 = ImageAsset(name: "pagecontrol3")
+    internal static let pagecontrol4 = ImageAsset(name: "pagecontrol4")
+    internal static let pagecontrol5 = ImageAsset(name: "pagecontrol5")
   }
   internal enum Color {
     internal static let black = ColorAsset(name: "black")
@@ -117,12 +122,12 @@ internal enum Asset {
     internal static let sliders = ImageAsset(name: "sliders")
     internal static let straightLeft = ImageAsset(name: "straight_left")
     internal static let tip = ImageAsset(name: "tip")
-    internal static let x = ImageAsset(name: "x")
-    internal static let xFloating = ImageAsset(name: "xFloating")
-    internal static let xCircle = ImageAsset(name: "x_circle")
     internal static let todoAddFloating = ImageAsset(name: "todoAddFloating")
     internal static let todoNonSelect = ImageAsset(name: "todoNonSelect")
     internal static let todoSelect = ImageAsset(name: "todoSelect")
+    internal static let x = ImageAsset(name: "x")
+    internal static let xFloating = ImageAsset(name: "xFloating")
+    internal static let xCircle = ImageAsset(name: "x_circle")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
