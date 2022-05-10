@@ -81,7 +81,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.selectedBackgroundColor = Asset.Color.priLight010.color
         $0.setTitle("N회", for: .normal)
         $0.setTitleColor(Asset.Color.monoDark030.color, for: .normal)
-        $0.setTitleColor(Asset.Color.monoWhite.color, for: .selected)
+        $0.setTitleColor(Asset.Color.monoDark010.color, for: .selected)
         $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.selectedFont = FontFamily.Pretendard.semiBold.font(size: 14)
     })
@@ -90,6 +90,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         collectionView.register(CycleCell.self, forCellWithReuseIdentifier: cycleIdentifier)
         collectionView.backgroundColor = Asset.Color.monoWhite.color
         collectionView.contentInset = .zero
+        collectionView.allowsMultipleSelection = true
         return collectionView
     }()
     
@@ -108,6 +109,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     
     /// 잔소리 알림
     lazy var detailNaggingPushFrame = UIView()
+    lazy var viewDefaultNaggingPush = UIView()
+    lazy var viewTimeNaggingPush = UIView()
     lazy var lblPushTitle = UILabel().then({
         $0.text = "잔소리 알림"
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
@@ -173,7 +176,8 @@ class DetailHabitView: BaseViewController, Navigatable {
         viewCycleTitle = CommonView.requiredTitleFrame("이행 주기")
         
         /// 잔소리 알림
-        viewAddPushTime = CommonView.detailAddPushTimeFrame()
+        viewAddPushTime = CommonView.detailAddPushTimeFrame(defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush)
+        viewAddPushTime.isHidden = true
         detailNaggingPushFrame = CommonView.detailNaggingPushFrame(lblTitle: lblPushTitle, switchPush: switchPush, viewAddPushTime: viewAddPushTime)
         
     }
@@ -272,7 +276,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         detailNaggingPushFrame.snp.makeConstraints({
-            $0.height.equalTo(104)
+            $0.height.equalTo(105)
             $0.top.equalTo(cycleFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -280,15 +284,47 @@ class DetailHabitView: BaseViewController, Navigatable {
         })
         
         view.layoutIfNeeded()
-        
-        Log.debug("\(self.viewContents.bounds.height)")
     }
     
     // MARK: - bind
     override func bind() {
         guard let viewModel = viewModel else { return }
         
-        let input = DetailHabitViewModel.Input()
+        let input = DetailHabitViewModel.Input(
+            btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
+            btnCycleWeekTapped: self.btnCycleWeek.rx.tap.asDriverOnErrorJustComplete(),
+            btnCycleNumber: self.btnCycleNumber.rx.tap.asDriverOnErrorJustComplete(),
+            cycleItemSelected: self.cycleCollectionView.rx.itemSelected.asDriver(),
+            valueChangedPush: self.switchPush.rx.controlEvent(.valueChanged).withLatestFrom(self.switchPush.rx.value).asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
+        
+        output.goToBack
+            .drive(onNext: {
+                self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
+        
+        output.cycleItems
+            .bind(to: cycleCollectionView.rx.items(cellIdentifier: cycleIdentifier, cellType: CycleCell.self)) { _, item, cell in
+                cell.lblTitle.text = item
+            }.disposed(by: disposeBag)
+        
+        output.selectCycleType
+            .drive(onNext: { type in
+                self.btnCycleWeek.isSelected = type == .week
+                self.btnCycleNumber.isSelected = type == .number
+                let inset = type == .week ? 0 : ((self.cycleCellSpacing + self.cycleCellHeight) / 2)
+                self.cycleCollectionView.snp.updateConstraints({
+                    $0.leading.trailing.equalToSuperview().inset(inset)
+                })
+            }).disposed(by: disposeBag)
+        
+        output.isNaggingPush
+            .drive(onNext: { isNaggingPush in
+                if isNaggingPush {
+                    self.viewAddPushTime.fadeIn()
+                } else {
+                    self.viewAddPushTime.fadeOut()
+                }
+            }).disposed(by: disposeBag)
     }
 }
