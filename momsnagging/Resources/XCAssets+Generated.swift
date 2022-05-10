@@ -109,6 +109,7 @@ internal enum Asset {
     internal static let diary = ImageAsset(name: "diary")
     internal static let diaryWrite = ImageAsset(name: "diaryWrite")
     internal static let edit = ImageAsset(name: "edit")
+    internal static let floatingPlus = ImageAsset(name: "floatingPlus")
     internal static let habitAddFloating = ImageAsset(name: "habitAddFloating")
     internal static let home = ImageAsset(name: "home")
     internal static let list = ImageAsset(name: "list")
