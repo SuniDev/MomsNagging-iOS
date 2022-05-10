@@ -158,9 +158,8 @@ class DetailDiaryView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
         
-        viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: headTitleLbl, btnDone: btnDone)
-        
         // MARK: - 캘린더 UI: initUI
+        headTitleLbl.text = calendarViewModel.todayFormatteryyMMdd()
         viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: headTitleLbl, btnDone: btnDone)
         calendarYear = calendarViewModel.getYear()
         calendarMonth = calendarViewModel.getMonth()
@@ -249,7 +248,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
                 doneAlertDoneHandler: doneAlertDoneHandler.asDriverOnErrorJustComplete())
         
         let output = viewModel.transform(input: input)
-        
+                
         output.isWriting
             .drive(onNext: { isWriting in
                 self.tfTitle.isEnabled = isWriting
@@ -261,6 +260,26 @@ class DetailDiaryView: BaseViewController, Navigatable {
         output.goToBack
             .drive(onNext: {
                 self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
+        
+        output.setTextTitle
+            .drive(onNext: { text in
+                self.tfTitle.text = text
+            }).disposed(by: disposeBag)
+        
+        output.lengthExceededTitle
+            .drive(onNext: {
+                self.tfTitle.resignFirstResponder()
+            }).disposed(by: disposeBag)
+        
+        output.setTextContents
+            .drive(onNext: { text in
+                self.tvContents.text = text
+            }).disposed(by: disposeBag)
+        
+        output.lengthExceededContents
+            .drive(onNext: {
+                self.tvContents.resignFirstResponder()
             }).disposed(by: disposeBag)
         
         output.endEditingTitle

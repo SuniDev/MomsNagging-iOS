@@ -45,6 +45,14 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
         let canBeDone: Driver<Bool>
         /// 다이어리 작성 완료
         let successDoneDiary: Driver<String>
+        /// 제목 30자 이내 텍스트 (글자 제한)
+        let setTextTitle: Driver<String>
+        /// 제목 길이 초과 (30자)
+        let lengthExceededTitle: Driver<Void>
+        /// 내용 1000자 이내 텍스트 (글자 제한)
+        let setTextContents: Driver<String>
+        /// 내용 길이 초과 (1000자)
+        let lengthExceededContents: Driver<Void>
     }
     
     func transform(input: Input) -> Output {
@@ -53,6 +61,8 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
         let contentsPlaceHolder = BehaviorRelay<String>(value: "")
         let textTitle = BehaviorRelay<String>(value: "")
         let textContents = BehaviorRelay<String>(value: "")
+        let lengthExceededTitle = PublishRelay<Void>()
+        let lengthExceededContents = PublishRelay<Void>()
         
         self.isNew
             .bind(onNext: {
@@ -77,14 +87,30 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         input.textTitle
-            .drive(onNext: { text in
-                let text = text ?? ""
+            .asObservable()
+            .scan("") { previous, new -> String in
+                guard let new = new else { return "" }
+                if new.count > 30 {
+                    lengthExceededTitle.accept(())
+                    return previous
+                } else {
+                    return new
+                }
+            }.subscribe(onNext: { text in
                 textTitle.accept(text)
             }).disposed(by: disposeBag)
         
         input.textContents
-            .drive(onNext: { text in
-                let text = text ?? ""
+            .asObservable()
+            .scan("") { previous, new -> String in
+                guard let new = new else { return "" }
+                if new.count > 20 {
+                    lengthExceededContents.accept(())
+                    return previous
+                } else {
+                    return new
+                }
+            }.subscribe(onNext: { text in
                 textContents.accept(text)
             }).disposed(by: disposeBag)
         
@@ -133,7 +159,11 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
                       endEditingTitle: input.editingDidEndOnExitTitle,
                       setContentsPlaceholder: contentsPlaceHolder.asDriverOnErrorJustComplete(),
                       canBeDone: canBeDone.asDriverOnErrorJustComplete(),
-                      successDoneDiary: successDoneDiary.asDriverOnErrorJustComplete())
+                      successDoneDiary: successDoneDiary.asDriverOnErrorJustComplete(),
+                      setTextTitle: textTitle.asDriverOnErrorJustComplete(),
+                      lengthExceededTitle: lengthExceededTitle.asDriverOnErrorJustComplete(),
+                      setTextContents: textContents.asDriverOnErrorJustComplete(),
+                      lengthExceededContents: lengthExceededContents.asDriverOnErrorJustComplete())
     }
 }
 extension DetailDiaryViewModel {
