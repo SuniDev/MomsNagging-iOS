@@ -476,6 +476,7 @@ class CommonView {
             $0.trailing.equalToSuperview()
         })
         viewAddPushTime.snp.makeConstraints({
+            $0.height.equalTo(40)
             $0.top.equalTo(lblTitle.snp.bottom).offset(20)
             $0.leading.trailing.bottom.equalToSuperview()
         })
@@ -486,13 +487,95 @@ class CommonView {
     /**
      # detailAddPushTimeFrame
      - parameters:
-     
+        - defaultView : '시간 추가' 디폴트 뷰
+        - tiemView : 시간 설정 뷰
      - Authors: suni
      - Returns: UIView
      - Note: 상세화면 시간 추가 공통 뷰
      */
-    static func detailAddPushTimeFrame() -> UIView {
+    static func detailAddPushTimeFrame(defaultView: UIView, timeView: UIView) -> UIView {
         lazy var view = UIView()
+        
+        /// 시간 추가 디폴트
+        _ = defaultView.then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+            $0.layer.cornerRadius = 8
+            $0.addBorder(color: Asset.Color.monoLight030.color, width: 1)
+        })
+        lazy var icClock = UIImageView().then({
+            $0.image = Asset.Icon.clockDark040.image
+        })
+        lazy var lblAdd = UILabel().then({
+            $0.text = "시간 추가"
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        lazy var icPlus = UIImageView().then({
+            $0.image = Asset.Icon.plusFill.image
+        })
+        
+        defaultView.addSubview(icClock)
+        defaultView.addSubview(lblAdd)
+        defaultView.addSubview(icPlus)
+        
+        icClock.snp.makeConstraints({
+            $0.width.height.equalTo(16)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(12)
+        })
+        
+        lblAdd.snp.makeConstraints({
+            $0.leading.equalTo(icClock.snp.trailing).offset(10)
+            $0.centerY.equalToSuperview()
+        })
+        
+        icPlus.snp.makeConstraints({
+            $0.width.height.equalTo(18)
+            $0.trailing.equalToSuperview().offset(-11)
+            $0.centerY.equalToSuperview()
+        })
+        
+       _ = timeView.then({
+            $0.backgroundColor = Asset.Color.monoLight030.color
+            $0.layer.cornerRadius = 8
+            $0.alpha = 0.4
+            $0.isHidden = true
+        })
+        
+        lazy var lblTime = UILabel().then({
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        
+        lazy var lblModify = UILabel().then({
+            $0.textColor = Asset.Color.error.color
+            $0.text = "수정"
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        
+        timeView.addSubview(lblTime)
+        timeView.addSubview(lblModify)
+        
+        lblTime.snp.makeConstraints({
+            $0.leading.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
+        })
+        
+        lblModify.snp.makeConstraints({
+            $0.trailing.equalToSuperview().offset(-14)
+            $0.centerY.equalToSuperview()
+        })
+        
+        view.addSubview(defaultView)
+        view.addSubview(timeView)
+        
+        defaultView.snp.makeConstraints({
+            $0.leading.trailing.top.bottom.equalToSuperview()
+        })
+        
+        timeView.snp.makeConstraints({
+            $0.leading.trailing.top.bottom.equalToSuperview()
+        })
         
         return view
     }

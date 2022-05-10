@@ -20,6 +20,8 @@ class CalendarViewModel {
     var weekDayListObservable = PublishSubject<[Int]>() // 이번주 주간 리스트 옵저버블
     
     var collectionViewHeight = PublishSubject<Int>() // 해당 월의 행수(row)
+    
+    var selectDay = PublishSubject<String>()
     // MARK: - Properties & Variable
     private var model = CalendarModel()
     /// 지난달 가져오기
@@ -63,6 +65,13 @@ class CalendarViewModel {
         formatter.dateFormat = "yy.MM.dd"
         return formatter.string(from: date)
     }
+    /// 오늘날짜 yyyyMM 형태로 string return
+    func todayFormatteryyyyMM() -> String {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMM"
+        return formatter.string(from: date)
+    }
     /// 오늘날짜 dd 형태로 string return
     func todaydd() -> String {
         let date = Date()
@@ -79,12 +88,30 @@ class CalendarViewModel {
     func getYear() -> Int {
         return model.getYear()
     }
-    func getSelectDate(date:String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yy.MM.dd"
-        let date = dateFormatter.date(from: date)
+
+    func getWeekDaySelectDate(dateString: String) -> String{
+        var st = ""
+        let formatterToString = DateFormatter()
+        formatterToString.dateFormat = "yyyyMMdd"
+        let date = formatterToString.date(from: dateString)
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "yy.MM.dd"
-        return formatter.string(from: date!)
+        st = formatter.string(from: date ?? Date())
+        
+        return st
+    }
+    
+    func getSelectDate(dateString: String) -> String{
+        var st = ""
+        let formatterToString = DateFormatter()
+        formatterToString.dateFormat = "yyyyMMdd"
+        let date = formatterToString.date(from: dateString)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy.MM.dd"
+        st = formatter.string(from: date ?? Date())
+        
+        return st
     }
 }
