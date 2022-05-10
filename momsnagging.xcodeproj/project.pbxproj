@@ -12,6 +12,8 @@
 		8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8638A551281B7874003D771B /* UITextField+Extension.swift */; };
 		86523CA02824FD4A00F243A8 /* DetailHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */; };
 		86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */; };
+		8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F75F282A5891007998CE /* PerformTimeSettingView.swift */; };
+		8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */; };
 		867C1411281A7602007E5590 /* IDSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1410281A7602007E5590 /* IDSettingView.swift */; };
 		867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1412281A7615007E5590 /* IDSettingViewModel.swift */; };
 		868A11A4280F8F9F004DAC73 /* Icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868A11A3280F8F9F004DAC73 /* Icon.xcassets */; };
@@ -109,6 +111,8 @@
 		8638A551281B7874003D771B /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitView.swift; sourceTree = "<group>"; };
 		86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewModel.swift; sourceTree = "<group>"; };
+		8662F75F282A5891007998CE /* PerformTimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingView.swift; sourceTree = "<group>"; };
+		8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingViewModel.swift; sourceTree = "<group>"; };
 		867C1410281A7602007E5590 /* IDSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingView.swift; sourceTree = "<group>"; };
 		867C1412281A7615007E5590 /* IDSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingViewModel.swift; sourceTree = "<group>"; };
 		868A11A3280F8F9F004DAC73 /* Icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icon.xcassets; sourceTree = "<group>"; };
@@ -790,6 +794,7 @@
 				868A57542828CC56004153BB /* Cell */,
 				A0B6AD8F282639D100F02E71 /* AddHabitView.swift */,
 				86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */,
+				8662F75F282A5891007998CE /* PerformTimeSettingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -799,6 +804,7 @@
 			children = (
 				A0B6AD91282639E400F02E71 /* AddHabitViewModel.swift */,
 				86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */,
+				8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1034,6 +1040,7 @@
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
+				8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
@@ -1045,6 +1052,7 @@
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				8F22F834281D0B3800AB4180 /* ReportCardModel.swift in Sources */,
 				A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */,
+				8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */,
 				8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */,
 				867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */,
 				A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */,
@@ -1074,7 +1082,6 @@
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				8F8D11DB282665EE00E7DA6C /* HomeTodoListCell.swift in Sources */,
-				A067E593281D93F70017EF53 /* NicknameSettingViewModel.swift in Sources */,
 				A0B6AD92282639E400F02E71 /* AddHabitViewModel.swift in Sources */,
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,

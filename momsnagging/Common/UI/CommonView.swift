@@ -399,6 +399,7 @@ class CommonView {
             $0.top.leading.equalToSuperview()
         })
         viewHintTextField.snp.makeConstraints({
+            $0.height.equalTo(77)
             $0.top.equalTo(viewNameTitle.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
         })

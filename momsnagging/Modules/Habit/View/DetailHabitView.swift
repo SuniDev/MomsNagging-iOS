@@ -158,7 +158,6 @@ class DetailHabitView: BaseViewController, Navigatable {
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
-        viewContents.backgroundColor = .red
         
         viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: lblTitle, btnDone: btnDone)
         scrollView = CommonView.scrollView(viewContents: viewContents, bounces: true)
@@ -174,6 +173,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 이행 주기
         viewCycleTitle = CommonView.requiredTitleFrame("이행 주기")
+        divider = CommonView.divider()
         
         /// 잔소리 알림
         viewAddPushTime = CommonView.detailAddPushTimeFrame(defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush)
@@ -214,7 +214,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 습관 이름
         detailNameFrame.snp.makeConstraints({
-            $0.height.equalTo(105)
+            $0.height.equalTo(134)
             $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -292,6 +292,10 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         let input = DetailHabitViewModel.Input(
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
+            textName: self.tfName.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
+            editingDidBeginName: self.tfName.rx.controlEvent(.editingDidBegin).asDriverOnErrorJustComplete(),
+            editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
+            btnPerformTimeTapped: self.btnPerformTime.rx.tap.asDriverOnErrorJustComplete(),
             btnCycleWeekTapped: self.btnCycleWeek.rx.tap.asDriverOnErrorJustComplete(),
             btnCycleNumber: self.btnCycleNumber.rx.tap.asDriverOnErrorJustComplete(),
             cycleItemSelected: self.cycleCollectionView.rx.itemSelected.asDriver(),
@@ -303,8 +307,35 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
         
+        /// 습관 이름
+        output.isEditingName
+            .drive(onNext: { isEditing in
+                if isEditing {
+                    self.tfName.edit()
+                } else {
+                    self.tfName.normal()
+                }
+            }).disposed(by: disposeBag)
+        
+        output.textHint
+            .drive(onNext: { type in
+                Log.debug(type.rawValue)
+                switch type {
+                case .none:
+                    self.lblHint.normal()
+                case .invalid, .empty:
+                    self.lblHint.error(type.rawValue)
+                    self.lblHint.text = type.rawValue
+                    self.tfName.error()
+                    self.tfName.placeholder = ""
+                }
+            }).disposed(by: disposeBag)
+        
         output.cycleItems
             .bind(to: cycleCollectionView.rx.items(cellIdentifier: cycleIdentifier, cellType: CycleCell.self)) { _, item, cell in
+                if item == "일" {
+                    cell.normalTitleColor = Asset.Color.error.color
+                }
                 cell.lblTitle.text = item
             }.disposed(by: disposeBag)
         
@@ -325,6 +356,11 @@ class DetailHabitView: BaseViewController, Navigatable {
                 } else {
                     self.viewAddPushTime.fadeOut()
                 }
+            }).disposed(by: disposeBag)
+        
+        output.goToPerformTimeSetting
+            .drive(onNext: {
+                self.navigator.show(seque: .performTimeSetting(viewModl: PerformTimeSettingViewModel()), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
     }
 }
