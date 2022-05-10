@@ -487,7 +487,8 @@ class CommonView {
     /**
      # detailAddPushTimeFrame
      - parameters:
-     
+        - defaultView : '시간 추가' 디폴트 뷰
+        - tiemView : 시간 설정 뷰
      - Authors: suni
      - Returns: UIView
      - Note: 상세화면 시간 추가 공통 뷰

@@ -10,14 +10,13 @@ import UIKit
 /**
  # (C) BaseCollectionViewCell
  - Authors: suni
- - Note: UICollectionViewCell의 Base 클래스, highlight Color 효과
+ - Note: UICollectionViewCell의 Base 클래스, Select Color 효과
  */
 class BaseCollectionViewCell: UICollectionViewCell {
-    // MARK: - Variable
+    
     var selectDuration: TimeInterval = 0.1
     var normalDuration: TimeInterval = 0.1
     
-    // MARK: - UI Properties
     lazy var lblTitle = UILabel()
     
     @IBInspectable var normalBackgroundColor: UIColor = Asset.Color.priMain.color {
@@ -31,6 +30,11 @@ class BaseCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    /**
+     # normal
+     - Authors: suni
+     - Note: 디폴트 (.normal) 상태 호출 함수
+     */
     func normal() {
         animateColor(backgroundColor: normalBackgroundColor, titleColor: normalTitleColor, duration: normalDuration)
     }
@@ -48,15 +52,33 @@ class BaseCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    /**
+     # select
+     - Authors: suni
+     - Note: isSelected = true 일때 호출되는 함수
+     */
     func select() {
         animateColor(backgroundColor: selectedBackgroundColor, titleColor: selectedTitleColor, duration: selectDuration)
     }
     
+    /**
+     # deSelect
+     - Authors: suni
+     - Note: isSelected = false 일때 호출되는 함수
+     */
     func deSelect() {
         animateColor(backgroundColor: normalBackgroundColor, titleColor: normalTitleColor, duration: selectDuration)
-
     }
-
+    
+    /**
+     # animateColor
+     - Parameters:
+        - backgroundColor:배경 색상
+        - titleColor:타이틀 색상
+        - duration:애니메이션 시간
+     - Authors: suni
+     - Note: 배경, 타이틀 색상 변경 애니메이션 함수
+     */
     private func animateColor(backgroundColor: UIColor?, titleColor: UIColor?, duration: TimeInterval) {
         guard let backgroundColor = backgroundColor, let titleColor = titleColor else { return }
         UIView.animate(withDuration: duration) {
@@ -76,6 +98,10 @@ class BaseCollectionViewCell: UICollectionViewCell {
         initView()
     }
     
-    func initView() {
-    }
+    /**
+     # initView
+     - Authors: suni
+     - Note: 뷰를 초기화 하는 Override용 함수
+     */
+    func initView() { }
 }
