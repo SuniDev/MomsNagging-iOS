@@ -35,7 +35,14 @@ class DetailDiaryView: BaseViewController, Navigatable {
         $0.backgroundColor = Asset.Color.monoWhite.color
     })
     
-    lazy var tfTitle = UITextField()
+    lazy var tfTitle = CommonTextField().then({
+        $0.normalBorderColor = .clear
+        $0.placeholder = "제목"
+        $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        $0.contentVerticalAlignment = .center
+        $0.borderStyle = .none
+        $0.returnKeyType = .next
+    })
     
     lazy var tvContents = UITextView().then({
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
@@ -151,11 +158,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
         
-        tfTitle = CommonView.textField(placeHolder: "제목", FontFamily.Pretendard.regular.font(size: 16)).then({
-            $0.contentVerticalAlignment = .center
-            $0.borderStyle = .none
-            $0.returnKeyType = .next
-        })
+        viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: headTitleLbl, btnDone: btnDone)
         
         // MARK: - 캘린더 UI: initUI
         viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: headTitleLbl, btnDone: btnDone)
@@ -165,7 +168,6 @@ class DetailDiaryView: BaseViewController, Navigatable {
         calendarDateLbl.text = "\(calendarYear ?? 0)년 \(calendarMonth ?? 0)월"
         monthCollectionViewHeight = 7
         calendarFrame = homeCalendarView()
-        
     }
     
     // MARK: - layoutSetting

@@ -43,10 +43,8 @@ class OnboardingItemView: BaseViewController, Navigatable {
         $0.image = Asset.Assets.defautImage.image
     })
     
-    lazy var pageControl = UIPageControl().then({
-        $0.pageIndicatorTintColor = Asset.Color.monoLight030.color
-        $0.currentPageIndicatorTintColor = Asset.Color.priLight030.color
-        $0.isUserInteractionEnabled = false
+    lazy var imgvPagecontrol = UIImageView().then({
+        $0.image = Asset.Assets.emojiDefault.image
     })
     
     lazy var btnLogin = CommonButton().then({
@@ -116,7 +114,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
         viewBackground.addSubview(viewMessage)
         viewMessage.addSubview(imgvEmoji)
         viewBackground.addSubview(imgvImage)
-        viewBackground.addSubview(pageControl)
+        viewBackground.addSubview(imgvPagecontrol)
         viewBackground.addSubview(btnLogin)
         viewBackground.addSubview(btnNext)
         viewBackground.addSubview(btnStart)
@@ -138,7 +136,8 @@ class OnboardingItemView: BaseViewController, Navigatable {
         })
         
         imgvEmoji.snp.makeConstraints({
-            $0.top.trailing.leading.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
             $0.bottom.greaterThanOrEqualToSuperview()
         })
         
@@ -148,10 +147,10 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.height.equalTo(imgvImage.snp.width).multipliedBy(1 / 0.94)
             $0.leading.equalToSuperview().offset(isLowHeightDevice ? 65 : 30)
             $0.trailing.equalToSuperview().offset(isLowHeightDevice ? -65 : -30)
-            $0.top.greaterThanOrEqualTo(viewMessage.snp.bottom).offset(32)
+            $0.top.equalTo(viewMessage.snp.bottom).offset(32)
         })
         
-        pageControl.snp.makeConstraints({
+        imgvPagecontrol.snp.makeConstraints({
             $0.top.equalTo(imgvImage.snp.bottom).offset(32)
             $0.centerX.equalToSuperview()
         })
@@ -161,7 +160,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.height.equalTo(56)
             $0.bottom.equalToSuperview().offset(-32)
             $0.leading.equalToSuperview().offset(20)
-            $0.top.greaterThanOrEqualTo(pageControl.snp.bottom).offset(12)
+            $0.top.greaterThanOrEqualTo(imgvPagecontrol.snp.bottom).offset(12)
         })
         
         btnNext.snp.makeConstraints({
@@ -176,7 +175,7 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalToSuperview().offset(-32)
-            $0.top.greaterThanOrEqualTo(pageControl.snp.bottom).offset(12)
+            $0.top.greaterThanOrEqualTo(imgvPagecontrol.snp.bottom).offset(12)
         })
         
     }
@@ -200,9 +199,8 @@ class OnboardingItemView: BaseViewController, Navigatable {
             self.imgvImage.image = image
         }).disposed(by: disposeBag)
         
-        output.setPageControl.drive(onNext: { numberOfPages, index in
-            self.pageControl.numberOfPages = numberOfPages
-            self.pageControl.currentPage = index
+        output.setPageControl.drive(onNext: { index in
+            self.setPageControl(index)
         }).disposed(by: disposeBag)
         
         output.isLastPage.drive(onNext: { isLast in
@@ -220,5 +218,16 @@ class OnboardingItemView: BaseViewController, Navigatable {
         }).disposed(by: disposeBag)
     
     }
-     
+}
+extension OnboardingItemView {
+    private func setPageControl(_ index: Int) {
+        switch index {
+        case 0: self.imgvPagecontrol.image = Asset.Assets.pagecontrol1.image
+        case 1: self.imgvPagecontrol.image = Asset.Assets.pagecontrol2.image
+        case 2: self.imgvPagecontrol.image = Asset.Assets.pagecontrol3.image
+        case 3: self.imgvPagecontrol.image = Asset.Assets.pagecontrol4.image
+        case 4: self.imgvPagecontrol.image = Asset.Assets.pagecontrol5.image
+        default: self.imgvPagecontrol.image = Asset.Assets.emojiDefault.image
+        }
+    }
 }

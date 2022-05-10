@@ -223,6 +223,7 @@ class CommonView {
         
         _ = btnDone.then({
             $0.isEnabled = false
+            $0.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 16)
             $0.setTitle("완료", for: .normal)
             $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
             $0.setTitleColor(Asset.Color.monoDark040.color, for: .disabled)
@@ -260,24 +261,35 @@ class CommonView {
     }
     
     /**
-     # textField
+     # hintTextFieldFrame
      - parameters:
-        - placeHolder : 텍스트필드 플레이스홀더
+        - tf : textField
+        - lblHint : 텍스트 힌트 Label
      - Authors: suni
      - Returns: UITextField
-     - Note: 공통 텍스트 필드 함수
+     - Note: 텍스트 힌트가 있는 텍스트 필드 프레임
      */
-    static func textField(placeHolder: String = "", _ font: UIFont = FontFamily.Pretendard.regular.font(size: 14)) -> UITextField {
-        lazy var textField = UITextField().then({
-            $0.textColor = Asset.Color.monoDark010.color
-            $0.layer.cornerRadius = 4
-            $0.attributedPlaceholder = NSAttributedString(string: placeHolder,
-                                                          attributes: [NSAttributedString.Key.foregroundColor: Asset.Color.monoDark030.color])
-            $0.addLeftPadding(width: 8)
-            $0.font = font
+    static func hintTextFieldFrame(tf: UITextField, lblHint: UILabel) -> UIView {
+        
+        lazy var viewHint = UIView().then({
+            $0.backgroundColor = .clear
+        })
+       
+        viewHint.addSubview(tf)
+        viewHint.addSubview(lblHint)
+        
+        tf.snp.makeConstraints({
+            $0.height.equalTo(48)
+            $0.top.leading.trailing.equalToSuperview()
         })
         
-        return textField
+        lblHint.snp.makeConstraints({
+            $0.top.equalTo(tf.snp.bottom).offset(5)
+            $0.leading.trailing.equalTo(tf)
+            $0.bottom.equalToSuperview()
+        })
+        
+        return viewHint
     }
     
     /**
@@ -286,7 +298,7 @@ class CommonView {
         - text : 타이틀 텍스트
      - Authors: suni
      - Returns: UIView
-     - Note: '필수' 표시가 포함된 타이틀
+     - Note: '*' 표시가 포함된 타이틀
      */
     static func requiredTitleFrame(_ text: String) -> UIView {
         lazy var viewTitle = UIView().then({
@@ -300,9 +312,9 @@ class CommonView {
         })
         
         lazy var lblRequired = UILabel().then({
-            $0.text = "필수"
+            $0.text = "*"
             $0.textColor = Asset.Color.priMain.color
-            $0.font = FontFamily.Pretendard.regular.font(size: 12)
+            $0.font = FontFamily.Pretendard.bold.font(size: 18)
         })
         
         viewTitle.addSubview(lblTitle)
@@ -313,7 +325,7 @@ class CommonView {
         })
         
         lblRequired.snp.makeConstraints({
-            $0.leading.equalTo(lblTitle.snp.trailing).offset(6)
+            $0.leading.equalTo(lblTitle.snp.trailing).offset(2)
             $0.centerY.equalTo(lblTitle)
         })
         
@@ -346,5 +358,142 @@ class CommonView {
         })
         
         return scrollView
+    }
+    
+    /**
+     # divider
+     - Authors: suni
+     - Returns: UIView
+     - Note: 공통 divider 뷰 함수
+     */
+    static func divider() -> UIView {
+        lazy var divider = UIView().then({
+            $0.backgroundColor = Asset.Color.monoLight010.color
+        })
+        
+        divider.snp.makeConstraints({
+            $0.height.equalTo(1)
+        })
+        
+        return divider
+    }
+    
+    /**
+     # detailNameFrame
+     - parameters:
+        - viewNameTitle : 이름 타이틀 뷰
+        - viewHintTextField : 텍스트 필드 + 텍스트 힌트 뷰
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 이름 공통 뷰
+     */
+    static func detailNameFrame(viewNameTitle: UIView, viewHintTextField: UIView) -> UIView {
+        lazy var view = UIView()
+        lazy var divider = CommonView.divider()
+        
+        view.addSubview(viewNameTitle)
+        view.addSubview(viewHintTextField)
+        view.addSubview(divider)
+        
+        viewNameTitle.snp.makeConstraints({
+            $0.top.leading.equalToSuperview()
+        })
+        viewHintTextField.snp.makeConstraints({
+            $0.top.equalTo(viewNameTitle.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview()
+        })
+        divider.snp.makeConstraints({
+            $0.top.equalTo(viewHintTextField.snp.bottom).offset(20)
+            $0.leading.trailing.bottom.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    /**
+     # detailPerformTimeFrame
+     - parameters:
+        - viewTimeTitle : 수행 시간 타이틀 뷰
+        - lblTime : 시간 Label
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 '수행 시간' 공통 뷰
+     */
+    static func detailPerformTimeFrame(viewTimeTitle: UIView, lblTime: UILabel) -> UIView {
+        lazy var view = UIView()
+        lazy var icon = UIImageView().then({
+            $0.image = Asset.Icon.chevronRight.image
+        })
+        lazy var divider = CommonView.divider()
+        
+        view.addSubview(viewTimeTitle)
+        view.addSubview(icon)
+        view.addSubview(lblTime)
+        view.addSubview(divider)
+        
+        viewTimeTitle.snp.makeConstraints({
+            $0.top.leading.equalToSuperview()
+        })
+        icon.snp.makeConstraints({
+            $0.width.height.equalTo(18)
+            $0.centerY.equalTo(viewTimeTitle)
+            $0.trailing.equalToSuperview()
+        })
+        lblTime.snp.makeConstraints({
+            $0.top.equalTo(viewTimeTitle.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview()
+        })
+        divider.snp.makeConstraints({
+            $0.top.equalTo(lblTime.snp.bottom).offset(32)
+            $0.leading.trailing.bottom.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    /**
+     # detailNaggingPushFrame
+     - parameters:
+        - lblPushTitle : 잔소리 알림 타이틀 UILabel
+        - switch : 잔소리 알림 UISwitch
+        - viewAddPushTime : 잔소리 알림 '시간 추가' 뷰
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 '잔소리 알림' 공통 뷰
+     */
+    static func detailNaggingPushFrame(lblTitle: UILabel, switchPush: UISwitch, viewAddPushTime: UIView) -> UIView {
+        lazy var view = UIView()
+        
+        view.addSubview(lblTitle)
+        view.addSubview(switchPush)
+        view.addSubview(viewAddPushTime)
+        
+        lblTitle.snp.makeConstraints({
+            $0.top.leading.equalToSuperview()
+        })
+        switchPush.snp.makeConstraints({
+            $0.centerY.equalTo(lblTitle)
+            $0.trailing.equalToSuperview()
+        })
+        viewAddPushTime.snp.makeConstraints({
+            $0.top.equalTo(lblTitle.snp.bottom).offset(20)
+            $0.leading.trailing.bottom.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    /**
+     # detailAddPushTimeFrame
+     - parameters:
+     
+     - Authors: suni
+     - Returns: UIView
+     - Note: 상세화면 시간 추가 공통 뷰
+     */
+    static func detailAddPushTimeFrame() -> UIView {
+        lazy var view = UIView()
+        
+        return view
     }
 }

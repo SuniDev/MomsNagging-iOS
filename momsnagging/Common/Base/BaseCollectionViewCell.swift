@@ -14,43 +14,47 @@ import UIKit
  */
 class BaseCollectionViewCell: UICollectionViewCell {
     // MARK: - Variable
-    var highlightDuration: TimeInterval = 0.15
+    var selectDuration: TimeInterval = 0.1
+    var normalDuration: TimeInterval = 0.1
     
     // MARK: - UI Properties
+    lazy var lblTitle = UILabel()
+    
     @IBInspectable var normalBackgroundColor: UIColor = Asset.Color.priMain.color {
         didSet {
             self.contentView.backgroundColor = normalBackgroundColor
         }
     }
-    @IBInspectable var highlightedBackgroundColor: UIColor = Asset.Color.priDark020.color
     @IBInspectable var normalTitleColor: UIColor = Asset.Color.monoDark020.color {
         didSet {
             self.lblTitle.textColor = normalTitleColor
         }
     }
-    @IBInspectable var highlightedTitleColor: UIColor = Asset.Color.monoWhite.color
     
-    override var isHighlighted: Bool {
+    func normal() {
+        animateColor(backgroundColor: normalBackgroundColor, titleColor: normalTitleColor, duration: normalDuration)
+    }
+    
+    @IBInspectable var selectedBackgroundColor: UIColor = Asset.Color.priDark020.color
+    @IBInspectable var selectedTitleColor: UIColor = Asset.Color.monoWhite.color
+    
+    override var isSelected: Bool {
         didSet {
-            if oldValue == false && isHighlighted {
-                highlight()
-            } else if oldValue == true && !isHighlighted {
-                unHighlight()
+            if oldValue == false && isSelected {
+                select()
+            } else if oldValue == true && !isSelected {
+                deSelect()
             }
         }
     }
     
-    lazy var lblTitle = UILabel().then({
-        $0.font = FontFamily.Pretendard.bold.font(size: 16)
-        $0.textColor = normalTitleColor
-    })
-    
-    func highlight() {
-        animateColor(backgroundColor: highlightedBackgroundColor, titleColor: highlightedTitleColor, duration: highlightDuration)
+    func select() {
+        animateColor(backgroundColor: selectedBackgroundColor, titleColor: selectedTitleColor, duration: selectDuration)
     }
+    
+    func deSelect() {
+        animateColor(backgroundColor: normalBackgroundColor, titleColor: normalTitleColor, duration: selectDuration)
 
-    func unHighlight() {
-        animateColor(backgroundColor: normalBackgroundColor, titleColor: normalTitleColor, duration: highlightDuration)
     }
 
     private func animateColor(backgroundColor: UIColor?, titleColor: UIColor?, duration: TimeInterval) {
@@ -62,10 +66,16 @@ class BaseCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - init
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        initUI()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initView()
     }
     
-    func initUI() { }
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        initView()
+    }
+    
+    func initView() {
+    }
 }

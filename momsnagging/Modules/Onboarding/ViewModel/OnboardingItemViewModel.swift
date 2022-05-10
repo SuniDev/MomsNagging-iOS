@@ -32,7 +32,7 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
         let setTile: Driver<String>
         let setEmoji: Driver<UIImage>
         let setImage: Driver<UIImage>
-        let setPageControl: Driver<(Int, Int)>
+        let setPageControl: Driver<Int>
         let isLastPage: Driver<Bool>
         let goToLogin: Driver<Void>
         let goToNextPage: Driver<Int>
@@ -54,9 +54,9 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
             return data.getImage()
         }
                 
-        let setPageControl = Observable.zip(self.numberOfPages, data.map { data -> Int in
+        let setPageControl = data.map { data -> Int in
             return data.getCurrentPage()
-        })
+        }
         
         let isLastPage = data
             .map { data -> Bool in
