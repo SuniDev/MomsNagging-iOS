@@ -72,6 +72,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
     var dateCheck: Int = 0 // 현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
     var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
+    var selectDate: String = ""
     
     lazy var headTitleLbl = UILabel()
     lazy var headDropDownIc = UIImageView().then({
@@ -252,11 +253,13 @@ class DetailDiaryView: BaseViewController, Navigatable {
         output.isWriting
             .drive(onNext: { isWriting in
                 self.tfTitle.isEnabled = isWriting
+                self.tfTitle.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
                 self.tvContents.isEditable = isWriting
+                self.tvContents.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
                 self.btnDone.isHidden = !isWriting
                 self.btnModify.isHidden = isWriting
             }).disposed(by: disposeBag)
-        
+                
         output.goToBack
             .drive(onNext: {
                 self.navigator.pop(sender: self)
@@ -384,6 +387,17 @@ class DetailDiaryView: BaseViewController, Navigatable {
                     cell?.selectDayRoundFrame.isHidden = true
                 }
             }
+            let cell = self.dayCollectionView.cellForItem(at: [0, indexPath.row]) as? HomeCalendarCell
+            var day: String = cell?.number.text ?? ""
+            var month: String = "\(self.calendarMonth ?? 0)"
+            if Int(day)! < 10 {
+                day = "0\(day)"
+            }
+            if self.calendarMonth ?? 0 < 10 {
+                month = "0\(self.calendarMonth ?? 0)"
+            }
+            self.selectDate = "\(self.calendarYear ?? 0)\(month)\(day)"
+            self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             self.selectMonth = self.dateCheck
         }).disposed(by: disposeBag)
         
