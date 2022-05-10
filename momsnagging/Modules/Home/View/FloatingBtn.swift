@@ -144,7 +144,7 @@ extension HomeView {
             lbl.textColor = UIColor(asset: Asset.Color.priDark020)
             ic.image = UIImage(asset: Asset.Icon.habitAddFloating)
             btn.rx.tap.bind {
-                Log.debug("클릭이벤트", "습관추가 클릭")
+                self.navigator.show(seque: .addHabit(viewModel: AddHabitViewModel()), sender: self, transition: .navigation)
             }.disposed(by: disposedBag)
         case .todo:
             lbl.text = "할일 추가"
