@@ -415,12 +415,12 @@ class CommonView {
      # detailPerformTimeFrame
      - parameters:
         - viewTimeTitle : 수행 시간 타이틀 뷰
-        - lblTime : 시간 Label
+        - tfTime : 시간 텍스트 필드
      - Authors: suni
      - Returns: UIView
      - Note: 상세화면 '수행 시간' 공통 뷰
      */
-    static func detailPerformTimeFrame(viewTimeTitle: UIView, lblTime: UILabel) -> UIView {
+    static func detailPerformTimeFrame(viewTimeTitle: UIView, tfTime: UITextField) -> UIView {
         lazy var view = UIView()
         lazy var icon = UIImageView().then({
             $0.image = Asset.Icon.chevronRight.image
@@ -429,7 +429,7 @@ class CommonView {
         
         view.addSubview(viewTimeTitle)
         view.addSubview(icon)
-        view.addSubview(lblTime)
+        view.addSubview(tfTime)
         view.addSubview(divider)
         
         viewTimeTitle.snp.makeConstraints({
@@ -440,12 +440,12 @@ class CommonView {
             $0.centerY.equalTo(viewTimeTitle)
             $0.trailing.equalToSuperview()
         })
-        lblTime.snp.makeConstraints({
+        tfTime.snp.makeConstraints({
             $0.top.equalTo(viewTimeTitle.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
         })
         divider.snp.makeConstraints({
-            $0.top.equalTo(lblTime.snp.bottom).offset(32)
+            $0.top.equalTo(tfTime.snp.bottom).offset(32)
             $0.leading.trailing.bottom.equalToSuperview()
         })
         
@@ -494,7 +494,7 @@ class CommonView {
      - Returns: UIView
      - Note: 상세화면 시간 추가 공통 뷰
      */
-    static func detailAddPushTimeFrame(defaultView: UIView, timeView: UIView) -> UIView {
+    static func detailAddPushTimeFrame(tfPicker: UITextField, defaultView: UIView, timeView: UIView) -> UIView {
         lazy var view = UIView()
         
         /// 시간 추가 디폴트
@@ -576,6 +576,12 @@ class CommonView {
         
         timeView.snp.makeConstraints({
             $0.leading.trailing.top.bottom.equalToSuperview()
+        })
+        
+        view.addSubview(tfPicker)
+        
+        tfPicker.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalToSuperview()
         })
         
         return view

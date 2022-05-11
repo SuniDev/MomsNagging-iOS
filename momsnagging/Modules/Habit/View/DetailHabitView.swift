@@ -49,10 +49,13 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var detailPerformTimeFrame = UIView()
     lazy var btnPerformTime = UIButton()
     lazy var viewTimeTitle = UIView()
-    lazy var lblTime = UILabel().then({
-        $0.text = "아직 정해지지 않았단다"
-        $0.textColor = Asset.Color.monoDark030.color
+    lazy var tfPerformTime = CommonTextField().then({
+        $0.isEnabled = false
+        $0.normalBorderColor = .clear
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.placeholder = "아직 정해지지 않았단다"
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.addLeftPadding(width: 2)
     })
     
     /// 이행 주기
@@ -125,6 +128,20 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.layer.cornerRadius = $0.bounds.height / 2
     })
     lazy var viewAddPushTime = UIView()
+    lazy var tfPicker = UITextField().then({
+        $0.borderStyle = .none
+        $0.textColor = .clear
+        $0.backgroundColor = .clear
+    })
+    lazy var timePicker = UIDatePicker().then({
+        $0.minuteInterval = 5
+        $0.locale = Locale(identifier: "ko_KR")
+        $0.datePickerMode = .time
+        if #available(iOS 13.4, *) {
+            $0.preferredDatePickerStyle = .wheels
+        }
+        $0.addTarget(self, action: #selector(self.dateChanged(datePicker: )), for: .valueChanged)
+    })
     
     // MARK: - init
     init(viewModel: DetailHabitViewModel, navigator: Navigator) {
@@ -148,11 +165,20 @@ class DetailHabitView: BaseViewController, Navigatable {
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+        
     }
     
     @objc
     func hideKeyboard(sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
+    }
+    
+    @objc
+    func dateChanged(datePicker: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "hh:mm a"
+        tfPicker.text = dateFormatter.string(from: datePicker.date)
     }
     
     // MARK: - initUI
@@ -169,14 +195,15 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 수행 시간
         viewTimeTitle = CommonView.requiredTitleFrame("수행 시간")
-        detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, lblTime: lblTime)
+        detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, tfTime: tfPerformTime)
         
         /// 이행 주기
         viewCycleTitle = CommonView.requiredTitleFrame("이행 주기")
         divider = CommonView.divider()
         
         /// 잔소리 알림
-        viewAddPushTime = CommonView.detailAddPushTimeFrame(defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush)
+        tfPicker.inputView = timePicker
+        viewAddPushTime = CommonView.detailAddPushTimeFrame(tfPicker: tfPicker, defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush)
         viewAddPushTime.isHidden = true
         detailNaggingPushFrame = CommonView.detailNaggingPushFrame(lblTitle: lblPushTitle, switchPush: switchPush, viewAddPushTime: viewAddPushTime)
         
@@ -319,7 +346,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         output.textHint
             .drive(onNext: { type in
-                Log.debug(type.rawValue)
                 switch type {
                 case .none:
                     self.lblHint.normal()
@@ -360,7 +386,19 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         output.goToPerformTimeSetting
             .drive(onNext: {
-                self.navigator.show(seque: .performTimeSetting(viewModl: PerformTimeSettingViewModel()), sender: self, transition: .navigation)
+                let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.tfPerformTime.text)
+                self.bindPerformTime(performTimeViewModel)
+                self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
+            }).disposed(by: disposeBag)
+        
+    }
+    
+    // MARK: - performTimeViewModel bind
+    func bindPerformTime(_ viewModel: PerformTimeSettingViewModel) {
+        
+        viewModel.perfromTime.skip(1)
+            .subscribe(onNext: { text in
+                self.tfPerformTime.text = text
             }).disposed(by: disposeBag)
     }
 }
