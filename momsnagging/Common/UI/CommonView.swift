@@ -477,7 +477,7 @@ class CommonView {
             $0.trailing.equalToSuperview()
         })
         viewAddPushTime.snp.makeConstraints({
-            $0.height.equalTo(40)
+            $0.height.equalTo(0)
             $0.top.equalTo(lblTitle.snp.bottom).offset(20)
             $0.leading.trailing.bottom.equalToSuperview()
         })
@@ -494,7 +494,7 @@ class CommonView {
      - Returns: UIView
      - Note: 상세화면 시간 추가 공통 뷰
      */
-    static func detailAddPushTimeFrame(tfPicker: UITextField, defaultView: UIView, timeView: UIView) -> UIView {
+    static func detailAddPushTimeFrame(tfPicker: UITextField, defaultView: UIView, timeView: UIView, lblTime: UILabel) -> UIView {
         lazy var view = UIView()
         
         /// 시간 추가 디폴트
@@ -537,13 +537,13 @@ class CommonView {
         })
         
        _ = timeView.then({
-            $0.backgroundColor = Asset.Color.monoLight030.color
+            $0.backgroundColor = Asset.Color.monoLight010.color
             $0.layer.cornerRadius = 8
             $0.alpha = 0.4
             $0.isHidden = true
         })
         
-        lazy var lblTime = UILabel().then({
+         _ = lblTime.then({
             $0.textColor = Asset.Color.monoDark010.color
             $0.font = FontFamily.Pretendard.regular.font(size: 14)
         })

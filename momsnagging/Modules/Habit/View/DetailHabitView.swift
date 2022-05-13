@@ -22,6 +22,7 @@ class DetailHabitView: BaseViewController, Navigatable {
     private let cycleCellSpacing: CGFloat = 10.5
     private var cycleCellHeight: CGFloat = 0.0
     private let cycleIdentifier = "CycleCell"
+    private let viewAddPushTimeHeight: CGFloat = 40.0
     
     // MARK: - UI Properties
     lazy var viewHeader = UIView()
@@ -114,6 +115,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var detailNaggingPushFrame = UIView()
     lazy var viewDefaultNaggingPush = UIView()
     lazy var viewTimeNaggingPush = UIView()
+    lazy var lblTime = UILabel()
+    
     lazy var lblPushTitle = UILabel().then({
         $0.text = "잔소리 알림"
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
@@ -132,6 +135,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.borderStyle = .none
         $0.textColor = .clear
         $0.backgroundColor = .clear
+        $0.tintColor = .clear
     })
     lazy var timePicker = UIDatePicker().then({
         $0.minuteInterval = 5
@@ -140,7 +144,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         if #available(iOS 13.4, *) {
             $0.preferredDatePickerStyle = .wheels
         }
-        $0.addTarget(self, action: #selector(self.dateChanged(datePicker: )), for: .valueChanged)
     })
     
     // MARK: - init
@@ -173,14 +176,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         self.view.endEditing(true)
     }
     
-    @objc
-    func dateChanged(datePicker: UIDatePicker) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateFormat = "hh:mm a"
-        tfPicker.text = dateFormatter.string(from: datePicker.date)
-    }
-    
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
@@ -203,7 +198,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         tfPicker.inputView = timePicker
-        viewAddPushTime = CommonView.detailAddPushTimeFrame(tfPicker: tfPicker, defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush)
+        viewAddPushTime = CommonView.detailAddPushTimeFrame(tfPicker: tfPicker, defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush, lblTime: lblTime)
         viewAddPushTime.isHidden = true
         detailNaggingPushFrame = CommonView.detailNaggingPushFrame(lblTitle: lblPushTitle, switchPush: switchPush, viewAddPushTime: viewAddPushTime)
         
@@ -303,11 +298,11 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         detailNaggingPushFrame.snp.makeConstraints({
-            $0.height.equalTo(105)
+            $0.height.equalTo(65)
             $0.top.equalTo(cycleFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview().offset(20)
+            $0.bottom.equalToSuperview().offset(-20)
         })
         
         view.layoutIfNeeded()
@@ -319,14 +314,17 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         let input = DetailHabitViewModel.Input(
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
-            textName: self.tfName.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
+            textName: self.tfName.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
             editingDidBeginName: self.tfName.rx.controlEvent(.editingDidBegin).asDriverOnErrorJustComplete(),
             editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
             btnPerformTimeTapped: self.btnPerformTime.rx.tap.asDriverOnErrorJustComplete(),
+            textPerformTime: self.tfPerformTime.rx.observe(String.self, "text").asDriver(onErrorJustReturn: ""),
             btnCycleWeekTapped: self.btnCycleWeek.rx.tap.asDriverOnErrorJustComplete(),
             btnCycleNumber: self.btnCycleNumber.rx.tap.asDriverOnErrorJustComplete(),
-            cycleItemSelected: self.cycleCollectionView.rx.itemSelected.asDriver(),
-            valueChangedPush: self.switchPush.rx.controlEvent(.valueChanged).withLatestFrom(self.switchPush.rx.value).asDriverOnErrorJustComplete())
+            cycleModelSelected: self.cycleCollectionView.rx.modelSelected(String.self).asDriverOnErrorJustComplete(),
+            cycleModelDeselected: self.cycleCollectionView.rx.modelDeselected(String.self).asDriverOnErrorJustComplete(),
+            valueChangedPush: self.switchPush.rx.controlEvent(.valueChanged).withLatestFrom(self.switchPush.rx.value).asDriverOnErrorJustComplete(),
+            valueChangedTimePicker: self.timePicker.rx.controlEvent(.valueChanged).withLatestFrom(self.timePicker.rx.value).asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.goToBack
@@ -382,6 +380,19 @@ class DetailHabitView: BaseViewController, Navigatable {
                 } else {
                     self.viewAddPushTime.fadeOut()
                 }
+                let height = isNaggingPush ? self.viewAddPushTimeHeight : 0
+                
+                self.viewAddPushTime.snp.updateConstraints({
+                    $0.height.equalTo(height)
+                })
+                self.detailNaggingPushFrame.snp.updateConstraints({
+                    $0.height.equalTo(65 + height)
+                })
+                
+                UIView.animate(withDuration: 0.15) {
+                    self.view.layoutIfNeeded()
+                }
+                
             }).disposed(by: disposeBag)
         
         output.goToPerformTimeSetting
@@ -391,6 +402,37 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
         
+        RxKeyboard.instance.visibleHeight
+            .skip(1)
+            .drive(onNext: { height in
+                let margin = height + 10
+                self.scrollView.snp.updateConstraints({
+                    $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-margin)
+                })
+            }).disposed(by: disposeBag)
+        
+        output.setTimeNaggingPush
+            .drive(onNext: { date in
+                if let date = date {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.timeStyle = .short
+                    dateFormatter.dateFormat = "hh:mm a"
+                    self.lblTime.text = dateFormatter.string(from: date)
+                    
+                    if !self.viewDefaultNaggingPush.isHidden {
+                        self.viewDefaultNaggingPush.fadeOut()
+                        self.viewTimeNaggingPush.fadeIn()
+                    }
+                } else {
+                    self.viewDefaultNaggingPush.fadeIn()
+                    self.viewTimeNaggingPush.fadeOut()
+                }
+            }).disposed(by: disposeBag)
+        
+        output.canBeDone
+            .drive(onNext: { isEnabled in
+                self.btnDone.isEnabled = isEnabled
+            }).disposed(by: disposeBag)
     }
     
     // MARK: - performTimeViewModel bind
