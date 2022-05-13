@@ -14,6 +14,8 @@
 		86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */; };
 		8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F75F282A5891007998CE /* PerformTimeSettingView.swift */; };
 		8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */; };
+		8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8677C733282B469700709F99 /* PerformTimeGuideCell.swift */; };
+		8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		867C1411281A7602007E5590 /* IDSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1410281A7602007E5590 /* IDSettingView.swift */; };
 		867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1412281A7615007E5590 /* IDSettingViewModel.swift */; };
 		868A11A4280F8F9F004DAC73 /* Icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868A11A3280F8F9F004DAC73 /* Icon.xcassets */; };
@@ -113,6 +115,8 @@
 		86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewModel.swift; sourceTree = "<group>"; };
 		8662F75F282A5891007998CE /* PerformTimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingView.swift; sourceTree = "<group>"; };
 		8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingViewModel.swift; sourceTree = "<group>"; };
+		8677C733282B469700709F99 /* PerformTimeGuideCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeGuideCell.swift; sourceTree = "<group>"; };
+		8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		867C1410281A7602007E5590 /* IDSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingView.swift; sourceTree = "<group>"; };
 		867C1412281A7615007E5590 /* IDSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingViewModel.swift; sourceTree = "<group>"; };
 		868A11A3280F8F9F004DAC73 /* Icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icon.xcassets; sourceTree = "<group>"; };
@@ -254,6 +258,7 @@
 			children = (
 				A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */,
 				868A57552828CC7C004153BB /* CycleCell.swift */,
+				8677C733282B469700709F99 /* PerformTimeGuideCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -285,6 +290,7 @@
 				A024E04F281EA3F600AA60D6 /* CommonButton.swift */,
 				868A57502828A619004153BB /* CommonTextField.swift */,
 				868A57522828B70F004153BB /* CommonHintLabel.swift */,
+				8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1035,12 +1041,14 @@
 				A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */,
 				A06BB34F27F0C21E005727AD /* OnboardingView.swift in Sources */,
 				86B36F722817756800655059 /* UIView+Extension.swift in Sources */,
+				8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
 				8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */,
+				8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,

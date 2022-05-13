@@ -18,7 +18,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     
     enum TextHintType: String {
         case empty      = "습관 이름은 필수로 입력해야 한단다"
-        case invalid    = "습관 이름은 11글자를 넘길 수 없단다"
+        case invalid    = "습관 이름은 30글자를 넘길 수 없단다"
         case none       = ""
     }
     
@@ -72,11 +72,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let selectCycleType = BehaviorRelay<CycleType>(value: .week)
         let isNaggingPush = BehaviorRelay<Bool>(value: false)
         
-        input.btnCycleWeekTapped
-            .drive(onNext: { _ in
-                selectCycleType.accept(.week)
-            }).disposed(by: disposeBag)
-        
+        /// 습관 이름 : input -> output
         input.textName
             .drive(onNext: { text in
                 let text = text ?? ""
@@ -122,12 +118,14 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 textHint.accept(isValid ? .none : .invalid)
             }).disposed(by: disposeBag)
         
+        /// 이행 주기 : input -> output
+        input.btnCycleWeekTapped
+            .drive(onNext: { _ in
+                selectCycleType.accept(.week)
+            }).disposed(by: disposeBag)
+        
         input.btnCycleNumber
-            .asObservable()
-            .flatMapLatest { () -> Observable<[String]> in
-                return self.cycleNumber
-            }.subscribe(onNext: { items in
-                cycleItems.accept(items)
+            .drive(onNext: { _ in
                 selectCycleType.accept(.number)
             }).disposed(by: disposeBag)
         

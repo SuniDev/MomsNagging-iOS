@@ -39,7 +39,6 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        let cntRecommendTitle = PublishRelay<Int>()
         let recommendTitleItems = BehaviorRelay<[RecommendHabitTitle]>(value: [])
         let isHiddenTip = BehaviorRelay<Bool>(value: true)
         
@@ -48,9 +47,11 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
             .flatMapLatest { () -> Observable<[RecommendHabitTitle]> in
                 return self.getRecommendHabitTitle()
             }.subscribe(onNext: { items in
-                cntRecommendTitle.accept(items.count)
                 recommendTitleItems.accept(items)
             }).disposed(by: disposeBag)
+        
+        let cntRecommendTitle = recommendTitleItems
+            .map { return $0.count }
         
         input.btnTipTapped
             .drive(onNext: {

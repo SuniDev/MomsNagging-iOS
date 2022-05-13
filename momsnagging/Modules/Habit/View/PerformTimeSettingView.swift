@@ -11,6 +11,7 @@ import Then
 import RxSwift
 import RxKeyboard
 import RxCocoa
+import SwiftyJSON
 
 class PerformTimeSettingView: BaseViewController, Navigatable {
     
@@ -19,9 +20,10 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
     var viewModel: PerformTimeSettingViewModel?
     var navigator: Navigator!
     
-    private let guideCellSpacing: CGFloat = 8
-    private var guideCellHeight: CGFloat = 36
-    private let guideIdentifier = "GuideCell"
+    private let timeGuideCellSpacing: CGFloat = 8
+    private let timeGuideLineSpacing: CGFloat = 11
+    private var timeGuideCellHeight: CGFloat = 36
+    private let timeGuideIdentifier = "PerformTimeGuideCell"
     
     // MARK: - UI Properties
     lazy var viewHeader = UIView().then({
@@ -45,8 +47,9 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
     })
     
-    lazy var scrollView = UIScrollView()
-    lazy var viewContents = UIView()
+    lazy var viewBackground = UIView().then({
+        $0.backgroundColor = Asset.Color.monoWhite.color
+    })
     
     lazy var lblTitle = UILabel().then({
         $0.textColor = Asset.Color.monoDark010.color
@@ -56,6 +59,7 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
     
     lazy var viewHintTextField = UIView()
     lazy var tfPerformTime = CommonTextField().then({
+        $0.normalBorderColor = Asset.Color.monoLight030.color
         $0.placeholder = "밥 먹고 난 후, 씻고 나서, 아침 7:00"
         $0.returnKeyType = .done
         $0.clearButtonMode = .whileEditing
@@ -66,6 +70,24 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         $0.textColor = Asset.Color.monoDark020.color
         $0.text = "0/11"
     })
+    
+    lazy var timeGuideCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: timeGuideCellLayout())
+        collectionView.register(PerformTimeGuideCell.self, forCellWithReuseIdentifier: timeGuideIdentifier)
+        collectionView.backgroundColor = Asset.Color.monoWhite.color
+        collectionView.contentInset = .zero
+        collectionView.isScrollEnabled = false
+        return collectionView
+    }()
+    
+    private func timeGuideCellLayout() -> UICollectionViewFlowLayout {
+        let layout = LeftAlignedCollectionViewFlowLayout()
+        layout.sectionInset = .zero
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = timeGuideCellSpacing
+        layout.minimumLineSpacing = timeGuideLineSpacing
+        return layout
+    }
     
     // MARK: - init
     init(viewModel: PerformTimeSettingViewModel, navigator: Navigator) {
@@ -83,25 +105,11 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /// ScrollView TapGesture로 키보드 내리기.
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        singleTapGestureRecognizer.numberOfTapsRequired = 1
-        singleTapGestureRecognizer.isEnabled = true
-        singleTapGestureRecognizer.cancelsTouchesInView = false
-        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-    }
-    
-    @objc
-    func hideKeyboard(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
     }
     
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
-        
-        scrollView = CommonView.scrollView(viewContents: viewContents, bounces: true)
-        
         viewHintTextField = CommonView.hintTextFieldFrame(tf: tfPerformTime, lblHint: lblHint)
     }
     
@@ -112,10 +120,12 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         viewHeader.addSubview(lblHeadTitle)
         viewHeader.addSubview(btnSave)
         
-        view.addSubview(scrollView)
-        viewContents.addSubview(lblTitle)
-        viewContents.addSubview(viewHintTextField)
+        view.addSubview(viewBackground)
+        viewBackground.addSubview(lblTitle)
+        viewBackground.addSubview(viewHintTextField)
         viewHintTextField.addSubview(lblTextCount)
+        
+        viewBackground.addSubview(timeGuideCollectionView)
         
         viewHeader.snp.makeConstraints({
             $0.height.equalTo(60)
@@ -133,7 +143,7 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
             $0.centerY.equalToSuperview()
         })
         
-        scrollView.snp.makeConstraints({
+        viewBackground.snp.makeConstraints({
             $0.top.equalTo(viewHeader.snp.bottom)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         })
@@ -147,11 +157,15 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
             $0.top.equalTo(lblTitle.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            // TODO: 임시로 연결
-            $0.bottom.equalToSuperview().offset(-24)
         })
         lblTextCount.snp.makeConstraints({
             $0.trailing.bottom.equalToSuperview()
+        })
+        
+        timeGuideCollectionView.snp.makeConstraints({
+            $0.width.equalTo(300)
+            $0.top.equalTo(viewHintTextField.snp.bottom).offset(32)
+            $0.leading.equalToSuperview().offset(16)
         })
     }
     
@@ -160,7 +174,12 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         guard let viewModel = viewModel else { return }
         
         let input = PerformTimeSettingViewModel.Input(
+            willAppearPerformTimeSetting: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
             btnCacelTapped: self.btnCancel.rx.tap.asDriverOnErrorJustComplete(),
+            textTime: self.tfPerformTime.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
+            editingDidBeginTime: self.tfPerformTime.rx.controlEvent(.editingDidBegin).asDriverOnErrorJustComplete(),
+            editingDidEndTime: self.tfPerformTime.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
+            timeGuideItemSelected: self.timeGuideCollectionView.rx.itemSelected.asDriver(),
             btnSaveTapped: self.btnSave.rx.tap.asDriverOnErrorJustComplete())
         
         let output = viewModel.transform(input: input)
@@ -169,5 +188,76 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
             .drive(onNext: {
                 self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
+        
+        /// 수행 시간
+        output.isEditingTime
+            .drive(onNext: { isEditing in
+                if isEditing {
+                    self.tfPerformTime.edit()
+                } else {
+                    self.tfPerformTime.normal()
+                }
+            }).disposed(by: disposeBag)
+        
+        output.textHint
+            .drive(onNext: { type in
+                switch type {
+                case .none:
+                    self.lblHint.normal()
+                    self.tfPerformTime.normal()
+                case .invalid:
+                    self.lblHint.error(type.rawValue)
+                    self.lblHint.text = type.rawValue
+                    self.tfPerformTime.error()
+                }
+            }).disposed(by: disposeBag)
+        
+        output.textConunt
+            .drive(onNext: { count in
+                self.lblTextCount.text = "\(count)/11"
+            }).disposed(by: disposeBag)
+        
+        output.cntTimeGuide
+            .drive(onNext: { count in
+                let line = ( count / 3 ) + ( count % 3 )
+                var height = line * Int(self.timeGuideCellHeight)
+                height += Int(self.timeGuideLineSpacing) * (line - 1)
+                self.timeGuideCollectionView.snp.makeConstraints({
+                    $0.height.equalTo(height)
+                })
+            }).disposed(by: disposeBag)
+        
+        output.timeGuideItems
+            .bind(to: timeGuideCollectionView.rx.items(cellIdentifier: timeGuideIdentifier, cellType: PerformTimeGuideCell.self)) { _, item, cell in
+                cell.lblTitle.text = item
+                cell.lblTitle.sizeToFit()
+            }.disposed(by: disposeBag)
+        
+        timeGuideCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        output.setTextTime
+            .drive(onNext: { text in
+                self.tfPerformTime.text = text
+            }).disposed(by: disposeBag)
+        
+        output.canBeSave
+            .drive(onNext: { isCanBeSave in
+                self.btnSave.isEnabled = isCanBeSave
+            }).disposed(by: disposeBag)        
+    }
+}
+extension PerformTimeSettingView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let item = viewModel?.timeGuideItems.value[indexPath.row]
+        
+        let label = UILabel().then {
+               $0.font = FontFamily.Pretendard.regular.font(size: 14)
+               $0.text = item
+               $0.sizeToFit()
+        }
+        let size = label.frame.size
+        
+        return CGSize(width: size.width + 32, height: self.timeGuideCellHeight)
     }
 }
