@@ -311,9 +311,11 @@ class DetailHabitView: BaseViewController, Navigatable {
     // MARK: - bind
     override func bind() {
         guard let viewModel = viewModel else { return }
+        let backAlertDoneHandler = PublishRelay<Void>()
         
         let input = DetailHabitViewModel.Input(
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
+            backAlertDoneHandler: backAlertDoneHandler.asDriverOnErrorJustComplete(),
             textName: self.tfName.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
             editingDidBeginName: self.tfName.rx.controlEvent(.editingDidBegin).asDriverOnErrorJustComplete(),
             editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
@@ -324,8 +326,16 @@ class DetailHabitView: BaseViewController, Navigatable {
             cycleModelSelected: self.cycleCollectionView.rx.modelSelected(String.self).asDriverOnErrorJustComplete(),
             cycleModelDeselected: self.cycleCollectionView.rx.modelDeselected(String.self).asDriverOnErrorJustComplete(),
             valueChangedPush: self.switchPush.rx.controlEvent(.valueChanged).withLatestFrom(self.switchPush.rx.value).asDriverOnErrorJustComplete(),
-            valueChangedTimePicker: self.timePicker.rx.controlEvent(.valueChanged).withLatestFrom(self.timePicker.rx.value).asDriverOnErrorJustComplete())
+            valueChangedTimePicker: self.timePicker.rx.controlEvent(.valueChanged).withLatestFrom(self.timePicker.rx.value).asDriverOnErrorJustComplete(),
+            btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
+        
+        output.showBackAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, type: .twoBtn, title: "", message: message, doneHandler: {
+                    backAlertDoneHandler.accept(())
+                })
+            }).disposed(by: disposeBag)
         
         output.goToBack
             .drive(onNext: {
@@ -432,6 +442,11 @@ class DetailHabitView: BaseViewController, Navigatable {
         output.canBeDone
             .drive(onNext: { isEnabled in
                 self.btnDone.isEnabled = isEnabled
+            }).disposed(by: disposeBag)
+        
+        output.successDoneAddHabit
+            .drive(onNext: {
+                self.navigator.pop(sender: self, toRoot: true)
             }).disposed(by: disposeBag)
     }
     

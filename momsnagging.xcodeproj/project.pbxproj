@@ -94,6 +94,7 @@
 		A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35927F0E982005727AD /* BaseNavigationController.swift */; };
 		A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */; };
 		A0A674242813EC6900E0223B /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A674232813EC6900E0223B /* Onboarding.swift */; };
+		A0A992C0282EB8F8009049CF /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A992BF282EB8F8009049CF /* Habit.swift */; };
 		A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */; };
 		A0B581B02827A0010099C9BA /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */; };
 		A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */; };
@@ -201,6 +202,7 @@
 		A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0A674232813EC6900E0223B /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		A0A992BF282EB8F8009049CF /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitleCell.swift; sourceTree = "<group>"; };
 		A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitle.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				A0A674232813EC6900E0223B /* Onboarding.swift */,
 				86E699FC2822724100EA6BC3 /* ModelType.swift */,
 				A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */,
+				A0A992BF282EB8F8009049CF /* Habit.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1110,6 +1113,7 @@
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
 				86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */,
+				A0A992C0282EB8F8009049CF /* Habit.swift in Sources */,
 				8F22F83E281D0BB100AB4180 /* HomeView.swift in Sources */,
 				A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */,
 				8F22F81C281D006700AB4180 /* MainContainerViewModel.swift in Sources */,
