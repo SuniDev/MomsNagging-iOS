@@ -36,6 +36,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var scrollView = UIScrollView()
     lazy var viewContents = UIView()
     
+    lazy var bottomView = CommonBottomSheet()
+    
     /// 습관 이름
     lazy var detailNameFrame = UIView()
     lazy var viewNameTitle = UIView()
@@ -314,6 +316,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         let backAlertDoneHandler = PublishRelay<Void>()
         
         let input = DetailHabitViewModel.Input(
+            btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
             backAlertDoneHandler: backAlertDoneHandler.asDriverOnErrorJustComplete(),
             textName: self.tfName.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
@@ -329,6 +332,22 @@ class DetailHabitView: BaseViewController, Navigatable {
             valueChangedTimePicker: self.timePicker.rx.controlEvent(.valueChanged).withLatestFrom(self.timePicker.rx.value).asDriverOnErrorJustComplete(),
             btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
+        
+        output.isWriting
+            .drive(onNext: { isWriting in
+                self.tfName.isEnabled = isWriting
+                self.btnPerformTime.isEnabled = isWriting
+                self.btnCycleWeek.isEnabled = isWriting
+                self.btnCycleNumber.isEnabled = isWriting
+                self.cycleCollectionView.isUserInteractionEnabled = isWriting
+                self.switchPush.isEnabled = isWriting
+                self.tfPerformTime.isEnabled = isWriting
+            }).disposed(by: disposeBag)
+        
+        output.showBottomSheet
+            .drive(onNext: {
+                self.bottomView.showAnim(vc: self, parentAddView: self.view)
+            }).disposed(by: disposeBag)
         
         output.showBackAlert
             .drive(onNext: { message in

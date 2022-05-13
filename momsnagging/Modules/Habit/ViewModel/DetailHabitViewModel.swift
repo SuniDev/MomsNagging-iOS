@@ -23,12 +23,23 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     }
     
     var disposeBag = DisposeBag()
+    private let isNew: BehaviorRelay<Bool>
+    private let isRecommendHabit: BehaviorRelay<Bool>
     private var cycleWeek = BehaviorRelay<[String]>(value: ["월", "화", "수", "목", "금", "토", "일"])
     private var cycleNumber = BehaviorRelay<[String]>(value: ["1", "2", "3", "4", "5", "6"])
-    var habit = PublishSubject<Habit>()
+    
+    init(isNew: Bool, isRecommendHabit: Bool) {
+        self.isNew = BehaviorRelay<Bool>(value: isNew)
+        self.isRecommendHabit = BehaviorRelay<Bool>(value: isRecommendHabit)
+    }
 
     // MARK: - Input
     struct Input {
+        /// 더보기
+        let btnMoreTapped: Driver<Void>
+        /// 작성 모드
+//        let btnModifyTapped: Driver<Void>
+        /// 뒤로 가기
         let btnBackTapped: Driver<Void>
         let backAlertDoneHandler: Driver<Void>
         /// 습관 이름
@@ -52,6 +63,10 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
+        ///  바텀 시트
+        let showBottomSheet: Driver<Void>
+        /// 작성 모드
+        let isWriting: Driver<Bool>
         /// 뒤로 가기
         let showBackAlert: Driver<String>
         let goToBack: Driver<Void>
@@ -73,9 +88,24 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let canBeDone: Driver<Bool>
         /// 습관 추가 완료
         let successDoneAddHabit: Driver<Void>
+        /// 습관 수정 완료
+        let successDoneModifyHabit: Driver<Void>
     }
     
     func transform(input: Input) -> Output {
+        
+        /// 작성 모드
+        let isWriting = BehaviorRelay<Bool>(value: false)
+        let isNew = self.isNew.share()
+        isNew
+            .bind(onNext: {
+                isWriting.accept($0)
+            }).disposed(by: disposeBag)
+        
+//        input.btnModifyTapped
+//            .drive(onNext: {
+//                isWriting.accept(true)
+//            }).disposed(by: disposeBag)
         
         /// 습관 이름
         let textName = BehaviorRelay<String>(value: "")
@@ -228,24 +258,17 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
             })
         
         // TODO: Request 습관 추가 API
-        let successDoneAddHabit = input.btnDoneTapped.asObservable().share()
-        successDoneAddHabit
-            .subscribe(onNext: {
-                var habit = Habit()
-                habit.name = textName.value
-                habit.performTime = textPerformTime.value
-                habit.cycle = cycleItems.value
-                if let date = timeNaggingPush.value {
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.timeStyle = .short
-                    dateFormatter.dateFormat = "yyyy-mm-dd hh:mm a"
-                    let textDate = dateFormatter.string(from: date)
-                    habit.dateNaggingPush = textDate
-                }
-                self.habit.onNext(habit)
-            }).disposed(by: disposeBag)
-    
-        return Output(showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_ADD_HABIT_BACK),
+        let modify = isNew.filter { $0 == false }.mapToVoid().asObservable()
+        let new = isNew.filter { $0 == true }.mapToVoid().asObservable()
+        
+        let done = input.btnDoneTapped.asObservable()
+        
+        let successDoneAddHabit = Observable.merge(new, done).debug()
+        let successDoneModifyHabit = Observable.merge(modify, done).debug()
+
+        return Output(showBottomSheet: input.btnMoreTapped,
+                      isWriting: isWriting.asDriverOnErrorJustComplete(),
+                      showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_ADD_HABIT_BACK),
                       goToBack: input.backAlertDoneHandler,
                       isEditingName: isEditingName.asDriverOnErrorJustComplete(),
                       textHint: textHint.asDriverOnErrorJustComplete(),
@@ -255,7 +278,8 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                       isNaggingPush: isNaggingPush.asDriverOnErrorJustComplete(),
                       setTimeNaggingPush: timeNaggingPush.skip(1).distinctUntilChanged().asDriverOnErrorJustComplete(),
                       canBeDone: canBeDone.asDriverOnErrorJustComplete(),
-                      successDoneAddHabit: successDoneAddHabit.asDriverOnErrorJustComplete()
+                      successDoneAddHabit: successDoneAddHabit.asDriverOnErrorJustComplete(),
+                      successDoneModifyHabit: successDoneModifyHabit.asDriverOnErrorJustComplete()
         )
     }
 }
