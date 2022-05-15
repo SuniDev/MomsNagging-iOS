@@ -40,6 +40,8 @@ class Navigator {
         case addHabit(viewModel: AddHabitViewModel)
         case detailHabit(viewModel: DetailHabitViewModel)
         case performTimeSetting(viewModel: PerformTimeSettingViewModel)
+        case recommendedHabit(viewModel: RecommendedHabitViewModel)
+        case reportCard(viewModel: ReportCardViewModel)
     }
     
     enum Transition {
@@ -67,6 +69,8 @@ class Navigator {
         case .addHabit(viewModel: let viewModel): return AddHabitView(viewModel: viewModel, navigator: self)
         case .detailHabit(viewModel: let viewModel): return DetailHabitView(viewModel: viewModel, navigator: self)
         case .performTimeSetting(viewModel: let viewModel): return PerformTimeSettingView(viewModel: viewModel, navigator: self)
+        case .recommendedHabit(viewModel: let viewModel): return RecommendedHabitView(viewModel: viewModel, navigator: self)
+        case .reportCard(viewModel: let viewModel): return ReportCardView(viewModel: viewModel, navigator: self)
         }
     }
     

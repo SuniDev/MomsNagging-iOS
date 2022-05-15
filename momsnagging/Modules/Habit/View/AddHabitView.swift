@@ -268,6 +268,8 @@ class AddHabitView: BaseViewController, Navigatable {
         output.recommendTitleItemSelected
             .drive(onNext: { indexPath in
                 Log.debug("TODO: 추천 습관 연결 \(indexPath)")
+                let vc = Navigator.Scene.recommendedHabit(viewModel: RecommendedHabitViewModel(type: indexPath.row))
+                self.navigator.show(seque: vc, sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
 
     }
