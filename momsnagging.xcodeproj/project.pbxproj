@@ -77,6 +77,7 @@
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
+		A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0269004283148E0009A40A0 /* CommonSwitch.swift */; };
 		A035B0762812A0A100747389 /* StringDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035B0752812A0A100747389 /* StringDefinition.swift */; };
 		A061F0F02823AF1B00F9CC18 /* DetailDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */; };
 		A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */; };
@@ -183,6 +184,7 @@
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
+		A0269004283148E0009A40A0 /* CommonSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSwitch.swift; sourceTree = "<group>"; };
 		A035B0752812A0A100747389 /* StringDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDefinition.swift; sourceTree = "<group>"; };
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryView.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				868A57502828A619004153BB /* CommonTextField.swift */,
 				868A57522828B70F004153BB /* CommonHintLabel.swift */,
 				8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */,
+				A0269004283148E0009A40A0 /* CommonSwitch.swift */,
 				A0A992C1282ECB81009049CF /* CommonBottomSheet.swift */,
 			);
 			path = UI;
@@ -1060,6 +1063,7 @@
 				8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */,
 				8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
+				A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */,
 				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,

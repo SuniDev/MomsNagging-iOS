@@ -37,8 +37,9 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     struct Input {
         /// 더보기
         let btnMoreTapped: Driver<Void>
-        /// 작성 모드
-//        let btnModifyTapped: Driver<Void>
+        let dimViewTapped: Driver<Void>
+        let btnModifyTapped: Driver<Void>
+        let btnDeleteTapped: Driver<Void>
         /// 뒤로 가기
         let btnBackTapped: Driver<Void>
         let backAlertDoneHandler: Driver<Void>
@@ -65,6 +66,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     struct Output {
         ///  바텀 시트
         let showBottomSheet: Driver<Void>
+        let hideBottomSheet: Driver<Void>
         /// 작성 모드
         let isWriting: Driver<Bool>
         /// 뒤로 가기
@@ -96,16 +98,20 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         
         /// 작성 모드
         let isWriting = BehaviorRelay<Bool>(value: false)
-        let isNew = self.isNew.share()
+        let isNew = self.isNew
         isNew
             .bind(onNext: {
                 isWriting.accept($0)
             }).disposed(by: disposeBag)
         
-//        input.btnModifyTapped
-//            .drive(onNext: {
-//                isWriting.accept(true)
-//            }).disposed(by: disposeBag)
+        let btnModifyTapped = input.btnModifyTapped.asObservable().share()
+        
+        btnModifyTapped
+            .subscribe(onNext: {
+                isWriting.accept(true)
+            }).disposed(by: disposeBag)
+        
+        let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable())
         
         /// 습관 이름
         let textName = BehaviorRelay<String>(value: "")
@@ -258,15 +264,27 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
             })
         
         // TODO: Request 습관 추가 API
-        let modify = isNew.filter { $0 == false }.mapToVoid().asObservable()
-        let new = isNew.filter { $0 == true }.mapToVoid().asObservable()
+        let done = input.btnDoneTapped.asObservable().share()
         
-        let done = input.btnDoneTapped.asObservable()
+        // 추가
+        let successDoneAddHabit = done
+            .flatMapLatest { () -> Observable<Bool> in
+                return isNew.asObservable()
+            }.filter { $0 == true }.mapToVoid().debug()
         
-        let successDoneAddHabit = Observable.merge(new, done).debug()
-        let successDoneModifyHabit = Observable.merge(modify, done).debug()
+        // 수정
+        let successDoneModifyHabit = done
+            .flatMapLatest { () -> Observable<Bool> in
+                return isNew.asObservable()
+            }.filter { $0 == false }.mapToVoid().debug()
+        
+        successDoneModifyHabit
+            .subscribe(onNext: {
+                isWriting.accept(false)
+            }).disposed(by: disposeBag)
 
         return Output(showBottomSheet: input.btnMoreTapped,
+                      hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
                       showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_ADD_HABIT_BACK),
                       goToBack: input.backAlertDoneHandler,

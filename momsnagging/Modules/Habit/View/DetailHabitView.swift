@@ -11,6 +11,7 @@ import Then
 import RxSwift
 import RxKeyboard
 import RxCocoa
+import RxGesture
 
 class DetailHabitView: BaseViewController, Navigatable {
     
@@ -127,14 +128,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
         $0.textColor = Asset.Color.monoDark010.color
     })
-    lazy var switchPush = UISwitch().then({
-        $0.onTintColor = Asset.Color.priMain.color
-        $0.tintColor = Asset.Color.monoDark030.color
-        $0.backgroundColor = Asset.Color.monoDark030.color
-        $0.thumbTintColor = Asset.Color.monoWhite.color
-        $0.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        $0.layer.cornerRadius = $0.bounds.height / 2
-    })
+    lazy var switchPush = CommonSwitch()
     lazy var viewAddPushTime = UIView()
     lazy var tfPicker = UITextField().then({
         $0.borderStyle = .none
@@ -173,7 +167,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-        
     }
     
     @objc
@@ -328,6 +321,9 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         let input = DetailHabitViewModel.Input(
             btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
+            dimViewTapped: self.bottomSheet.dimView.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
+            btnModifyTapped: self.bottomSheet.btnModify.rx.tap.asDriverOnErrorJustComplete(),
+            btnDeleteTapped: self.bottomSheet.btnDelete.rx.tap.asDriverOnErrorJustComplete(),
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
             backAlertDoneHandler: backAlertDoneHandler.asDriverOnErrorJustComplete(),
             textName: self.tfName.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
@@ -349,6 +345,11 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.bottomSheet.showAnim(vc: self, parentAddView: self.scrollView, completion: nil)
             }).disposed(by: disposeBag)
         
+        output.hideBottomSheet
+            .drive(onNext: {
+                self.bottomSheet.hideAnim()
+            }).disposed(by: disposeBag)
+        
         output.isWriting
             .drive(onNext: { isWriting in
                 // 헤더 변경
@@ -361,8 +362,8 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.btnCycleWeek.isEnabled = isWriting
                 self.btnCycleNumber.isEnabled = isWriting
                 self.cycleCollectionView.isUserInteractionEnabled = isWriting
-                self.switchPush.isEnabled = isWriting
-                self.tfPerformTime.isEnabled = isWriting
+                self.tfPicker.isEnabled = isWriting
+                self.switchPush.isEnable = isWriting
             }).disposed(by: disposeBag)
         
         output.showBottomSheet
@@ -488,6 +489,7 @@ class DetailHabitView: BaseViewController, Navigatable {
             .drive(onNext: {
                 self.navigator.pop(sender: self, toRoot: true)
             }).disposed(by: disposeBag)
+        
     }
     
     // MARK: - performTimeViewModel bind

@@ -12,14 +12,18 @@ import SnapKit
 /**
  # (C) CommonBottomSheet
  - Authors: suni
- - Note: 바텀 시트 ViewcController
+ - Note: 바텀 시트 공통 ViewcController
  */
 class CommonBottomSheet: BaseViewController {
+    
+    var originalTransform: CGAffineTransform?
+    
     lazy var dimView = UIView().then({
-        $0.backgroundColor = Asset.Color.monoDark010.color.withAlphaComponent(0.3)
+        $0.backgroundColor = Asset.Color.monoDark010.color
     })
-    lazy var bottomView = UIView().then({
+    lazy var sheetView = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
+        $0.layer.cornerRadius = 8
     })
     lazy var viewModify = UIView().then({
         $0.backgroundColor = .clear
@@ -40,8 +44,7 @@ class CommonBottomSheet: BaseViewController {
         $0.backgroundColor = .clear
     })
     lazy var icDelete = UIImageView().then({
-        $0.image = Asset.Icon.delete.image
-        $0.tintColor = Asset.Color.error.color
+        $0.image = Asset.Icon.deleteRed.image
     })
     lazy var lblDelete = UILabel().then({
         $0.text = "삭제하기"
@@ -58,24 +61,28 @@ class CommonBottomSheet: BaseViewController {
     
     override func layoutSetting() {
         view.addSubview(dimView)
-        view.addSubview(bottomView)
-        bottomView.addSubview(viewModify)
+        view.addSubview(sheetView)
+        sheetView.addSubview(viewModify)
         viewModify.addSubview(icModify)
         viewModify.addSubview(lblModify)
         viewModify.addSubview(btnModify)
-        bottomView.addSubview(viewDelete)
+        sheetView.addSubview(viewDelete)
         viewDelete.addSubview(icDelete)
         viewDelete.addSubview(lblDelete)
         viewDelete.addSubview(btnDelete)
         
         dimView.snp.makeConstraints({
-            $0.leading.trailing.top.bottom.equalToSuperview()
+            $0.leading.trailing.top.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
         })
         
-        bottomView.snp.makeConstraints({
-            $0.height.equalTo(132)
-            $0.bottom.leading.trailing.equalToSuperview()
+        sheetView.snp.makeConstraints({
+            $0.height.equalTo(137)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(5)
         })
+        self.originalTransform = self.sheetView.transform
+        Log.debug(self.sheetView.transform)
         
         viewModify.snp.makeConstraints({
             $0.height.equalTo(66)
@@ -134,34 +141,42 @@ class CommonBottomSheet: BaseViewController {
        })
        
        self.dimView.alpha = 0.0
-       let originalTransform = self.bottomView.transform
-       
+       let originalTransform = self.originalTransform ?? self.sheetView.transform
+
        var bottomY: CGFloat = 0.0
-       bottomY = UIScreen.main.bounds.size.height - self.bottomView.frame.minY
-       
+       bottomY = UIScreen.main.bounds.size.height - self.sheetView.frame.minY
+
        let hideTransform = originalTransform.translatedBy(x: 0.0, y: bottomY)
-       self.bottomView.transform = hideTransform
-       
-       UIView.animate(withDuration: 0.2, animations: { [weak self] in
+       self.sheetView.transform = hideTransform
+
+       UIView.animate(withDuration: 0.3, animations: { [weak self] in
            if let self = self {
-               self.dimView.alpha = 0.3
-               self.bottomView.transform = originalTransform
+               self.dimView.alpha = 0.7
+               self.sheetView.transform = originalTransform
            }
        }, completion: { _ in
            completion?()
+           
+           self.sheetView.snp.updateConstraints({
+               $0.height.equalTo(137)
+               $0.leading.trailing.equalToSuperview()
+               $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+           })
+
        })
    }
     
    func hideAnim() {
-       let window = UIApplication.shared.windows.first
-       guard let topPadding = window?.safeAreaInsets.top else { return }
+       let originalTransform = self.sheetView.transform
        
-       let originalTransform = self.bottomView.transform
-       let hideTransform = originalTransform.translatedBy(x: 0.0, y: -( self.bottomView.frame.size.height + topPadding))
-       UIView.animate(withDuration: 0.2, animations: { [weak self] in
+       var bottomY: CGFloat = 0.0
+       bottomY = UIScreen.main.bounds.size.height - self.sheetView.frame.minY
+       let hideTransform = originalTransform.translatedBy(x: 0.0, y: bottomY)
+       
+       UIView.animate(withDuration: 0.3, animations: { [weak self] in
            if let self = self {
                self.dimView.alpha = 0.0
-               self.bottomView.transform = hideTransform
+               self.sheetView.transform = hideTransform
            }
        }, completion: { _ in
            self.view.removeFromSuperview()
