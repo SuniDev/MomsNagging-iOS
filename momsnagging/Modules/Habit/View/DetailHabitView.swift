@@ -28,7 +28,10 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var viewHeader = UIView()
     lazy var btnBack = UIButton()
     lazy var btnDone = UIButton()
-    lazy var btnMore = UIButton()
+    lazy var btnMore = UIButton().then({
+        $0.isHidden = true
+        $0.setImage(Asset.Icon.more.image, for: .normal)
+    })
     lazy var lblTitle = UILabel().then({
         $0.text = "습관 상세"
     })
@@ -36,7 +39,7 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var scrollView = UIScrollView()
     lazy var viewContents = UIView()
     
-    lazy var bottomView = CommonBottomSheet()
+    lazy var bottomSheet = CommonBottomSheet()
     
     /// 습관 이름
     lazy var detailNameFrame = UIView()
@@ -127,8 +130,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var switchPush = UISwitch().then({
         $0.onTintColor = Asset.Color.priMain.color
         $0.tintColor = Asset.Color.monoDark030.color
-        $0.thumbTintColor = Asset.Color.monoWhite.color
         $0.backgroundColor = Asset.Color.monoDark030.color
+        $0.thumbTintColor = Asset.Color.monoWhite.color
         $0.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         $0.layer.cornerRadius = $0.bounds.height / 2
     })
@@ -209,6 +212,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewHeader)
+        viewHeader.addSubview(btnMore)
+        
         view.addSubview(scrollView)
         
         viewContents.addSubview(detailNameFrame)
@@ -229,6 +234,12 @@ class DetailHabitView: BaseViewController, Navigatable {
         viewHeader.snp.makeConstraints({
             $0.height.equalTo(60)
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        })
+        
+        btnMore.snp.makeConstraints({
+            $0.height.width.equalTo(24)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
         })
         
         scrollView.snp.makeConstraints({
@@ -333,8 +344,18 @@ class DetailHabitView: BaseViewController, Navigatable {
             btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
+        output.showBottomSheet
+            .drive(onNext: {
+                self.bottomSheet.showAnim(vc: self, parentAddView: self.scrollView, completion: nil)
+            }).disposed(by: disposeBag)
+        
         output.isWriting
             .drive(onNext: { isWriting in
+                // 헤더 변경
+                self.btnMore.isHidden = isWriting
+                self.btnDone.isHidden = !isWriting
+                
+                // 컨텐츠 변경
                 self.tfName.isEnabled = isWriting
                 self.btnPerformTime.isEnabled = isWriting
                 self.btnCycleWeek.isEnabled = isWriting
@@ -346,7 +367,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         output.showBottomSheet
             .drive(onNext: {
-                self.bottomView.showAnim(vc: self, parentAddView: self.view)
+                self.bottomSheet.showAnim(vc: self, parentAddView: self.view)
             }).disposed(by: disposeBag)
         
         output.showBackAlert
