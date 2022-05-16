@@ -1,38 +1,29 @@
 //
-//  DetailHabitViewModel.swift
+//  DetailTodoViewModel.swift
 //  momsnagging
 //
-//  Created by suni on 2022/05/06.
+//  Created by suni on 2022/05/16.
 //
 
 import Foundation
 import RxSwift
 import RxCocoa
 
-class DetailHabitViewModel: BaseViewModel, ViewModelType {
-    
-    enum CycleType: String {
-        case week = "요일"
-        case number = "N회"
-    }
+class DetailTodoViewModel: BaseViewModel {
     
     enum TextHintType: String {
-        case empty      = "습관 이름은 필수로 입력해야 한단다"
-        case invalid    = "습관 이름은 30글자를 넘길 수 없단다"
+        case empty      = "할일 이름은 필수로 입력해야 한단다"
+        case invalid    = "할일 이름은 30글자를 넘길 수 없단다"
         case none       = ""
     }
     
     var disposeBag = DisposeBag()
     private let isNew: BehaviorRelay<Bool>
-    private let isRecommendHabit: BehaviorRelay<Bool>
-    private var cycleWeek = BehaviorRelay<[String]>(value: ["월", "화", "수", "목", "금", "토", "일"])
-    private var cycleNumber = BehaviorRelay<[String]>(value: ["1", "2", "3", "4", "5", "6"])
     
-    init(isNew: Bool, isRecommendHabit: Bool) {
+    init(isNew: Bool) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
-        self.isRecommendHabit = BehaviorRelay<Bool>(value: isRecommendHabit)
     }
-
+    
     // MARK: - Input
     struct Input {
         /// 더보기
@@ -43,6 +34,8 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         /// 뒤로 가기
         let btnBackTapped: Driver<Void>
         let backAlertDoneHandler: Driver<Void>
+        /// 삭제하기
+        let deleteAlertDoneHandler: Driver<Void>
         /// 습관 이름
         let textName: Driver<String>
         let editingDidBeginName: Driver<Void>
@@ -50,11 +43,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         /// 수행 시간
         let btnPerformTimeTapped: Driver<Void>
         let textPerformTime: Driver<String?>
-        /// 이행 주기
-        let btnCycleWeekTapped: Driver<Void>
-        let btnCycleNumber: Driver<Void>
-        let cycleModelSelected: Driver<String>
-        let cycleModelDeselected: Driver<String>
         /// 잔소리 설정
         let valueChangedPush: Driver<Bool>
         let valueChangedTimePicker: Driver<Date>
@@ -64,7 +52,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
-        ///  바텀 시트
+        /// 바텀 시트
         let showBottomSheet: Driver<Void>
         let hideBottomSheet: Driver<Void>
         /// 작성 모드
@@ -72,28 +60,26 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         /// 뒤로 가기
         let showBackAlert: Driver<String>
         let goToBack: Driver<Void>
+        /// 삭제 하기
+        let showDeleteAlert: Driver<String>
         /// 이름 수정 중
         let isEditingName: Driver<Bool>
         /// 텍스트 힌트
         let textHint: Driver<TextHintType>
         /// '수행 시간 설정' 이동
         let goToPerformTimeSetting: Driver<Void>
-        /// 이행 주기 선택
-        let selectCycleType: Driver<CycleType>
-        /// 이행 주기 아이템
-        let cycleItems: BehaviorRelay<[String]>
         /// 잔소리 알림 여부
         let isNaggingPush: Driver<Bool>
         /// 잔소리 시간 선택
         let setTimeNaggingPush: Driver<Date?>
         /// 완료 가능
         let canBeDone: Driver<Bool>
-        /// 습관 추가 완료
-        let successDoneAddHabit: Driver<Void>
-        /// 습관 수정 완료
-        let successDoneModifyHabit: Driver<Void>
+        /// 할일 추가 완료
+        let successDoneAddTodo: Driver<Void>
+        /// 할일 수정 완료
+        let successDoneModifyTodo: Driver<Void>
     }
-    
+        
     func transform(input: Input) -> Output {
         
         /// 작성 모드
@@ -108,16 +94,47 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         
         btnModifyTapped
             .subscribe(onNext: {
+                isNew.accept(false)
                 isWriting.accept(true)
             }).disposed(by: disposeBag)
         
-        let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable())
+        let btnDeleteTapped = input.btnDeleteTapped.asObservable().share()
         
-        let showBackAlert = input.btnBackTapped
+        let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable(), btnDeleteTapped)
+        let showDeleteAlert = btnDeleteTapped
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_TODO_DELETE)
+            }
+        
+        let btnBackTapped = input.btnBackTapped.asObservable()
+            .flatMapLatest { _ -> Observable<Bool> in
+                return Observable.just(isWriting.value)
+            }.share()
+        
+        let showBackAlert = btnBackTapped
+            .filter { $0 == true }
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_TODO_BACK)
+            }
+        
+        let backAlertDoneHandler = input.backAlertDoneHandler
             .asObservable()
-            .flatMapLatest { return Observable.just(STR_HABIT_BACK) }
+            .flatMapLatest { _ -> Observable<Bool> in
+                return Observable.just(self.isNew.value)
+            }.share()
         
-        /// 습관 이름
+        let goToBack = Observable.merge(
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
+            btnBackTapped.filter { $0 == false }.mapToVoid(), input.deleteAlertDoneHandler.asObservable())
+        
+        backAlertDoneHandler
+            .filter { $0 == false }
+            .mapToVoid()
+            .subscribe(onNext: {
+                isWriting.accept(false)
+            }).disposed(by: disposeBag)
+        
+        /// 할일 이름
         let textName = BehaviorRelay<String>(value: "")
         let isEditingName = BehaviorRelay<Bool>(value: false)
         let textHint = BehaviorRelay<TextHintType>(value: .none)
@@ -174,60 +191,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 textPerformTime.accept(text ?? "")
             }).disposed(by: disposeBag)
         
-        /// 이행 주기
-        let selectCycleType = BehaviorRelay<CycleType>(value: .week)
-        let cycleItems = BehaviorRelay<[String]>(value: [])
-        let selectedCycleItems = BehaviorRelay<[String]>(value: [])
-        
-        input.btnCycleWeekTapped
-            .drive(onNext: { _ in
-                selectCycleType.accept(.week)
-            }).disposed(by: disposeBag)
-        
-        input.btnCycleNumber
-            .drive(onNext: { _ in
-                selectCycleType.accept(.number)
-            }).disposed(by: disposeBag)
-        
-        selectCycleType
-            .distinctUntilChanged()
-            .filter { $0 == .week }
-            .flatMapLatest { _ -> Observable<[String]> in
-                return self.cycleWeek.asObservable()
-            }.subscribe(onNext: { items in
-                cycleItems.accept(items)
-                selectedCycleItems.accept([])
-            }).disposed(by: disposeBag)
-        
-        selectCycleType
-            .distinctUntilChanged()
-            .filter { $0 == .number }
-            .flatMapLatest { _ -> Observable<[String]> in
-                return self.cycleNumber.asObservable()
-            }.subscribe(onNext: { items in
-                cycleItems.accept(items)
-                selectedCycleItems.accept([])
-            }).disposed(by: disposeBag)
-        
-        input.cycleModelSelected
-            .drive(onNext: { item in
-                var selectedItems = selectedCycleItems.value
-                
-                if !selectedItems.contains(obj: item) {
-                    selectedItems.append(item)
-                    let items: [String] = selectedItems
-                    Log.debug("selectedItems ", items)
-                    selectedCycleItems.accept(items)
-                }
-            }).disposed(by: disposeBag)
-        
-        input.cycleModelDeselected
-            .drive(onNext: { item in
-                let selectedItems = selectedCycleItems.value
-                selectedCycleItems.accept(selectedItems.removed(item))
-                Log.debug("selectedItems ", selectedCycleItems.value)
-            }).disposed(by: disposeBag)
-        
         /// 잔소리 알림 설정
         let isNaggingPush = BehaviorRelay<Bool>(value: false)
         let timeNaggingPush = BehaviorRelay<Date?>(value: nil)
@@ -249,9 +212,9 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 timeNaggingPush.accept(date)
             }).disposed(by: disposeBag)
         
-        let canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
-            .map({ isValidName, textPerformTime, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
-                if isValidName && !textPerformTime.isEmpty && !selectedCycleItems.isEmpty {
+        let canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
+            .map({ isValidName, textPerformTime, isNaggingPush, timeNaggingPush -> Bool in
+                if isValidName && !textPerformTime.isEmpty {
                     if !isNaggingPush {
                         return true
                     } else {
@@ -263,41 +226,40 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 return false
             })
         
-        // TODO: Request 습관 추가 API
+        // TODO: Request 할일 추가 API
         let done = input.btnDoneTapped.asObservable().share()
         
         // 추가
-        let successDoneAddHabit = done
+        let successDoneAddTodo = done
             .flatMapLatest { () -> Observable<Bool> in
                 return isNew.asObservable()
             }.filter { $0 == true }.mapToVoid().debug()
         
         // 수정
-        let successDoneModifyHabit = done
+        let successDoneModifyTodo = done
             .flatMapLatest { () -> Observable<Bool> in
                 return isNew.asObservable()
             }.filter { $0 == false }.mapToVoid().debug()
         
-        successDoneModifyHabit
+        successDoneModifyTodo
             .subscribe(onNext: {
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
-
+     
         return Output(showBottomSheet: input.btnMoreTapped,
                       hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
-                      showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_HABIT_BACK),
-                      goToBack: input.backAlertDoneHandler,
+                      showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_TODO_BACK),
+                      goToBack: goToBack.asDriverOnErrorJustComplete(),
+                      showDeleteAlert: showDeleteAlert.asDriver(onErrorJustReturn: STR_TODO_DELETE),
                       isEditingName: isEditingName.asDriverOnErrorJustComplete(),
                       textHint: textHint.asDriverOnErrorJustComplete(),
                       goToPerformTimeSetting: input.btnPerformTimeTapped,
-                      selectCycleType: selectCycleType.asDriverOnErrorJustComplete(),
-                      cycleItems: cycleItems,
                       isNaggingPush: isNaggingPush.asDriverOnErrorJustComplete(),
                       setTimeNaggingPush: timeNaggingPush.skip(1).distinctUntilChanged().asDriverOnErrorJustComplete(),
                       canBeDone: canBeDone.asDriverOnErrorJustComplete(),
-                      successDoneAddHabit: successDoneAddHabit.asDriverOnErrorJustComplete(),
-                      successDoneModifyHabit: successDoneModifyHabit.asDriverOnErrorJustComplete()
-        )
+                      successDoneAddTodo: successDoneAddTodo.asDriverOnErrorJustComplete(),
+                      successDoneModifyTodo: successDoneModifyTodo.asDriverOnErrorJustComplete())
     }
+    
 }

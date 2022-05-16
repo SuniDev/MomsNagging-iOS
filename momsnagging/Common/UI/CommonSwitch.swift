@@ -15,7 +15,7 @@ class CommonSwitch: UISwitch {
     @IBInspectable var normalOffColor: UIColor = Asset.Color.monoDark030.color
     
     @IBInspectable var disableOnColor: UIColor = Asset.Color.priLight030.color
-    @IBInspectable var disableOffColor: UIColor = Asset.Color.monoLight010.color
+    @IBInspectable var disableOffColor: UIColor = Asset.Color.monoDark020.color
     
     var isEnable: Bool = true {
         didSet {

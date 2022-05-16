@@ -198,6 +198,34 @@ class CommonView {
         }
     }
     
+    /**
+     # showAlert
+     - parameters:
+        - vc : 이 메서드를 사용할 vc
+        - title : Alert Title문구
+        - message : Alert 메세지 문구
+     - Authors: suni
+     - Note:'아니오'/'네' 버튼 알럿 노출
+     */
+    static func showAlert(vc: UIViewController, title: String? = "", message: String? = "", cancelTitle: String = STR_NO, destructiveTitle: String = STR_YES, cancelHandler:(() -> Void)? = nil, destructiveHandler:(() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .default) { _ in
+                alert.dismiss(animated: true)
+                cancelHandler?()
+            }
+            let destructiveAction = UIAlertAction(title: destructiveTitle, style: .destructive) { _ in
+                destructiveHandler?()
+            }
+            
+            alert.addAction(cancelAction)
+            alert.addAction(destructiveAction)
+                
+            Log.debug(alert.actions)
+            vc.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     static func showToast(vc: UIViewController, message: String, duration: TimeInterval = ToastManager.shared.duration) {
         vc.view.makeToast(message, duration: duration)
     }
@@ -585,22 +613,6 @@ class CommonView {
         })
         
         return view
-    }
-    
-    /**
-     # dimView
-     - parameters:
-     - Authors: suni
-     - Returns: UIView
-     - Note: 백그라운드 딤 뷰
-     */
-    func dimView() -> UIView {
-        lazy var dimView = UIView().then({
-            $0.backgroundColor = Asset.Color.monoDark010.color.withAlphaComponent(0.3)
-            $0.isHidden = true
-        })
-        
-        return dimView
     }
     
     /**

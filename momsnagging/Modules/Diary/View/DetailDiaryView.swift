@@ -20,16 +20,19 @@ class DetailDiaryView: BaseViewController, Navigatable {
     var navigator: Navigator!
     
     // MARK: - UI Properties
+    lazy var dimView = UIView().then({
+        $0.backgroundColor = Asset.Color.monoDark010.color
+        $0.isHidden = true
+    })
     lazy var viewHeader = UIView()
     lazy var btnBack = UIButton()
     lazy var btnDone = UIButton()
     
-    lazy var btnModify = UIButton().then({
+    lazy var btnMore = UIButton().then({
         $0.isHidden = true
-        $0.setTitle("수정", for: .normal)
-        $0.setTitleColor(Asset.Color.priMain.color, for: .normal)
-        $0.setTitleColor(Asset.Color.priDark020.color, for: .highlighted)
+        $0.setImage(Asset.Icon.more.image, for: .normal)
     })
+    lazy var bottomSheet = CommonBottomSheet()
     
     lazy var viewBackground = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
@@ -173,20 +176,26 @@ class DetailDiaryView: BaseViewController, Navigatable {
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewHeader)
-        viewHeader.addSubview(btnModify)
+        viewHeader.addSubview(btnMore)
         
         view.addSubview(viewBackground)
         viewBackground.addSubview(tfTitle)
         viewBackground.addSubview(tvContents)
+        view.addSubview(dimView)
+        
+        dimView.snp.makeConstraints({
+            $0.top.bottom.leading.trailing.equalToSuperview()
+        })
         
         viewHeader.snp.makeConstraints({
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(60)
         })
         
-        btnModify.snp.makeConstraints({
+        btnMore.snp.makeConstraints({
+            $0.height.width.equalTo(24)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-20)
         })
         
         viewBackground.snp.makeConstraints({
@@ -235,36 +244,74 @@ class DetailDiaryView: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         let doneAlertDoneHandler = PublishRelay<Void>()
+        let backAlertDoneHandler = PublishRelay<Void>()
+        let deleteAlertDoneHandler = PublishRelay<Void>()
         
         let input = DetailDiaryViewModel
             .Input(
+                btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
+                dimViewTapped: self.bottomSheet.dimView.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
+                btnModifyTapped: self.bottomSheet.btnModify.rx.tap.asDriverOnErrorJustComplete(),
+                btnDeleteTapped: self.bottomSheet.btnDelete.rx.tap.asDriverOnErrorJustComplete(),
                 btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
+                backAlertDoneHandler: backAlertDoneHandler.asDriverOnErrorJustComplete(),
+                deleteAlertDoneHandler: deleteAlertDoneHandler.asDriverOnErrorJustComplete(),
                 textTitle: self.tfTitle.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
                 textContents: self.tvContents.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
                 editingDidEndOnExitTitle: self.tfTitle.rx.controlEvent(.editingDidEndOnExit).asDriverOnErrorJustComplete(),
                 didBeginContents: self.tvContents.rx.didBeginEditing.asDriverOnErrorJustComplete(),
                 didEndEditingContents: self.tvContents.rx.didEndEditing.asDriverOnErrorJustComplete(),
                 btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete(),
-                btnModifyTapped: self.btnModify.rx.tap.asDriverOnErrorJustComplete(),
                 doneAlertDoneHandler: doneAlertDoneHandler.asDriverOnErrorJustComplete())
         
         let output = viewModel.transform(input: input)
+        
+        /// 바텀 시트
+        output.showBottomSheet
+            .drive(onNext: {
+                self.bottomSheet.showAnim(vc: self, parentAddView: self.view)
+            }).disposed(by: disposeBag)
+        
+        output.hideBottomSheet
+            .drive(onNext: {
+                self.bottomSheet.hideAnim()
+            }).disposed(by: disposeBag)
                 
+        /// 작성 모드
         output.isWriting
             .drive(onNext: { isWriting in
+                // 헤더 변경
+                self.btnMore.isHidden = isWriting
+                self.btnDone.isHidden = !isWriting
+                
                 self.tfTitle.isEnabled = isWriting
                 self.tfTitle.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
                 self.tvContents.isEditable = isWriting
                 self.tvContents.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
-                self.btnDone.isHidden = !isWriting
-                self.btnModify.isHidden = isWriting
             }).disposed(by: disposeBag)
-                
+        
+        /// 뒤로 가기
+        output.showBackAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, title: "", message: message, destructiveHandler: {
+                    backAlertDoneHandler.accept(())
+                })
+            }).disposed(by: disposeBag)
+        
         output.goToBack
             .drive(onNext: {
                 self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
         
+        /// 삭제 하기
+        output.showDeleteAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, title: "", message: message, cancelTitle: STR_NO, destructiveTitle: STR_DELETE, destructiveHandler: {
+                    deleteAlertDoneHandler.accept(())
+                })
+            }).disposed(by: disposeBag)
+        
+        /// 일기작 작성
         output.setTextTitle
             .drive(onNext: { text in
                 self.tfTitle.text = text
@@ -305,7 +352,9 @@ class DetailDiaryView: BaseViewController, Navigatable {
         output.successDoneDiary
             .drive(onNext: { title in
                 self.view.endEditing(true)
+                self.dimView.fadeIn(alpha: 0.5)
                 CommonView.showAlert(vc: self, type: .oneBtn, title: title, message: "", doneTitle: STR_DONE, doneHandler: {
+                    self.dimView.fadeOut()
                     doneAlertDoneHandler.accept(())
                 })
             }).disposed(by: disposeBag)

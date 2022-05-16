@@ -79,10 +79,9 @@ class CommonBottomSheet: BaseViewController {
         sheetView.snp.makeConstraints({
             $0.height.equalTo(137)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(5)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(142)
         })
         self.originalTransform = self.sheetView.transform
-        Log.debug(self.sheetView.transform)
         
         viewModify.snp.makeConstraints({
             $0.height.equalTo(66)
@@ -117,10 +116,11 @@ class CommonBottomSheet: BaseViewController {
         btnDelete.snp.makeConstraints({
             $0.top.bottom.leading.trailing.equalToSuperview()
         })
+        
+        self.view.layoutIfNeeded()
     }
     
     func showAnim(vc: UIViewController, parentAddView: UIView?, completion:(() -> Void)? = nil) {
-       
        var pView = parentAddView
        
        if pView == nil {
@@ -139,44 +139,32 @@ class CommonBottomSheet: BaseViewController {
        self.view.snp.makeConstraints({
            $0.edges.equalToSuperview()
        })
-       
+        
        self.dimView.alpha = 0.0
-       let originalTransform = self.originalTransform ?? self.sheetView.transform
-
-       var bottomY: CGFloat = 0.0
-       bottomY = UIScreen.main.bounds.size.height - self.sheetView.frame.minY
-
-       let hideTransform = originalTransform.translatedBy(x: 0.0, y: bottomY)
-       self.sheetView.transform = hideTransform
-
-       UIView.animate(withDuration: 0.3, animations: { [weak self] in
-           if let self = self {
-               self.dimView.alpha = 0.7
-               self.sheetView.transform = originalTransform
-           }
-       }, completion: { _ in
-           completion?()
-           
-           self.sheetView.snp.updateConstraints({
-               $0.height.equalTo(137)
-               $0.leading.trailing.equalToSuperview()
-               $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(5)
-           })
-
-       })
+        
+        sheetView.snp.updateConstraints({
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(5)
+        })
+    
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            if let self = self {
+                self.view.layoutIfNeeded()
+                self.dimView.alpha = 0.7
+            }
+        }, completion: { _ in
+            completion?()
+        })
    }
     
    func hideAnim() {
-       let originalTransform = self.sheetView.transform
-       
-       var bottomY: CGFloat = 0.0
-       bottomY = UIScreen.main.bounds.size.height - self.sheetView.frame.minY
-       let hideTransform = originalTransform.translatedBy(x: 0.0, y: bottomY)
-       
+       sheetView.snp.updateConstraints({
+           $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(142)
+       })
+   
        UIView.animate(withDuration: 0.3, animations: { [weak self] in
            if let self = self {
+               self.view.layoutIfNeeded()
                self.dimView.alpha = 0.0
-               self.sheetView.transform = hideTransform
            }
        }, completion: { _ in
            self.view.removeFromSuperview()
