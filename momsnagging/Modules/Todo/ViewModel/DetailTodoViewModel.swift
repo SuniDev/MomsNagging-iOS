@@ -34,6 +34,8 @@ class DetailTodoViewModel: BaseViewModel {
         /// 뒤로 가기
         let btnBackTapped: Driver<Void>
         let backAlertDoneHandler: Driver<Void>
+        /// 삭제하기
+        let deleteAlertDoneHandler: Driver<Void>
         /// 습관 이름
         let textName: Driver<String>
         let editingDidBeginName: Driver<Void>
@@ -58,6 +60,8 @@ class DetailTodoViewModel: BaseViewModel {
         /// 뒤로 가기
         let showBackAlert: Driver<String>
         let goToBack: Driver<Void>
+        /// 삭제 하기
+        let showDeleteAlert: Driver<String>
         /// 이름 수정 중
         let isEditingName: Driver<Bool>
         /// 텍스트 힌트
@@ -90,14 +94,45 @@ class DetailTodoViewModel: BaseViewModel {
         
         btnModifyTapped
             .subscribe(onNext: {
+                isNew.accept(false)
                 isWriting.accept(true)
             }).disposed(by: disposeBag)
         
-        let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable())
+        let btnDeleteTapped = input.btnDeleteTapped.asObservable().share()
         
-        let showBackAlert = input.btnBackTapped
+        let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable(), btnDeleteTapped)
+        let showDeleteAlert = btnDeleteTapped
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_TODO_DELETE)
+            }
+        
+        let btnBackTapped = input.btnBackTapped.asObservable()
+            .flatMapLatest { _ -> Observable<Bool> in
+                return Observable.just(isWriting.value)
+            }.share()
+        
+        let showBackAlert = btnBackTapped
+            .filter { $0 == true }
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_TODO_BACK)
+            }
+        
+        let backAlertDoneHandler = input.backAlertDoneHandler
             .asObservable()
-            .flatMapLatest { return Observable.just(STR_TODO_BACK) }
+            .flatMapLatest { _ -> Observable<Bool> in
+                return Observable.just(self.isNew.value)
+            }.share()
+        
+        let goToBack = Observable.merge(
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
+            btnBackTapped.filter { $0 == false }.mapToVoid(), input.deleteAlertDoneHandler.asObservable())
+        
+        backAlertDoneHandler
+            .filter { $0 == false }
+            .mapToVoid()
+            .subscribe(onNext: {
+                isWriting.accept(false)
+            }).disposed(by: disposeBag)
         
         /// 할일 이름
         let textName = BehaviorRelay<String>(value: "")
@@ -215,7 +250,8 @@ class DetailTodoViewModel: BaseViewModel {
                       hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
                       showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_TODO_BACK),
-                      goToBack: input.backAlertDoneHandler,
+                      goToBack: goToBack.asDriverOnErrorJustComplete(),
+                      showDeleteAlert: showDeleteAlert.asDriver(onErrorJustReturn: STR_TODO_DELETE),
                       isEditingName: isEditingName.asDriverOnErrorJustComplete(),
                       textHint: textHint.asDriverOnErrorJustComplete(),
                       goToPerformTimeSetting: input.btnPerformTimeTapped,

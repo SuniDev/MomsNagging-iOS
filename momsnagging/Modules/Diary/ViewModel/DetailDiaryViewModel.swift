@@ -72,15 +72,17 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        
         let isWriting = BehaviorRelay<Bool>(value: false)
         let contentsPlaceHolder = BehaviorRelay<String>(value: "")
+        let isNew = self.isNew
+        
         let textTitle = BehaviorRelay<String>(value: "")
         let textContents = BehaviorRelay<String>(value: "")
         let lengthExceededTitle = PublishRelay<Void>()
         let lengthExceededContents = PublishRelay<Void>()
         
-        self.isNew
+        /// 작성 모드
+        isNew
             .bind(onNext: {
                 isWriting.accept($0)
             }).disposed(by: disposeBag)
@@ -89,7 +91,7 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
         
         btnModifyTapped
             .subscribe(onNext: {
-                self.isNew.accept(false)
+                isNew.accept(false)
                 isWriting.accept(true)
             }).disposed(by: disposeBag)
         
@@ -112,16 +114,11 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
                     contentsPlaceHolder.accept(text)
                 }
             }).disposed(by: disposeBag)
-        
-        input.btnModifyTapped
-            .drive(onNext: {
-                isWriting.accept(true)
-            }).disposed(by: disposeBag)
-        
+                
         let btnBackTapped = input.btnBackTapped.asObservable()
             .flatMapLatest { _ -> Observable<Bool> in
                 return Observable.just(isWriting.value)
-            }
+            }.share()
         
         let showBackAlert = btnBackTapped
             .filter { $0 == true }

@@ -206,6 +206,7 @@ class DetailTodoView: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         let backAlertDoneHandler = PublishRelay<Void>()
+        let deleteAlertDoneHandler = PublishRelay<Void>()
         
         let input = DetailTodoViewModel.Input(
             btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
@@ -214,6 +215,7 @@ class DetailTodoView: BaseViewController, Navigatable {
             btnDeleteTapped: self.bottomSheet.btnDelete.rx.tap.asDriverOnErrorJustComplete(),
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
             backAlertDoneHandler: backAlertDoneHandler.asDriverOnErrorJustComplete(),
+            deleteAlertDoneHandler: deleteAlertDoneHandler.asDriverOnErrorJustComplete(),
             textName: self.tfName.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
             editingDidBeginName: self.tfName.rx.controlEvent(.editingDidBegin).asDriverOnErrorJustComplete(),
             editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
@@ -258,6 +260,14 @@ class DetailTodoView: BaseViewController, Navigatable {
         output.goToBack
             .drive(onNext: {
                 self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
+        
+        /// 삭제 하기
+        output.showDeleteAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, title: "", message: message, cancelTitle: STR_NO, destructiveTitle: STR_DELETE, destructiveHandler: {
+                    deleteAlertDoneHandler.accept(())
+                })
             }).disposed(by: disposeBag)
         
         /// 할일 이름

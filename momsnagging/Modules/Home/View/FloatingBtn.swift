@@ -159,7 +159,7 @@ extension HomeView {
             lbl.textColor = UIColor(asset: Asset.Color.monoDark010)
             ic.image = UIImage(asset: Asset.Icon.todoAddFloating)
             btn.rx.tap.bind {
-                let viewModel = DetailTodoViewModel(isNew: false)
+                let viewModel = DetailTodoViewModel(isNew: true)
                 let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
                 self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: vc, transition: .navigation)
             }.disposed(by: disposedBag)

@@ -33,4 +33,5 @@ public let STR_HABIT_BACK       = "지금 나가면 습관이 저장되지 않�
 public let STR_TODO_BACK        = "지금 나가면 할일이 저장되지 않는단다.\n그래도 나가겠니?"
 public let STR_DIARY_BACK       = "지금 나가면 일기가 저장되지 않는단다.\n그래도 나가겠니?"
 
-public let STR_DIARY_DELETE    = "일기를 삭제하면 되돌릴 수 없단다\n그래도 삭제하겠니?"
+public let STR_DIARY_DELETE     = "일기를 삭제하면 되돌릴 수 없단다\n그래도 삭제하겠니?"
+public let STR_TODO_DELETE      = "할일을 삭제하면 되돌릴 수 없단다\n그래도 삭제하겠니?"
