@@ -164,7 +164,7 @@ class LoginViewModel: BaseViewModel, ViewModelType {
                 guard let error = error else { return }
                 errorMessage.accept(error.localizedDescription)
             }.disposed(by: disposeBag)
-       
+        
         return Output(googleSignIn: googlgoogleSignInConfig.asDriverOnErrorJustComplete(),
                       appleSignIn: input.btnAppleLoginTapped,
                       needToJoin: needToJoin.asDriverOnErrorJustComplete(),
