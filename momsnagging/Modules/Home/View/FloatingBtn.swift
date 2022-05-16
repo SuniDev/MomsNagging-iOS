@@ -143,7 +143,6 @@ extension HomeView {
             lbl.textColor = UIColor(asset: Asset.Color.priDark020)
             ic.image = UIImage(asset: Asset.Icon.habitAddFloating)
             btn.rx.tap.bind {
-                Log.debug("클릭이벤트", "습관추가 클릭")
                 self.floatingBackgroundView.isHidden = true
                 self.floatingBtn.isSelected = false
                 self.floatingBind(btnSelected: true, img: self.floatingBtnIc)
@@ -160,7 +159,9 @@ extension HomeView {
             lbl.textColor = UIColor(asset: Asset.Color.monoDark010)
             ic.image = UIImage(asset: Asset.Icon.todoAddFloating)
             btn.rx.tap.bind {
-                Log.debug("클릭이벤트", "할일추가 클릭")
+                let viewModel = DetailTodoViewModel(isNew: false)
+                let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
+                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: vc, transition: .navigation)
             }.disposed(by: disposedBag)
         }
         

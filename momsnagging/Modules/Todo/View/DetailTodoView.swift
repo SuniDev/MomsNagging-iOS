@@ -1,8 +1,8 @@
 //
-//  DetailHabitView.swift
+//  DetailTodoView.swift
 //  momsnagging
 //
-//  Created by suni on 2022/05/06.
+//  Created by suni on 2022/05/16.
 //
 
 import UIKit
@@ -13,16 +13,13 @@ import RxKeyboard
 import RxCocoa
 import RxGesture
 
-class DetailHabitView: BaseViewController, Navigatable {
+class DetailTodoView: BaseViewController, Navigatable {
     
     // MARK: - Properties & Variable
     private var disposeBag = DisposeBag()
-    var viewModel: DetailHabitViewModel?
+    var viewModel: DetailTodoViewModel?
     var navigator: Navigator!
     
-    private let cycleCellSpacing: CGFloat = 10.5
-    private var cycleCellHeight: CGFloat = 0.0
-    private let cycleIdentifier = "CycleCell"
     private let viewAddPushTimeHeight: CGFloat = 40.0
     
     // MARK: - UI Properties
@@ -34,7 +31,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.setImage(Asset.Icon.more.image, for: .normal)
     })
     lazy var lblTitle = UILabel().then({
-        $0.text = "습관 상세"
+        $0.text = "할일 상세"
     })
     
     lazy var scrollView = UIScrollView()
@@ -42,12 +39,12 @@ class DetailHabitView: BaseViewController, Navigatable {
     
     lazy var bottomSheet = CommonBottomSheet()
     
-    /// 습관 이름
+    /// 할일 이름
     lazy var detailNameFrame = UIView()
     lazy var viewNameTitle = UIView()
     lazy var viewHintTextField = UIView()
     lazy var tfName = CommonTextField().then({
-        $0.placeholder = "어떤 습관 추가할래?"
+        $0.placeholder = "어떤 할일 추가할래?"
         $0.returnKeyType = .done
     })
     lazy var lblHint = CommonHintLabel()
@@ -64,58 +61,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.addLeftPadding(width: 2)
     })
-    
-    /// 이행 주기
-    lazy var cycleFrame = UIView()
-    lazy var viewCycleTitle = UIView()
-    lazy var viewCycleType = UIView().then({
-        $0.addBorder(color: Asset.Color.monoLight020.color, width: 1)
-        $0.layer.cornerRadius = 8
-        $0.backgroundColor = Asset.Color.monoWhite.color
-    })
-    lazy var btnCycleWeek = CommonButton().then({
-        $0.layer.cornerRadius = 5
-        $0.normalBackgroundColor = Asset.Color.monoWhite.color
-        $0.selectedBackgroundColor = Asset.Color.priLight010.color
-        $0.setTitle("요일", for: .normal)
-        $0.setTitleColor(Asset.Color.monoDark030.color, for: .normal)
-        $0.setTitleColor(Asset.Color.monoDark010.color, for: .selected)
-        $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
-        $0.selectedFont = FontFamily.Pretendard.semiBold.font(size: 14)
-        $0.isSelected = true
-        
-    })
-    lazy var btnCycleNumber = CommonButton().then({
-        $0.layer.cornerRadius = 5
-        $0.normalBackgroundColor = Asset.Color.monoWhite.color
-        $0.selectedBackgroundColor = Asset.Color.priLight010.color
-        $0.setTitle("N회", for: .normal)
-        $0.setTitleColor(Asset.Color.monoDark030.color, for: .normal)
-        $0.setTitleColor(Asset.Color.monoDark010.color, for: .selected)
-        $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
-        $0.selectedFont = FontFamily.Pretendard.semiBold.font(size: 14)
-    })
-    lazy var cycleCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: cycleCellLayout())
-        collectionView.register(CycleCell.self, forCellWithReuseIdentifier: cycleIdentifier)
-        collectionView.backgroundColor = Asset.Color.monoWhite.color
-        collectionView.contentInset = .zero
-        collectionView.allowsMultipleSelection = true
-        return collectionView
-    }()
-    
-    private func cycleCellLayout() -> UICollectionViewFlowLayout {
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = .zero
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = cycleCellSpacing
-        layout.minimumLineSpacing = .zero
-        self.cycleCellHeight = (UIScreen.main.bounds.width - (cycleCellSpacing * 6) - (16 * 2)) / 7
-        layout.itemSize = CGSize(width: self.cycleCellHeight, height: self.cycleCellHeight)
-        return layout
-    }
-    
-    lazy var divider = UIView()
     
     /// 잔소리 알림
     lazy var detailNaggingPushFrame = UIView()
@@ -146,7 +91,7 @@ class DetailHabitView: BaseViewController, Navigatable {
     })
     
     // MARK: - init
-    init(viewModel: DetailHabitViewModel, navigator: Navigator) {
+    init(viewModel: DetailTodoViewModel, navigator: Navigator) {
         self.viewModel = viewModel
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
@@ -181,18 +126,14 @@ class DetailHabitView: BaseViewController, Navigatable {
         viewHeader = CommonView.detailHeadFrame(btnBack: btnBack, lblTitle: lblTitle, btnDone: btnDone)
         scrollView = CommonView.scrollView(viewContents: viewContents, bounces: true)
         
-        /// 습관 이름
+        /// 잔소리 알림
         viewHintTextField = CommonView.hintTextFieldFrame(tf: tfName, lblHint: lblHint)
-        viewNameTitle = CommonView.requiredTitleFrame("습관 이름")
+        viewNameTitle = CommonView.requiredTitleFrame("할일 이름")
         detailNameFrame = CommonView.detailNameFrame(viewNameTitle: viewNameTitle, viewHintTextField: viewHintTextField)
         
         /// 수행 시간
         viewTimeTitle = CommonView.requiredTitleFrame("수행 시간")
         detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, tfTime: tfPerformTime)
-        
-        /// 이행 주기
-        viewCycleTitle = CommonView.requiredTitleFrame("이행 주기")
-        divider = CommonView.divider()
         
         /// 잔소리 알림
         tfPicker.inputView = timePicker
@@ -212,16 +153,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         viewContents.addSubview(detailNameFrame)
         viewContents.addSubview(detailPerformTimeFrame)
         viewContents.addSubview(btnPerformTime)
-        viewContents.addSubview(cycleFrame)
-        
-        /// 이행 주기
-        cycleFrame.addSubview(viewCycleTitle)
-        cycleFrame.addSubview(viewCycleType)
-        viewCycleType.addSubview(btnCycleWeek)
-        viewCycleType.addSubview(btnCycleNumber)
-        cycleFrame.addSubview(cycleCollectionView)
-        cycleFrame.addSubview(divider)
-        
         viewContents.addSubview(detailNaggingPushFrame)
         
         viewHeader.snp.makeConstraints({
@@ -240,7 +171,7 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         })
         
-        /// 습관 이름
+        /// 할일 이름
         detailNameFrame.snp.makeConstraints({
             $0.height.equalTo(134)
             $0.top.equalToSuperview().offset(24)
@@ -259,53 +190,10 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.top.leading.trailing.bottom.equalTo(detailPerformTimeFrame)
         })
         
-        /// 이행 주기
-        cycleFrame.snp.makeConstraints({
-            $0.height.equalTo(143 + self.cycleCellHeight)
-            $0.top.equalTo(detailPerformTimeFrame.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
-        })
-        
-        viewCycleTitle.snp.makeConstraints({
-            $0.top.leading.equalToSuperview()
-        })
-        
-        viewCycleType.snp.makeConstraints({
-            $0.height.equalTo(42)
-            $0.top.equalTo(viewCycleTitle.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(14)
-            $0.trailing.equalToSuperview().offset(-14)
-        })
-        
-        btnCycleWeek.snp.makeConstraints({
-            $0.top.leading.equalToSuperview().offset(3)
-            $0.bottom.equalToSuperview().offset(-3)
-        })
-        
-        btnCycleNumber.snp.makeConstraints({
-            $0.width.equalTo(btnCycleWeek)
-            $0.top.equalToSuperview().offset(3)
-            $0.leading.equalTo(btnCycleWeek.snp.trailing).offset(3)
-            $0.bottom.trailing.equalToSuperview().offset(-3)
-        })
-        
-        cycleCollectionView.snp.makeConstraints({
-            $0.top.equalTo(viewCycleType.snp.bottom).offset(24)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(self.cycleCellHeight)
-        })
-        
-        divider.snp.makeConstraints({
-            $0.top.equalTo(cycleCollectionView.snp.bottom).offset(32)
-            $0.height.equalTo(1)
-            $0.leading.trailing.bottom.equalToSuperview()
-        })
-        
         /// 잔소리 알림
         detailNaggingPushFrame.snp.makeConstraints({
             $0.height.equalTo(65)
-            $0.top.equalTo(cycleFrame.snp.bottom).offset(20)
+            $0.top.equalTo(detailPerformTimeFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-20)
@@ -319,7 +207,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         guard let viewModel = viewModel else { return }
         let backAlertDoneHandler = PublishRelay<Void>()
         
-        let input = DetailHabitViewModel.Input(
+        let input = DetailTodoViewModel.Input(
             btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
             dimViewTapped: self.bottomSheet.dimView.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
             btnModifyTapped: self.bottomSheet.btnModify.rx.tap.asDriverOnErrorJustComplete(),
@@ -331,13 +219,10 @@ class DetailHabitView: BaseViewController, Navigatable {
             editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
             btnPerformTimeTapped: self.btnPerformTime.rx.tap.asDriverOnErrorJustComplete(),
             textPerformTime: self.tfPerformTime.rx.observe(String.self, "text").asDriver(onErrorJustReturn: ""),
-            btnCycleWeekTapped: self.btnCycleWeek.rx.tap.asDriverOnErrorJustComplete(),
-            btnCycleNumber: self.btnCycleNumber.rx.tap.asDriverOnErrorJustComplete(),
-            cycleModelSelected: self.cycleCollectionView.rx.modelSelected(String.self).asDriverOnErrorJustComplete(),
-            cycleModelDeselected: self.cycleCollectionView.rx.modelDeselected(String.self).asDriverOnErrorJustComplete(),
             valueChangedPush: self.switchPush.rx.controlEvent(.valueChanged).withLatestFrom(self.switchPush.rx.value).asDriverOnErrorJustComplete(),
             valueChangedTimePicker: self.timePicker.rx.controlEvent(.valueChanged).withLatestFrom(self.timePicker.rx.value).asDriverOnErrorJustComplete(),
             btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
+        
         let output = viewModel.transform(input: input)
         
         output.showBottomSheet
@@ -359,9 +244,6 @@ class DetailHabitView: BaseViewController, Navigatable {
                 // 컨텐츠 변경
                 self.tfName.isEnabled = isWriting
                 self.btnPerformTime.isEnabled = isWriting
-                self.btnCycleWeek.isEnabled = isWriting
-                self.btnCycleNumber.isEnabled = isWriting
-                self.cycleCollectionView.isUserInteractionEnabled = isWriting
                 self.tfPicker.isEnabled = isWriting
                 self.switchPush.isEnable = isWriting
             }).disposed(by: disposeBag)
@@ -378,7 +260,7 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
         
-        /// 습관 이름
+        /// 할일 이름
         output.isEditingName
             .drive(onNext: { isEditing in
                 if isEditing {
@@ -399,24 +281,6 @@ class DetailHabitView: BaseViewController, Navigatable {
                     self.tfName.error()
                     self.tfName.placeholder = ""
                 }
-            }).disposed(by: disposeBag)
-        
-        output.cycleItems
-            .bind(to: cycleCollectionView.rx.items(cellIdentifier: cycleIdentifier, cellType: CycleCell.self)) { _, item, cell in
-                if item == "일" {
-                    cell.normalTitleColor = Asset.Color.error.color
-                }
-                cell.lblTitle.text = item
-            }.disposed(by: disposeBag)
-        
-        output.selectCycleType
-            .drive(onNext: { type in
-                self.btnCycleWeek.isSelected = type == .week
-                self.btnCycleNumber.isSelected = type == .number
-                let inset = type == .week ? 0 : ((self.cycleCellSpacing + self.cycleCellHeight) / 2)
-                self.cycleCollectionView.snp.updateConstraints({
-                    $0.leading.trailing.equalToSuperview().inset(inset)
-                })
             }).disposed(by: disposeBag)
         
         output.isNaggingPush
@@ -480,11 +344,10 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.btnDone.isEnabled = isEnabled
             }).disposed(by: disposeBag)
         
-        output.successDoneAddHabit
+        output.successDoneAddTodo
             .drive(onNext: {
                 self.navigator.pop(sender: self, toRoot: true)
             }).disposed(by: disposeBag)
-        
     }
     
     // MARK: - performTimeViewModel bind

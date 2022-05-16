@@ -10,6 +10,8 @@
 		78423E9A816288D6BC1EF082 /* Pods_momsnagging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */; };
 		8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8617642D28111AB400F7B254 /* Observable+Operators.swift */; };
 		8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8638A551281B7874003D771B /* UITextField+Extension.swift */; };
+		863A556828321C5600995BC9 /* DetailTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863A556728321C5600995BC9 /* DetailTodoView.swift */; };
+		863A556A28321C7400995BC9 /* DetailTodoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863A556928321C7300995BC9 /* DetailTodoViewModel.swift */; };
 		86523CA02824FD4A00F243A8 /* DetailHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */; };
 		86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */; };
 		8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F75F282A5891007998CE /* PerformTimeSettingView.swift */; };
@@ -115,6 +117,8 @@
 		7976B2BB96C29942DF65316A /* Pods-momsnagging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-momsnagging.debug.xcconfig"; path = "Target Support Files/Pods-momsnagging/Pods-momsnagging.debug.xcconfig"; sourceTree = "<group>"; };
 		8617642D28111AB400F7B254 /* Observable+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Operators.swift"; sourceTree = "<group>"; };
 		8638A551281B7874003D771B /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		863A556728321C5600995BC9 /* DetailTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoView.swift; sourceTree = "<group>"; };
+		863A556928321C7300995BC9 /* DetailTodoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoViewModel.swift; sourceTree = "<group>"; };
 		86523C9F2824FD4A00F243A8 /* DetailHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitView.swift; sourceTree = "<group>"; };
 		86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewModel.swift; sourceTree = "<group>"; };
 		8662F75F282A5891007998CE /* PerformTimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingView.swift; sourceTree = "<group>"; };
@@ -250,6 +254,31 @@
 				8617642D28111AB400F7B254 /* Observable+Operators.swift */,
 			);
 			path = Rx;
+			sourceTree = "<group>";
+		};
+		863A556428321BBA00995BC9 /* Todo */ = {
+			isa = PBXGroup;
+			children = (
+				863A556528321C1100995BC9 /* View */,
+				863A556628321C1500995BC9 /* ViewModel */,
+			);
+			path = Todo;
+			sourceTree = "<group>";
+		};
+		863A556528321C1100995BC9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				863A556728321C5600995BC9 /* DetailTodoView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		863A556628321C1500995BC9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				863A556928321C7300995BC9 /* DetailTodoViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		86523C9E2824F44C00F243A8 /* Habit */ = {
@@ -679,6 +708,7 @@
 				8F22F81D281D08E600AB4180 /* Home */,
 				8F22F823281D0A4E00AB4180 /* ReportCard */,
 				86523C9E2824F44C00F243A8 /* Habit */,
+				863A556428321BBA00995BC9 /* Todo */,
 				8F1F939A27EC8975000F08AF /* Calendar */,
 				8F22F822281D0A2C00AB4180 /* My */,
 				8F927A552824D52A000FFA75 /* Diary */,
@@ -1045,6 +1075,7 @@
 				A061F0F02823AF1B00F9CC18 /* DetailDiaryView.swift in Sources */,
 				8F1F93A527EEF2C6000F08AF /* CalendarDayCell.swift in Sources */,
 				86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */,
+				863A556828321C5600995BC9 /* DetailTodoView.swift in Sources */,
 				A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */,
 				8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */,
 				86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */,
@@ -1053,6 +1084,7 @@
 				A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */,
 				A06BB34F27F0C21E005727AD /* OnboardingView.swift in Sources */,
 				86B36F722817756800655059 /* UIView+Extension.swift in Sources */,
+				863A556A28321C7400995BC9 /* DetailTodoViewModel.swift in Sources */,
 				8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
