@@ -20,23 +20,39 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
+        /// 더보기
+        let btnMoreTapped: Driver<Void>
+        let dimViewTapped: Driver<Void>
+        let btnModifyTapped: Driver<Void>
+        let btnDeleteTapped: Driver<Void>
+        /// 뒤로가기
         let btnBackTapped: Driver<Void>
+        let backAlertDoneHandler: Driver<Void>
+        /// 삭제하기
+        let deleteAlertDoneHandler: Driver<Void>
+        /// 작성
         let textTitle: Driver<String?>
         let textContents: Driver<String?>
         let editingDidEndOnExitTitle: Driver<Void>
         let didBeginContents: Driver<Void>
         let didEndEditingContents: Driver<Void>
+        /// 완료
         let btnDoneTapped: Driver<Void>
-        let btnModifyTapped: Driver<Void>
         let doneAlertDoneHandler: Driver<Void>
     }
     
     // MARK: - Output
     struct Output {
+        ///  바텀 시트
+        let showBottomSheet: Driver<Void>
+        let hideBottomSheet: Driver<Void>
         /// 작성 모드
         let isWriting: Driver<Bool>
         /// 뒤로 가기
+        let showBackAlert: Driver<String>
         let goToBack: Driver<Void>
+        /// 삭제 하기
+        let showDeleteAlert: Driver<String>
         /// 제목 리턴
         let endEditingTitle: Driver<Void>
         /// 내용 플레이스홀더
@@ -69,6 +85,22 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
                 isWriting.accept($0)
             }).disposed(by: disposeBag)
         
+        let btnModifyTapped = input.btnModifyTapped.asObservable().share()
+        
+        btnModifyTapped
+            .subscribe(onNext: {
+                self.isNew.accept(false)
+                isWriting.accept(true)
+            }).disposed(by: disposeBag)
+        
+        let btnDeleteTapped = input.btnDeleteTapped.asObservable().share()
+        
+        let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable(), btnDeleteTapped)
+        let showDeleteAlert = btnDeleteTapped
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_DIARY_DELETE)
+            }
+        
         isWriting
             .filter { $0 == true }
             .flatMapLatest({ _ -> Observable<String> in
@@ -86,6 +118,35 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
                 isWriting.accept(true)
             }).disposed(by: disposeBag)
         
+        let btnBackTapped = input.btnBackTapped.asObservable()
+            .flatMapLatest { _ -> Observable<Bool> in
+                return Observable.just(isWriting.value)
+            }
+        
+        let showBackAlert = btnBackTapped
+            .filter { $0 == true }
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_DIARY_BACK)
+            }
+        
+        let backAlertDoneHandler = input.backAlertDoneHandler
+            .asObservable()
+            .flatMapLatest { _ -> Observable<Bool> in
+                return Observable.just(self.isNew.value)
+            }.share()
+        
+        let goToBack = Observable.merge(
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
+            btnBackTapped.filter { $0 == false }.mapToVoid(), input.deleteAlertDoneHandler.asObservable())
+            
+        backAlertDoneHandler
+            .filter { $0 == false }
+            .mapToVoid()
+            .subscribe(onNext: {
+                isWriting.accept(false)
+            }).disposed(by: disposeBag)
+        
+        /// 일기작 작성
         input.textTitle
             .asObservable()
             .scan("") { previous, new -> String in
@@ -154,8 +215,12 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
         
-        return Output(isWriting: isWriting.asDriverOnErrorJustComplete(),
-                      goToBack: input.btnBackTapped,
+        return Output(showBottomSheet: input.btnMoreTapped,
+                      hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
+                      isWriting: isWriting.asDriverOnErrorJustComplete(),
+                      showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_DIARY_BACK),
+                      goToBack: goToBack.asDriverOnErrorJustComplete(),
+                      showDeleteAlert: showDeleteAlert.asDriver(onErrorJustReturn: STR_DIARY_DELETE),
                       endEditingTitle: input.editingDidEndOnExitTitle,
                       setContentsPlaceholder: contentsPlaceHolder.asDriverOnErrorJustComplete(),
                       canBeDone: canBeDone.asDriverOnErrorJustComplete(),

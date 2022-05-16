@@ -342,7 +342,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         output.showBottomSheet
             .drive(onNext: {
-                self.bottomSheet.showAnim(vc: self, parentAddView: self.scrollView, completion: nil)
+                self.bottomSheet.showAnim(vc: self, parentAddView: self.view)
             }).disposed(by: disposeBag)
         
         output.hideBottomSheet
@@ -364,11 +364,6 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.cycleCollectionView.isUserInteractionEnabled = isWriting
                 self.tfPicker.isEnabled = isWriting
                 self.switchPush.isEnable = isWriting
-            }).disposed(by: disposeBag)
-        
-        output.showBottomSheet
-            .drive(onNext: {
-                self.bottomSheet.showAnim(vc: self, parentAddView: self.view)
             }).disposed(by: disposeBag)
         
         output.showBackAlert

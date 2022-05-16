@@ -113,14 +113,14 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         
         let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable())
         
+        let showBackAlert = input.btnBackTapped
+            .asObservable()
+            .flatMapLatest { return Observable.just(STR_HABIT_BACK) }
+        
         /// 습관 이름
         let textName = BehaviorRelay<String>(value: "")
         let isEditingName = BehaviorRelay<Bool>(value: false)
         let textHint = BehaviorRelay<TextHintType>(value: .none)
-        
-        let showBackAlert = input.btnBackTapped
-            .asObservable()
-            .flatMapLatest { return Observable.just(STR_ADD_HABIT_BACK) }
         
         input.textName
             .drive(onNext: { text in
@@ -286,7 +286,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         return Output(showBottomSheet: input.btnMoreTapped,
                       hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
-                      showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_ADD_HABIT_BACK),
+                      showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_HABIT_BACK),
                       goToBack: input.backAlertDoneHandler,
                       isEditingName: isEditingName.asDriverOnErrorJustComplete(),
                       textHint: textHint.asDriverOnErrorJustComplete(),
