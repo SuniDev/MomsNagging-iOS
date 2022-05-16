@@ -62,7 +62,7 @@ class HomeView: BaseViewController, Navigatable {
     var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
     var selectDate: String = ""
     // MARK: - UI Properties
-    //헤드프레임 UI Properties
+    // 헤드프레임 UI Properties
     var listBtn = UIButton()
     var headTitleLbl = UILabel()
     var headDropDownBtn = UIButton()
@@ -85,7 +85,7 @@ class HomeView: BaseViewController, Navigatable {
         $0.isHidden = true
     })
     
-    //캘린더 UI Properties
+    // 캘린더 UI Properties
     var calendarFrame = UIView()
     var calendarView = UIView().then({
         $0.layer.cornerRadius = 8
@@ -270,7 +270,7 @@ class HomeView: BaseViewController, Navigatable {
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             
             let currentYearMonth = self.calendarViewModel.todayFormatteryyyyMM()
-            var calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
+            let calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
             print("__\(calendarYearMonth)__\(currentYearMonth)")
             if calendarYearMonth == "\(currentYearMonth)" {
                 print("이번달!")

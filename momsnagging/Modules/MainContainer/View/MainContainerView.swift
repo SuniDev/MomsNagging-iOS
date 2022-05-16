@@ -32,8 +32,8 @@ class MainContainerView: BaseViewController, Navigatable {
 //    let tab0 = HomeView(viewModel: HomeViewModel(), navigator: Navigator())
     let homeViewModel = HomeViewModel()
     var tab0: UIViewController!
-    let tab1 = ReportCardView()
-    let tab2 = MyView()
+    var tab1: UIViewController!
+    var tab2 = MyView()
     // MARK: - Properties & Variable
     var disposedBag = DisposeBag()
     var navigator: Navigator!
@@ -56,7 +56,9 @@ class MainContainerView: BaseViewController, Navigatable {
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         let homeViewModel = HomeViewModel()
+        let reportCardViewModel = ReportCardViewModel()
         tab0 = navigator.get(seque: .home(viewModel: homeViewModel))
+        tab1 = navigator.get(seque: .reportCard(viewModel: reportCardViewModel))
         bottomTabbar = tabbarLayout(tabButton1: tabbarBtn1, tabButton2: tabbarBtn2, tabButton3: tabbarBtn3, tabIcon1: tabbarIc1, tabIcon2: tabbarIc2, tabIcon3: tabbarIc3, tabLabel1: tabbarLbl1, tabLabel2: tabbarLbl2, tabLabel3: tabbarLbl3)
         bottomTabbar.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
     }
