@@ -77,6 +77,7 @@
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
+		A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0269004283148E0009A40A0 /* CommonSwitch.swift */; };
 		A035B0762812A0A100747389 /* StringDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035B0752812A0A100747389 /* StringDefinition.swift */; };
 		A061F0F02823AF1B00F9CC18 /* DetailDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */; };
 		A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */; };
@@ -94,6 +95,8 @@
 		A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB35927F0E982005727AD /* BaseNavigationController.swift */; };
 		A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */; };
 		A0A674242813EC6900E0223B /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A674232813EC6900E0223B /* Onboarding.swift */; };
+		A0A992C0282EB8F8009049CF /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A992BF282EB8F8009049CF /* Habit.swift */; };
+		A0A992C2282ECB81009049CF /* CommonBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A992C1282ECB81009049CF /* CommonBottomSheet.swift */; };
 		A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */; };
 		A0B581B02827A0010099C9BA /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */; };
 		A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */; };
@@ -104,6 +107,7 @@
 		A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330928153A0A00F04B58 /* OnboardingPageView.swift */; };
 		A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330B28153A5900F04B58 /* BasePageViewController.swift */; };
 		A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */; };
+		A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB9D0C282E58FA000FED33 /* Array+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -180,6 +184,7 @@
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
+		A0269004283148E0009A40A0 /* CommonSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSwitch.swift; sourceTree = "<group>"; };
 		A035B0752812A0A100747389 /* StringDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDefinition.swift; sourceTree = "<group>"; };
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryView.swift; sourceTree = "<group>"; };
@@ -200,6 +205,8 @@
 		A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0A674232813EC6900E0223B /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		A0A992BF282EB8F8009049CF /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
+		A0A992C1282ECB81009049CF /* CommonBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonBottomSheet.swift; sourceTree = "<group>"; };
 		A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitleCell.swift; sourceTree = "<group>"; };
 		A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitle.swift; sourceTree = "<group>"; };
@@ -210,6 +217,7 @@
 		A0BC330928153A0A00F04B58 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
 		A0BC330B28153A5900F04B58 /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewModel.swift; sourceTree = "<group>"; };
+		A0FB9D0C282E58FA000FED33 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -291,6 +299,8 @@
 				868A57502828A619004153BB /* CommonTextField.swift */,
 				868A57522828B70F004153BB /* CommonHintLabel.swift */,
 				8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */,
+				A0269004283148E0009A40A0 /* CommonSwitch.swift */,
+				A0A992C1282ECB81009049CF /* CommonBottomSheet.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -304,6 +314,7 @@
 				A0A674232813EC6900E0223B /* Onboarding.swift */,
 				86E699FC2822724100EA6BC3 /* ModelType.swift */,
 				A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */,
+				A0A992BF282EB8F8009049CF /* Habit.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -710,6 +721,7 @@
 				86B36F712817756800655059 /* UIView+Extension.swift */,
 				8638A551281B7874003D771B /* UITextField+Extension.swift */,
 				A0B581B52827A5780099C9BA /* UIColor+Extension.swift */,
+				A0FB9D0C282E58FA000FED33 /* Array+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1045,11 +1057,13 @@
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
+				A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */,
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
 				8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */,
 				8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
+				A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */,
 				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
@@ -1084,6 +1098,7 @@
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
 				86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
+				A0A992C2282ECB81009049CF /* CommonBottomSheet.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F22F832281D0B2E00AB4180 /* ReportCardViewModel.swift in Sources */,
 				8F8D11D62826225300E7DA6C /* FloatingBtn.swift in Sources */,
@@ -1106,6 +1121,7 @@
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
 				86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */,
+				A0A992C0282EB8F8009049CF /* Habit.swift in Sources */,
 				8F22F83E281D0BB100AB4180 /* HomeView.swift in Sources */,
 				A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */,
 				8F22F81C281D006700AB4180 /* MainContainerViewModel.swift in Sources */,

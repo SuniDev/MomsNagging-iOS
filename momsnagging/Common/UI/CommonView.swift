@@ -477,7 +477,7 @@ class CommonView {
             $0.trailing.equalToSuperview()
         })
         viewAddPushTime.snp.makeConstraints({
-            $0.height.equalTo(40)
+            $0.height.equalTo(0)
             $0.top.equalTo(lblTitle.snp.bottom).offset(20)
             $0.leading.trailing.bottom.equalToSuperview()
         })
@@ -494,7 +494,7 @@ class CommonView {
      - Returns: UIView
      - Note: 상세화면 시간 추가 공통 뷰
      */
-    static func detailAddPushTimeFrame(tfPicker: UITextField, defaultView: UIView, timeView: UIView) -> UIView {
+    static func detailAddPushTimeFrame(tfPicker: UITextField, defaultView: UIView, timeView: UIView, lblTime: UILabel) -> UIView {
         lazy var view = UIView()
         
         /// 시간 추가 디폴트
@@ -537,13 +537,13 @@ class CommonView {
         })
         
        _ = timeView.then({
-            $0.backgroundColor = Asset.Color.monoLight030.color
+            $0.backgroundColor = Asset.Color.monoLight010.color
             $0.layer.cornerRadius = 8
             $0.alpha = 0.4
             $0.isHidden = true
         })
         
-        lazy var lblTime = UILabel().then({
+         _ = lblTime.then({
             $0.textColor = Asset.Color.monoDark010.color
             $0.font = FontFamily.Pretendard.regular.font(size: 14)
         })
@@ -586,4 +586,113 @@ class CommonView {
         
         return view
     }
+    
+    /**
+     # dimView
+     - parameters:
+     - Authors: suni
+     - Returns: UIView
+     - Note: 백그라운드 딤 뷰
+     */
+    func dimView() -> UIView {
+        lazy var dimView = UIView().then({
+            $0.backgroundColor = Asset.Color.monoDark010.color.withAlphaComponent(0.3)
+            $0.isHidden = true
+        })
+        
+        return dimView
+    }
+    
+    /**
+     # modfiyAndDeleteSheet
+     - parameters:
+        - btnModify : '수정하기' 버튼
+        - btnDelete : '삭제하기' 버튼
+     - Authors: suni
+     - Returns: UIView
+     - Note: '수정하기' '삭제하기' 바텀 시트 뷰
+     */
+    static func modfiyAndDeleteSheet(btnModify: UIButton, btnDelete: UIButton) -> UIView {
+        
+        lazy var view = UIView().then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+        })
+        
+        lazy var viewModify = UIView().then({
+            $0.backgroundColor = .clear
+        })
+        lazy var icModify = UIImageView().then({
+            $0.image = Asset.Icon.edit.image
+        })
+        lazy var lblModify = UILabel().then({
+            $0.text = "수정하기"
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        _ = btnModify.then({
+            $0.backgroundColor = .clear
+        })
+        
+        lazy var viewDelete = UIView().then({
+            $0.backgroundColor = .clear
+        })
+        lazy var icDelete = UIImageView().then({
+            $0.image = Asset.Icon.delete.image
+            $0.tintColor = Asset.Color.error.color
+        })
+        lazy var lblDelete = UILabel().then({
+            $0.text = "삭제하기"
+            $0.textColor = Asset.Color.error.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        _ = btnDelete.then({
+            $0.backgroundColor = .clear
+        })
+        
+        view.addSubview(viewModify)
+        viewModify.addSubview(icModify)
+        viewModify.addSubview(lblModify)
+        viewModify.addSubview(btnModify)
+        view.addSubview(viewDelete)
+        viewDelete.addSubview(icDelete)
+        viewDelete.addSubview(lblDelete)
+        viewDelete.addSubview(btnDelete)
+        
+        viewModify.snp.makeConstraints({
+            $0.height.equalTo(66)
+            $0.top.leading.trailing.equalToSuperview()
+        })
+        icModify.snp.makeConstraints({
+            $0.height.width.equalTo(16)
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
+        })
+        lblModify.snp.makeConstraints({
+            $0.leading.equalTo(icModify.snp.trailing).offset(12)
+            $0.centerY.equalToSuperview()
+        })
+        btnModify.snp.makeConstraints({
+            $0.top.bottom.leading.trailing.equalToSuperview()
+        })
+        
+        viewDelete.snp.makeConstraints({
+            $0.height.equalTo(66)
+            $0.bottom.leading.trailing.equalToSuperview()
+        })
+        icDelete.snp.makeConstraints({
+            $0.height.width.equalTo(16)
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
+        })
+        lblDelete.snp.makeConstraints({
+            $0.leading.equalTo(icDelete.snp.trailing).offset(12)
+            $0.centerY.equalToSuperview()
+        })
+        btnDelete.snp.makeConstraints({
+            $0.top.bottom.leading.trailing.equalToSuperview()
+        })
+        
+        return view
+    }
+    
 }

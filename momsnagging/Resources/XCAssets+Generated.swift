@@ -107,6 +107,7 @@ internal enum Asset {
     internal static let clock = ImageAsset(name: "clock")
     internal static let clockDark040 = ImageAsset(name: "clock_dark040")
     internal static let delete = ImageAsset(name: "delete")
+    internal static let deleteRed = ImageAsset(name: "delete_red")
     internal static let diary = ImageAsset(name: "diary")
     internal static let diaryWrite = ImageAsset(name: "diaryWrite")
     internal static let edit = ImageAsset(name: "edit")

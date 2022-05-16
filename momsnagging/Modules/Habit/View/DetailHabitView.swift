@@ -11,6 +11,7 @@ import Then
 import RxSwift
 import RxKeyboard
 import RxCocoa
+import RxGesture
 
 class DetailHabitView: BaseViewController, Navigatable {
     
@@ -22,18 +23,24 @@ class DetailHabitView: BaseViewController, Navigatable {
     private let cycleCellSpacing: CGFloat = 10.5
     private var cycleCellHeight: CGFloat = 0.0
     private let cycleIdentifier = "CycleCell"
+    private let viewAddPushTimeHeight: CGFloat = 40.0
     
     // MARK: - UI Properties
     lazy var viewHeader = UIView()
     lazy var btnBack = UIButton()
     lazy var btnDone = UIButton()
-    lazy var btnMore = UIButton()
+    lazy var btnMore = UIButton().then({
+        $0.isHidden = true
+        $0.setImage(Asset.Icon.more.image, for: .normal)
+    })
     lazy var lblTitle = UILabel().then({
         $0.text = "습관 상세"
     })
     
     lazy var scrollView = UIScrollView()
     lazy var viewContents = UIView()
+    
+    lazy var bottomSheet = CommonBottomSheet()
     
     /// 습관 이름
     lazy var detailNameFrame = UIView()
@@ -114,24 +121,20 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var detailNaggingPushFrame = UIView()
     lazy var viewDefaultNaggingPush = UIView()
     lazy var viewTimeNaggingPush = UIView()
+    lazy var lblTime = UILabel()
+    
     lazy var lblPushTitle = UILabel().then({
         $0.text = "잔소리 알림"
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
         $0.textColor = Asset.Color.monoDark010.color
     })
-    lazy var switchPush = UISwitch().then({
-        $0.onTintColor = Asset.Color.priMain.color
-        $0.tintColor = Asset.Color.monoDark030.color
-        $0.thumbTintColor = Asset.Color.monoWhite.color
-        $0.backgroundColor = Asset.Color.monoDark030.color
-        $0.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        $0.layer.cornerRadius = $0.bounds.height / 2
-    })
+    lazy var switchPush = CommonSwitch()
     lazy var viewAddPushTime = UIView()
     lazy var tfPicker = UITextField().then({
         $0.borderStyle = .none
         $0.textColor = .clear
         $0.backgroundColor = .clear
+        $0.tintColor = .clear
     })
     lazy var timePicker = UIDatePicker().then({
         $0.minuteInterval = 5
@@ -140,7 +143,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         if #available(iOS 13.4, *) {
             $0.preferredDatePickerStyle = .wheels
         }
-        $0.addTarget(self, action: #selector(self.dateChanged(datePicker: )), for: .valueChanged)
     })
     
     // MARK: - init
@@ -165,20 +167,11 @@ class DetailHabitView: BaseViewController, Navigatable {
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-        
     }
     
     @objc
     func hideKeyboard(sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
-    }
-    
-    @objc
-    func dateChanged(datePicker: UIDatePicker) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateFormat = "hh:mm a"
-        tfPicker.text = dateFormatter.string(from: datePicker.date)
     }
     
     // MARK: - initUI
@@ -203,7 +196,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         tfPicker.inputView = timePicker
-        viewAddPushTime = CommonView.detailAddPushTimeFrame(tfPicker: tfPicker, defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush)
+        viewAddPushTime = CommonView.detailAddPushTimeFrame(tfPicker: tfPicker, defaultView: viewDefaultNaggingPush, timeView: viewTimeNaggingPush, lblTime: lblTime)
         viewAddPushTime.isHidden = true
         detailNaggingPushFrame = CommonView.detailNaggingPushFrame(lblTitle: lblPushTitle, switchPush: switchPush, viewAddPushTime: viewAddPushTime)
         
@@ -212,6 +205,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     // MARK: - layoutSetting
     override func layoutSetting() {
         view.addSubview(viewHeader)
+        viewHeader.addSubview(btnMore)
+        
         view.addSubview(scrollView)
         
         viewContents.addSubview(detailNameFrame)
@@ -232,6 +227,12 @@ class DetailHabitView: BaseViewController, Navigatable {
         viewHeader.snp.makeConstraints({
             $0.height.equalTo(60)
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        })
+        
+        btnMore.snp.makeConstraints({
+            $0.height.width.equalTo(24)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
         })
         
         scrollView.snp.makeConstraints({
@@ -303,11 +304,11 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         detailNaggingPushFrame.snp.makeConstraints({
-            $0.height.equalTo(105)
+            $0.height.equalTo(65)
             $0.top.equalTo(cycleFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview().offset(20)
+            $0.bottom.equalToSuperview().offset(-20)
         })
         
         view.layoutIfNeeded()
@@ -316,18 +317,66 @@ class DetailHabitView: BaseViewController, Navigatable {
     // MARK: - bind
     override func bind() {
         guard let viewModel = viewModel else { return }
+        let backAlertDoneHandler = PublishRelay<Void>()
         
         let input = DetailHabitViewModel.Input(
+            btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
+            dimViewTapped: self.bottomSheet.dimView.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
+            btnModifyTapped: self.bottomSheet.btnModify.rx.tap.asDriverOnErrorJustComplete(),
+            btnDeleteTapped: self.bottomSheet.btnDelete.rx.tap.asDriverOnErrorJustComplete(),
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
-            textName: self.tfName.rx.text.distinctUntilChanged().asDriverOnErrorJustComplete(),
+            backAlertDoneHandler: backAlertDoneHandler.asDriverOnErrorJustComplete(),
+            textName: self.tfName.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
             editingDidBeginName: self.tfName.rx.controlEvent(.editingDidBegin).asDriverOnErrorJustComplete(),
             editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
             btnPerformTimeTapped: self.btnPerformTime.rx.tap.asDriverOnErrorJustComplete(),
+            textPerformTime: self.tfPerformTime.rx.observe(String.self, "text").asDriver(onErrorJustReturn: ""),
             btnCycleWeekTapped: self.btnCycleWeek.rx.tap.asDriverOnErrorJustComplete(),
             btnCycleNumber: self.btnCycleNumber.rx.tap.asDriverOnErrorJustComplete(),
-            cycleItemSelected: self.cycleCollectionView.rx.itemSelected.asDriver(),
-            valueChangedPush: self.switchPush.rx.controlEvent(.valueChanged).withLatestFrom(self.switchPush.rx.value).asDriverOnErrorJustComplete())
+            cycleModelSelected: self.cycleCollectionView.rx.modelSelected(String.self).asDriverOnErrorJustComplete(),
+            cycleModelDeselected: self.cycleCollectionView.rx.modelDeselected(String.self).asDriverOnErrorJustComplete(),
+            valueChangedPush: self.switchPush.rx.controlEvent(.valueChanged).withLatestFrom(self.switchPush.rx.value).asDriverOnErrorJustComplete(),
+            valueChangedTimePicker: self.timePicker.rx.controlEvent(.valueChanged).withLatestFrom(self.timePicker.rx.value).asDriverOnErrorJustComplete(),
+            btnDoneTapped: self.btnDone.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
+        
+        output.showBottomSheet
+            .drive(onNext: {
+                self.bottomSheet.showAnim(vc: self, parentAddView: self.scrollView, completion: nil)
+            }).disposed(by: disposeBag)
+        
+        output.hideBottomSheet
+            .drive(onNext: {
+                self.bottomSheet.hideAnim()
+            }).disposed(by: disposeBag)
+        
+        output.isWriting
+            .drive(onNext: { isWriting in
+                // 헤더 변경
+                self.btnMore.isHidden = isWriting
+                self.btnDone.isHidden = !isWriting
+                
+                // 컨텐츠 변경
+                self.tfName.isEnabled = isWriting
+                self.btnPerformTime.isEnabled = isWriting
+                self.btnCycleWeek.isEnabled = isWriting
+                self.btnCycleNumber.isEnabled = isWriting
+                self.cycleCollectionView.isUserInteractionEnabled = isWriting
+                self.tfPicker.isEnabled = isWriting
+                self.switchPush.isEnable = isWriting
+            }).disposed(by: disposeBag)
+        
+        output.showBottomSheet
+            .drive(onNext: {
+                self.bottomSheet.showAnim(vc: self, parentAddView: self.view)
+            }).disposed(by: disposeBag)
+        
+        output.showBackAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, type: .twoBtn, title: "", message: message, doneHandler: {
+                    backAlertDoneHandler.accept(())
+                })
+            }).disposed(by: disposeBag)
         
         output.goToBack
             .drive(onNext: {
@@ -382,6 +431,19 @@ class DetailHabitView: BaseViewController, Navigatable {
                 } else {
                     self.viewAddPushTime.fadeOut()
                 }
+                let height = isNaggingPush ? self.viewAddPushTimeHeight : 0
+                
+                self.viewAddPushTime.snp.updateConstraints({
+                    $0.height.equalTo(height)
+                })
+                self.detailNaggingPushFrame.snp.updateConstraints({
+                    $0.height.equalTo(65 + height)
+                })
+                
+                UIView.animate(withDuration: 0.15) {
+                    self.view.layoutIfNeeded()
+                }
+                
             }).disposed(by: disposeBag)
         
         output.goToPerformTimeSetting
@@ -389,6 +451,43 @@ class DetailHabitView: BaseViewController, Navigatable {
                 let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.tfPerformTime.text)
                 self.bindPerformTime(performTimeViewModel)
                 self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
+            }).disposed(by: disposeBag)
+        
+        RxKeyboard.instance.visibleHeight
+            .skip(1)
+            .drive(onNext: { height in
+                let margin = height + 10
+                self.scrollView.snp.updateConstraints({
+                    $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-margin)
+                })
+            }).disposed(by: disposeBag)
+        
+        output.setTimeNaggingPush
+            .drive(onNext: { date in
+                if let date = date {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.timeStyle = .short
+                    dateFormatter.dateFormat = "hh:mm a"
+                    self.lblTime.text = dateFormatter.string(from: date)
+                    
+                    if !self.viewDefaultNaggingPush.isHidden {
+                        self.viewDefaultNaggingPush.fadeOut()
+                        self.viewTimeNaggingPush.fadeIn()
+                    }
+                } else {
+                    self.viewDefaultNaggingPush.fadeIn()
+                    self.viewTimeNaggingPush.fadeOut()
+                }
+            }).disposed(by: disposeBag)
+        
+        output.canBeDone
+            .drive(onNext: { isEnabled in
+                self.btnDone.isEnabled = isEnabled
+            }).disposed(by: disposeBag)
+        
+        output.successDoneAddHabit
+            .drive(onNext: {
+                self.navigator.pop(sender: self, toRoot: true)
             }).disposed(by: disposeBag)
         
     }

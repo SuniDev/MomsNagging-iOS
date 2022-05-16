@@ -25,3 +25,5 @@ public let STR_LOGIN_ERROR_TITLE    = "로그인 실패"
 public let STR_LOGIN_ERROR_MESSAGE  = "로그인에 실패 했습니다.\n다시 시도해주세요."
 
 public let STR_NICKNAME_SUCCESS     = "굿 네이밍~^^\n참고로 개명 신청은 마이에서 가능하단다."
+
+public let STR_ADD_HABIT_BACK       = "지금 나가면 습관이 저장되지 않는단다.\n그래도 나가겠니?"
