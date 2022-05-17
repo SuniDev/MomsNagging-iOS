@@ -95,7 +95,7 @@ class DetailDiaryViewModel: BaseViewModel, ViewModelType {
                 isWriting.accept(true)
             }).disposed(by: disposeBag)
         
-        let btnDeleteTapped = input.btnDeleteTapped.asObservable().share()
+        let btnDeleteTapped = input.btnDeleteTapped.asObservable()
         
         let hideBottomSheet = Observable.merge(btnModifyTapped, input.dimViewTapped.asObservable(), btnDeleteTapped)
         let showDeleteAlert = btnDeleteTapped
