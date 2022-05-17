@@ -133,7 +133,8 @@ class PerformTimeSettingViewModel: BaseViewModel, ViewModelType {
                 setTextTime.accept(text)
             }).disposed(by: disposeBag)
         
-        setTextTime.skip(1)
+        setTextTime
+            .filter { !$0.isEmpty }
             .bind(onNext: { text in
                 textTime.accept(text)
                 
