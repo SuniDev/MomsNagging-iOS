@@ -110,7 +110,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = cycleCellSpacing
         layout.minimumLineSpacing = .zero
-        self.cycleCellHeight = (UIScreen.main.bounds.width - (cycleCellSpacing * 6) - (16 * 2)) / 7
+        self.cycleCellHeight = (UIScreen.main.bounds.width - (cycleCellSpacing * 6) - (18 * 2)) / 7
         layout.itemSize = CGSize(width: self.cycleCellHeight, height: self.cycleCellHeight)
         return layout
     }
@@ -318,6 +318,7 @@ class DetailHabitView: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         let backAlertDoneHandler = PublishRelay<Void>()
+        let deleteAlertDoneHandler = PublishRelay<Void>()
         
         let input = DetailHabitViewModel.Input(
             btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
@@ -326,6 +327,7 @@ class DetailHabitView: BaseViewController, Navigatable {
             btnDeleteTapped: self.bottomSheet.btnDelete.rx.tap.asDriverOnErrorJustComplete(),
             btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
             backAlertDoneHandler: backAlertDoneHandler.asDriverOnErrorJustComplete(),
+            deleteAlertDoneHandler: deleteAlertDoneHandler.asDriverOnErrorJustComplete(),
             textName: self.tfName.rx.text.orEmpty.distinctUntilChanged().asDriverOnErrorJustComplete(),
             editingDidBeginName: self.tfName.rx.controlEvent(.editingDidBegin).asDriverOnErrorJustComplete(),
             editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
@@ -350,6 +352,7 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.bottomSheet.hideAnim()
             }).disposed(by: disposeBag)
         
+        /// 작성 모드
         output.isWriting
             .drive(onNext: { isWriting in
                 // 헤더 변경
@@ -366,6 +369,7 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.switchPush.isEnable = isWriting
             }).disposed(by: disposeBag)
         
+        /// 뒤로 가기
         output.showBackAlert
             .drive(onNext: { message in
                 CommonView.showAlert(vc: self, type: .twoBtn, title: "", message: message, doneHandler: {
@@ -376,6 +380,14 @@ class DetailHabitView: BaseViewController, Navigatable {
         output.goToBack
             .drive(onNext: {
                 self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
+        
+        /// 삭제 하기
+        output.showDeleteAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, title: "", message: message, cancelTitle: STR_NO, destructiveTitle: STR_DELETE, destructiveHandler: {
+                    deleteAlertDoneHandler.accept(())
+                })
             }).disposed(by: disposeBag)
         
         /// 습관 이름

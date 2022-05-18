@@ -153,6 +153,10 @@ extension HomeView {
                 let viewModel = AddHabitViewModel()
                 let vc = self.navigator.get(seque: .addHabit(viewModel: viewModel))
                 self.navigator.show(seque: .addHabit(viewModel: viewModel), sender: vc, transition: .navigation)
+                
+                // MARK: 테스트용 - 습관 수정
+//                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false)
+//                self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self, transition: .navigation)
             }.disposed(by: disposedBag)
         case .todo:
             lbl.text = "할일 추가"
@@ -162,6 +166,10 @@ extension HomeView {
                 let viewModel = DetailTodoViewModel(isNew: true)
                 let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
                 self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: vc, transition: .navigation)
+                
+                // MARK: 테스트용 - 할일 수정
+//                let viewModel = DetailTodoViewModel(isNew: false)
+//                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
             }.disposed(by: disposedBag)
         }
         

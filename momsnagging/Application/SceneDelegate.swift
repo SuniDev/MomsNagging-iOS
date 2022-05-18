@@ -26,11 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
         let viewModel = MainContainerViewModel()
         navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
-        
-        // MARK: 테스트용 - 습관 수정
-//        let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false)
-//        navigator.show(seque: .detailHabit(viewModel: viewModel), sender: nil, transition: .root)
-        
+          
         window?.windowScene = windowScene
         window?.rootViewController = navigator.root
         window?.makeKeyAndVisible()
