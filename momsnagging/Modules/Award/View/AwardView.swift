@@ -5,17 +5,26 @@
 //  Created by 전창평 on 2022/05/22.
 //
 
-
 import UIKit
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
 
-class AwardView: BaseViewController, Navigatable{
+class AwardView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    // MARK: - Init
+    init(viewModel: AwardViewModel, navigator: Navigator) {
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+        self.navigator = navigator
+    }
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     // MARK: - Properties & Variable
     var disposedBag = DisposeBag()
@@ -29,11 +38,11 @@ class AwardView: BaseViewController, Navigatable{
     })
     var awardTitleLbl = UILabel().then({
         $0.text = "상장"
-        $0.textColor = UIColor(asset:Asset.Color.monoDark010)
+        $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 18)
     })
     var closeBtn = UIButton().then({
-        $0.setImage(UIImage(asset:Asset.Icon.x), for: .normal)
+        $0.setImage(UIImage(asset: Asset.Icon.x), for: .normal)
     })
     var awardItemImage1 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable1)
@@ -69,22 +78,12 @@ class AwardView: BaseViewController, Navigatable{
     })
     
     var awardDiscriptionLbl = UILabel().then({
-        $0.text = "“매주 월요일마다 제공되는 주간평가 성적인 ‘수, 우, 미, 양, 가’\n중 ‘수’ 달성 횟수에 따라 상장 획득이 가능하단다. “"
+        $0.text = "“매주 월요일마다 제공되는 주간평가 성적인 ‘수, 우, 미, 양, 가’ 중 ‘수’ 달성 횟수에 따라 상장 획득이 가능하단다. “"
         $0.textAlignment = .center
+        $0.numberOfLines = 0
         $0.font = FontFamily.Pretendard.regular.font(size: 12)
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
     })
-    
-    // MARK: - Init
-    init(viewModel: AwardViewModel, navigator: Navigator) {
-        super.init(nibName: nil, bundle: nil)
-        self.viewModel = viewModel
-        self.navigator = navigator
-    }
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     // MARK: - InitUI
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoDark010)?.withAlphaComponent(0.34)
@@ -165,7 +164,7 @@ class AwardView: BaseViewController, Navigatable{
         
         closeBtn.rx.tap.bind {
             print("잉?")
-            self.navigator.pop(sender: self)
+            self.navigator.dismiss(sender: self)
         }.disposed(by: disposedBag)
     }
     
