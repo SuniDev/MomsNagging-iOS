@@ -82,6 +82,9 @@
 		8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA6873F281CF39400F91EB8 /* MainContainerView.swift */; };
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
 		8FBA852C281E4C940013C91C /* HomeCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */; };
+		8FEEE5A02838DE4500764C43 /* ReportCardTodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */; };
+		8FEEE5A22838F82500764C43 /* StatisticsCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */; };
+		8FEEE5A42838F87100764C43 /* StatisticsPerformRateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */; };
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
@@ -197,6 +200,9 @@
 		8FA6873F281CF39400F91EB8 /* MainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerView.swift; sourceTree = "<group>"; };
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
 		8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCalendarCell.swift; sourceTree = "<group>"; };
+		8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardTodoCell.swift; sourceTree = "<group>"; };
+		8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCalendarCell.swift; sourceTree = "<group>"; };
+		8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPerformRateCell.swift; sourceTree = "<group>"; };
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
@@ -542,6 +548,9 @@
 				8F22F83B281D0B9000AB4180 /* ReportCardView.swift */,
 				8F334E3328310A6500E731E8 /* ReportCardCell.swift */,
 				8F334E352831109100E731E8 /* ReportWeekDayCell.swift */,
+				8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */,
+				8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */,
+				8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1154,10 +1163,13 @@
 				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
+				8FEEE5A22838F82500764C43 /* StatisticsCalendarCell.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
 				867C1411281A7602007E5590 /* IDSettingView.swift in Sources */,
+				8FEEE5A42838F87100764C43 /* StatisticsPerformRateCell.swift in Sources */,
 				86E69A01282272F500EA6BC3 /* UserInfo.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroView.swift in Sources */,
+				8FEEE5A02838DE4500764C43 /* ReportCardTodoCell.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				8F22F834281D0B3800AB4180 /* ReportCardModel.swift in Sources */,
 				A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */,
