@@ -507,9 +507,7 @@ class ReportCardView: BaseViewController, Navigatable, UIScrollViewDelegate {
         }).disposed(by: disposedBag)
         
         output.awardTap.drive(onNext: {
-            let vc = self.navigator.get(seque: .awardViewModel(viewModel: AwardViewModel()))
-            vc?.modalPresentationStyle = .fullScreen
-            self.navigator.show(seque: .awardViewModel(viewModel: AwardViewModel()), sender: vc, transition: .modal)
+            self.navigator.show(seque: .awardViewModel(viewModel: AwardViewModel()), sender: self, transition: .modal)
         }).disposed(by: disposedBag)
     }
     // MARK: - Action
