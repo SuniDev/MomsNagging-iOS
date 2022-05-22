@@ -45,6 +45,7 @@ class Navigator {
         case reportCard(viewModel: ReportCardViewModel)
         case awardViewModel(viewModel: AwardViewModel)
         case my(viewModel: MyViewModel)
+        case setting(viewModel: SettingViewModel)
     }
     
     enum Transition {
@@ -77,6 +78,7 @@ class Navigator {
         case .reportCard(viewModel: let viewModel): return ReportCardView(viewModel: viewModel, navigator: self)
         case .awardViewModel(viewModel: let viewModel): return AwardView(viewModel: viewModel, navigator: self)
         case .my(viewModel: let viewModel): return MyView(viewModel: viewModel, navigator: self)
+        case .setting(viewModel: let viewModel): return SettingView(viewModel: viewModel, navigator: self)
         }
     }
     
