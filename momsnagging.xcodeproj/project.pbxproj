@@ -91,6 +91,11 @@
 		8FEEE5B4283A3E9C00764C43 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B3283A3E9C00764C43 /* SettingView.swift */; };
 		8FEEE5B6283A3EA200764C43 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B5283A3EA200764C43 /* SettingViewModel.swift */; };
 		8FEEE5B8283A3EA900764C43 /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B7283A3EA900764C43 /* SettingModel.swift */; };
+		8FEEE5BA283A40EB00764C43 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B9283A40EB00764C43 /* SettingCell.swift */; };
+		8FEEE5BC283A48D400764C43 /* TaviCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5BB283A48D400764C43 /* TaviCommon.swift */; };
+		8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */; };
+		8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */; };
+		8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */; };
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
@@ -215,6 +220,11 @@
 		8FEEE5B3283A3E9C00764C43 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		8FEEE5B5283A3EA200764C43 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		8FEEE5B7283A3EA900764C43 /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
+		8FEEE5B9283A40EB00764C43 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		8FEEE5BB283A48D400764C43 /* TaviCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaviCommon.swift; sourceTree = "<group>"; };
+		8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewModel.swift; sourceTree = "<group>"; };
+		8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyModel.swift; sourceTree = "<group>"; };
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
@@ -672,6 +682,7 @@
 			children = (
 				A035B0752812A0A100747389 /* StringDefinition.swift */,
 				8F1F93A827EF51B4000F08AF /* Common.swift */,
+				8FEEE5BB283A48D400764C43 /* TaviCommon.swift */,
 				86BD71BE280EB0E50038200E /* UI */,
 				A06BB33727F0BA1F005727AD /* Base */,
 				A06BB35627F0E53B005727AD /* Extensions */,
@@ -804,6 +815,7 @@
 			isa = PBXGroup;
 			children = (
 				8FEEE5B3283A3E9C00764C43 /* SettingView.swift */,
+				8FEEE5B9283A40EB00764C43 /* SettingCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -812,6 +824,40 @@
 			isa = PBXGroup;
 			children = (
 				8FEEE5B7283A3EA900764C43 /* SettingModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8FEEE5BD283A4BDC00764C43 /* PrivacyPolicy */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C0283A4BEB00764C43 /* Model */,
+				8FEEE5BF283A4BE900764C43 /* View */,
+				8FEEE5BE283A4BE500764C43 /* ViewModel */,
+			);
+			path = PrivacyPolicy;
+			sourceTree = "<group>";
+		};
+		8FEEE5BE283A4BE500764C43 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8FEEE5BF283A4BE900764C43 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8FEEE5C0283A4BEB00764C43 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -839,6 +885,7 @@
 		A06BB33B27F0BA5E005727AD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8FEEE5BD283A4BDC00764C43 /* PrivacyPolicy */,
 				8FEEE5AF283A3E8600764C43 /* Setting */,
 				A06BB33E27F0BA74005727AD /* Intro */,
 				A06BB34D27F0C20D005727AD /* Onboarding */,
@@ -1212,6 +1259,7 @@
 				A06BB35327F0D1E6005727AD /* OnboardingViewModel.swift in Sources */,
 				A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */,
 				A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */,
+				8FEEE5BA283A40EB00764C43 /* SettingCell.swift in Sources */,
 				86E699FF2822727D00EA6BC3 /* UserInfoRequest.swift in Sources */,
 				A06BB34127F0BAA3005727AD /* LoginView.swift in Sources */,
 				8F8D11D9282663B600E7DA6C /* HomeTodoList.swift in Sources */,
@@ -1259,6 +1307,7 @@
 				8FEEE5A02838DE4500764C43 /* ReportCardTodoCell.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				8F22F834281D0B3800AB4180 /* ReportCardModel.swift in Sources */,
+				8FEEE5BC283A48D400764C43 /* TaviCommon.swift in Sources */,
 				A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */,
 				8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */,
 				8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */,
@@ -1279,11 +1328,13 @@
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F22F82E281D0B1200AB4180 /* HomeModel.swift in Sources */,
 				A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */,
+				8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */,
 				86E699F62822683000EA6BC3 /* MomsNaggingAPI+Method.swift in Sources */,
 				868A57532828B70F004153BB /* CommonHintLabel.swift in Sources */,
 				A0B6AD90282639D100F02E71 /* AddHabitView.swift in Sources */,
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
 				86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */,
+				8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
 				A0A992C2282ECB81009049CF /* CommonBottomSheet.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
@@ -1294,6 +1345,7 @@
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				8F8D11DB282665EE00E7DA6C /* HomeTodoListCell.swift in Sources */,
 				A0B6AD92282639E400F02E71 /* AddHabitViewModel.swift in Sources */,
+				8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */,
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				8F927A5B2824D5AC000FFA75 /* DiaryView.swift in Sources */,
@@ -1467,6 +1519,7 @@
 				GOOGLE_CLIENT_ID = "124964608262-32u0a6bdj4875g40e9t5aadmrpp7sirr.apps.googleusercontent.com";
 				INFOPLIST_FILE = momsnagging/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "엄마의 잔소리(개발)";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "이미지 업로드를 하기 위해 사용자의 앨범에 접근 권한이 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1477,7 +1530,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = momsnagging.dev_dev;
@@ -1502,6 +1555,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = momsnagging/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "엄마의 잔소리(개발)";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "이미지 업로드를 하기 위해 사용자의 앨범에 접근 권한이 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1512,7 +1566,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = momsnagging_dev;

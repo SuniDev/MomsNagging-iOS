@@ -163,7 +163,6 @@ class AwardView: BaseViewController, Navigatable {
     override func bind() {
         
         closeBtn.rx.tap.bind {
-            print("잉?")
             self.navigator.dismiss(sender: self)
         }.disposed(by: disposedBag)
     }
