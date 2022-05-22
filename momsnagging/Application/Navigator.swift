@@ -43,6 +43,7 @@ class Navigator {
         case detailTodo(viewModel: DetailTodoViewModel)
         case recommendedHabit(viewModel: RecommendedHabitViewModel)
         case reportCard(viewModel: ReportCardViewModel)
+        case awardViewModel(viewModel: AwardViewModel)
     }
     
     enum Transition {
@@ -73,6 +74,7 @@ class Navigator {
         case .detailTodo(viewModel: let viewModel): return DetailTodoView(viewModel: viewModel, navigator: self)
         case .recommendedHabit(viewModel: let viewModel): return RecommendedHabitView(viewModel: viewModel, navigator: self)
         case .reportCard(viewModel: let viewModel): return ReportCardView(viewModel: viewModel, navigator: self)
+        case .awardViewModel(viewModel: let viewModel): return AwardView(viewModel: viewModel, navigator: self)
         }
     }
     

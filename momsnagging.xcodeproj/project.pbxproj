@@ -85,6 +85,9 @@
 		8FEEE5A02838DE4500764C43 /* ReportCardTodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */; };
 		8FEEE5A22838F82500764C43 /* StatisticsCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */; };
 		8FEEE5A42838F87100764C43 /* StatisticsPerformRateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */; };
+		8FEEE5AA283A25DD00764C43 /* AwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A9283A25DD00764C43 /* AwardView.swift */; };
+		8FEEE5AC283A25E600764C43 /* AwardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5AB283A25E600764C43 /* AwardViewModel.swift */; };
+		8FEEE5AE283A25EF00764C43 /* AwardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5AD283A25EF00764C43 /* AwardModel.swift */; };
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
@@ -203,6 +206,9 @@
 		8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardTodoCell.swift; sourceTree = "<group>"; };
 		8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCalendarCell.swift; sourceTree = "<group>"; };
 		8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPerformRateCell.swift; sourceTree = "<group>"; };
+		8FEEE5A9283A25DD00764C43 /* AwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardView.swift; sourceTree = "<group>"; };
+		8FEEE5AB283A25E600764C43 /* AwardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardViewModel.swift; sourceTree = "<group>"; };
+		8FEEE5AD283A25EF00764C43 /* AwardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardModel.swift; sourceTree = "<group>"; };
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
@@ -736,6 +742,40 @@
 			path = MainContainer;
 			sourceTree = "<group>";
 		};
+		8FEEE5A5283A25B900764C43 /* Award */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5A8283A25C900764C43 /* Model */,
+				8FEEE5A7283A25C600764C43 /* View */,
+				8FEEE5A6283A25C200764C43 /* ViewModel */,
+			);
+			path = Award;
+			sourceTree = "<group>";
+		};
+		8FEEE5A6283A25C200764C43 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5AB283A25E600764C43 /* AwardViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8FEEE5A7283A25C600764C43 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5A9283A25DD00764C43 /* AwardView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8FEEE5A8283A25C900764C43 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5AD283A25EF00764C43 /* AwardModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		A067E589281D92360017EF53 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -772,6 +812,7 @@
 				8F22F822281D0A2C00AB4180 /* My */,
 				8F334E222830BEB100E731E8 /* RecommendedHabit */,
 				8F927A552824D52A000FFA75 /* Diary */,
+				8FEEE5A5283A25B900764C43 /* Award */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -1148,8 +1189,10 @@
 				863A556A28321C7400995BC9 /* DetailTodoViewModel.swift in Sources */,
 				8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
+				8FEEE5AE283A25EF00764C43 /* AwardModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
+				8FEEE5AC283A25E600764C43 /* AwardViewModel.swift in Sources */,
 				A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */,
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
@@ -1221,6 +1264,7 @@
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
+				8FEEE5AA283A25DD00764C43 /* AwardView.swift in Sources */,
 				86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */,
 				A0A992C0282EB8F8009049CF /* Habit.swift in Sources */,
 				8F22F83E281D0BB100AB4180 /* HomeView.swift in Sources */,

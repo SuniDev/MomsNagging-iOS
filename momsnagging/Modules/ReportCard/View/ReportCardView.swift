@@ -193,7 +193,6 @@ class ReportCardView: BaseViewController, Navigatable, UIScrollViewDelegate {
         $0.isScrollEnabled = false
         $0.tag = 2
     })
-
     // MARK: - InitUI
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
