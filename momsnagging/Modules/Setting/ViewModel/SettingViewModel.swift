@@ -14,7 +14,6 @@ import SwiftyJSON
 class SettingViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
-    var settingList = ["개인정보 처리방침", "문의하기", "회원탈퇴", "앱 버전"]
     override init() {
     }
     // MARK: - Input
@@ -27,10 +26,10 @@ class SettingViewModel: BaseViewModel, ViewModelType {
     
     func transform(input: Input) -> Output {
         
-        return Output(settingListData: ratingList())
+        return Output(settingListData: settingList())
     }
     
-    func ratingList() -> Driver<[String]> {
+    func settingList() -> Driver<[String]> {
         let returnList = BehaviorRelay<[String]>(value: [])
         let list: [String] = ["개인정보 처리방침", "문의하기", "회원탈퇴", "앱 버전"]
         returnList.accept(list)

@@ -96,6 +96,8 @@
 		8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */; };
 		8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */; };
 		8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */; };
+		8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */; };
+		8FEEE5CA283AA8B100764C43 /* PrivacyPolicyOpenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */; };
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
@@ -225,6 +227,8 @@
 		8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewModel.swift; sourceTree = "<group>"; };
 		8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyModel.swift; sourceTree = "<group>"; };
+		8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
+		8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyOpenCell.swift; sourceTree = "<group>"; };
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
@@ -850,6 +854,8 @@
 			isa = PBXGroup;
 			children = (
 				8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */,
+				8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */,
+				8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1291,6 +1297,7 @@
 				8F334E362831109100E731E8 /* ReportWeekDayCell.swift in Sources */,
 				8F334E3428310A6600E731E8 /* ReportCardCell.swift in Sources */,
 				8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
+				8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */,
 				8F334E292830BEB100E731E8 /* RecommendedHabitViewModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */,
@@ -1298,6 +1305,7 @@
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
 				8FEEE5B6283A3EA200764C43 /* SettingViewModel.swift in Sources */,
+				8FEEE5CA283AA8B100764C43 /* PrivacyPolicyOpenCell.swift in Sources */,
 				8FEEE5A22838F82500764C43 /* StatisticsCalendarCell.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
 				867C1411281A7602007E5590 /* IDSettingView.swift in Sources */,

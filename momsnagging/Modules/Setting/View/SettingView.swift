@@ -94,6 +94,7 @@ class SettingView: BaseViewController, Navigatable {
         tableView.rx.itemSelected.subscribe(onNext: { indexPath in
             if indexPath.row == 0 {
                 Log.debug("개인정보 처리방침", "클릭")
+                self.navigator.show(seque: .privacyPolicy(viewModel: PrivacyPolicyViewModel()), sender: self)
             } else if indexPath.row == 1 {
                 Log.debug("문의하기", "클릭")
             } else if indexPath.row == 2 {

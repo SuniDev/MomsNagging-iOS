@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct PrivacyPolicyModel {
+    var title: String?
+    var contents: String?
+}
