@@ -416,7 +416,7 @@ class ReportCardView: BaseViewController, Navigatable, UIScrollViewDelegate {
     }
     func todoBind() {
         guard let viewModel = viewModel else { return }
-        let input = ReportCardViewModel.Input(tabAction: nil, statisticsPrev: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(), statisticsNext: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(), currentMonth: self.statisticsMonth!, currentYear: self.statisticsYear!)
+        let input = ReportCardViewModel.Input(tabAction: nil, statisticsPrev: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(), statisticsNext: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(), currentMonth: self.statisticsMonth!, currentYear: self.statisticsYear!, awardTap: self.awardBtn.rx.tap.asDriverOnErrorJustComplete())
         tableViewOutput = viewModel.transform(input: input)
         tableViewOutput?.todoListData?.drive { list in
             list.bind(to: self.todoListTableView.rx.items(cellIdentifier: "ReportCardTodoCell", cellType: ReportCardTodoCell.self)) { index, item, cell in
@@ -448,7 +448,7 @@ class ReportCardView: BaseViewController, Navigatable, UIScrollViewDelegate {
     }
     func statisticsBind() {
         guard let viewModel = viewModel else { return }
-        let input = ReportCardViewModel.Input(tabAction: nil, statisticsPrev: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(), statisticsNext: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(), currentMonth: self.statisticsMonth!, currentYear: self.statisticsYear!)
+        let input = ReportCardViewModel.Input(tabAction: nil, statisticsPrev: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(), statisticsNext: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(), currentMonth: self.statisticsMonth!, currentYear: self.statisticsYear!, awardTap: self.awardBtn.rx.tap.asDriverOnErrorJustComplete())
         tableViewOutput = viewModel.transform(input: input)
         tableViewOutput?.reportListData?.drive { list in
             list.bind(to: self.statisticsRatingTableView.rx.items(cellIdentifier: "StatisticsCalendarCell", cellType: StatisticsCalendarCell.self)) { _, item, cell in
@@ -491,9 +491,6 @@ class ReportCardView: BaseViewController, Navigatable, UIScrollViewDelegate {
         statisticsPerformTableView.rx.setDelegate(self).disposed(by: disposedBag)
         
         // 통계 이전달 다음달
-//        self.statisticsOutput = viewModel.transform(input: statisticsInput ?? ReportCardViewModel.Input())
-//        statisticsInput.subscribe(onNext: { input in
-//        }).disposed(by: disposedBag)
         guard let viewModel = self.viewModel else { return }
         let output = viewModel.transform(input: input)
         output.statisticsPrev.drive(onNext: {
@@ -507,6 +504,12 @@ class ReportCardView: BaseViewController, Navigatable, UIScrollViewDelegate {
             self.statisticsDateLbl.text = data[0]
             self.statisticsMonth = Int(data[1])
             self.statisticsYear = Int(data[2])
+        }).disposed(by: disposedBag)
+        
+        output.awardTap.drive(onNext: {
+            let vc = self.navigator.get(seque: .awardViewModel(viewModel: AwardViewModel()))
+            vc?.modalPresentationStyle = .fullScreen
+            self.navigator.show(seque: .awardViewModel(viewModel: AwardViewModel()), sender: vc, transition: .modal)
         }).disposed(by: disposedBag)
     }
     // MARK: - Action

@@ -25,6 +25,7 @@ class ReportCardViewModel: BaseViewModel, ViewModelType {
         var statisticsNext: Driver<Void>
         var currentMonth: Int?
         var currentYear: Int?
+        var awardTap: Driver<Void>
     }
     // MARK: - Output
     struct Output {
@@ -33,11 +34,9 @@ class ReportCardViewModel: BaseViewModel, ViewModelType {
         var cellItemCount = PublishRelay<Bool>()
         var reportListData: Driver<[ReportModel]>?
         var reportBottomData: Driver<[ReportBottomModel]>?
-//        var yearMonth: Driver<String>?
-//        var year: Driver<Int>?
-//        var month: Driver<Int>?
         var statisticsPrev: Driver<Void>
         var statisticsNext: Driver<Void>
+        var awardTap: Driver<Void>
     }
     
     func transform(input: Input) -> Output {
@@ -59,7 +58,7 @@ class ReportCardViewModel: BaseViewModel, ViewModelType {
         let ratingData = ratingList()
         let reportBottomData = statisticsList()
         
-        return Output(tabAction: tabAction, todoListData: todoListData.asDriver(), cellItemCount: cellItemCount, reportListData: ratingData.asDriver(), reportBottomData: reportBottomData, statisticsPrev: input.statisticsPrev, statisticsNext: input.statisticsNext)
+        return Output(tabAction: tabAction, todoListData: todoListData.asDriver(), cellItemCount: cellItemCount, reportListData: ratingData.asDriver(), reportBottomData: reportBottomData, statisticsPrev: input.statisticsPrev, statisticsNext: input.statisticsNext, awardTap: input.awardTap)
     }
     // 더미데이터 부분
     func todoList() -> Driver<[TodoListModel]> {

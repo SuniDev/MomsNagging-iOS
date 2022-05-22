@@ -116,6 +116,7 @@ class Navigator {
             rootViewController.pushViewController(target, animated: true)
         case .modal:
             DispatchQueue.main.async {
+                sender.modalPresentationStyle = .fullScreen
                 sender.present(target, animated: true)
             }
         case .popup:
