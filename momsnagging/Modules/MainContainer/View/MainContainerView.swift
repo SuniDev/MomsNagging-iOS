@@ -33,7 +33,7 @@ class MainContainerView: BaseViewController, Navigatable {
     let homeViewModel = HomeViewModel()
     var tab0: UIViewController!
     var tab1: UIViewController!
-    var tab2 = MyView()
+    var tab2: UIViewController!
     // MARK: - Properties & Variable
     var disposedBag = DisposeBag()
     var navigator: Navigator!
@@ -57,13 +57,16 @@ class MainContainerView: BaseViewController, Navigatable {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         let homeViewModel = HomeViewModel()
         let reportCardViewModel = ReportCardViewModel()
+        let myViewModel = MyViewModel()
         tab0 = navigator.get(seque: .home(viewModel: homeViewModel))
         tab1 = navigator.get(seque: .reportCard(viewModel: reportCardViewModel))
+        tab2 = navigator.get(seque: .my(viewModel: myViewModel))
         bottomTabbar = tabbarLayout(tabButton1: tabbarBtn1, tabButton2: tabbarBtn2, tabButton3: tabbarBtn3, tabIcon1: tabbarIc1, tabIcon2: tabbarIc2, tabIcon3: tabbarIc3, tabLabel1: tabbarLbl1, tabLabel2: tabbarLbl2, tabLabel3: tabbarLbl3)
         bottomTabbar.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
     }
     // MARK: - LayoutSetting
     override func layoutSetting() {
+        view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         view.addSubview(bottomTabbar)
         bottomTabbar.snp.makeConstraints({
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-60)

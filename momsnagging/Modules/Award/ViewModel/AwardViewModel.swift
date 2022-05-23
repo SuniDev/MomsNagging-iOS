@@ -1,15 +1,17 @@
 //
-//  MyViewModel.swift
+//  AwardViewModel.swift
 //  momsnagging
 //
-//  Created by 전창평 on 2022/04/30.
+//  Created by 전창평 on 2022/05/22.
 //
 
 import Foundation
+import Moya
+import SwiftyJSON
 import RxSwift
 import RxCocoa
 
-class MyViewModel: BaseViewModel, ViewModelType {
+class AwardViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
 
@@ -27,6 +29,6 @@ class MyViewModel: BaseViewModel, ViewModelType {
     }
 }
 // MARK: - API
-extension MyViewModel {
+extension AwardViewModel {
     
 }

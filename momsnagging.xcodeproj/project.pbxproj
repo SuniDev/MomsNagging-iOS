@@ -82,6 +82,22 @@
 		8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA6873F281CF39400F91EB8 /* MainContainerView.swift */; };
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
 		8FBA852C281E4C940013C91C /* HomeCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */; };
+		8FEEE5A02838DE4500764C43 /* ReportCardTodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */; };
+		8FEEE5A22838F82500764C43 /* StatisticsCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */; };
+		8FEEE5A42838F87100764C43 /* StatisticsPerformRateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */; };
+		8FEEE5AA283A25DD00764C43 /* AwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5A9283A25DD00764C43 /* AwardView.swift */; };
+		8FEEE5AC283A25E600764C43 /* AwardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5AB283A25E600764C43 /* AwardViewModel.swift */; };
+		8FEEE5AE283A25EF00764C43 /* AwardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5AD283A25EF00764C43 /* AwardModel.swift */; };
+		8FEEE5B4283A3E9C00764C43 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B3283A3E9C00764C43 /* SettingView.swift */; };
+		8FEEE5B6283A3EA200764C43 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B5283A3EA200764C43 /* SettingViewModel.swift */; };
+		8FEEE5B8283A3EA900764C43 /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B7283A3EA900764C43 /* SettingModel.swift */; };
+		8FEEE5BA283A40EB00764C43 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5B9283A40EB00764C43 /* SettingCell.swift */; };
+		8FEEE5BC283A48D400764C43 /* TaviCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5BB283A48D400764C43 /* TaviCommon.swift */; };
+		8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */; };
+		8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */; };
+		8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */; };
+		8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */; };
+		8FEEE5CA283AA8B100764C43 /* PrivacyPolicyOpenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */; };
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
@@ -197,6 +213,22 @@
 		8FA6873F281CF39400F91EB8 /* MainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerView.swift; sourceTree = "<group>"; };
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
 		8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCalendarCell.swift; sourceTree = "<group>"; };
+		8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardTodoCell.swift; sourceTree = "<group>"; };
+		8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCalendarCell.swift; sourceTree = "<group>"; };
+		8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsPerformRateCell.swift; sourceTree = "<group>"; };
+		8FEEE5A9283A25DD00764C43 /* AwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardView.swift; sourceTree = "<group>"; };
+		8FEEE5AB283A25E600764C43 /* AwardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardViewModel.swift; sourceTree = "<group>"; };
+		8FEEE5AD283A25EF00764C43 /* AwardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardModel.swift; sourceTree = "<group>"; };
+		8FEEE5B3283A3E9C00764C43 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		8FEEE5B5283A3EA200764C43 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		8FEEE5B7283A3EA900764C43 /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
+		8FEEE5B9283A40EB00764C43 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		8FEEE5BB283A48D400764C43 /* TaviCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaviCommon.swift; sourceTree = "<group>"; };
+		8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewModel.swift; sourceTree = "<group>"; };
+		8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyModel.swift; sourceTree = "<group>"; };
+		8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
+		8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyOpenCell.swift; sourceTree = "<group>"; };
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
@@ -542,6 +574,9 @@
 				8F22F83B281D0B9000AB4180 /* ReportCardView.swift */,
 				8F334E3328310A6500E731E8 /* ReportCardCell.swift */,
 				8F334E352831109100E731E8 /* ReportWeekDayCell.swift */,
+				8FEEE59F2838DE4500764C43 /* ReportCardTodoCell.swift */,
+				8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */,
+				8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -651,6 +686,7 @@
 			children = (
 				A035B0752812A0A100747389 /* StringDefinition.swift */,
 				8F1F93A827EF51B4000F08AF /* Common.swift */,
+				8FEEE5BB283A48D400764C43 /* TaviCommon.swift */,
 				86BD71BE280EB0E50038200E /* UI */,
 				A06BB33727F0BA1F005727AD /* Base */,
 				A06BB35627F0E53B005727AD /* Extensions */,
@@ -727,6 +763,111 @@
 			path = MainContainer;
 			sourceTree = "<group>";
 		};
+		8FEEE5A5283A25B900764C43 /* Award */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5A8283A25C900764C43 /* Model */,
+				8FEEE5A7283A25C600764C43 /* View */,
+				8FEEE5A6283A25C200764C43 /* ViewModel */,
+			);
+			path = Award;
+			sourceTree = "<group>";
+		};
+		8FEEE5A6283A25C200764C43 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5AB283A25E600764C43 /* AwardViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8FEEE5A7283A25C600764C43 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5A9283A25DD00764C43 /* AwardView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8FEEE5A8283A25C900764C43 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5AD283A25EF00764C43 /* AwardModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8FEEE5AF283A3E8600764C43 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5B2283A3E9000764C43 /* Model */,
+				8FEEE5B1283A3E8F00764C43 /* View */,
+				8FEEE5B0283A3E8C00764C43 /* ViewModel */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		8FEEE5B0283A3E8C00764C43 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5B5283A3EA200764C43 /* SettingViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8FEEE5B1283A3E8F00764C43 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5B3283A3E9C00764C43 /* SettingView.swift */,
+				8FEEE5B9283A40EB00764C43 /* SettingCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8FEEE5B2283A3E9000764C43 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5B7283A3EA900764C43 /* SettingModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8FEEE5BD283A4BDC00764C43 /* PrivacyPolicy */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C0283A4BEB00764C43 /* Model */,
+				8FEEE5BF283A4BE900764C43 /* View */,
+				8FEEE5BE283A4BE500764C43 /* ViewModel */,
+			);
+			path = PrivacyPolicy;
+			sourceTree = "<group>";
+		};
+		8FEEE5BE283A4BE500764C43 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C1283A4BF900764C43 /* PrivacyPolicyViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8FEEE5BF283A4BE900764C43 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C3283A4BFF00764C43 /* PrivacyPolicyView.swift */,
+				8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */,
+				8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8FEEE5C0283A4BEB00764C43 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		A067E589281D92360017EF53 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -750,6 +891,8 @@
 		A06BB33B27F0BA5E005727AD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8FEEE5BD283A4BDC00764C43 /* PrivacyPolicy */,
+				8FEEE5AF283A3E8600764C43 /* Setting */,
 				A06BB33E27F0BA74005727AD /* Intro */,
 				A06BB34D27F0C20D005727AD /* Onboarding */,
 				A06BB33F27F0BA92005727AD /* Login */,
@@ -763,6 +906,7 @@
 				8F22F822281D0A2C00AB4180 /* My */,
 				8F334E222830BEB100E731E8 /* RecommendedHabit */,
 				8F927A552824D52A000FFA75 /* Diary */,
+				8FEEE5A5283A25B900764C43 /* Award */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -1113,6 +1257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FEEE5B8283A3EA900764C43 /* SettingModel.swift in Sources */,
 				8F334E2A2830BEB100E731E8 /* RecommendedHabitModel.swift in Sources */,
 				868A57512828A619004153BB /* CommonTextField.swift in Sources */,
 				A06AB661282644A4006AAD73 /* NicknameSettingViewModel.swift in Sources */,
@@ -1120,6 +1265,7 @@
 				A06BB35327F0D1E6005727AD /* OnboardingViewModel.swift in Sources */,
 				A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */,
 				A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */,
+				8FEEE5BA283A40EB00764C43 /* SettingCell.swift in Sources */,
 				86E699FF2822727D00EA6BC3 /* UserInfoRequest.swift in Sources */,
 				A06BB34127F0BAA3005727AD /* LoginView.swift in Sources */,
 				8F8D11D9282663B600E7DA6C /* HomeTodoList.swift in Sources */,
@@ -1134,13 +1280,16 @@
 				A0B581B62827A5780099C9BA /* UIColor+Extension.swift in Sources */,
 				8F1F93A327EC8A3C000F08AF /* CalendarModel.swift in Sources */,
 				A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */,
+				8FEEE5B4283A3E9C00764C43 /* SettingView.swift in Sources */,
 				A06BB34F27F0C21E005727AD /* OnboardingView.swift in Sources */,
 				86B36F722817756800655059 /* UIView+Extension.swift in Sources */,
 				863A556A28321C7400995BC9 /* DetailTodoViewModel.swift in Sources */,
 				8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
+				8FEEE5AE283A25EF00764C43 /* AwardModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
+				8FEEE5AC283A25E600764C43 /* AwardViewModel.swift in Sources */,
 				A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */,
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
@@ -1148,18 +1297,25 @@
 				8F334E362831109100E731E8 /* ReportWeekDayCell.swift in Sources */,
 				8F334E3428310A6600E731E8 /* ReportCardCell.swift in Sources */,
 				8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
+				8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */,
 				8F334E292830BEB100E731E8 /* RecommendedHabitViewModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */,
 				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,
 				A06BB34327F0BABA005727AD /* IntroViewModel.swift in Sources */,
+				8FEEE5B6283A3EA200764C43 /* SettingViewModel.swift in Sources */,
+				8FEEE5CA283AA8B100764C43 /* PrivacyPolicyOpenCell.swift in Sources */,
+				8FEEE5A22838F82500764C43 /* StatisticsCalendarCell.swift in Sources */,
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
 				867C1411281A7602007E5590 /* IDSettingView.swift in Sources */,
+				8FEEE5A42838F87100764C43 /* StatisticsPerformRateCell.swift in Sources */,
 				86E69A01282272F500EA6BC3 /* UserInfo.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroView.swift in Sources */,
+				8FEEE5A02838DE4500764C43 /* ReportCardTodoCell.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
 				8F22F834281D0B3800AB4180 /* ReportCardModel.swift in Sources */,
+				8FEEE5BC283A48D400764C43 /* TaviCommon.swift in Sources */,
 				A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */,
 				8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */,
 				8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */,
@@ -1180,11 +1336,13 @@
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F22F82E281D0B1200AB4180 /* HomeModel.swift in Sources */,
 				A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */,
+				8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */,
 				86E699F62822683000EA6BC3 /* MomsNaggingAPI+Method.swift in Sources */,
 				868A57532828B70F004153BB /* CommonHintLabel.swift in Sources */,
 				A0B6AD90282639D100F02E71 /* AddHabitView.swift in Sources */,
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
 				86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */,
+				8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
 				A0A992C2282ECB81009049CF /* CommonBottomSheet.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
@@ -1195,6 +1353,7 @@
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				8F8D11DB282665EE00E7DA6C /* HomeTodoListCell.swift in Sources */,
 				A0B6AD92282639E400F02E71 /* AddHabitViewModel.swift in Sources */,
+				8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */,
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
 				8F927A5B2824D5AC000FFA75 /* DiaryView.swift in Sources */,
@@ -1209,6 +1368,7 @@
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
+				8FEEE5AA283A25DD00764C43 /* AwardView.swift in Sources */,
 				86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */,
 				A0A992C0282EB8F8009049CF /* Habit.swift in Sources */,
 				8F22F83E281D0BB100AB4180 /* HomeView.swift in Sources */,
@@ -1367,6 +1527,7 @@
 				GOOGLE_CLIENT_ID = "124964608262-32u0a6bdj4875g40e9t5aadmrpp7sirr.apps.googleusercontent.com";
 				INFOPLIST_FILE = momsnagging/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "엄마의 잔소리(개발)";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "이미지 업로드를 하기 위해 사용자의 앨범에 접근 권한이 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1377,7 +1538,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = momsnagging.dev_dev;
@@ -1402,6 +1563,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = momsnagging/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "엄마의 잔소리(개발)";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "이미지 업로드를 하기 위해 사용자의 앨범에 접근 권한이 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1412,7 +1574,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = momsnagging_dev;
