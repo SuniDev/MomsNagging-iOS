@@ -24,10 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
 //        let viewModel = IntroViewModel()
 //        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
-//        let viewModel = MainContainerViewModel()
-//        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
-        let viewModel = SettingViewModel()
-        navigator.show(seque: .setting(viewModel: viewModel), sender: nil, transition: .root)
+        let viewModel = MainContainerViewModel()
+        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
           
         window?.windowScene = windowScene
         window?.rootViewController = navigator.root
