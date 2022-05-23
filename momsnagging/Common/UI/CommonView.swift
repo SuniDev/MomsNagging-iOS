@@ -707,4 +707,60 @@ class CommonView {
         return view
     }
     
+    /**
+     # goToSubviewFrame
+     - parameters:
+        - title : SubView 타이틀
+     - Authors: suni
+     - Returns: UIView
+     - Note: Title과 Right 버튼으로 이루어진 SubView로 이동하는 버튼 뷰 프레임
+     */
+    static func goToSubviewFrame(title: String) -> UIView {
+        lazy var view = UIView().then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+        })
+        
+        lazy var lblTitle = UILabel().then({
+            $0.text = title
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        
+        lazy var icRight = UIImageView().then({
+            $0.image = Asset.Icon.chevronRight.image
+        })
+        
+        lazy var divider = divider()
+        
+        view.addSubview(lblTitle)
+        view.addSubview(icRight)
+        view.addSubview(divider)
+        
+        lblTitle.snp.makeConstraints({
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(18)
+        })
+        
+        icRight.snp.makeConstraints({
+            $0.width.height.equalTo(18)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-18)
+        })
+        
+        divider.snp.makeConstraints({
+            $0.leading.bottom.trailing.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    /**
+     # naggingIntensityRadioButtonFrame
+     - parameters:
+        - imgMom : 엄마 이미지
+        - momType : 엄마 타입
+     - Authors: suni
+     - Returns: UIView
+     - Note: 잔소리 강도 설정 라디오 버튼 프레임
+     */
 }
