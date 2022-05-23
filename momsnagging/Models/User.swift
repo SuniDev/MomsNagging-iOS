@@ -16,7 +16,7 @@ enum SnsType: String {
 enum NaggingIntensity: String {
     case fondMom = "다정한 엄마"
     case coolMom = "냉정한 엄마"
-    case coldMom = "차가운 엄마"
+    case angryMom = "화난 엄마"
 }
 
 struct User {

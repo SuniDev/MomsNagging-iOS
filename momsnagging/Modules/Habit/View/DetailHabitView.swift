@@ -425,6 +425,7 @@ class DetailHabitView: BaseViewController, Navigatable {
             .drive(onNext: { type in
                 self.btnCycleWeek.isSelected = type == .week
                 self.btnCycleNumber.isSelected = type == .number
+                self.cycleCollectionView.allowsMultipleSelection = type == .week
                 let inset = type == .week ? 0 : ((self.cycleCellSpacing + self.cycleCellHeight) / 2)
                 self.cycleCollectionView.snp.updateConstraints({
                     $0.leading.trailing.equalToSuperview().inset(inset)
