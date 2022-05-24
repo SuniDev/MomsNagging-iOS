@@ -33,6 +33,7 @@
 		86E3920E280FC92B007D3C04 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */; };
 		86E39210280FC931007D3C04 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920F280FC931007D3C04 /* Pretendard-SemiBold.otf */; };
 		86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */; };
+		86E44B2E283C7B7700E5DB68 /* CommonTextRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E44B2D283C7B7700E5DB68 /* CommonTextRadioButton.swift */; };
 		86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */; };
 		86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */; };
 		86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */; };
@@ -162,6 +163,7 @@
 		86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		86E3920F280FC931007D3C04 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Fonts+Generated.swift"; sourceTree = "<group>"; };
+		86E44B2D283C7B7700E5DB68 /* CommonTextRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonTextRadioButton.swift; sourceTree = "<group>"; };
 		86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomsNaggingAPI.swift; sourceTree = "<group>"; };
 		86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Moya+NetworkError.swift"; sourceTree = "<group>"; };
 		86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Task.swift"; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 				8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */,
 				A0269004283148E0009A40A0 /* CommonSwitch.swift */,
 				A0A992C1282ECB81009049CF /* CommonBottomSheet.swift */,
+				86E44B2D283C7B7700E5DB68 /* CommonTextRadioButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1347,6 +1350,7 @@
 				A0A992C2282ECB81009049CF /* CommonBottomSheet.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F334E2D2830DAC700E731E8 /* RecommendedHabitCell.swift in Sources */,
+				86E44B2E283C7B7700E5DB68 /* CommonTextRadioButton.swift in Sources */,
 				8F22F832281D0B2E00AB4180 /* ReportCardViewModel.swift in Sources */,
 				8F8D11D62826225300E7DA6C /* FloatingBtn.swift in Sources */,
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,

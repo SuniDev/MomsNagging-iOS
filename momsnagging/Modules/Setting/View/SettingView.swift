@@ -13,6 +13,7 @@ class SettingView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        action()
         
     }
     // MARK: - Init
@@ -105,6 +106,13 @@ class SettingView: BaseViewController, Navigatable {
         self.tableView.rx.setDelegate(self).disposed(by: disposedBag)
     }
     // MARK: - Other
+    
+    // MARK: - Action
+    func action() {
+        backBtn.rx.tap.bind {
+            self.navigator.pop(sender: self)
+        }.disposed(by: disposedBag)
+    }
 }
 
 extension SettingView: UITableViewDelegate {

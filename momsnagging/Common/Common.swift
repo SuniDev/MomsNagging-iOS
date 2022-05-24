@@ -204,4 +204,26 @@ class Common {
         
         return height - topPadding - bottomPadding
     }
+    
+    static func getNaggingEmoji(naggingIntensity: NaggingIntensity) -> UIImage {
+        switch naggingIntensity {
+        case .fondMom:
+            return Asset.Assets.emojiDefault.image
+        case .coolMom:
+            return Asset.Assets.emojiCool.image
+        case .angryMom:
+            return Asset.Assets.emojiAngry.image
+        }
+    }
+    
+    static func getNaggingTip(naggingIntensity: NaggingIntensity) -> UIImage {
+        switch naggingIntensity {
+        case .fondMom:
+            return Asset.Assets.myTipFondMom.image
+        case .coolMom:
+            return Asset.Assets.myTipCoolMom.image
+        case .angryMom:
+            return Asset.Assets.myTipAngryMom.image
+        }
+    }
 }
