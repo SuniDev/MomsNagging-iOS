@@ -392,6 +392,7 @@ class MyView: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         let messageModifyAlertDoneHandler = PublishRelay<String?>()
+        let nicknameSettingAlertDoneHandler = PublishRelay<String?>()
                 
         let input = MyViewModel.Input(
             btnSettingTapped: self.btnSetting.rx.tap.asDriverOnErrorJustComplete(),
@@ -412,14 +413,12 @@ class MyView: BaseViewController, Navigatable {
         
         // 각오 수정
         output.showMessageModifyAlert
-            .drive(onNext: { message, done in
+            .drive(onNext: { message, doneTitle in
                 let alert = CommonView.getAlert(vc: self, title: "", message: message, cancelTitle: STR_CANCEL)
                 
-                alert.addTextField { textField in
-                    textField.placeholder = "플레이스홀더"
-                }
+                alert.addTextField()
                 
-                let doneAction = UIAlertAction(title: done, style: .default) { _ in
+                let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
                     Log.debug(alert.textFields?[0].text)
                 }
                 alert.addAction(doneAction)
@@ -428,8 +427,36 @@ class MyView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         // 호칭 설정
+        output.showNicknameSettingAlert
+            .drive(onNext: { message, doneTitle in
+                let alert = CommonView.getAlert(vc: self, title: "", message: message, cancelTitle: STR_CANCEL)
+                
+                alert.addTextField()
+                
+                let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
+                    Log.debug(alert.textFields?[0].text)
+                }
+                alert.addAction(doneAction)
+                
+                self.present(alert, animated: true)
+            }).disposed(by: disposeBag)
         
         // 잔소리 강도 설정
+        output.setNaggingIntensity
+            .drive(onNext: { naggingIntensity in
+                self.rbFondMom.isSelected = naggingIntensity == .fondMom
+                self.imgvTipFondMom.isHidden = naggingIntensity != .fondMom
+                self.imgvTipArrowFondMom.isHidden = naggingIntensity != .fondMom
+            
+                self.rbCoolMom.isSelected = naggingIntensity == .coolMom
+                self.imgvTipCoolMom.isHidden = naggingIntensity != .coolMom
+                self.imgvTipArrowCoolMom.isHidden = naggingIntensity != .coolMom
+                
+                self.rbAngryMom.isSelected = naggingIntensity == .angryMom
+                self.imgvTipAngryMom.isHidden = naggingIntensity != .angryMom
+                self.imgvTipArrowAngryMom.isHidden = naggingIntensity != .angryMom
+                
+            }).disposed(by: disposeBag)
         
         // PUSH 알림 설정
         output.goToPushSetting
@@ -438,5 +465,14 @@ class MyView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         // 로그아웃
+        output.showLogoutAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, type: .twoBtn, title: "", message: message, cancelTitle: STR_NO, doneTitle: STR_YES) {
+                    
+                } doneHandler: {
+                    Log.debug("TODO: 로그아웃")
+                }
+
+            }).disposed(by: disposeBag)
     }
 }

@@ -76,7 +76,6 @@ class MyViewModel: BaseViewModel, ViewModelType {
                 setNaggingIntensity.accept(.angryMom)
             }).disposed(by: disposeBag)
 
-        
         let showLogoutAlert = input.btnLogoutTapped
             .asObservable()
             .flatMapLatest { _ -> Observable<String> in
