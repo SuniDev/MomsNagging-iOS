@@ -30,6 +30,7 @@ class DeleteAccountView: BaseViewController, Navigatable {
     var disposedBag = DisposeBag()
     var navigator: Navigator!
     var viewModel: DeleteAccountViewModel!
+    var selectItemOb = PublishSubject<Bool>()
     // MARK: - UI Properties
     var backBtn = UIButton()
     var headFrame = UIView()
@@ -44,12 +45,16 @@ class DeleteAccountView: BaseViewController, Navigatable {
         attributeString.addAttribute(.font, value: FontFamily.Pretendard.bold.font(size: 18), range: (text as NSString).range(of: "불편"))
         $0.attributedText = attributeString
     })
+    var emptyView = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+    })
     var selectLbl = UILabel().then({
-        $0.text = "이전 점이 불편했어요."
+        $0.text = "이런 점이 불편했어요."
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
     })
     var placeHolderLbl = UILabel().then({
+        $0.text = "선택해주세요"
         $0.textColor = UIColor(asset: Asset.Color.monoDark020)
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
         $0.isHidden = true
@@ -71,6 +76,7 @@ class DeleteAccountView: BaseViewController, Navigatable {
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(asset: Asset.Color.monoLight030)?.cgColor
+        $0.isHidden = true
     })
     var deleteAccountBtn = UIButton().then({
         $0.setTitle("탈퇴하기", for: .normal)
@@ -79,6 +85,7 @@ class DeleteAccountView: BaseViewController, Navigatable {
         $0.backgroundColor = UIColor(asset: Asset.Color.priLight018Dis)
         $0.layer.cornerRadius = 20
         $0.layer.masksToBounds = true
+        $0.isUserInteractionEnabled = false
     })
     // MARK: - InitUI
     override func initUI() {
@@ -89,11 +96,12 @@ class DeleteAccountView: BaseViewController, Navigatable {
     override func layoutSetting() {
         view.addSubview(headFrame)
         view.addSubview(subjectLbl)
+        view.addSubview(tableView)
+        view.addSubview(emptyView)
         view.addSubview(selectLbl)
         view.addSubview(placeHolderLbl)
         view.addSubview(dropIc)
         view.addSubview(selectBtn)
-        view.addSubview(tableView)
         view.addSubview(deleteAccountBtn)
         
         headFrame.snp.makeConstraints({
@@ -103,6 +111,9 @@ class DeleteAccountView: BaseViewController, Navigatable {
             $0.height.equalTo(60)
         })
         
+        emptyView.snp.makeConstraints({
+            $0.edges.equalTo(selectBtn.snp.edges)
+        })
         subjectLbl.snp.makeConstraints({
             $0.top.equalTo(headFrame.snp.bottom).offset(20)
             $0.leading.equalTo(view.snp.leading).offset(16)
@@ -127,10 +138,10 @@ class DeleteAccountView: BaseViewController, Navigatable {
             $0.width.height.equalTo(20)
         })
         tableView.snp.makeConstraints({
-            $0.top.equalTo(selectBtn.snp.bottom)
+            $0.top.equalTo(selectBtn.snp.bottom).offset(-6)
             $0.leading.equalTo(selectBtn.snp.leading)
             $0.trailing.equalTo(selectBtn.snp.trailing)
-            $0.height.equalTo(343)
+            $0.height.equalTo(225)
         })
         deleteAccountBtn.snp.makeConstraints({
             $0.height.equalTo(56)
@@ -146,11 +157,49 @@ class DeleteAccountView: BaseViewController, Navigatable {
         let output = viewModel.transform(input: input)
         
         output.inconvenienceList?.drive { list in
-            list.bind(to: self.tableView.rx.items(cellIdentifier: "InconvenienceListCell", cellType: InconvenienceListCell.self)) { index, item, cell in
+            list.bind(to: self.tableView.rx.items(cellIdentifier: "InconvenienceListCell", cellType: InconvenienceListCell.self)) { _, item, cell in
                 cell.contentLbl.text = item.contents ?? ""
             }
         }.disposed(by: disposedBag)
+        
+        selectBtn.rx.tap.bind {
+            if self.tableView.isHidden {
+                self.tableView.isHidden = false
+                self.dropIc.image = UIImage(asset: Asset.Icon.chevronUp)
+                if self.selectLbl.text != "이런 점이 불편했어요." {
+                    self.placeHolderLbl.isHidden = true
+                    self.selectLbl.isHidden = false
+                } else {
+                    self.placeHolderLbl.isHidden = false
+                    self.selectLbl.isHidden = true
+                }
+            } else {
+                self.tableView.isHidden = true
+                self.dropIc.image = UIImage(asset: Asset.Icon.chevronDown)
+                self.placeHolderLbl.isHidden = true
+                self.selectLbl.isHidden = false
+            }
+        }.disposed(by: disposedBag)
+        
+        tableView.rx.itemSelected.subscribe(onNext: { indexPath in
+            let cell = self.tableView.cellForRow(at: indexPath) as? InconvenienceListCell
+            self.selectLbl.text = cell?.contentLbl.text
+            self.selectLbl.isHidden = false
+            self.placeHolderLbl.isHidden = true
+            self.tableView.isHidden = true
+            self.selectItemOb.onNext(true)
+            Log.debug("불편함 selectIndex", "\(indexPath.row)")
+        }).disposed(by: disposedBag)
         self.tableView.rx.setDelegate(self).disposed(by: disposedBag)
+        
+        selectItemOb.subscribe(onNext: { _ in
+            self.deleteAccountBtn.backgroundColor = UIColor(asset: Asset.Color.priMain)
+            self.deleteAccountBtn.isUserInteractionEnabled = true
+        }).disposed(by: disposedBag)
+        
+        deleteAccountBtn.rx.tap.bind {
+            Log.debug("탈퇴하기", "클릭")
+        }.disposed(by: disposedBag)
         
     }
     
