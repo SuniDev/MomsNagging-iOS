@@ -79,11 +79,13 @@ class PrivacyPolicyView: BaseViewController, Navigatable {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "PrivacyPolicyOpenCell", for: IndexPath.init(row: row, section: 0)) as? PrivacyPolicyOpenCell
                     cell?.titleLbl.text = item.title ?? ""
                     cell?.contentLbl.text = item.contents ?? ""
+                    cell?.rightBtn.setImage(UIImage(asset: Asset.Icon.chevronUp), for: .normal)
                     cell?.layoutIfNeeded()
                     return cell!
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "PrivacyPolicyCell", for: IndexPath.init(row: row, section: 0)) as? PrivacyPolicyCell
                     cell?.titleLbl.text = item.title ?? ""
+                    cell?.rightBtn.setImage(UIImage(asset: Asset.Icon.chevronDown), for: .normal)
                     return cell!
                 }
             }.disposed(by: disposedBag)
