@@ -52,6 +52,10 @@
 		8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */; };
 		8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */; };
 		8F06EC1327D892DB00A17FF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC1127D892DB00A17FF2 /* LaunchScreen.storyboard */; };
+		8F16725D283E67A3007A699B /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16725C283E67A3007A699B /* ScheduleService.swift */; };
+		8F16725F283E67BB007A699B /* ScheduleRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16725E283E67BB007A699B /* ScheduleRequestModel.swift */; };
+		8F167261283E8877007A699B /* TodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F167260283E8877007A699B /* TodoCell.swift */; };
+		8F167263283E8887007A699B /* RoutineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F167262283E8887007A699B /* RoutineCell.swift */; };
 		8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F939E27EC89C0000F08AF /* CalendarView.swift */; };
 		8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F93A027EC89D8000F08AF /* CalendarViewModel.swift */; };
 		8F1F93A327EC8A3C000F08AF /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F93A227EC8A3C000F08AF /* CalendarModel.swift */; };
@@ -195,6 +199,10 @@
 		8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8F06EC1227D892DB00A17FF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F06EC1427D892DB00A17FF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8F16725C283E67A3007A699B /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
+		8F16725E283E67BB007A699B /* ScheduleRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleRequestModel.swift; sourceTree = "<group>"; };
+		8F167260283E8877007A699B /* TodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCell.swift; sourceTree = "<group>"; };
+		8F167262283E8887007A699B /* RoutineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineCell.swift; sourceTree = "<group>"; };
 		8F1F939E27EC89C0000F08AF /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		8F1F93A027EC89D8000F08AF /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		8F1F93A227EC8A3C000F08AF /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
@@ -379,6 +387,7 @@
 		86BD71BC280EAF270038200E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				8F16725B283E678A007A699B /* ScheduleService */,
 				86E699FA28226ED700EA6BC3 /* Moya */,
 				86E699F928226C6300EA6BC3 /* API */,
 				8F82E73027D8AA9C008CDC22 /* ApiList.swift */,
@@ -502,6 +511,15 @@
 			path = momsnagging;
 			sourceTree = "<group>";
 		};
+		8F16725B283E678A007A699B /* ScheduleService */ = {
+			isa = PBXGroup;
+			children = (
+				8F16725C283E67A3007A699B /* ScheduleService.swift */,
+				8F16725E283E67BB007A699B /* ScheduleRequestModel.swift */,
+			);
+			path = ScheduleService;
+			sourceTree = "<group>";
+		};
 		8F1F939A27EC8975000F08AF /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
@@ -563,6 +581,8 @@
 			children = (
 				8F22F83D281D0BB100AB4180 /* HomeView.swift */,
 				8F8D11DA282665EE00E7DA6C /* HomeTodoListCell.swift */,
+				8F167260283E8877007A699B /* TodoCell.swift */,
+				8F167262283E8887007A699B /* RoutineCell.swift */,
 				8F8D11D52826225300E7DA6C /* FloatingBtn.swift */,
 				8F8D11D8282663B600E7DA6C /* HomeTodoList.swift */,
 			);
@@ -830,8 +850,6 @@
 			children = (
 				8F990F12283D342400A5D2AA /* Model */,
 				8F990F11283D342100A5D2AA /* View */,
-				8F990F0C283D341600A5D2AA /* DeleteAccountView.swift */,
-				8F990F13283D3AE900A5D2AA /* InconvenienceListCell.swift */,
 				8F990F10283D341D00A5D2AA /* ViewModel */,
 			);
 			path = DeleteAccount;
@@ -848,6 +866,8 @@
 		8F990F11283D342100A5D2AA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8F990F0C283D341600A5D2AA /* DeleteAccountView.swift */,
+				8F990F13283D3AE900A5D2AA /* InconvenienceListCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1370,7 +1390,10 @@
 				868A57512828A619004153BB /* CommonTextField.swift in Sources */,
 				A06AB661282644A4006AAD73 /* NicknameSettingViewModel.swift in Sources */,
 				8F22F83A281D0B5800AB4180 /* MyView.swift in Sources */,
+				8F167263283E8887007A699B /* RoutineCell.swift in Sources */,
 				A06BB35327F0D1E6005727AD /* OnboardingViewModel.swift in Sources */,
+				8F16725D283E67A3007A699B /* ScheduleService.swift in Sources */,
+				8F167261283E8877007A699B /* TodoCell.swift in Sources */,
 				A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */,
 				A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */,
 				8FEEE5BA283A40EB00764C43 /* SettingCell.swift in Sources */,
@@ -1409,6 +1432,7 @@
 				8F334E3428310A6600E731E8 /* ReportCardCell.swift in Sources */,
 				8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */,
+				8F16725F283E67BB007A699B /* ScheduleRequestModel.swift in Sources */,
 				86BBE063283E1944002AA1F9 /* Login.swift in Sources */,
 				8F334E292830BEB100E731E8 /* RecommendedHabitViewModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,

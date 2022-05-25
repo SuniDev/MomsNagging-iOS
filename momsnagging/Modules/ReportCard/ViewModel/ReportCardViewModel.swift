@@ -67,9 +67,9 @@ class ReportCardViewModel: BaseViewModel, ViewModelType {
         var list: [TodoListModel] = []
         for _ in 0...2 {
             var model = TodoListModel()
-            model.isSelected = true
-            model.time = "time"
-            model.title = "Title"
+//            model.isSelected = true
+//            model.time = "time"
+//            model.title = "Title"
             list.append(model)
         }
         returnList.accept(list)

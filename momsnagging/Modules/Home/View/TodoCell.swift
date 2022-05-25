@@ -1,16 +1,16 @@
 //
-//  ReportCardTodoCell.swift
+//  TodoCell.swift
 //  momsnagging
 //
-//  Created by 전창평 on 2022/05/21.
+//  Created by 전창평 on 2022/05/26.
 //
 
 import UIKit
 import Then
 import SnapKit
 
-class ReportCardTodoCell: UITableViewCell {
-
+class TodoCell: UITableViewCell {
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         setUI()
@@ -42,17 +42,27 @@ class ReportCardTodoCell: UITableViewCell {
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
+    lazy var moreIc = UIButton().then({
+        $0.setImage(UIImage(asset: Asset.Icon.moreVertical), for: .normal)
+    })
+    lazy var sortIc = UIButton().then({
+        $0.isUserInteractionEnabled = false
+        $0.setImage(UIImage(asset: Asset.Icon.listSortIc), for: .normal)
+        $0.isHidden = true
+    })
     lazy var bottomDivider = UIView().then({
         $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
     })
 }
 
-extension ReportCardTodoCell {
+extension TodoCell {
     func setUI() {
         
         contentView.addSubview(toggleIc)
         contentView.addSubview(timeBtn)
         contentView.addSubview(titleLbl)
+        contentView.addSubview(moreIc)
+        contentView.addSubview(sortIc)
         contentView.addSubview(bottomDivider)
         
         toggleIc.snp.makeConstraints({
@@ -77,7 +87,7 @@ extension ReportCardTodoCell {
 //            titleLbl.snp.makeConstraints({
 //                $0.centerY.equalTo(contentView.snp.centerY)
 //                $0.leading.equalTo(timeBtn.snp.trailing).offset(12)
-//                $0.trailing.equalTo(contentView.snp.trailing).offset(-16)
+//                $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
 //            })
 //        case .todo:
 //            prefixView = HomeView.cellTodoIconView(lbl: prefixLbl, count: nil, isDone: todoIsSelected)
@@ -94,7 +104,7 @@ extension ReportCardTodoCell {
 //            titleLbl.snp.makeConstraints({
 //                $0.centerY.equalTo(contentView.snp.centerY)
 //                $0.leading.equalTo(prefixLbl.snp.trailing).offset(8)
-//                $0.trailing.equalTo(contentView.snp.trailing).offset(-16)
+//                $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
 //            })
 //        case .count:
 //            prefixView = HomeView.cellTodoIconView(lbl: prefixLbl, count: count, isDone: todoIsSelected)
@@ -111,8 +121,20 @@ extension ReportCardTodoCell {
 //            titleLbl.snp.makeConstraints({
 //                $0.centerY.equalTo(contentView.snp.centerY)
 //                $0.leading.equalTo(prefixLbl.snp.trailing).offset(8)
-//                $0.trailing.equalTo(contentView.snp.trailing).offset(-16)
+//                $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
 //            })
 //        }
+        
+        moreIc.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.centerY.equalTo(contentView.snp.centerY)
+            $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
+        })
+        
+        sortIc.snp.makeConstraints({
+            $0.width.height.equalTo(24)
+            $0.centerY.equalTo(contentView.snp.centerY)
+            $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
+        })
     }
 }

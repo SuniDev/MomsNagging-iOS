@@ -27,6 +27,19 @@ class Common {
         return phase
     }
     
+    /**
+     # getBaseUrl
+     - Note: baseURL 을 반환 하는 함수
+    */
+    static func getBaseUrl() -> String {
+        switch Common.getDeployPhase() {
+        case .debug:
+            return "https://api.momsnagging.ml/api/v1/"
+        case .release:
+            return "https://api.momsnagging.ml/api/v1/"
+        }
+    }
+    
     static func checkPhotoLibraryPermission(view: UIViewController) {
         if #available(iOS 14, *) {
             PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: { status in
