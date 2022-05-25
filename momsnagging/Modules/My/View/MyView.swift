@@ -263,6 +263,8 @@ class MyView: BaseViewController, Navigatable {
         viewMessage.snp.makeConstraints({
             $0.height.equalTo(22)
             $0.top.equalTo(lblID.snp.bottom).offset(8)
+            $0.leading.greaterThanOrEqualToSuperview().offset(18)
+            $0.trailing.lessThanOrEqualToSuperview().offset(-18)
             $0.centerX.equalToSuperview()
         })
         
@@ -397,7 +399,9 @@ class MyView: BaseViewController, Navigatable {
         let input = MyViewModel.Input(
             btnSettingTapped: self.btnSetting.rx.tap.asDriverOnErrorJustComplete(),
             btnModifyMessageTapped: self.btnModifyMessage.rx.tap.asDriverOnErrorJustComplete(),
+            messageModifyAlertDoneHandler: messageModifyAlertDoneHandler.asDriverOnErrorJustComplete(),
             btnNicknameSetting: self.btnNicknameSetting.rx.tap.asDriverOnErrorJustComplete(),
+            nicknameSettingAlertDoneHandler: nicknameSettingAlertDoneHandler.asDriverOnErrorJustComplete(),
             rbFondMomTapped: self.rbFondMom.rx.tap.asDriverOnErrorJustComplete(),
             rbCoolMomTapped: self.rbCoolMom.rx.tap.asDriverOnErrorJustComplete(),
             rbAngryMomTapped: self.rbAngryMom.rx.tap.asDriverOnErrorJustComplete(),
@@ -411,15 +415,23 @@ class MyView: BaseViewController, Navigatable {
                 self.navigator.show(seque: .setting(viewModel: SettingViewModel()), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
         
-        // 각오 수정
+        // 각오
+        output.message
+            .drive(onNext: { message in
+                self.lblMessage.text = message
+            }).disposed(by: disposeBag)
         output.showMessageModifyAlert
-            .drive(onNext: { message, doneTitle in
-                let alert = CommonView.getAlert(vc: self, title: "", message: message, cancelTitle: STR_CANCEL)
+            .drive(onNext: { model in
+                let alert = CommonView.getAlert(vc: self, title: model.title, message: model.message, cancelTitle: model.cancelTitle ?? STR_CANCEL)
                 
-                alert.addTextField()
+                alert.addTextField { textField in
+                    textField.text = model.textFieldText
+                    textField.placeholder = model.textFieldPlaceholder
+                    textField.clearButtonMode = .whileEditing
+                }
                 
-                let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
-                    Log.debug(alert.textFields?[0].text)
+                let doneAction = UIAlertAction(title: model.doneTitle, style: .default) { _ in
+                    messageModifyAlertDoneHandler.accept(alert.textFields?[0].text)
                 }
                 alert.addAction(doneAction)
                 
@@ -428,13 +440,17 @@ class MyView: BaseViewController, Navigatable {
         
         // 호칭 설정
         output.showNicknameSettingAlert
-            .drive(onNext: { message, doneTitle in
-                let alert = CommonView.getAlert(vc: self, title: "", message: message, cancelTitle: STR_CANCEL)
+            .drive(onNext: { model in
+                let alert = CommonView.getAlert(vc: self, title: model.title, message: model.message, cancelTitle: model.cancelTitle ?? STR_CANCEL)
                 
-                alert.addTextField()
+                alert.addTextField { textField in
+                    textField.text = model.textFieldText
+                    textField.placeholder = model.textFieldPlaceholder
+                    textField.clearButtonMode = .whileEditing
+                }
                 
-                let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
-                    Log.debug(alert.textFields?[0].text)
+                let doneAction = UIAlertAction(title: model.doneTitle, style: .default) { _ in
+                    nicknameSettingAlertDoneHandler.accept(alert.textFields?[0].text)
                 }
                 alert.addAction(doneAction)
                 

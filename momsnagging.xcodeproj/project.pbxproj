@@ -25,6 +25,7 @@
 		868A57532828B70F004153BB /* CommonHintLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868A57522828B70F004153BB /* CommonHintLabel.swift */; };
 		868A57562828CC7C004153BB /* CycleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868A57552828CC7C004153BB /* CycleCell.swift */; };
 		86B36F722817756800655059 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B36F712817756800655059 /* UIView+Extension.swift */; };
+		86BBE05E283DC7BC002AA1F9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BBE05D283DC7BC002AA1F9 /* Alert.swift */; };
 		86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */; };
 		86D4BE2927F683D700E9EE8B /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D4BE2827F683D700E9EE8B /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2D27F6BE2000E9EE8B /* User.swift */; };
@@ -155,6 +156,7 @@
 		868A57522828B70F004153BB /* CommonHintLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonHintLabel.swift; sourceTree = "<group>"; };
 		868A57552828CC7C004153BB /* CycleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CycleCell.swift; sourceTree = "<group>"; };
 		86B36F712817756800655059 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		86BBE05D283DC7BC002AA1F9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
 		86D4BE2827F683D700E9EE8B /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		86D4BE2D27F6BE2000E9EE8B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				86E699FC2822724100EA6BC3 /* ModelType.swift */,
 				A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */,
 				A0A992BF282EB8F8009049CF /* Habit.swift */,
+				86BBE05D283DC7BC002AA1F9 /* Alert.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1280,6 +1283,7 @@
 				A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */,
 				8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */,
 				86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */,
+				86BBE05E283DC7BC002AA1F9 /* Alert.swift in Sources */,
 				A0B581B62827A5780099C9BA /* UIColor+Extension.swift in Sources */,
 				8F1F93A327EC8A3C000F08AF /* CalendarModel.swift in Sources */,
 				A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */,
