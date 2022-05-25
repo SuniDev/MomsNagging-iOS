@@ -13,6 +13,8 @@ import Moya
  - Note: 사용할 API enum으로 관리.
  */
 enum MomsNaggingAPI {
+    // 로그인
+    case login(LoginRequest)
     case getUserInfo(UserInfoRequest)
 }
 
@@ -24,4 +26,5 @@ extension MomsNaggingAPI: Moya.TargetType {
     var sampleData: Data { Data() }
     var task: Task { self.getTask() }
     var headers: [String: String]? { ["Content-Type": "application/json"] }
+    var authorizationType: AuthorizationType? { .basic }
 }

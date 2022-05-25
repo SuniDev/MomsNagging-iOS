@@ -81,12 +81,27 @@ class IntroViewModel: BaseViewModel, ViewModelType {
                 return self.isAutoLogin()
             }.share()
         
-        let failLogin = isAutoLogin
-            .filter { isAuto in isAuto == false }
-            .mapToVoid()
-            .asDriverOnErrorJustComplete()
+       let getUserToken = isAutoLogin
+            .filter({ $0 == true })
+            .flatMapLatest { _ -> Observable<String?> in
+                return self.getUserToken()
+            }.share()
         
-        return Output(forceUpdateStatus: forceUpdateStatus, selectUpdateStatus: selectUpdateStatus, firstEntryApp: firstEntryApp, failLogin: failLogin)
+        // TODO: requestLogin
+//        let requestLogin = getUserToken
+//            .filter{ $0 != nil }
+//            .flatMapLatest { token -> }
+        
+    
+        let failLogin = Observable.merge(
+            isAutoLogin.filter({ $0 == false}).mapToVoid(),
+            getUserToken.filter({ $0 == nil }).mapToVoid()
+        )
+        
+        return Output(forceUpdateStatus: forceUpdateStatus,
+                      selectUpdateStatus: selectUpdateStatus,
+                      firstEntryApp: firstEntryApp,
+                      failLogin: failLogin.mapToVoid().asDriverOnErrorJustComplete())
     }
 }
 
@@ -129,4 +144,20 @@ extension IntroViewModel {
         }
     }
     
+    func getUserToken() -> Observable<String?> {
+        return Observable<String?>.create { observer -> Disposable in
+            // TODO: 키체인 토큰 가져오기
+            observer.onNext(nil)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+    }
+    
+}
+// MARK: API
+extension IntroViewModel {
+    private func requestLogin(token: String) {
+        let loginRequest = LoginRequest()
+        
+    }
 }

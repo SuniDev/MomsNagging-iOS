@@ -19,9 +19,9 @@ extension MomsNaggingAPI {
     func baseUrl() -> String {
         switch Common.getDeployPhase() {
         case .debug:
-            return "테스트서버주소"
+            return "https://api.momsnagging.ml/api/vl"
         case .release:
-            return "실서버주소"
+            return "https://api.momsnagging.ml/api/vl"
         }
     }
 }

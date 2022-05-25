@@ -12,10 +12,10 @@ import Moya
 extension MomsNaggingAPI {
     func getMethod() -> Moya.Method {
         switch self {
+        case .login:
+            return .get
         case .getUserInfo:
             return .post
-        default:
-            return .get
         }
     }
 }

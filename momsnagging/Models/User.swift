@@ -31,3 +31,13 @@ struct LoginInfo {
     var email: String?
     var snsType: SnsType?
 }
+
+/**
+ # (C) TestUser.swift
+ - Author: suni
+ - Note: 회원 정보를 관리하는 클래스
+ */
+// TODO: 클래스 이름 변견 예정
+class TestUser: NSObject {
+    static var authorization: String?
+}

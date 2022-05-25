@@ -11,6 +11,8 @@ import Moya
 extension MomsNaggingAPI {
     func getPath() -> String {
         switch self {
+        case .login(let request):
+            return "/users/authentication/\(String(describing: request.provider))"
         case .getUserInfo:
             return "/getUserInfo"
         }

@@ -16,6 +16,8 @@ extension MomsNaggingAPI {
        return Task.requestCompositeData(bodyData: bodyRequest.data(using:.utf8)!, urlParameters: [:])
        */
     switch self {
+    case .login(let request):
+        return .requestParameters(parameters: request.code.toDictionary(), encoding: URLEncoding.queryString)
     case .getUserInfo(let request):
         return .requestParameters(parameters: request.toDictionary(), encoding: URLEncoding.queryString)
     }
