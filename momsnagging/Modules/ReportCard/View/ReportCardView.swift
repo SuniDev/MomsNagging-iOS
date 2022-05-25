@@ -420,23 +420,23 @@ class ReportCardView: BaseViewController, Navigatable, UIScrollViewDelegate {
         tableViewOutput = viewModel.transform(input: input)
         tableViewOutput?.todoListData?.drive { list in
             list.bind(to: self.todoListTableView.rx.items(cellIdentifier: "ReportCardTodoCell", cellType: ReportCardTodoCell.self)) { index, item, cell in
-                self.todoList.append(item)
-                cell.todoIsSelected = item.isSelected ?? false
-                cell.timeBtn.setTitle(item.time ?? "", for: .normal)
-                cell.titleLbl.text = item.title ?? ""
-                cell.prefixLbl.text = item.prefix ?? ""
-                cell.cellType = item.type ?? .normal
-                if item.isSelected ?? false {
-                    cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
-                    cell.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
-                    cell.timeBtn.backgroundColor = UIColor(asset: Asset.Color.monoLight030)
-                    cell.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark010), for: .normal)
-                } else {
-                    cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
-                    cell.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
-                    cell.timeBtn.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
-                    cell.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark020), for: .normal)
-                }
+//                self.todoList.append(item)
+//                cell.todoIsSelected = item.isSelected ?? false
+//                cell.timeBtn.setTitle(item.time ?? "", for: .normal)
+//                cell.titleLbl.text = item.title ?? ""
+//                cell.prefixLbl.text = item.prefix ?? ""
+//                cell.cellType = item.type ?? .normal
+//                if item.isSelected ?? false {
+//                    cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+//                    cell.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
+//                    cell.timeBtn.backgroundColor = UIColor(asset: Asset.Color.monoLight030)
+//                    cell.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark010), for: .normal)
+//                } else {
+//                    cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+//                    cell.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
+//                    cell.timeBtn.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+//                    cell.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark020), for: .normal)
+//                }
                 self.todoListRemakeConstraints(count: index + 1)
             }
         }.disposed(by: disposedBag)

@@ -21,6 +21,7 @@ class HomeView: BaseViewController, Navigatable {
         setTodoTableView()
         setHomeCalendarView()
         setFloatingBtn()
+//        viewModel.requestTodoListLookUp(date: todoListParam())
     }
     // MARK: - Temp
     // MARK: - Init
@@ -176,6 +177,8 @@ class HomeView: BaseViewController, Navigatable {
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         $0.separatorStyle = .none
         $0.register(HomeTodoListCell.self, forCellReuseIdentifier: "HomeTodoListCell")
+        $0.register(RoutineCell.self, forCellReuseIdentifier: "RoutineCell")
+        $0.register(TodoCell.self, forCellReuseIdentifier: "TodoCell")
     })
     
     // MARK: - InitUI
@@ -411,7 +414,8 @@ class HomeView: BaseViewController, Navigatable {
         }.disposed(by: disposedBag)
         // 정렬 ClickEvent
         self.listBtn.rx.tap.bind {
-            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: true)
+            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: true)
+//            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: true, sourceIndex: nil, destinationIndex: nil, scheduleType: nil)
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = true
@@ -419,7 +423,7 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headCancel.rx.tap.bind {
-            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: false)
+            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = false
@@ -427,7 +431,7 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headSave.rx.tap.bind {
-            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, cellType: nil, listBtnAction: false)
+            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = false
@@ -468,6 +472,22 @@ class HomeView: BaseViewController, Navigatable {
             let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
             cell?.selectDayRoundFrame.isHidden = true
         }
+    }
+    
+    func todoListParam() -> String {
+        var month = ""
+        var day = ""
+        if calendarMonth! < 10 {
+            month = "0\(calendarMonth!)"
+        } else {
+            month = "\(calendarMonth!)"
+        }
+        if calendarDay! < 10 {
+            day = "0\(calendarDay!)"
+        } else {
+            day = "\(calendarDay!)"
+        }
+        return "\(calendarYear!)-\(month)-\(day)"
     }
     
 }
