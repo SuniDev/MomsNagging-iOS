@@ -91,7 +91,7 @@ extension HomeView {
                  4 : prefixLbl
                  */
                 if item.type == .todo {
-                    print("itemType: \(item.type)")
+//                    print("itemType: \(item.type)")
                     cell.toggleIc.rx.tap.bind { colorList in
                         if cell.toggleIc.isSelected {
                             cell.toggleIc.isSelected = false

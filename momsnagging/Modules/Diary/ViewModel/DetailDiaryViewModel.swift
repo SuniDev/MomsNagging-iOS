@@ -235,7 +235,7 @@ extension DetailDiaryViewModel {
             switch type {
             case .fondMom: observer.onNext("오늘 하루 어땠어~^^?")
             case .coolMom: observer.onNext("오늘 어땠니.")
-            case .coldMom: observer.onNext("너는 꼭 엄마가 먼저 물어봐야 대답하더라. 오늘 어떻게 보냈니?")
+            case .angryMom: observer.onNext("너는 꼭 엄마가 먼저 물어봐야 대답하더라. 오늘 어떻게 보냈니?")
             }
             observer.onCompleted()
             return Disposables.create()
@@ -249,7 +249,7 @@ extension DetailDiaryViewModel {
             switch type {
             case .fondMom: observer.onNext("우리 \(nickName) 오늘 하루도 수고 많았어^^")
             case .coolMom: observer.onNext("그래. 수고했다.")
-            case .coldMom: observer.onNext("다했다고 놀지 말고 다음날 해야할 꺼 미리 미리 준비해놔라!")
+            case .angryMom: observer.onNext("다했다고 놀지 말고 다음날 해야할 꺼 미리 미리 준비해놔라!")
             }
             observer.onCompleted()
             return Disposables.create()

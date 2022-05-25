@@ -221,9 +221,20 @@ class CommonView {
             alert.addAction(cancelAction)
             alert.addAction(destructiveAction)
                 
-            Log.debug(alert.actions)
             vc.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    static func getAlert(vc: UIViewController, title: String? = "", message: String? = "", cancelTitle: String = STR_CANCEL, cancelHandler:(() -> Void)? = nil) -> UIAlertController {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
+            alert.dismiss(animated: true)
+            cancelHandler?()
+        }
+        
+        alert.addAction(cancelAction)
+        
+        return alert
     }
     
     static func showToast(vc: UIViewController, message: String, duration: TimeInterval = ToastManager.shared.duration) {
@@ -707,4 +718,127 @@ class CommonView {
         return view
     }
     
+    /**
+     # goToSubviewFrame
+     - parameters:
+        - title : SubView 타이틀
+     - Authors: suni
+     - Returns: UIView
+     - Note: Title과 Right 버튼으로 이루어진 SubView로 이동하는 버튼 뷰 프레임
+     */
+    static func goToSubviewFrame(title: String) -> UIView {
+        lazy var view = UIView().then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+        })
+        
+        lazy var lblTitle = UILabel().then({
+            $0.text = title
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        
+        lazy var icRight = UIImageView().then({
+            $0.image = Asset.Icon.chevronRight.image
+        })
+        
+        lazy var divider = divider()
+        
+        view.addSubview(lblTitle)
+        view.addSubview(icRight)
+        view.addSubview(divider)
+        
+        lblTitle.snp.makeConstraints({
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(18)
+        })
+        
+        icRight.snp.makeConstraints({
+            $0.width.height.equalTo(18)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-18)
+        })
+        
+        divider.snp.makeConstraints({
+            $0.leading.bottom.trailing.equalToSuperview()
+        })
+        
+        return view
+    }
+    
+    static func radioButton() -> UIButton {
+        lazy var btnRadio = UIButton().then({
+            $0.setImage(Asset.Icon.radioDefault.image, for: .normal)
+            $0.setImage(Asset.Icon.radioSelected.image, for: .selected)
+        })
+        
+        return btnRadio
+    }
+    
+    /**
+     # naggingRadioButtonFrame
+     - parameters:
+        - naggingIntensity : 잔소리 강도
+        - btnNaggingRadio : 잔소리 강도 버튼
+     - Authors: suni
+     - Returns: UIView
+     - Note: 잔소리 강도 라디오 버튼 프레임
+     */
+    static func naggingRadioButtonFrame(naggingIntensity: NaggingIntensity, rbNagging: CommonTextRadioButton) -> UIView {
+        
+        lazy var view = UIView().then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+        })
+        
+        lazy var viewEmoji = UIView().then({
+            $0.backgroundColor = Asset.Color.monoLight010.color
+            $0.layer.cornerRadius = 32
+        })
+        
+        lazy var imgvMom = UIImageView().then({
+            $0.image = Common.getNaggingEmoji(naggingIntensity: naggingIntensity)
+        })
+        
+        lazy var lblTitle = UILabel().then({
+            $0.text = naggingIntensity.rawValue
+            $0.font = FontFamily.Pretendard.regular.font(size: 12)
+            $0.textColor = Asset.Color.monoDark030.color
+        })
+        lazy var btnRadio = radioButton()
+        rbNagging.lblTitle = lblTitle
+        rbNagging.btnRadio = btnRadio
+        
+        view.addSubview(viewEmoji)
+        viewEmoji.addSubview(imgvMom)
+        
+        view.addSubview(lblTitle)
+        view.addSubview(btnRadio)
+        view.addSubview(rbNagging)
+        
+        viewEmoji.snp.makeConstraints({
+            $0.width.height.equalTo(64)
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        })
+        imgvMom.snp.makeConstraints({
+            $0.width.height.equalTo(40)
+            $0.center.equalToSuperview()
+        })
+        
+        lblTitle.snp.makeConstraints({
+            $0.top.equalTo(viewEmoji.snp.bottom).offset(12)
+            $0.centerX.equalToSuperview()
+        })
+        btnRadio.snp.makeConstraints({
+            $0.width.height.equalTo(16)
+            $0.top.equalTo(lblTitle.snp.bottom).offset(8)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        })
+        
+        rbNagging.snp.makeConstraints({
+            $0.top.bottom.trailing.leading.equalToSuperview()
+        })
+        
+        return view
+    }
 }
