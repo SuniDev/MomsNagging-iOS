@@ -21,6 +21,12 @@
 		866F2C1F283EFEAA004B5691 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1E283EFEAA004B5691 /* UserService.swift */; };
 		866F2C21283F0B5C004B5691 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C20283F0B5C004B5691 /* Networking.swift */; };
 		866F2C25283F17EE004B5691 /* RequestModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C24283F17EE004B5691 /* RequestModelType.swift */; };
+		866F2C28283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C27283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift */; };
+		866F2C2A283F44EB004B5691 /* Single+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C29283F44EB004B5691 /* Single+Response.swift */; };
+		866F2C2C283F450A004B5691 /* Response+SwiftyJSONMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C2B283F450A004B5691 /* Response+SwiftyJSONMapper.swift */; };
+		866F2C30283F4B5D004B5691 /* SNSLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C2F283F4B5D004B5691 /* SNSLogin.swift */; };
+		866F2C32283F516A004B5691 /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C31283F516A004B5691 /* NetworkLoggerPlugin.swift */; };
+		866F2C34283F58B7004B5691 /* AppMoyaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C33283F58B7004B5691 /* AppMoyaProvider.swift */; };
 		8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8677C733282B469700709F99 /* PerformTimeGuideCell.swift */; };
 		8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		867C1411281A7602007E5590 /* IDSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1410281A7602007E5590 /* IDSettingView.swift */; };
@@ -163,6 +169,12 @@
 		866F2C1E283EFEAA004B5691 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		866F2C20283F0B5C004B5691 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		866F2C24283F17EE004B5691 /* RequestModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestModelType.swift; sourceTree = "<group>"; };
+		866F2C27283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PrimitiveSequence+SwiftyJSONMapper.swift"; sourceTree = "<group>"; };
+		866F2C29283F44EB004B5691 /* Single+Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Single+Response.swift"; sourceTree = "<group>"; };
+		866F2C2B283F450A004B5691 /* Response+SwiftyJSONMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Response+SwiftyJSONMapper.swift"; sourceTree = "<group>"; };
+		866F2C2F283F4B5D004B5691 /* SNSLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNSLogin.swift; sourceTree = "<group>"; };
+		866F2C31283F516A004B5691 /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
+		866F2C33283F58B7004B5691 /* AppMoyaProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMoyaProvider.swift; sourceTree = "<group>"; };
 		8677C733282B469700709F99 /* PerformTimeGuideCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeGuideCell.swift; sourceTree = "<group>"; };
 		8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		867C1410281A7602007E5590 /* IDSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingView.swift; sourceTree = "<group>"; };
@@ -369,6 +381,16 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		866F2C26283F43F9004B5691 /* Moya */ = {
+			isa = PBXGroup;
+			children = (
+				866F2C2B283F450A004B5691 /* Response+SwiftyJSONMapper.swift */,
+				866F2C29283F44EB004B5691 /* Single+Response.swift */,
+				866F2C27283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift */,
+			);
+			path = Moya;
+			sourceTree = "<group>";
+		};
 		868A57542828CC56004153BB /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -382,8 +404,12 @@
 		86BD71BC280EAF270038200E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				86E699F928226C6300EA6BC3 /* API */,
+				866F2C1B283EFE49004B5691 /* Services */,
+				866F2C20283F0B5C004B5691 /* Networking.swift */,
+				86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */,
 				8F82E73027D8AA9C008CDC22 /* ApiList.swift */,
+				866F2C31283F516A004B5691 /* NetworkLoggerPlugin.swift */,
+				866F2C33283F58B7004B5691 /* AppMoyaProvider.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -418,8 +444,8 @@
 			children = (
 				86E699FB2822722E00EA6BC3 /* Request */,
 				86BBE062283E1944002AA1F9 /* Login.swift */,
+				866F2C2F283F4B5D004B5691 /* SNSLogin.swift */,
 				866F2C19283EFA36004B5691 /* GetUser.swift */,
-				86D4BE2D27F6BE2000E9EE8B /* CommonUser.swift */,
 				A0A674232813EC6900E0223B /* Onboarding.swift */,
 				86E699FC2822724100EA6BC3 /* ModelType.swift */,
 				A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */,
@@ -439,22 +465,12 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
-		86E699F928226C6300EA6BC3 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				866F2C1B283EFE49004B5691 /* Services */,
-				86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */,
-				866F2C20283F0B5C004B5691 /* Networking.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		86E699FB2822722E00EA6BC3 /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				866F2C24283F17EE004B5691 /* RequestModelType.swift */,
 				86BBE05F283E1672002AA1F9 /* LoginRequest.swift */,
 				86E699FE2822727D00EA6BC3 /* GetUserRequest.swift */,
-				866F2C24283F17EE004B5691 /* RequestModelType.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -727,6 +743,7 @@
 				A035B0752812A0A100747389 /* StringDefinition.swift */,
 				8F1F93A827EF51B4000F08AF /* Common.swift */,
 				8FEEE5BB283A48D400764C43 /* TaviCommon.swift */,
+				86D4BE2D27F6BE2000E9EE8B /* CommonUser.swift */,
 				86BD71BE280EB0E50038200E /* UI */,
 				A06BB33727F0BA1F005727AD /* Base */,
 				A06BB35627F0E53B005727AD /* Extensions */,
@@ -1052,6 +1069,7 @@
 		A06BB35627F0E53B005727AD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				866F2C26283F43F9004B5691 /* Moya */,
 				8617642C28111A9A00F7B254 /* Rx */,
 				86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */,
 				86B36F712817756800655059 /* UIView+Extension.swift */,
@@ -1406,6 +1424,7 @@
 				8FEEE5AE283A25EF00764C43 /* AwardModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
+				866F2C30283F4B5D004B5691 /* SNSLogin.swift in Sources */,
 				8FEEE5AC283A25E600764C43 /* AwardViewModel.swift in Sources */,
 				A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */,
 				8F927A612824D5C7000FFA75 /* DiaryModel.swift in Sources */,
@@ -1452,6 +1471,8 @@
 				86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
+				866F2C32283F516A004B5691 /* NetworkLoggerPlugin.swift in Sources */,
+				866F2C2A283F44EB004B5691 /* Single+Response.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F22F82E281D0B1200AB4180 /* HomeModel.swift in Sources */,
 				A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */,
@@ -1461,6 +1482,7 @@
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
 				8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
+				866F2C28283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift in Sources */,
 				A0A992C2282ECB81009049CF /* CommonBottomSheet.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F334E2D2830DAC700E731E8 /* RecommendedHabitCell.swift in Sources */,
@@ -1491,6 +1513,8 @@
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
+				866F2C2C283F450A004B5691 /* Response+SwiftyJSONMapper.swift in Sources */,
+				866F2C34283F58B7004B5691 /* AppMoyaProvider.swift in Sources */,
 				8FEEE5AA283A25DD00764C43 /* AwardView.swift in Sources */,
 				866F2C1A283EFA36004B5691 /* GetUser.swift in Sources */,
 				A0A992C0282EB8F8009049CF /* Habit.swift in Sources */,

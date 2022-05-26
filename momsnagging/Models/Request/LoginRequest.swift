@@ -7,6 +7,6 @@
 
 // MARK: Login Request 모델
 struct LoginRequest: RequestModelType {
-    var provider: String?   // 소셜 로그인 플랫폼
-    var code: String?       // 플랫폼 코드
+    var provider: String   // 소셜 로그인 플랫폼
+    var code: String       // 플랫폼 코드
 }

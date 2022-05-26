@@ -9,15 +9,17 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class OnboardingItemViewModel: BaseViewModel, ViewModelType {
+class OnboardingItemViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
     private let data: Observable<Onboarding>
     private let numberOfPages = BehaviorRelay<Int>(value: 5)
     
-    init(data: Onboarding) {
+    // MARK: - init
+    init(withService provider: AppServices, data: Onboarding) {
         self.data = Observable.just(data)
+        super.init(provider: provider)
     }
     
     // MARK: - Input
@@ -34,7 +36,7 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
         let setImage: Driver<UIImage>
         let setPageControl: Driver<Int>
         let isLastPage: Driver<Bool>
-        let goToLogin: Driver<Void>
+        let goToLogin: Driver<LoginViewModel>
         let goToNextPage: Driver<Int>
         let goToMain: Driver<Void>
     }
@@ -75,6 +77,10 @@ class OnboardingItemViewModel: BaseViewModel, ViewModelType {
             .flatMapLatest { currentPage }
         
         let goToLogin = Observable.of(input.btnLoginTapped, input.btnStartTapped).merge()
+            .map { _ -> LoginViewModel in
+                let viewModel = LoginViewModel(withService: self.provider)
+                return viewModel
+            }
         
         return Output(setTile: currentTitle.asDriverOnErrorJustComplete(),
                       setEmoji: currentEmoji.asDriverOnErrorJustComplete(),

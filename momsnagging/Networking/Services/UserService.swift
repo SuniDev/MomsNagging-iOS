@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import Moya
+import SwiftyJSON
 
 /**
  # (P) AppUserService
@@ -30,4 +31,10 @@ class UserService {
 //        return networking.request(.getUser(request))
 //            .map(GetUser.self)
 //    }
+    
+    func login(request: LoginRequest) -> Observable<Login> {
+        return networking.request(.login(request))
+            .map(to: Login.self)
+            .asObservable()
+    }
 }

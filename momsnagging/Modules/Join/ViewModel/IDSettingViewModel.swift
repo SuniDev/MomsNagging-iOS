@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class IDSettingViewModel: BaseViewModel, ViewModelType {
+class IDSettingViewModel: ViewModel, ViewModelType {
     
     enum TextHintType: String {
         case invalid    = "아이디에는 영어/숫자 4-15글자로 만들 수 있단다!"
@@ -19,10 +19,12 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
     }
     
     var disposeBag = DisposeBag()
-    private let loginInfo: BehaviorRelay<LoginInfo>
+    private let snsLogin: BehaviorRelay<SNSLogin>
     
-    init(loginInfo: LoginInfo) {
-        self.loginInfo = BehaviorRelay<LoginInfo>(value: loginInfo)
+    // MARK: - init
+    init(withService provider: AppServices, snsLogin: SNSLogin) {
+        self.snsLogin = BehaviorRelay<SNSLogin>(value: snsLogin)
+        super.init(provider: provider)
     }
     
     // MARK: - Input
@@ -44,8 +46,8 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
         let textHint: Driver<TextHintType>
         /// 사용 가능 아이디
         let isAvailableID: Driver<Bool>
-        /// 아이디 설정 완료
-        let successIDSetting: Driver<LoginInfo>
+        /// 아이디 설정 완료 -> 호칭 설정 이동
+        let goToNicknameSetting: Driver<NicknameSettingViewModel>
     }
     
     func transform(input: Input) -> Output {
@@ -119,17 +121,20 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
                         
-        let successIDSetting = input.btnDoneTapped
+        let goToNicknameSetting = input.btnDoneTapped
             .asObservable()
-            .flatMapLatest { () -> BehaviorRelay<LoginInfo> in
-                return self.loginInfo
+            .flatMapLatest { () -> BehaviorRelay<SNSLogin> in
+                return self.snsLogin
+            }.map { info -> NicknameSettingViewModel in
+                let viewModel = NicknameSettingViewModel(withService: self.provider, snsLogin: info)
+                return viewModel
             }
         
         return Output(goToBack: input.btnBackTapped,
                       isEditingID: isEditingID.asDriverOnErrorJustComplete(),
                       textHint: textHint.asDriverOnErrorJustComplete(),
                       isAvailableID: isAvailableID.asDriverOnErrorJustComplete(),
-                      successIDSetting: successIDSetting.asDriverOnErrorJustComplete()
+                      goToNicknameSetting: goToNicknameSetting.asDriverOnErrorJustComplete()
         )
     }
 }

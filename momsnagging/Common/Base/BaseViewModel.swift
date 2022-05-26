@@ -19,6 +19,14 @@ protocol ViewModelType {
     func transform(input: Input) -> Output
 }
 
-class BaseViewModel {
-    // TODO: API 통신 처리.
+class BaseViewModel: NSObject {
+}
+
+class ViewModel: NSObject {
+    let provider: AppServices
+    
+    init(provider: AppServices) {
+        self.provider = provider
+        super.init()
+    }
 }

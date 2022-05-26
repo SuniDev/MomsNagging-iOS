@@ -19,16 +19,13 @@ enum AppUpdateStatus {
     case error
 }
 
-class IntroViewModel: BaseViewModel, ViewModelType {
+class IntroViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
-    
-    typealias Services = AppUserService
-    var services: Services
-    
+        
     // MARK: - init
-    init(withService service: AppServices) {
-        self.services = service
+    init(withService provider: AppServices) {
+        super.init(provider: provider)
     }
     
     // MARK: - Input
@@ -43,11 +40,11 @@ class IntroViewModel: BaseViewModel, ViewModelType {
         let forceUpdateStatus: Driver<Void>
         let selectUpdateStatus: Driver<Void>
         /// 앱 첫 진입 여부
-        let firstEntryApp: Driver<Void>
+        let goToOnboarding: Driver<OnboardingViewModel>
         /// 로그인 상태
         // TODO: Request Login API
 //        let successLogin: Driver<Bool>
-        let failLogin: Driver<Void>
+        let goToLogin: Driver<LoginViewModel>
     }
     
     // MARK: - transform
@@ -78,10 +75,12 @@ class IntroViewModel: BaseViewModel, ViewModelType {
                 return self.isFirstEntryApp()
             }.share()
         
-        let firstEntryApp = isFirstEntryApp
+        let goToOnboarding = isFirstEntryApp
             .filter { isFirst in isFirst == true }
-            .mapToVoid()
-            .asDriverOnErrorJustComplete()
+            .map { _ -> OnboardingViewModel in
+                let viewModel = OnboardingViewModel(withService: self.provider)
+                return viewModel
+            }
         
         // MARK: - Login
         let isAutoLogin = isFirstEntryApp
@@ -103,15 +102,18 @@ class IntroViewModel: BaseViewModel, ViewModelType {
 //                return self.reqeustGetUser()
 //            }
     
-        let failLogin = Observable.merge(
+        let goToLogin = Observable.merge(
             isAutoLogin.filter({ $0 == false }).mapToVoid(),
             getUserToken.filter({ $0 == nil }).mapToVoid()
-        )
+        ).map { _ -> LoginViewModel in
+            let viewModel = LoginViewModel(withService: self.provider)
+            return viewModel
+        }
         
         return Output(forceUpdateStatus: forceUpdateStatus,
                       selectUpdateStatus: selectUpdateStatus,
-                      firstEntryApp: firstEntryApp,
-                      failLogin: failLogin.mapToVoid().asDriverOnErrorJustComplete())
+                      goToOnboarding: goToOnboarding.asDriverOnErrorJustComplete(),
+                      goToLogin: goToLogin.asDriverOnErrorJustComplete())
     }
 }
 

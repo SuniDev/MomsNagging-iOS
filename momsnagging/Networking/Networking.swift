@@ -8,15 +8,14 @@
 import Moya
 import RxSwift
 
-
 typealias AppNetworking = Networking<MomsNaggingAPI>
 
 /**
  # (C) Networking
  - Authors: suni
- - Note: Moya Provider를 이용해 request 통신을 담당하는 클래스
+ - Note: AppMoyaProvider를 이용해 request 통신을 담당하는 클래스
  */
-final class Networking<Target: TargetType>: MoyaProvider<Target> {
+final class Networking<Target: TargetType>: AppMoyaProvider<Target> {
     
     /**
      # request
@@ -28,7 +27,7 @@ final class Networking<Target: TargetType>: MoyaProvider<Target> {
      - Note: Moya request를 커스텀하여 결과값 로그 및 네트워크 상태 코드가 정상인 경우만 필터해서 받는 Single 생성.
      */
     func request(_ target: Target) -> Single<Response> {
-        let requestString = "\(target.method.rawValue) \(target.path)"
+        let requestString = "\(target.method.rawValue)  \(target.path)"
         return self.rx.request(target)
             .do(
                 onSuccess: { value in

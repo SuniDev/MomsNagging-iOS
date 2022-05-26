@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class NicknameSettingViewModel: BaseViewModel, ViewModelType {
+class NicknameSettingViewModel: ViewModel, ViewModelType {
         
     enum NicknameType: String {
         case son = "아들!"
@@ -26,10 +26,12 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    private let loginInfo: BehaviorRelay<LoginInfo>
+    private let snsLogin: BehaviorRelay<SNSLogin>
     
-    init(loginInfo: LoginInfo) {
-        self.loginInfo = BehaviorRelay<LoginInfo>(value: loginInfo)
+    // MARK: - init
+    init(withService provider: AppServices, snsLogin: SNSLogin) {
+        self.snsLogin = BehaviorRelay<SNSLogin>(value: snsLogin)
+        super.init(provider: provider)
     }
     
     // MARK: - Input
@@ -59,7 +61,7 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         /// 사용 가능 아이디
         let isAvailableName: Driver<Bool>
         /// 호칭 설정 완료
-        let successNameSetting: Driver<LoginInfo>
+        let successNameSetting: Driver<SNSLogin>
     }
     
     func transform(input: Input) -> Output {
@@ -148,8 +150,8 @@ class NicknameSettingViewModel: BaseViewModel, ViewModelType {
         // TODO: Request 호칭 설정 API
         let successNameSetting = input.btnDoneTapped
             .asObservable()
-            .flatMapLatest { () -> BehaviorRelay<LoginInfo> in
-                return self.loginInfo
+            .flatMapLatest { () -> BehaviorRelay<SNSLogin> in
+                return self.snsLogin
             }
         
         return Output(

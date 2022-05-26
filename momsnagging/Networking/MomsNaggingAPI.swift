@@ -21,15 +21,14 @@ enum MomsNaggingAPI {
 //    case getUser(GetUserRequest)
 }
 
-// MARK: MomsNaggingAPI+TargetType
 extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
     
-    func baseUrl() -> String {
+    static func baseUrl() -> String {
         switch Common.getDeployPhase() {
         case .debug:
-            return "https://api.momsnagging.ml/api/vl"
+            return "https://api.momsnagging.ml/api/v1"
         case .release:
-            return "https://api.momsnagging.ml/api/vl"
+            return "https://api.momsnagging.ml/api/v1"
         }
     }
     
@@ -37,7 +36,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
     var baseURL: URL {
         switch self {
         default:
-            return URL(string: baseUrl())!
+            return URL(string: MomsNaggingAPI.baseUrl())!
         }
     }
     
@@ -45,7 +44,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
     var path: String {
         switch self {
         case .login(let request):
-            return "/users/authentication/\(String(describing: request.provider))"
+            return "/users/authentication/\(request.provider)"
 //        case .getUser:
 //            return "/users"
         }
@@ -59,8 +58,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
          return Task.requestCompositeData(bodyData: bodyRequest.data(using:.utf8)!, urlParameters: [:])
          */
       switch self {
-      case .login(let request):
-          return .requestParameters(parameters: request.code.toDictionary(), encoding: parameterEncoding)
+      case .login:
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
 //      case .getUser(let request):
 //          return .requestParameters(parameters: request.toDictionary(), encoding: parameterEncoding)
       }
@@ -96,6 +95,26 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         switch self {
         default:
             return .bearer
+        }
+    }
+    
+    // 파라미터
+    /**
+     e.g.)
+     // GET으로 보낼 경우.
+     case .VoteDetail(let showLoCd, let langCd, let voteSeq):
+     parameters = ["showLoCd":showLoCd, "langCd":langCd, "voteSeq":voteSeq]
+     break
+     
+     // POST로 보낼 경우.
+     case .VoteSend(let bodyRequest):
+     return Task.requestCompositeData(bodyData: bodyRequest.data(using:.utf8)!, urlParameters: [:])
+     
+     */
+    var parameters: [String: Any]? {
+        switch self {
+        case .login(let request):
+            return ["code": request.code]
         }
     }
     

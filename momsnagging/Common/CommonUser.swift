@@ -17,11 +17,10 @@ class CommonUser: NSObject {
     static var authorization: String?
 }
 
-// TODO: 임시 데이터
 enum SnsType: String {
-    case google = "구글"
-    case kakao = "카카오"
-    case apple = "애플"
+    case google = "Google"
+    case kakao = "Kakao"
+    case apple = "Apple"
 }
 
 enum NaggingIntensity: String {
@@ -29,17 +28,3 @@ enum NaggingIntensity: String {
     case coolMom = "냉정한 엄마"
     case angryMom = "화난 엄마"
 }
-
-struct User {
-    var loginInfo: LoginInfo?
-    var nickname: String?
-    var naggingIntensity: NaggingIntensity?
-}
-
-struct LoginInfo {
-    var authToken: String?
-    var authId: String?
-    var email: String?
-    var snsType: SnsType?
-}
-
