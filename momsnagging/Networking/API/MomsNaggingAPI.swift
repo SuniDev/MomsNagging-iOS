@@ -61,8 +61,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
       switch self {
       case .login(let request):
           return .requestParameters(parameters: request.code.toDictionary(), encoding: parameterEncoding)
-      case .getUser(let request):
-          return .requestParameters(parameters: request.toDictionary(), encoding: parameterEncoding)
+//      case .getUser(let request):
+//          return .requestParameters(parameters: request.toDictionary(), encoding: parameterEncoding)
       }
     }
     
@@ -84,7 +84,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
 //                return ["Content-Type": "application/json", "Authorization": token]
 //            }
 //            return ["Content-Type": "application/json"]
-//        }
+        }
     }
     
     var authorizationType: AuthorizationType? {
@@ -127,4 +127,3 @@ extension Encodable {
     }
   }
 }
-
