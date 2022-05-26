@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxSwiftExt
 import CoreMIDI
+import CoreMedia
 
 enum AppUpdateStatus {
     case forceUpdate
@@ -18,9 +19,14 @@ enum AppUpdateStatus {
     case error
 }
 
-class IntroViewModel: BaseViewModel, ViewModelType {
+class IntroViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
+        
+    // MARK: - init
+    init(withService provider: AppServices) {
+        super.init(provider: provider)
+    }
     
     // MARK: - Input
     struct Input {
@@ -34,11 +40,11 @@ class IntroViewModel: BaseViewModel, ViewModelType {
         let forceUpdateStatus: Driver<Void>
         let selectUpdateStatus: Driver<Void>
         /// 앱 첫 진입 여부
-        let firstEntryApp: Driver<Void>
+        let goToOnboarding: Driver<OnboardingViewModel>
         /// 로그인 상태
         // TODO: Request Login API
 //        let successLogin: Driver<Bool>
-        let failLogin: Driver<Void>
+        let goToLogin: Driver<LoginViewModel>
     }
     
     // MARK: - transform
@@ -69,10 +75,12 @@ class IntroViewModel: BaseViewModel, ViewModelType {
                 return self.isFirstEntryApp()
             }.share()
         
-        let firstEntryApp = isFirstEntryApp
+        let goToOnboarding = isFirstEntryApp
             .filter { isFirst in isFirst == true }
-            .mapToVoid()
-            .asDriverOnErrorJustComplete()
+            .map { _ -> OnboardingViewModel in
+                let viewModel = OnboardingViewModel(withService: self.provider)
+                return viewModel
+            }
         
         // MARK: - Login
         let isAutoLogin = isFirstEntryApp
@@ -87,21 +95,25 @@ class IntroViewModel: BaseViewModel, ViewModelType {
                 return self.getUserToken()
             }.share()
         
-        // TODO: requestLogin
-//        let requestLogin = getUserToken
-//            .filter{ $0 != nil }
-//            .flatMapLatest { token -> }
-        
+//        let userInfo = getUserToken
+//            .filter { $0 != nil }
+//            .flatMapLatest { token -> Observable<GetUser> in
+//                CommonUser.authorization = token
+//                return self.reqeustGetUser()
+//            }
     
-        let failLogin = Observable.merge(
-            isAutoLogin.filter({ $0 == false}).mapToVoid(),
+        let goToLogin = Observable.merge(
+            isAutoLogin.filter({ $0 == false }).mapToVoid(),
             getUserToken.filter({ $0 == nil }).mapToVoid()
-        )
+        ).map { _ -> LoginViewModel in
+            let viewModel = LoginViewModel(withService: self.provider)
+            return viewModel
+        }
         
         return Output(forceUpdateStatus: forceUpdateStatus,
                       selectUpdateStatus: selectUpdateStatus,
-                      firstEntryApp: firstEntryApp,
-                      failLogin: failLogin.mapToVoid().asDriverOnErrorJustComplete())
+                      goToOnboarding: goToOnboarding.asDriverOnErrorJustComplete(),
+                      goToLogin: goToLogin.asDriverOnErrorJustComplete())
     }
 }
 
@@ -154,10 +166,12 @@ extension IntroViewModel {
     }
     
 }
+
 // MARK: API
 extension IntroViewModel {
-    private func requestLogin(token: String) {
-        let loginRequest = LoginRequest()
-        
-    }
+//    private func reqeustGetUser() -> Observable<GetUser> {
+//        let reqeust = GetUserRequest()
+//        return self.services.userService.getUser(request: reqeust)
+//    }
+
 }

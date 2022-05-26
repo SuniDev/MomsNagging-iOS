@@ -9,13 +9,15 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class OnboardingViewModel: BaseViewModel, ViewModelType {
+class OnboardingViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    override init() {
+    // MARK: - init
+    init(withService provider: AppServices) {
+        super.init(provider: provider)
     }
-    
+
     // MARK: - Input
     struct Input {
     }
@@ -30,12 +32,13 @@ class OnboardingViewModel: BaseViewModel, ViewModelType {
         
         return Output()
     }
+    
 }
 
 extension OnboardingViewModel {
     
     func onboardingPageViewModel() -> OnboardingPageViewModel {
-        let viewModel = OnboardingPageViewModel()
+        let viewModel = OnboardingPageViewModel(withService: provider)
         return viewModel
     }
 }

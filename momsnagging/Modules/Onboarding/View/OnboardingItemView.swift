@@ -209,8 +209,8 @@ class OnboardingItemView: BaseViewController, Navigatable {
             self.btnStart.isHidden = isLast
         }).disposed(by: disposeBag)
         
-        output.goToLogin.drive(onNext: {
-            self.navigator.show(seque: .login(viewModel: LoginViewModel()), sender: nil, transition: .root)
+        output.goToLogin.drive(onNext: { viewModel in
+            self.navigator.show(seque: .login(viewModel: viewModel), sender: nil, transition: .root)
         }).disposed(by: disposeBag)
         
         output.goToNextPage.drive(onNext: { page in

@@ -9,11 +9,13 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class OnboardingPageViewModel: BaseViewModel, ViewModelType {
+class OnboardingPageViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    override init() {
+    // MARK: - init
+    init(withService provider: AppServices) {
+        super.init(provider: provider)
     }
     
     // MARK: - Input
@@ -67,7 +69,7 @@ extension OnboardingPageViewModel {
     
     func onboardingPageItemViewModel(data: Onboarding) -> Observable<OnboardingItemViewModel> {
         return Observable<OnboardingItemViewModel>.create { observer -> Disposable in
-            let viewModel = OnboardingItemViewModel(data: data)
+            let viewModel = OnboardingItemViewModel(withService: self.provider, data: data)
             observer.onNext(viewModel)
             observer.onCompleted()
             return Disposables.create()

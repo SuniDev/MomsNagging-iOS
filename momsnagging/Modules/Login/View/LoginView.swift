@@ -187,9 +187,8 @@ class LoginView: BaseViewController, Navigatable {
                 CommonView.showAlert(vc: self, type: .oneBtn, title: STR_LOGIN_ERROR_TITLE, message: STR_LOGIN_ERROR_MESSAGE, doneTitle: STR_DONE)
             }).disposed(by: disposeBag)
         
-        output.needToJoin
-            .drive(onNext: { info in
-                let viewModel = IDSettingViewModel(loginInfo: info)
+        output.goToJoin
+            .drive(onNext: { viewModel in
                 self.navigator.show(seque: .idSetting(viewModel: viewModel), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
     }

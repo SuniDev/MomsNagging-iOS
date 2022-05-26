@@ -84,14 +84,14 @@ class IntroView: BaseViewController, Navigatable {
                   })
               }).disposed(by: disposeBag)
         
-        output.firstEntryApp
-            .drive(onNext: { () in
-                self.navigator.show(seque: .onboarding(viewModel: OnboardingViewModel()), sender: nil, transition: .root)
+        output.goToOnboarding
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .onboarding(viewModel: viewModel), sender: nil, transition: .root)
             }).disposed(by: disposeBag)
         
-        output.failLogin
-            .drive(onNext: { () in
-                self.navigator.show(seque: .login(viewModel: LoginViewModel()), sender: nil, transition: .root)
+        output.goToLogin
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .login(viewModel: viewModel), sender: nil, transition: .root)
             }).disposed(by: disposeBag)
     }
 }

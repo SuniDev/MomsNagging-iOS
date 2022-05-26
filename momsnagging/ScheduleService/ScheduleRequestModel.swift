@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct CreateTodoRequestModel: Encodable {
     var scheduleName: String?
     var naggingId: Int?

@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class IDSettingViewModel: BaseViewModel, ViewModelType {
+class IDSettingViewModel: ViewModel, ViewModelType {
     
     enum TextHintType: String {
         case invalid    = "아이디에는 영어/숫자 4-15글자로 만들 수 있단다!"
@@ -19,10 +19,12 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
     }
     
     var disposeBag = DisposeBag()
-    private let loginInfo: BehaviorRelay<LoginInfo>
+    private let joinRequest: BehaviorRelay<JoinRequest>
     
-    init(loginInfo: LoginInfo) {
-        self.loginInfo = BehaviorRelay<LoginInfo>(value: loginInfo)
+    // MARK: - init
+    init(withService provider: AppServices, joinRequest: JoinRequest) {
+        self.joinRequest = BehaviorRelay<JoinRequest>(value: joinRequest)
+        super.init(provider: provider)
     }
     
     // MARK: - Input
@@ -44,8 +46,8 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
         let textHint: Driver<TextHintType>
         /// 사용 가능 아이디
         let isAvailableID: Driver<Bool>
-        /// 아이디 설정 완료
-        let successIDSetting: Driver<LoginInfo>
+        /// 아이디 설정 완료 -> 호칭 설정 이동
+        let goToNicknameSetting: Driver<NicknameSettingViewModel>
     }
     
     func transform(input: Input) -> Output {
@@ -77,7 +79,7 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
             .asObservable()
             .flatMapLatest { _ -> Observable<Bool> in
                 Observable.just(textID.value.isEmpty)
-            }
+            }.share()
         
         isEmptyID.filter({ $0 == true })
             .bind(onNext: { _ in
@@ -90,7 +92,7 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
             .flatMapLatest { _ -> Observable<Bool> in
                 let id = textID.value
                 return self.isValidID(id)
-            }
+            }.share()
         
         isValidID
             .filter({ $0 == false })
@@ -99,16 +101,23 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
             }).disposed(by: disposeBag)
                 
         // 중복 여부 확인
-        let isDuplicateID = isValidID
+        let requestValidateID = isValidID
             .filter({ $0 == true })
-            .flatMapLatest { _ -> Observable<Bool> in
+            .flatMapLatest { _ -> Observable<Validate> in
                 let id = textID.value
-                return self.isDuplicateID(id: id)
-            }
-        
-        isDuplicateID
-            .bind(onNext: { isDuplicate in
-                textHint.accept(isDuplicate ? .duplicate : .succes)
+                return self.requestValidateID(id: id)
+            }.share()
+                
+        requestValidateID
+            .filter { $0.isExist != nil }
+            .bind(onNext: { validate in
+                let isExist = validate.isExist ?? false
+                if isExist {
+                    textHint.accept(.duplicate)
+                } else {
+                    textHint.accept(.succes)
+                }
+                
             }).disposed(by: disposeBag)
         
         textHint
@@ -119,17 +128,25 @@ class IDSettingViewModel: BaseViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
                         
-        let successIDSetting = input.btnDoneTapped
+        let goToNicknameSetting = input.btnDoneTapped
             .asObservable()
-            .flatMapLatest { () -> BehaviorRelay<LoginInfo> in
-                return self.loginInfo
+            .flatMapLatest { () -> BehaviorRelay<JoinRequest> in
+                return self.joinRequest
+            }.map { request -> NicknameSettingViewModel in
+                let join = JoinRequest(provider: request.provider,
+                                       code: request.code,
+                                       email: request.email,
+                                       id: textID.value,
+                                       nickname: "")
+                let viewModel = NicknameSettingViewModel(withService: self.provider, joinRequest: join)
+                return viewModel
             }
         
         return Output(goToBack: input.btnBackTapped,
                       isEditingID: isEditingID.asDriverOnErrorJustComplete(),
                       textHint: textHint.asDriverOnErrorJustComplete(),
                       isAvailableID: isAvailableID.asDriverOnErrorJustComplete(),
-                      successIDSetting: successIDSetting.asDriverOnErrorJustComplete()
+                      goToNicknameSetting: goToNicknameSetting.asDriverOnErrorJustComplete()
         )
     }
 }
@@ -152,18 +169,11 @@ extension IDSettingViewModel {
             return Disposables.create()
         }
     }
-    
-    // TODO: Request isDuplicateID API
-    func isDuplicateID(id: String?) -> Observable<Bool> {
-        return Observable<Bool>.create { observer -> Disposable in
-            if id != nil {
-                observer.onNext(false)
-                observer.onCompleted()
-            } else {
-                observer.onNext(true)
-                observer.onCompleted()
-            }
-            return Disposables.create()
-        }
+}
+// MARK: API
+extension IDSettingViewModel {
+    private func requestValidateID(id: String) -> Observable<Validate> {
+        let request = ValidateIDRequest(id: id)
+        return self.provider.userService.validateID(request: request)
     }
 }

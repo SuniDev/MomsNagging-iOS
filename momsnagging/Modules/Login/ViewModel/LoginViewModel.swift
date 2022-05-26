@@ -16,11 +16,14 @@ import KakaoSDKAuth
 import RxKakaoSDKAuth
 import AuthenticationServices
 
-class LoginViewModel: BaseViewModel, ViewModelType {
+class LoginViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    override init() { }
+    // MARK: - init
+    init(withService provider: AppServices) {
+        super.init(provider: provider)
+    }
     
     // MARK: - Input
     struct Input {
@@ -42,8 +45,8 @@ class LoginViewModel: BaseViewModel, ViewModelType {
         let googleSignIn: Driver<GIDConfiguration>
         /// 애플 로그인
         let appleSignIn: Driver<Void>
-        /// 로그인 정보 없음 -> 회원가입 필요
-        let needToJoin: Driver<LoginInfo>
+        /// 로그인 정보 없음 -> 회원가입(ID설정) 이동
+        let goToJoin: Driver<IDSettingViewModel>
         /// 회원 인증 성공
         let successLogin: Driver<User>
         /// 로그인 오류 발생
@@ -53,8 +56,7 @@ class LoginViewModel: BaseViewModel, ViewModelType {
     // MARK: - transform
     func transform(input: Input) -> Output {
         /// Login Status
-        let snsLoginInfo = PublishRelay<LoginInfo>()
-        let needToJoin = PublishRelay<LoginInfo>()
+        let snsLoginInfo = BehaviorRelay<SNSLogin>(value: SNSLogin(snsType: "", id: ""))
         let successLogin = PublishRelay<User>()
         let errorMessage = PublishRelay<String>()
         
@@ -69,18 +71,16 @@ class LoginViewModel: BaseViewModel, ViewModelType {
         input.getGoogleSignInUser
             .drive(onNext: { user in
                 guard let user = user else { return }
-                user.authentication.do { authentication, error in
-                    if let error = error { errorMessage.accept(error.localizedDescription)
+                user.authentication.do { _, error in
+                    if let error = error {
+                        errorMessage.accept(error.localizedDescription)
                         return
                     }
-                    guard let authentication = authentication else { return }
-
-                    if let token = authentication.idToken {
-                        let id = user.userID
-                        let loginInfo = LoginInfo(authToken: token, authId: id, email: user.profile?.email, snsType: .google)
-                        snsLoginInfo.accept(loginInfo)
+                    if let id = user.userID {
+                        let snsLogin = SNSLogin(snsType: SnsType.google.rawValue, id: id, email: user.profile?.email)
+                        snsLoginInfo.accept(snsLogin)
                     } else {
-                        errorMessage.accept("구글 로그인 토큰이 없습니다.")
+                        errorMessage.accept("구글 ID가 없습니다.")
                     }
                 }
             }).disposed(by: disposeBag)
@@ -109,10 +109,12 @@ class LoginViewModel: BaseViewModel, ViewModelType {
             .flatMapLatest { _ -> Observable<KakaoSDKUser.User> in
                 return UserApi.shared.rx.me().asObservable()
             }.subscribe(onNext: { user in
-                guard let id = user.id else { return }
-                let token = kakaoAuthToken.value
-                let loginInfo = LoginInfo(authToken: token, authId: String(id), email: user.kakaoAccount?.email, snsType: .kakao)
-                snsLoginInfo.accept(loginInfo)
+                guard let id = user.id else {
+                    errorMessage.accept("카카오 ID가 없습니다.")
+                    return
+                }
+                let snsLogin = SNSLogin(snsType: SnsType.kakao.rawValue, id: String(id), email: user.kakaoAccount?.email)
+                snsLoginInfo.accept(snsLogin)
             }, onError: { error in
                 errorMessage.accept(error.localizedDescription)
             }).disposed(by: disposeBag)
@@ -128,11 +130,10 @@ class LoginViewModel: BaseViewModel, ViewModelType {
 
                     // Create an account in your system .
                     let id = appleIDCredential.user
-                    let token = appleIDCredential.identityToken
                     let email = appleIDCredential.email ?? ""
-
-                    let loginInfo = LoginInfo(authToken: String(describing: token), authId: id, email: email, snsType: .apple)
-                    snsLoginInfo.accept(loginInfo)
+                    
+                    let snsLogin = SNSLogin(snsType: SnsType.apple.rawValue, id: id, email: email)
+                    snsLoginInfo.accept(snsLogin)
 
                 case let passwordCredential as ASPasswordCredential:
 
@@ -145,12 +146,24 @@ class LoginViewModel: BaseViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
         
-        // TODO: Request Get UserInfo API
-        snsLoginInfo
-            .subscribe(onNext: { info in
-                needToJoin.accept(info)
-//                errorMessage.accept("로그인 정보: \(info.snsType?.rawValue ?? "") / \(info.email ?? "") \n API 준비중.")
-        }).disposed(by: disposeBag)
+        let requestLogin = snsLoginInfo
+            .skip(1)
+            .flatMapLatest { info -> Observable<Login> in
+                return self.requestLogin(snsType: info.snsType, code: info.id)
+            }.share()
+        
+        let goToJoin = requestLogin
+            .filter { $0.token == nil }
+            .map { _ -> IDSettingViewModel in
+                let snsLogin = snsLoginInfo.value
+                let join = JoinRequest(provider: snsLogin.snsType,
+                                       code: snsLogin.id,
+                                       email: snsLogin.email ?? "",
+                                       id: "",
+                                       nickname: "")
+                let viewModel = IDSettingViewModel(withService: self.provider, joinRequest: join)
+                return viewModel
+            }
         
         /// Error
         input.getGoogleSignInError
@@ -167,9 +180,16 @@ class LoginViewModel: BaseViewModel, ViewModelType {
         
         return Output(googleSignIn: googlgoogleSignInConfig.asDriverOnErrorJustComplete(),
                       appleSignIn: input.btnAppleLoginTapped,
-                      needToJoin: needToJoin.asDriverOnErrorJustComplete(),
+                      goToJoin: goToJoin.asDriverOnErrorJustComplete(),
                       successLogin: successLogin.asDriverOnErrorJustComplete(),
                       error: errorMessage.asDriverOnErrorJustComplete())
     }
-    
+}
+
+// MARK: API
+extension LoginViewModel {
+    private func requestLogin(snsType: String, code: String) -> Observable<Login> {
+        let request = LoginRequest(provider: snsType, code: code)
+        return self.provider.userService.login(request: request)
+    }
 }

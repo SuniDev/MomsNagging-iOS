@@ -15,6 +15,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
+    /// Service
+    let userService = UserService()
+    lazy var appService = {
+        return AppServices(userService: self.userService)
+    }()
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
@@ -22,10 +28,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigator = Navigator.default
         
-//        let viewModel = IntroViewModel()
-//        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
-        let viewModel = MainContainerViewModel()
-        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
+        let viewModel = IntroViewModel(withService: appService)
+        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
+//        let viewModel = MainContainerViewModel()
+//        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
 //        let viewModel = DeleteAccountViewModel()
 //        navigator.show(seque: .deleteAccount(viewModel: viewModel), sender: nil, transition: .root)
           

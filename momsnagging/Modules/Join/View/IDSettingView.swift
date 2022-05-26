@@ -227,9 +227,9 @@ class IDSettingView: BaseViewController, Navigatable {
                 self.imgvConfirm.image = isAvailable ? Asset.Assets.idsettingConfirm.image : Asset.Assets.idsettingConfirmDis.image
             }).disposed(by: disposeBag)
         
-        output.successIDSetting
-            .drive(onNext: { loginInfo in
-                self.navigator.show(seque: .nicknameSetting(viewModel: NicknameSettingViewModel(loginInfo: loginInfo)), sender: self, transition: .navigation)
+        output.goToNicknameSetting
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .nicknameSetting(viewModel: viewModel), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
     }
 }
