@@ -32,4 +32,3 @@ class AppMoyaProvider<T: TargetType>: MoyaProvider<T> {
                             NetworkActivityPlugin(networkActivityClosure: networkClosure)])
    }
 }
-

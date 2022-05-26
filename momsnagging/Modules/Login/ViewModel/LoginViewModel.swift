@@ -57,7 +57,6 @@ class LoginViewModel: ViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         /// Login Status
         let snsLoginInfo = BehaviorRelay<SNSLogin>(value: SNSLogin(snsType: "", id: ""))
-        let needToJoin = PublishRelay<SNSLogin>()
         let successLogin = PublishRelay<User>()
         let errorMessage = PublishRelay<String>()
         
@@ -72,11 +71,11 @@ class LoginViewModel: ViewModel, ViewModelType {
         input.getGoogleSignInUser
             .drive(onNext: { user in
                 guard let user = user else { return }
-                user.authentication.do { authentication, error in
-                    if let error = error { errorMessage.accept(error.localizedDescription)
+                user.authentication.do { _, error in
+                    if let error = error {
+                        errorMessage.accept(error.localizedDescription)
                         return
                     }
-                    guard let authentication = authentication else { return }
                     if let id = user.userID {
                         let snsLogin = SNSLogin(snsType: SnsType.google.rawValue, id: id, email: user.profile?.email)
                         snsLoginInfo.accept(snsLogin)
@@ -110,8 +109,10 @@ class LoginViewModel: ViewModel, ViewModelType {
             .flatMapLatest { _ -> Observable<KakaoSDKUser.User> in
                 return UserApi.shared.rx.me().asObservable()
             }.subscribe(onNext: { user in
-                guard let id = user.id else { return }
-                let token = kakaoAuthToken.value
+                guard let id = user.id else {
+                    errorMessage.accept("카카오 ID가 없습니다.")
+                    return
+                }
                 let snsLogin = SNSLogin(snsType: SnsType.kakao.rawValue, id: String(id), email: user.kakaoAccount?.email)
                 snsLoginInfo.accept(snsLogin)
             }, onError: { error in
@@ -129,7 +130,6 @@ class LoginViewModel: ViewModel, ViewModelType {
 
                     // Create an account in your system .
                     let id = appleIDCredential.user
-                    let token = appleIDCredential.identityToken
                     let email = appleIDCredential.email ?? ""
                     
                     let snsLogin = SNSLogin(snsType: SnsType.apple.rawValue, id: id, email: email)
@@ -146,28 +146,22 @@ class LoginViewModel: ViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
         
-        // TODO: Request Login API
-//        snsLoginInfo
-//            .subscribe(onNext: { info in
-//                needToJoin.accept(info)
-//                errorMessage.accept("로그인 정보: \(info.snsType?.rawValue ?? "") / \(info.email ?? "") \n API 준비중.")
-//        }).disposed(by: disposeBag)
         let requestLogin = snsLoginInfo
             .skip(1)
             .flatMapLatest { info -> Observable<Login> in
                 return self.requestLogin(snsType: info.snsType, code: info.id)
             }.share()
         
-        requestLogin
+        let goToJoin = requestLogin
             .filter { $0.token == nil }
-            .bind(onNext: { _ in
-                needToJoin.accept(snsLoginInfo.value)
-            })
-            .disposed(by: disposeBag)
-                
-        let goToJoin = needToJoin
-            .map { info -> IDSettingViewModel in
-                let viewModel = IDSettingViewModel(withService: self.provider, snsLogin: info)
+            .map { _ -> IDSettingViewModel in
+                let snsLogin = snsLoginInfo.value
+                let join = JoinRequest(provider: snsLogin.snsType,
+                                       code: snsLogin.id,
+                                       email: snsLogin.email ?? "",
+                                       id: "",
+                                       nickname: "")
+                let viewModel = IDSettingViewModel(withService: self.provider, joinRequest: join)
                 return viewModel
             }
         

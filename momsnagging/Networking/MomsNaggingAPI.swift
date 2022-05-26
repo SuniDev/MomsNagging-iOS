@@ -17,6 +17,10 @@ import SwiftyJSON
 enum MomsNaggingAPI {
     // 로그인
     case login(LoginRequest)
+    // 회원 검색 아이디 중복 확인
+    case validateID(ValidateIDRequest)
+    // 회원 가입
+    case join(JoinRequest)
     // 회원 정보 조회
 //    case getUser(GetUserRequest)
 }
@@ -45,8 +49,10 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         switch self {
         case .login(let request):
             return "/users/authentication/\(request.provider)"
-//        case .getUser:
-//            return "/users"
+        case .validateID(let request):
+            return "/users/validate/\(request.id)"
+        case .join(let request):
+            return "/users/\(request.provider)"
         }
     }
     
@@ -60,15 +66,19 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
       switch self {
       case .login:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
-//      case .getUser(let request):
-//          return .requestParameters(parameters: request.toDictionary(), encoding: parameterEncoding)
+      case .validateID:
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .join:
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       }
     }
     
     // 각 case의 메소드 타입 get / post
     var method: Moya.Method {
         switch self {
-        case .login:
+        case .login, .validateID:
+            return .get
+        case .join:
             return .get
         }
     }
@@ -76,7 +86,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
     // 헤더에 추가할 내용 정의
     var headers: [String: String]? {
         switch self {
-        case .login:
+        case .login, .validateID, .join:
             return ["Content-Type": "application/json"]
 //        case .getUser:
 //            if let token: String = CommonUser.authorization {
@@ -114,7 +124,11 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
     var parameters: [String: Any]? {
         switch self {
         case .login(let request):
-            return ["code": request.code]
+            return request.toDictionary()
+        case .join(let request):
+            return request.toDictionary()
+        default:
+            return [:]
         }
     }
     

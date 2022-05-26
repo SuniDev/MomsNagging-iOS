@@ -22,18 +22,25 @@ protocol AppUserService {
 /**
  # (C) UserService
  - Authors: suni
- - Note: 로그인  관련 서비스 클래스.
+ - Note: 회원  관련 서비스 클래스.
  */
 class UserService {
     private let networking = AppNetworking()
     
-//    fileprivate func getUser(request: GetUserRequest) -> Single<GetUser> {
-//        return networking.request(.getUser(request))
-//            .map(GetUser.self)
-//    }
-    
     func login(request: LoginRequest) -> Observable<Login> {
         return networking.request(.login(request))
+            .map(to: Login.self)
+            .asObservable()
+    }
+    
+    func validateID(request: ValidateIDRequest) -> Observable<Validate> {
+        return networking.request(.validateID(request))
+            .map(to: Validate.self)
+            .asObservable()
+    }
+    
+    func join(request: JoinRequest) -> Observable<Login> {
+        return networking.request(.join(request))
             .map(to: Login.self)
             .asObservable()
     }

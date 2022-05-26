@@ -14,7 +14,12 @@ import Foundation
  */
 // TODO: 클래스 이름 변견 예정
 class CommonUser: NSObject {
-    static var authorization: String?
+    static var isLogin: Bool = false
+    static var authorization: String? {
+        didSet {
+            isLogin = authorization != nil
+        }
+    }
 }
 
 enum SnsType: String {

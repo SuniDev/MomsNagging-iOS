@@ -19,11 +19,11 @@ class IDSettingViewModel: ViewModel, ViewModelType {
     }
     
     var disposeBag = DisposeBag()
-    private let snsLogin: BehaviorRelay<SNSLogin>
+    private let joinRequest: BehaviorRelay<JoinRequest>
     
     // MARK: - init
-    init(withService provider: AppServices, snsLogin: SNSLogin) {
-        self.snsLogin = BehaviorRelay<SNSLogin>(value: snsLogin)
+    init(withService provider: AppServices, joinRequest: JoinRequest) {
+        self.joinRequest = BehaviorRelay<JoinRequest>(value: joinRequest)
         super.init(provider: provider)
     }
     
@@ -79,7 +79,7 @@ class IDSettingViewModel: ViewModel, ViewModelType {
             .asObservable()
             .flatMapLatest { _ -> Observable<Bool> in
                 Observable.just(textID.value.isEmpty)
-            }
+            }.share()
         
         isEmptyID.filter({ $0 == true })
             .bind(onNext: { _ in
@@ -92,7 +92,7 @@ class IDSettingViewModel: ViewModel, ViewModelType {
             .flatMapLatest { _ -> Observable<Bool> in
                 let id = textID.value
                 return self.isValidID(id)
-            }
+            }.share()
         
         isValidID
             .filter({ $0 == false })
@@ -101,16 +101,23 @@ class IDSettingViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
                 
         // 중복 여부 확인
-        let isDuplicateID = isValidID
+        let requestValidateID = isValidID
             .filter({ $0 == true })
-            .flatMapLatest { _ -> Observable<Bool> in
+            .flatMapLatest { _ -> Observable<Validate> in
                 let id = textID.value
-                return self.isDuplicateID(id: id)
-            }
-        
-        isDuplicateID
-            .bind(onNext: { isDuplicate in
-                textHint.accept(isDuplicate ? .duplicate : .succes)
+                return self.requestValidateID(id: id)
+            }.share()
+                
+        requestValidateID
+            .filter { $0.isExist != nil }
+            .bind(onNext: { validate in
+                let isExist = validate.isExist ?? false
+                if isExist {
+                    textHint.accept(.duplicate)
+                } else {
+                    textHint.accept(.succes)
+                }
+                
             }).disposed(by: disposeBag)
         
         textHint
@@ -123,10 +130,15 @@ class IDSettingViewModel: ViewModel, ViewModelType {
                         
         let goToNicknameSetting = input.btnDoneTapped
             .asObservable()
-            .flatMapLatest { () -> BehaviorRelay<SNSLogin> in
-                return self.snsLogin
-            }.map { info -> NicknameSettingViewModel in
-                let viewModel = NicknameSettingViewModel(withService: self.provider, snsLogin: info)
+            .flatMapLatest { () -> BehaviorRelay<JoinRequest> in
+                return self.joinRequest
+            }.map { request -> NicknameSettingViewModel in
+                let join = JoinRequest(provider: request.provider,
+                                       code: request.code,
+                                       email: request.email,
+                                       id: textID.value,
+                                       nickname: "")
+                let viewModel = NicknameSettingViewModel(withService: self.provider, joinRequest: join)
                 return viewModel
             }
         
@@ -157,18 +169,11 @@ extension IDSettingViewModel {
             return Disposables.create()
         }
     }
-    
-    // TODO: Request isDuplicateID API
-    func isDuplicateID(id: String?) -> Observable<Bool> {
-        return Observable<Bool>.create { observer -> Disposable in
-            if id != nil {
-                observer.onNext(false)
-                observer.onCompleted()
-            } else {
-                observer.onNext(true)
-                observer.onCompleted()
-            }
-            return Disposables.create()
-        }
+}
+// MARK: API
+extension IDSettingViewModel {
+    private func requestValidateID(id: String) -> Observable<Validate> {
+        let request = ValidateIDRequest(id: id)
+        return self.provider.userService.validateID(request: request)
     }
 }

@@ -26,11 +26,11 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    private let snsLogin: BehaviorRelay<SNSLogin>
+    private let joinRequest: BehaviorRelay<JoinRequest>
     
     // MARK: - init
-    init(withService provider: AppServices, snsLogin: SNSLogin) {
-        self.snsLogin = BehaviorRelay<SNSLogin>(value: snsLogin)
+    init(withService provider: AppServices, joinRequest: JoinRequest) {
+        self.joinRequest = BehaviorRelay<JoinRequest>(value: joinRequest)
         super.init(provider: provider)
     }
     
@@ -60,8 +60,8 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         let textHint: Driver<TextHintType>
         /// 사용 가능 아이디
         let isAvailableName: Driver<Bool>
-        /// 호칭 설정 완료
-        let successNameSetting: Driver<SNSLogin>
+        /// 메인 이동
+        let goToMain: Driver<Void>
     }
     
     func transform(input: Input) -> Output {
@@ -147,12 +147,19 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
 
-        // TODO: Request 호칭 설정 API
-        let successNameSetting = input.btnDoneTapped
+        let requestJoin = input.btnDoneTapped
             .asObservable()
-            .flatMapLatest { () -> BehaviorRelay<SNSLogin> in
-                return self.snsLogin
-            }
+            .flatMapLatest { _ -> Observable<Login> in
+                return self.requestJoin(nickName: confirmName.value)
+            }.map { $0.token }
+            .share()
+        
+        let successJoin = requestJoin.filter { $0 != nil }.share()
+        
+        successJoin
+            .bind(onNext: { token in
+                CommonUser.authorization = token
+            }).disposed(by: disposeBag)
         
         return Output(
             goToBack: input.btnBackTapped,
@@ -161,7 +168,7 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
             isEditingName: isEditingName.asDriverOnErrorJustComplete(),
             textHint: textHint.asDriverOnErrorJustComplete(),
             isAvailableName: isAvailableName.asDriverOnErrorJustComplete(),
-            successNameSetting: successNameSetting.asDriverOnErrorJustComplete())
+            goToMain: successJoin.mapToVoid().asDriverOnErrorJustComplete())
     }
     
 }
@@ -183,5 +190,16 @@ extension NicknameSettingViewModel {
             }
             return Disposables.create()
         }
+    }
+}
+// MARK: API
+extension NicknameSettingViewModel {
+    private func requestJoin(nickName: String) -> Observable<Login> {
+        let request = JoinRequest(provider: joinRequest.value.provider,
+                                  code: joinRequest.value.code,
+                                  email: joinRequest.value.email,
+                                  id: joinRequest.value.id,
+                                  nickname: nickName)
+        return self.provider.userService.join(request: request)
     }
 }

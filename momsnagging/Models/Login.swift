@@ -11,7 +11,7 @@ import SwiftyJSON
 /**
  # (C) Login
  - Authors: suni
- - Note: 로그인  API Response 모델 클래스
+ - Note: 로그인/회원가입  API Response 모델 클래스
  */
 class Login: ModelType {
     enum Event { }
