@@ -7,7 +7,4 @@
 
 // MARK: Request 모델
 // query parameter에 들어갈 값
-struct UserInfoRequest: ModelType {
-    var authId: String?
-    var snsType: String?
-}
+struct UsersRequest: RequestModelType {}

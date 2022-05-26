@@ -16,6 +16,11 @@
 		86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */; };
 		8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F75F282A5891007998CE /* PerformTimeSettingView.swift */; };
 		8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */; };
+		866F2C1A283EFA36004B5691 /* GetUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C19283EFA36004B5691 /* GetUser.swift */; };
+		866F2C1D283EFE60004B5691 /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1C283EFE60004B5691 /* AppService.swift */; };
+		866F2C1F283EFEAA004B5691 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1E283EFEAA004B5691 /* UserService.swift */; };
+		866F2C21283F0B5C004B5691 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C20283F0B5C004B5691 /* Networking.swift */; };
+		866F2C25283F17EE004B5691 /* RequestModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C24283F17EE004B5691 /* RequestModelType.swift */; };
 		8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8677C733282B469700709F99 /* PerformTimeGuideCell.swift */; };
 		8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		867C1411281A7602007E5590 /* IDSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867C1410281A7602007E5590 /* IDSettingView.swift */; };
@@ -28,10 +33,9 @@
 		86BBE05E283DC7BC002AA1F9 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BBE05D283DC7BC002AA1F9 /* Alert.swift */; };
 		86BBE060283E1672002AA1F9 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BBE05F283E1672002AA1F9 /* LoginRequest.swift */; };
 		86BBE063283E1944002AA1F9 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BBE062283E1944002AA1F9 /* Login.swift */; };
-		86BBE065283E2252002AA1F9 /* MomsNaggingAPI+Headers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BBE064283E2252002AA1F9 /* MomsNaggingAPI+Headers.swift */; };
 		86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */; };
 		86D4BE2927F683D700E9EE8B /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D4BE2827F683D700E9EE8B /* OSLog.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2D27F6BE2000E9EE8B /* User.swift */; };
+		86D4BE2E27F6BE2000E9EE8B /* CommonUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4BE2D27F6BE2000E9EE8B /* CommonUser.swift */; };
 		86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E39208280F93E2007D3C04 /* XCAssets+Generated.swift */; };
 		86E3920C280FC923007D3C04 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920B280FC922007D3C04 /* Pretendard-Bold.otf */; };
 		86E3920E280FC92B007D3C04 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */; };
@@ -39,15 +43,8 @@
 		86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */; };
 		86E44B2E283C7B7700E5DB68 /* CommonTextRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E44B2D283C7B7700E5DB68 /* CommonTextRadioButton.swift */; };
 		86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */; };
-		86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */; };
-		86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */; };
-		86E699F2282264B600EA6BC3 /* MomsNaggingAPI+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F1282264B600EA6BC3 /* MomsNaggingAPI+Request.swift */; };
-		86E699F42822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F32822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift */; };
-		86E699F62822683000EA6BC3 /* MomsNaggingAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F52822683000EA6BC3 /* MomsNaggingAPI+Method.swift */; };
-		86E699F828226AC500EA6BC3 /* MomsNaggingAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699F728226AC500EA6BC3 /* MomsNaggingAPI+Path.swift */; };
 		86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699FC2822724100EA6BC3 /* ModelType.swift */; };
-		86E699FF2822727D00EA6BC3 /* UserInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699FE2822727D00EA6BC3 /* UserInfoRequest.swift */; };
-		86E69A01282272F500EA6BC3 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E69A00282272F500EA6BC3 /* UserInfo.swift */; };
+		86E699FF2822727D00EA6BC3 /* GetUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E699FE2822727D00EA6BC3 /* GetUserRequest.swift */; };
 		8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0627D892D900A17FF2 /* AppDelegate.swift */; };
 		8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */; };
 		8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */; };
@@ -161,6 +158,11 @@
 		86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewModel.swift; sourceTree = "<group>"; };
 		8662F75F282A5891007998CE /* PerformTimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingView.swift; sourceTree = "<group>"; };
 		8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingViewModel.swift; sourceTree = "<group>"; };
+		866F2C19283EFA36004B5691 /* GetUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUser.swift; sourceTree = "<group>"; };
+		866F2C1C283EFE60004B5691 /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
+		866F2C1E283EFEAA004B5691 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		866F2C20283F0B5C004B5691 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		866F2C24283F17EE004B5691 /* RequestModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestModelType.swift; sourceTree = "<group>"; };
 		8677C733282B469700709F99 /* PerformTimeGuideCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeGuideCell.swift; sourceTree = "<group>"; };
 		8677C735282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		867C1410281A7602007E5590 /* IDSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDSettingView.swift; sourceTree = "<group>"; };
@@ -173,10 +175,9 @@
 		86BBE05D283DC7BC002AA1F9 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		86BBE05F283E1672002AA1F9 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
 		86BBE062283E1944002AA1F9 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
-		86BBE064283E2252002AA1F9 /* MomsNaggingAPI+Headers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Headers.swift"; sourceTree = "<group>"; };
 		86D4BE2627F6835C00E9EE8B /* OSLog+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
 		86D4BE2827F683D700E9EE8B /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
-		86D4BE2D27F6BE2000E9EE8B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		86D4BE2D27F6BE2000E9EE8B /* CommonUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUser.swift; sourceTree = "<group>"; };
 		86E39208280F93E2007D3C04 /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		86E3920B280FC922007D3C04 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		86E3920D280FC92B007D3C04 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
@@ -184,15 +185,8 @@
 		86E39211280FC9C6007D3C04 /* Fonts+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Fonts+Generated.swift"; sourceTree = "<group>"; };
 		86E44B2D283C7B7700E5DB68 /* CommonTextRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonTextRadioButton.swift; sourceTree = "<group>"; };
 		86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomsNaggingAPI.swift; sourceTree = "<group>"; };
-		86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Moya+NetworkError.swift"; sourceTree = "<group>"; };
-		86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Task.swift"; sourceTree = "<group>"; };
-		86E699F1282264B600EA6BC3 /* MomsNaggingAPI+Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Request.swift"; sourceTree = "<group>"; };
-		86E699F32822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+BaseURL.swift"; sourceTree = "<group>"; };
-		86E699F52822683000EA6BC3 /* MomsNaggingAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Method.swift"; sourceTree = "<group>"; };
-		86E699F728226AC500EA6BC3 /* MomsNaggingAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MomsNaggingAPI+Path.swift"; sourceTree = "<group>"; };
 		86E699FC2822724100EA6BC3 /* ModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelType.swift; sourceTree = "<group>"; };
-		86E699FE2822727D00EA6BC3 /* UserInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoRequest.swift; sourceTree = "<group>"; };
-		86E69A00282272F500EA6BC3 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		86E699FE2822727D00EA6BC3 /* GetUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserRequest.swift; sourceTree = "<group>"; };
 		8F06EC0327D892D900A17FF2 /* momsnagging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = momsnagging.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F06EC0627D892D900A17FF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F06EC0827D892D900A17FF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -366,6 +360,15 @@
 			path = Habit;
 			sourceTree = "<group>";
 		};
+		866F2C1B283EFE49004B5691 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				866F2C1C283EFE60004B5691 /* AppService.swift */,
+				866F2C1E283EFEAA004B5691 /* UserService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		868A57542828CC56004153BB /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,19 +379,9 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		86BBE061283E192E002AA1F9 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				86BBE062283E1944002AA1F9 /* Login.swift */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
 		86BD71BC280EAF270038200E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				8F16725B283E678A007A699B /* ScheduleService */,
-				86E699FA28226ED700EA6BC3 /* Moya */,
 				86E699F928226C6300EA6BC3 /* API */,
 				8F82E73027D8AA9C008CDC22 /* ApiList.swift */,
 			);
@@ -423,10 +416,10 @@
 		86D4BE2C27F6BE1100E9EE8B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				86BBE061283E192E002AA1F9 /* Response */,
 				86E699FB2822722E00EA6BC3 /* Request */,
-				86E69A00282272F500EA6BC3 /* UserInfo.swift */,
-				86D4BE2D27F6BE2000E9EE8B /* User.swift */,
+				86BBE062283E1944002AA1F9 /* Login.swift */,
+				866F2C19283EFA36004B5691 /* GetUser.swift */,
+				86D4BE2D27F6BE2000E9EE8B /* CommonUser.swift */,
 				A0A674232813EC6900E0223B /* Onboarding.swift */,
 				86E699FC2822724100EA6BC3 /* ModelType.swift */,
 				A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */,
@@ -449,30 +442,19 @@
 		86E699F928226C6300EA6BC3 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				866F2C1B283EFE49004B5691 /* Services */,
 				86E699EB2822628400EA6BC3 /* MomsNaggingAPI.swift */,
-				86E699F1282264B600EA6BC3 /* MomsNaggingAPI+Request.swift */,
-				86E699F32822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift */,
-				86E699F728226AC500EA6BC3 /* MomsNaggingAPI+Path.swift */,
-				86E699F52822683000EA6BC3 /* MomsNaggingAPI+Method.swift */,
-				86E699EF2822641F00EA6BC3 /* MomsNaggingAPI+Task.swift */,
-				86BBE064283E2252002AA1F9 /* MomsNaggingAPI+Headers.swift */,
+				866F2C20283F0B5C004B5691 /* Networking.swift */,
 			);
 			path = API;
-			sourceTree = "<group>";
-		};
-		86E699FA28226ED700EA6BC3 /* Moya */ = {
-			isa = PBXGroup;
-			children = (
-				86E699ED2822632100EA6BC3 /* Moya+NetworkError.swift */,
-			);
-			path = Moya;
 			sourceTree = "<group>";
 		};
 		86E699FB2822722E00EA6BC3 /* Request */ = {
 			isa = PBXGroup;
 			children = (
 				86BBE05F283E1672002AA1F9 /* LoginRequest.swift */,
-				86E699FE2822727D00EA6BC3 /* UserInfoRequest.swift */,
+				86E699FE2822727D00EA6BC3 /* GetUserRequest.swift */,
+				866F2C24283F17EE004B5691 /* RequestModelType.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -502,6 +484,7 @@
 			children = (
 				86BD71BD280EAF840038200E /* Application */,
 				8F8DAE9727D8944F00F2E78F /* Common */,
+				8F16725B283E678A007A699B /* ScheduleService */,
 				86BD71BC280EAF270038200E /* Networking */,
 				86D4BE2C27F6BE1100E9EE8B /* Models */,
 				A06BB33B27F0BA5E005727AD /* Modules */,
@@ -1397,7 +1380,7 @@
 				A0BC330A28153A0A00F04B58 /* OnboardingPageView.swift in Sources */,
 				A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */,
 				8FEEE5BA283A40EB00764C43 /* SettingCell.swift in Sources */,
-				86E699FF2822727D00EA6BC3 /* UserInfoRequest.swift in Sources */,
+				86E699FF2822727D00EA6BC3 /* GetUserRequest.swift in Sources */,
 				A06BB34127F0BAA3005727AD /* LoginView.swift in Sources */,
 				8F8D11D9282663B600E7DA6C /* HomeTodoList.swift in Sources */,
 				86523CA02824FD4A00F243A8 /* DetailHabitView.swift in Sources */,
@@ -1405,6 +1388,7 @@
 				8F990F0D283D341600A5D2AA /* DeleteAccountView.swift in Sources */,
 				8F1F93A527EEF2C6000F08AF /* CalendarDayCell.swift in Sources */,
 				86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */,
+				866F2C21283F0B5C004B5691 /* Networking.swift in Sources */,
 				863A556828321C5600995BC9 /* DetailTodoView.swift in Sources */,
 				A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */,
 				8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */,
@@ -1446,7 +1430,6 @@
 				8F22F83C281D0B9000AB4180 /* ReportCardView.swift in Sources */,
 				867C1411281A7602007E5590 /* IDSettingView.swift in Sources */,
 				8FEEE5A42838F87100764C43 /* StatisticsPerformRateCell.swift in Sources */,
-				86E69A01282272F500EA6BC3 /* UserInfo.swift in Sources */,
 				A06BB33D27F0BA72005727AD /* IntroView.swift in Sources */,
 				8FEEE5A02838DE4500764C43 /* ReportCardTodoCell.swift in Sources */,
 				A0A674242813EC6900E0223B /* Onboarding.swift in Sources */,
@@ -1464,9 +1447,7 @@
 				8F22F830281D0B1D00AB4180 /* HomeViewModel.swift in Sources */,
 				A035B0762812A0A100747389 /* StringDefinition.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
-				86E699F828226AC500EA6BC3 /* MomsNaggingAPI+Path.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
-				86E699F2282264B600EA6BC3 /* MomsNaggingAPI+Request.swift in Sources */,
 				A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */,
 				86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
@@ -1475,28 +1456,27 @@
 				8F22F82E281D0B1200AB4180 /* HomeModel.swift in Sources */,
 				A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */,
 				8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */,
-				86E699F62822683000EA6BC3 /* MomsNaggingAPI+Method.swift in Sources */,
 				868A57532828B70F004153BB /* CommonHintLabel.swift in Sources */,
 				A0B6AD90282639D100F02E71 /* AddHabitView.swift in Sources */,
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
-				86E699EE2822632200EA6BC3 /* Moya+NetworkError.swift in Sources */,
 				8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */,
 				8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */,
 				A0A992C2282ECB81009049CF /* CommonBottomSheet.swift in Sources */,
-				86BBE065283E2252002AA1F9 /* MomsNaggingAPI+Headers.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				8F334E2D2830DAC700E731E8 /* RecommendedHabitCell.swift in Sources */,
 				86E44B2E283C7B7700E5DB68 /* CommonTextRadioButton.swift in Sources */,
 				8F22F832281D0B2E00AB4180 /* ReportCardViewModel.swift in Sources */,
 				8F8D11D62826225300E7DA6C /* FloatingBtn.swift in Sources */,
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
-				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
+				86D4BE2E27F6BE2000E9EE8B /* CommonUser.swift in Sources */,
 				8F8D11DB282665EE00E7DA6C /* HomeTodoListCell.swift in Sources */,
 				8F990F0B283D340F00A5D2AA /* DeleteAccountViewModel.swift in Sources */,
+				866F2C1F283EFEAA004B5691 /* UserService.swift in Sources */,
 				A0B6AD92282639E400F02E71 /* AddHabitViewModel.swift in Sources */,
 				8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */,
+				866F2C25283F17EE004B5691 /* RequestModelType.swift in Sources */,
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
-				86D4BE2E27F6BE2000E9EE8B /* User.swift in Sources */,
+				86D4BE2E27F6BE2000E9EE8B /* CommonUser.swift in Sources */,
 				8F990F08283D324D00A5D2AA /* ContactUsModel.swift in Sources */,
 				8F990F06283D324800A5D2AA /* ContactUsView.swift in Sources */,
 				8F927A5B2824D5AC000FFA75 /* DiaryView.swift in Sources */,
@@ -1504,7 +1484,6 @@
 				8617642E28111AB400F7B254 /* Observable+Operators.swift in Sources */,
 				8F22F838281D0B4B00AB4180 /* MyModel.swift in Sources */,
 				8F1F93A127EC89D8000F08AF /* CalendarViewModel.swift in Sources */,
-				86E699F42822681F00EA6BC3 /* MomsNaggingAPI+BaseURL.swift in Sources */,
 				A0B581B02827A0010099C9BA /* BaseCollectionViewCell.swift in Sources */,
 				8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
@@ -1513,9 +1492,10 @@
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
 				8FEEE5AA283A25DD00764C43 /* AwardView.swift in Sources */,
-				86E699F02822641F00EA6BC3 /* MomsNaggingAPI+Task.swift in Sources */,
+				866F2C1A283EFA36004B5691 /* GetUser.swift in Sources */,
 				A0A992C0282EB8F8009049CF /* Habit.swift in Sources */,
 				8F22F83E281D0BB100AB4180 /* HomeView.swift in Sources */,
+				866F2C1D283EFE60004B5691 /* AppService.swift in Sources */,
 				A06BB35A27F0E982005727AD /* BaseNavigationController.swift in Sources */,
 				8F22F81C281D006700AB4180 /* MainContainerViewModel.swift in Sources */,
 			);

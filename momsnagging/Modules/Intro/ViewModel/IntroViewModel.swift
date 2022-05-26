@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxSwiftExt
 import CoreMIDI
+import CoreMedia
 
 enum AppUpdateStatus {
     case forceUpdate
@@ -21,6 +22,14 @@ enum AppUpdateStatus {
 class IntroViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
+    
+    typealias Services = AppUserService
+    var services: Services
+    
+    // MARK: - init
+    init(withService service: AppServices) {
+        self.services = service
+    }
     
     // MARK: - Input
     struct Input {
@@ -87,14 +96,15 @@ class IntroViewModel: BaseViewModel, ViewModelType {
                 return self.getUserToken()
             }.share()
         
-        // TODO: requestLogin
-//        let requestLogin = getUserToken
-//            .filter{ $0 != nil }
-//            .flatMapLatest { token -> }
-        
+//        let userInfo = getUserToken
+//            .filter { $0 != nil }
+//            .flatMapLatest { token -> Observable<GetUser> in
+//                CommonUser.authorization = token
+//                return self.reqeustGetUser()
+//            }
     
         let failLogin = Observable.merge(
-            isAutoLogin.filter({ $0 == false}).mapToVoid(),
+            isAutoLogin.filter({ $0 == false }).mapToVoid(),
             getUserToken.filter({ $0 == nil }).mapToVoid()
         )
         
@@ -154,10 +164,12 @@ extension IntroViewModel {
     }
     
 }
+
 // MARK: API
 extension IntroViewModel {
-    private func requestLogin(token: String) {
-        let loginRequest = LoginRequest()
-        
-    }
+//    private func reqeustGetUser() -> Observable<GetUser> {
+//        let reqeust = GetUserRequest()
+//        return self.services.userService.getUser(request: reqeust)
+//    }
+
 }
