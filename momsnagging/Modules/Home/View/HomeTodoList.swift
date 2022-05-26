@@ -72,7 +72,7 @@ extension HomeView {
         
         collectionViewOutput?.todoListData?.drive { list in
             list.bind(to: self.todoListTableView.rx.items) { tableView, row, item -> UITableViewCell in
-
+                self.todoList.append(item)
                 if item.scheduleType == "TODO" {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: IndexPath.init(row: row, section: 0)) as? TodoCell
                     cell?.todoIsSelected = item.done ?? false
@@ -81,6 +81,9 @@ extension HomeView {
                     return cell!
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: IndexPath.init(row: row, section: 0)) as? RoutineCell
+                    cell?.todoIsSelected = item.done ?? false
+                    cell?.timeBtn.setTitle(item.scheduleTime ?? "", for: .normal)
+                    cell?.titleLbl.text = item.scheduleName ?? ""
                     return cell!
                 }
             }.disposed(by: disposedBag)
