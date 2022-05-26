@@ -1,5 +1,5 @@
 //
-//  TodoCell.swift
+//  RoutineCell.swift
 //  momsnagging
 //
 //  Created by 전창평 on 2022/05/26.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class TodoCell: UITableViewCell {
+class RoutineCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -55,9 +55,8 @@ class TodoCell: UITableViewCell {
     })
 }
 
-extension TodoCell {
+extension RoutineCell {
     func setUI() {
-        
         contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         contentView.addSubview(toggleIc)
         contentView.addSubview(timeBtn)
@@ -83,22 +82,12 @@ extension TodoCell {
             $0.trailing.equalTo(contentView.snp.trailing)
             $0.height.equalTo(1)
         })
-        prefixView = HomeView.cellTodoIconView(lbl: prefixLbl, count: nil, isDone: todoIsSelected)
-        contentView.addSubview(prefixView)
-        contentView.addSubview(prefixLbl)
-        prefixView.snp.makeConstraints({
-            $0.leading.equalTo(timeBtn.snp.trailing).offset(12)
-            $0.width.height.equalTo(24)
-            $0.centerY.equalTo(contentView.snp.centerY)
-        })
-        prefixLbl.snp.makeConstraints({
-            $0.center.equalTo(prefixView.snp.center)
-        })
         titleLbl.snp.makeConstraints({
             $0.centerY.equalTo(contentView.snp.centerY)
-            $0.leading.equalTo(prefixLbl.snp.trailing).offset(8)
+            $0.leading.equalTo(timeBtn.snp.trailing).offset(12)
             $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
         })
+        
         moreIc.snp.makeConstraints({
             $0.width.height.equalTo(24)
             $0.centerY.equalTo(contentView.snp.centerY)
