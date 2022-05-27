@@ -174,6 +174,6 @@ extension IDSettingViewModel {
 extension IDSettingViewModel {
     private func requestValidateID(id: String) -> Observable<Validate> {
         let request = ValidateIDRequest(id: id)
-        return self.provider.userService.validateID(request: request)
+        return self.provider.authService.validateID(request: request)
     }
 }

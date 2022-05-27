@@ -171,7 +171,7 @@ extension IntroViewModel {
 extension IntroViewModel {
 //    private func reqeustGetUser() -> Observable<GetUser> {
 //        let reqeust = GetUserRequest()
-//        return self.services.userService.getUser(request: reqeust)
+//        return self.services.authService.getUser(request: reqeust)
 //    }
 
 }

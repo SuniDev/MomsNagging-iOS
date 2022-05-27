@@ -16,9 +16,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     /// Service
-    let userService = UserService()
+    let authService = AuthService()
     lazy var appService = {
-        return AppServices(userService: self.userService)
+        return AppServices(authService: self.authService)
     }()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

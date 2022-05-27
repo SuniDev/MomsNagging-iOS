@@ -18,7 +18,7 @@
 		8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */; };
 		866F2C1A283EFA36004B5691 /* GetUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C19283EFA36004B5691 /* GetUser.swift */; };
 		866F2C1D283EFE60004B5691 /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1C283EFE60004B5691 /* AppService.swift */; };
-		866F2C1F283EFEAA004B5691 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1E283EFEAA004B5691 /* UserService.swift */; };
+		866F2C1F283EFEAA004B5691 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1E283EFEAA004B5691 /* AuthService.swift */; };
 		866F2C21283F0B5C004B5691 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C20283F0B5C004B5691 /* Networking.swift */; };
 		866F2C25283F17EE004B5691 /* RequestModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C24283F17EE004B5691 /* RequestModelType.swift */; };
 		866F2C28283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C27283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift */; };
@@ -166,7 +166,7 @@
 		8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingViewModel.swift; sourceTree = "<group>"; };
 		866F2C19283EFA36004B5691 /* GetUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUser.swift; sourceTree = "<group>"; };
 		866F2C1C283EFE60004B5691 /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
-		866F2C1E283EFEAA004B5691 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		866F2C1E283EFEAA004B5691 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		866F2C20283F0B5C004B5691 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		866F2C24283F17EE004B5691 /* RequestModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestModelType.swift; sourceTree = "<group>"; };
 		866F2C27283F44C7004B5691 /* PrimitiveSequence+SwiftyJSONMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PrimitiveSequence+SwiftyJSONMapper.swift"; sourceTree = "<group>"; };
@@ -376,7 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				866F2C1C283EFE60004B5691 /* AppService.swift */,
-				866F2C1E283EFEAA004B5691 /* UserService.swift */,
+				866F2C1E283EFEAA004B5691 /* AuthService.swift */,
 			);
 			path = Servicess;
 			sourceTree = "<group>";
@@ -1492,7 +1492,7 @@
 				86D4BE2E27F6BE2000E9EE8B /* CommonUser.swift in Sources */,
 				8F8D11DB282665EE00E7DA6C /* HomeTodoListCell.swift in Sources */,
 				8F990F0B283D340F00A5D2AA /* DeleteAccountViewModel.swift in Sources */,
-				866F2C1F283EFEAA004B5691 /* UserService.swift in Sources */,
+				866F2C1F283EFEAA004B5691 /* AuthService.swift in Sources */,
 				A0B6AD92282639E400F02E71 /* AddHabitViewModel.swift in Sources */,
 				8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */,
 				866F2C25283F17EE004B5691 /* RequestModelType.swift in Sources */,
@@ -1666,8 +1666,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = momsnagging/momsnagging.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEPLOY_PHASE = debug;
 				DEVELOPMENT_TEAM = 3T5QFYSPG5;
@@ -1689,7 +1689,7 @@
 				MARKETING_VERSION = 0.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = momsnagging.dev_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1703,8 +1703,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = momsnagging/momsnagging.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEPLOY_PHASE = release;
 				DEVELOPMENT_TEAM = 3T5QFYSPG5;
@@ -1725,7 +1725,7 @@
 				MARKETING_VERSION = 0.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = team.jasik.momsnagging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = momsnagging_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

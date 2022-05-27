@@ -13,5 +13,5 @@ import Foundation
  - Note: 앱에서 사용될 서비스를 관리하는 구조체
 */
 struct AppServices: AppUserService {
-    let userService: UserService
+    let authService: AuthService
 }

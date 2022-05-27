@@ -190,6 +190,6 @@ class LoginViewModel: ViewModel, ViewModelType {
 extension LoginViewModel {
     private func requestLogin(snsType: String, code: String) -> Observable<Login> {
         let request = LoginRequest(provider: snsType, code: code)
-        return self.provider.userService.login(request: request)
+        return self.provider.authService.login(request: request)
     }
 }

@@ -21,6 +21,7 @@ enum MomsNaggingAPI {
     case validateID(ValidateIDRequest)
     // 회원 가입
     case join(JoinRequest)
+    //
     // 회원 정보 조회
 //    case getUser(GetUserRequest)
 }
@@ -48,11 +49,11 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
     var path: String {
         switch self {
         case .login(let request):
-            return "/users/authentication/\(request.provider)"
+            return "/auth/authentication/\(request.provider)"
         case .validateID(let request):
-            return "/users/validate/\(request.id)"
+            return "/auth/validate/\(request.id)"
         case .join(let request):
-            return "/users/\(request.provider)"
+            return "/auth/\(request.provider)"
         }
     }
     
@@ -68,8 +69,9 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .validateID:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
-      case .join:
-          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .join(let request):
+          return .requestJSONEncodable(["code":request.code, "device":request.device, "email":request.email, "id":request.id, "nickname":request.nickname])
+//          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       }
     }
     
@@ -79,7 +81,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         case .login, .validateID:
             return .get
         case .join:
-            return .get
+            return .post
         }
     }
     

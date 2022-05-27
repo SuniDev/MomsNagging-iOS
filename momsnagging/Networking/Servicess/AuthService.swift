@@ -1,5 +1,5 @@
 //
-//  UserService.swift
+//  AuthService.swift
 //  momsnagging
 //
 //  Created by suni on 2022/05/26.
@@ -16,15 +16,15 @@ import SwiftyJSON
  - Note: 회원 관련 서비스 프로토콜을 사용하기 위한 변수를 선언한 프로토콜
  */
 protocol AppUserService {
-    var userService: UserService { get }
+    var authService: AuthService { get }
 }
 
 /**
- # (C) UserService
+ # (C) AuthService
  - Authors: suni
  - Note: 회원  관련 서비스 클래스.
  */
-class UserService {
+class AuthService {
     private let networking = AppNetworking()
     
     func login(request: LoginRequest) -> Observable<Login> {

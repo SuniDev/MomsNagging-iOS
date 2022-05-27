@@ -150,7 +150,8 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         let requestJoin = input.btnDoneTapped
             .asObservable()
             .flatMapLatest { _ -> Observable<Login> in
-                return self.requestJoin(nickName: confirmName.value)
+                let nickName = confirmName.value.replacingOccurrences(of: "!", with: "", options: NSString.CompareOptions.literal, range: nil)
+                return self.requestJoin(nickName: nickName)
             }.map { $0.token }
             .share()
         
@@ -200,6 +201,6 @@ extension NicknameSettingViewModel {
                                   email: joinRequest.value.email,
                                   id: joinRequest.value.id,
                                   nickname: nickName)
-        return self.provider.userService.join(request: request)
+        return self.provider.authService.join(request: request)
     }
 }
