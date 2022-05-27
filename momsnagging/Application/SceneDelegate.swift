@@ -35,6 +35,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let viewModel = DeleteAccountViewModel()
 //        navigator.show(seque: .deleteAccount(viewModel: viewModel), sender: nil, transition: .root)
           
+//        let viewModel = DetailDiaryViewModel(withService: appService, isNew: true)
+//        navigator.show(seque: .detailDiary(viewModel: viewModel), sender: nil, transition: .root)
         window?.windowScene = windowScene
         window?.rootViewController = navigator.root
         window?.makeKeyAndVisible()

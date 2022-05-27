@@ -69,9 +69,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .validateID:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
-      case .join(let request):
-          return .requestJSONEncodable(["code":request.code, "device":request.device, "email":request.email, "id":request.id, "nickname":request.nickname])
-//          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .join:
+          return .requestCompositeData(bodyData: Data(), urlParameters: parameters ?? [:])
       }
     }
     
@@ -129,6 +128,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return request.toDictionary()
         case .join(let request):
             return request.toDictionary()
+//            return ["code": request.code, "device": request.device, "email": request.email, "id": request.id, "nickname": request.nickname]
         default:
             return [:]
         }

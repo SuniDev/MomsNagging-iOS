@@ -47,8 +47,8 @@ class LoginViewModel: ViewModel, ViewModelType {
         let appleSignIn: Driver<Void>
         /// 로그인 정보 없음 -> 회원가입(ID설정) 이동
         let goToJoin: Driver<IDSettingViewModel>
-        /// 회원 인증 성공
-        let successLogin: Driver<User>
+        /// 회원 인증 성공 -> 메인 이동
+        let goToMain: Driver<MainContainerViewModel>
         /// 로그인 오류 발생
         let error: Driver<String>
     }
@@ -57,7 +57,6 @@ class LoginViewModel: ViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         /// Login Status
         let snsLoginInfo = BehaviorRelay<SNSLogin>(value: SNSLogin(snsType: "", id: ""))
-        let successLogin = PublishRelay<User>()
         let errorMessage = PublishRelay<String>()
         
         /// 구글 로그인
@@ -165,6 +164,13 @@ class LoginViewModel: ViewModel, ViewModelType {
                 return viewModel
             }
         
+        let goToMain = requestLogin
+            .filter { $0.token != nil }
+            .map { _ -> MainContainerViewModel in
+                let viewModel = MainContainerViewModel()
+                return viewModel
+            }
+        
         /// Error
         input.getGoogleSignInError
             .drive { error in
@@ -181,7 +187,7 @@ class LoginViewModel: ViewModel, ViewModelType {
         return Output(googleSignIn: googlgoogleSignInConfig.asDriverOnErrorJustComplete(),
                       appleSignIn: input.btnAppleLoginTapped,
                       goToJoin: goToJoin.asDriverOnErrorJustComplete(),
-                      successLogin: successLogin.asDriverOnErrorJustComplete(),
+                      goToMain: goToMain.asDriverOnErrorJustComplete(),
                       error: errorMessage.asDriverOnErrorJustComplete())
     }
 }

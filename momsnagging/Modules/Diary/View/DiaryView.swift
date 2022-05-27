@@ -310,7 +310,7 @@ class DiaryView: BaseViewController, Navigatable {
         }.disposed(by: disposedBag)
         // 작성하기, 수정하기 액션
         writeBtn.rx.tap.bind {
-            self.navigator.show(seque: .detailDiary(viewModel: DetailDiaryViewModel(isNew: true)), sender: self, transition: .navigation)
+            self.navigator.show(seque: .detailDiary(viewModel: DetailDiaryViewModel(withService: AppServices(authService: AuthService()), isNew: true)), sender: self, transition: .navigation)
         }.disposed(by: disposedBag)
         // 월 달력 이전달 ClickEvent
         self.btnPrev.rx.tap.bind {

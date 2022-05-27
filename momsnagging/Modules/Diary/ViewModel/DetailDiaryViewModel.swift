@@ -9,13 +9,15 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class DetailDiaryViewModel: BaseViewModel, ViewModelType {
+class DetailDiaryViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     private let isNew: BehaviorRelay<Bool>
     
-    init(isNew: Bool) {
+    // TODO: Diary 날짜 받기
+    init(withService provider: AppServices, isNew: Bool) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
+        super.init(provider: provider)
     }
     
     // MARK: - Input
