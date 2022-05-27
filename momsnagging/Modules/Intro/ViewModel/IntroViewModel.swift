@@ -41,10 +41,10 @@ class IntroViewModel: ViewModel, ViewModelType {
         let selectUpdateStatus: Driver<Void>
         /// 앱 첫 진입 여부
         let goToOnboarding: Driver<OnboardingViewModel>
-        /// 로그인 상태
-        // TODO: Request Login API
-//        let successLogin: Driver<Bool>
+        /// 로그인 이동
         let goToLogin: Driver<LoginViewModel>
+        /// 메인 이동
+        let goToMain: Driver<MainContainerViewModel>
     }
     
     // MARK: - transform
@@ -81,7 +81,7 @@ class IntroViewModel: ViewModel, ViewModelType {
                 let viewModel = OnboardingViewModel(withService: self.provider)
                 return viewModel
             }
-        
+    
         // MARK: - Login
         let isAutoLogin = isFirstEntryApp
             .filter { isFirst in isFirst == false }
@@ -89,22 +89,23 @@ class IntroViewModel: ViewModel, ViewModelType {
                 return self.isAutoLogin()
             }.share()
         
-       let getUserToken = isAutoLogin
+       let getAuthorization = isAutoLogin
             .filter({ $0 == true })
             .flatMapLatest { _ -> Observable<String?> in
-                return self.getUserToken()
+                return self.getAuthorization()
             }.share()
         
-//        let userInfo = getUserToken
-//            .filter { $0 != nil }
-//            .flatMapLatest { token -> Observable<GetUser> in
-//                CommonUser.authorization = token
-//                return self.reqeustGetUser()
-//            }
-    
+        let goToMain = getAuthorization
+            .filter({ $0 != nil })
+            .map { authorization -> MainContainerViewModel in
+                CommonUser.authorization = authorization
+                let viewModel = MainContainerViewModel()
+                return viewModel
+            }
+        
         let goToLogin = Observable.merge(
             isAutoLogin.filter({ $0 == false }).mapToVoid(),
-            getUserToken.filter({ $0 == nil }).mapToVoid()
+            getAuthorization.filter({ $0 == nil }).mapToVoid()
         ).map { _ -> LoginViewModel in
             let viewModel = LoginViewModel(withService: self.provider)
             return viewModel
@@ -113,7 +114,8 @@ class IntroViewModel: ViewModel, ViewModelType {
         return Output(forceUpdateStatus: forceUpdateStatus,
                       selectUpdateStatus: selectUpdateStatus,
                       goToOnboarding: goToOnboarding.asDriverOnErrorJustComplete(),
-                      goToLogin: goToLogin.asDriverOnErrorJustComplete())
+                      goToLogin: goToLogin.asDriverOnErrorJustComplete(),
+                      goToMain: goToMain.asDriverOnErrorJustComplete())
     }
 }
 
@@ -136,6 +138,7 @@ extension IntroViewModel {
                 observer.onNext(isFirstEntry)
                 observer.onCompleted()
             } else {
+                Common.setUserDefaults(false, forKey: .isFirstEntryApp)
                 observer.onNext(true)
                 observer.onCompleted()
             }
@@ -156,10 +159,9 @@ extension IntroViewModel {
         }
     }
     
-    func getUserToken() -> Observable<String?> {
+    func getAuthorization() -> Observable<String?> {
         return Observable<String?>.create { observer -> Disposable in
-            // TODO: 키체인 토큰 가져오기
-            observer.onNext(nil)
+            observer.onNext(Common.getKeychainValue(forKey: .authorization))
             observer.onCompleted()
             return Disposables.create()
         }

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 /**
  # (C) CommonUser.swift
  - Author: suni
@@ -14,12 +13,22 @@ import Foundation
  */
 // TODO: 클래스 이름 변견 예정
 class CommonUser: NSObject {
+    
     static var isLogin: Bool = false
     static var authorization: String? {
         didSet {
-            isLogin = authorization != nil
+            if let authorization = authorization {
+                isLogin = true
+                Common.setUserDefaults(true, forKey: .isAutoLogin)
+                Common.setKeychain(authorization, forKey: .authorization)
+            } else {
+                isLogin = false
+                Common.setUserDefaults(false, forKey: .isAutoLogin)
+                Common.removeKeychain(forKey: .authorization)
+            }
         }
     }
+        
 }
 
 enum SnsType: String {

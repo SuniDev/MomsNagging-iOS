@@ -93,5 +93,10 @@ class IntroView: BaseViewController, Navigatable {
             .drive(onNext: { viewModel in
                 self.navigator.show(seque: .login(viewModel: viewModel), sender: nil, transition: .root)
             }).disposed(by: disposeBag)
+        
+        output.goToMain
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
+            }).disposed(by: disposeBag)
     }
 }

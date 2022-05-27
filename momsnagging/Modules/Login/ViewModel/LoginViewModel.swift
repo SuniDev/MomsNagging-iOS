@@ -166,7 +166,8 @@ class LoginViewModel: ViewModel, ViewModelType {
         
         let goToMain = requestLogin
             .filter { $0.token != nil }
-            .map { _ -> MainContainerViewModel in
+            .map { login -> MainContainerViewModel in
+                CommonUser.authorization = login.token
                 let viewModel = MainContainerViewModel()
                 return viewModel
             }

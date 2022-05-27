@@ -9,6 +9,7 @@ import Foundation
 import Photos
 import UIKit
 import StoreKit
+import SwiftKeychainWrapper
 
 class Common {
     private static let configKey = "DeployPhase"
@@ -202,6 +203,50 @@ class Common {
     static func setUserDefaults(_ value: Any?, forKey defaultsKey: UserDefaultsKey) {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: defaultsKey.rawValue)
+    }
+    
+    // MARK: - Keychain
+    
+    /**
+     # (E) KeychainKey
+     - Authors: suni
+     */
+    enum KeychainKey: String {
+        case authorization
+    }
+    
+    /**
+     # setKeychain
+     - parameters:
+        - value : 저장할 값
+        - keychainKey : 저장할 value의  Key - (E) Common.KeychainKey
+     - Authors: suni
+     - Note: 키체인에 값을 저장하는 공용 함수
+     */
+    static func setKeychain(_ value: String, forKey keychainKey: KeychainKey) {
+        KeychainWrapper.standard.set(value, forKey: keychainKey.rawValue)
+    }
+    
+    /**
+     # removeKeychain
+     - parameters:
+        - keychainKey : 삭제할 value의  Key - (E) Common.KeychainKey
+     - Authors: suni
+     - Note: 키체인 값을 삭제하는 공용 함수
+     */
+    static func removeKeychain(forKey keychainKey: KeychainKey) {
+        KeychainWrapper.standard.removeObject(forKey: keychainKey.rawValue)
+    }
+    
+    /**
+     # getKeychainValue
+     - parameters:
+        - keychainKey : 반환할 value의 Key - (E) Common.KeychainKey
+     - Authors: suni
+     - Note: 키체인 값을 반환하는 공용 함수
+     */
+    static func getKeychainValue(forKey keychainKey: KeychainKey) -> String? {
+        return KeychainWrapper.standard.string(forKey: keychainKey.rawValue)
     }
     
     /**
