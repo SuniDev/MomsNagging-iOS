@@ -7,5 +7,5 @@
 
 import Then
 
-// MARK: 공통 Reqeust Model
+// MARK: 공통 Request Model
 protocol RequestModelType: Then, Codable, Equatable {}

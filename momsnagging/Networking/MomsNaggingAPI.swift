@@ -21,6 +21,8 @@ enum MomsNaggingAPI {
     case validateID(ValidateIDRequest)
     // 회원 가입
     case join(JoinRequest)
+    // 월간 달력 일기장 조회
+    case diaryCalendar(DiaryCalendarRequest)
     //
     // 회원 정보 조회
 //    case getUser(GetUserRequest)
@@ -54,6 +56,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return "/auth/validate/\(request.id)"
         case .join(let request):
             return "/auth/\(request.provider)"
+        case .diaryCalendar:
+            return "/diary/calendar"
         }
     }
     
@@ -71,13 +75,15 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .join:
           return .requestCompositeData(bodyData: Data(), urlParameters: parameters ?? [:])
+      case .diaryCalendar:
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       }
     }
     
     // 각 case의 메소드 타입 get / post
     var method: Moya.Method {
         switch self {
-        case .login, .validateID:
+        case .login, .validateID, .diaryCalendar:
             return .get
         case .join:
             return .post
@@ -89,24 +95,16 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         switch self {
         case .login, .validateID, .join:
             return ["Content-Type": "application/json"]
-//        case .getUser:
-//            if let token: String = CommonUser.authorization {
-//                return ["Content-Type": "application/json", "Authorization": token]
-//            }
-//            return ["Content-Type": "application/json"]
+        case .diaryCalendar:
+            if let token: String = CommonUser.authorization {
+                return ["Content-Type": "application/json", "Authorization": "Bearer \(token)"]
+            }
+            return ["Content-Type": "application/json"]
         }
     }
     
     var authorizationType: AuthorizationType? {
-        /*
-         Header 사용 여부. bearer, basic 방식으로 보낼 수 있음.
-         case .MwaveVoteSend:
-         return .bearer
-         */
-        switch self {
-        default:
             return .bearer
-        }
     }
     
     // 파라미터
@@ -128,7 +126,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return request.toDictionary()
         case .join(let request):
             return request.toDictionary()
-//            return ["code": request.code, "device": request.device, "email": request.email, "id": request.id, "nickname": request.nickname]
+        case .diaryCalendar(let request):
+            return request.toDictionary()
         default:
             return [:]
         }

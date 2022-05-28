@@ -15,7 +15,6 @@ class DiaryView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        action()
     }
     // MARK: - Init
     init(viewModel: DiaryViewModel, navigator: Navigator) {
@@ -37,9 +36,9 @@ class DiaryView: BaseViewController, Navigatable {
      prefix : calendar
      Year, Month, Day 월간달력의 Lbl에 표시하기 위한 날짜 연, 월, 일
      */
-    var calendarYear: Int?
-    var calendarMonth: Int?
-    var calendarDay: Int?
+//    var calendarYear: Int?
+//    var calendarMonth: Int?
+//    var calendarDay: Int?
     
     var monthCollectionViewHeight: Int? // 월별로 주(4주~6주)수를 카운팅하여 CollectionView의 높이를 remake하기 위함.
     var dateCheck: Int = 0 // 현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
@@ -128,11 +127,10 @@ class DiaryView: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
+        // 헤더
         headFrame = CommonView.defaultHeadFrame(leftIcBtn: backBtn, headTitle: "일기장", rightIcBtn: writeBtn)
-        calendarYear = calendarViewModel.getYear()
-        calendarMonth = calendarViewModel.getMonth()
-        calendarDay = calendarViewModel.getToday()
-        calendarDateLbl.text = "\(calendarYear ?? 0)년 \(calendarMonth ?? 0)월"
+        
+        // Colleciton View
         monthCollectionViewHeight = 6
         calendarFrame.backgroundColor = .red
         emptyDiaryFrame = emptyFrameView()
@@ -227,14 +225,78 @@ class DiaryView: BaseViewController, Navigatable {
     }
     // MARK: - Bind
     override func bind() {
-        calendarViewModel.monthObservable.subscribe( onNext: { [weak self] in
-            self?.calendarMonth = $0
-            self?.calendarDateLbl.text = "\(self?.calendarYear ?? 0)년 \($0)월"
-        }).disposed(by: disposedBag)
-        calendarViewModel.yearObservable.subscribe( onNext: { [weak self] in
-            self?.calendarYear = $0
-            self?.calendarDateLbl.text = "\($0)년 \(self?.calendarMonth ?? 0)월"
-        }).disposed(by: disposedBag)
+        guard let viewModel = viewModel else { return }
+                
+        let input = DiaryViewModel.Input(
+            btnBackTapped: self.backBtn.rx.tap.asDriverOnErrorJustComplete(),
+            loadCalendar: Observable.just(CalendarDate(year: self.calendarViewModel.getYear(),
+                                                       month: self.calendarViewModel.getMonth(),
+                                                       day: self.calendarViewModel.getToday())).asDriverOnErrorJustComplete(),
+            setCalendarMonth: self.calendarViewModel.monthObservable.asDriverOnErrorJustComplete(),
+            setCalendarYear: self.calendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
+            loadDayList: self.calendarViewModel.daylist.asDriverOnErrorJustComplete(),
+            dayItemSelected: self.dayCollectionView.rx.itemSelected.asDriverOnErrorJustComplete(),
+            btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
+            btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete())
+        let output = viewModel.transform(input: input)
+        
+        output.setCalendarDate
+            .drive(onNext: { date in
+                self.calendarDateLbl.text = "\(date.year)년 \(date.month)월"
+            }).disposed(by: disposedBag)
+        
+        output.goToBack
+            .drive(onNext: {
+                self.navigator.pop(sender: self)
+            }).disposed(by: disposedBag)
+        
+        output.dayItemSelected
+            .drive(onNext: { indexPath in
+//                self.calendarSelectIndex = indexPath.row
+//                for i in 0..<37 {
+//                    let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? DiaryCalendarCell
+//                    if i == indexPath.row {
+//                        cell?.selectDayRoundFrame.isHidden = false
+//                    } else {
+//                        cell?.selectDayRoundFrame.isHidden = true
+//                    }
+//                }
+//                self.selectMonth = self.dateCheck
+            }).disposed(by: disposedBag)
+        
+        output.dayItems
+            .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "DiaryCalendarCell", cellType: DiaryCalendarCell.self)) { index, item, cell in
+                cell.number.text = item.strDay
+                cell.isToday = item.isToday
+                cell.isSunday = (index % 7) == 6
+                cell.isWroteDiary = item.day?.diaryExists ?? false
+                cell.isEnabled = item.isThisMonth
+                cell.configure()
+            }.disposed(by: disposedBag)
+        
+        output.setLastMonth
+            .drive(onNext: { date in
+                self.calendarViewModel.getLastMonth(currentMonth: date.month, currentYear: date.year)
+            }).disposed(by: disposedBag)
+        
+        output.setNextMonth
+            .drive(onNext: { date in
+                self.calendarViewModel.getNextMonth(currentMonth: date.month, currentYear: date.year)
+            }).disposed(by: disposedBag)
+        
+        self.bindCalendar()
+    }
+    
+    // MARK: - Action
+    func action() {
+        // 작성하기, 수정하기 액션
+        writeBtn.rx.tap.bind {
+//            self.navigator.show(seque: .detailDiary(viewModel: DetailDiaryViewModel(withService: AppServices(authService: AuthService()), isNew: true)), sender: self, transition: .navigation)
+        }.disposed(by: disposedBag)
+    }
+    
+    // MARK: - CalendarViewModel bind
+    func bindCalendar() {
         
         calendarViewModel.weekDay // 월 ~ 일
             .bind(to: self.weekDayCollectionView.rx.items(cellIdentifier: "CalendarWeekDayCell", cellType: CalendarWeekDayCell.self)) { index, item, cell in
@@ -245,87 +307,11 @@ class DiaryView: BaseViewController, Navigatable {
                 }
                 cell.dayWeekLabel.text = item
             }.disposed(by: disposedBag)
-//
-        calendarViewModel.daylist // 월 달력 데이터 [String]
-            .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "DiaryCalendarCell", cellType: DiaryCalendarCell.self)) { index, item, cell in
-                if item == "emptyCell" {
-                    cell.number.isHidden = false
-                    cell.number.text = ""
-                    cell.isUserInteractionEnabled = false
-                    cell.isEmpty = true
-                } else {
-                    cell.number.isHidden = false
-                    cell.number.text = item
-                    cell.isUserInteractionEnabled = true
-                    cell.isEmpty = false
-                }
-                // 일기작성
-                // 테스트라인___________________________________START
-//                if index == 10 || index == 9 || index == 21 {
-//                    cell.isWroteDiary = true
-//                } else {
-//                    cell.isWroteDiary = false
-//                }
-                // 테스트라인___________________________________END
-                if self.dateCheck == 0 && (("\(item)" == self.calendarViewModel.todaydd()) || "0\(item)" == self.calendarViewModel.todaydd()) {
-                    cell.isToday = true
-                    cell.number.textColor = UIColor(asset: Asset.Color.monoWhite)
-                } else {
-                    cell.isToday = false
-                    if (index % 7) == 6 {
-                        cell.number.textColor = UIColor(asset: Asset.Color.error)
-                    } else {
-                        cell.number.textColor = UIColor(asset: Asset.Color.monoDark010)
-                    }
-                }
-
-                if self.calendarSelectIndex != nil {
-                    if self.dateCheck == self.selectMonth && self.calendarSelectIndex == index {
-                        cell.selectDayRoundFrame.isHidden = false
-                    } else {
-                        cell.selectDayRoundFrame.isHidden = true
-                    }
-                }
-
-            }.disposed(by: disposedBag)
         
-        dayCollectionView.rx.itemSelected.subscribe(onNext: { indexPath in
-            self.calendarSelectIndex = indexPath.row
-            for i in 0..<37 {
-                let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? DiaryCalendarCell
-                if i == indexPath.row {
-                    cell?.selectDayRoundFrame.isHidden = false
-                } else {
-                    cell?.selectDayRoundFrame.isHidden = true
-                }
-            }
-            self.selectMonth = self.dateCheck
-        }).disposed(by: disposedBag)
     }
-    // MARK: - Action
-    func action() {
-        // 뒤로가기 액션
-        backBtn.rx.tap.bind {
-            self.navigator.pop(sender: self)
-        }.disposed(by: disposedBag)
-        // 작성하기, 수정하기 액션
-        writeBtn.rx.tap.bind {
-            self.navigator.show(seque: .detailDiary(viewModel: DetailDiaryViewModel(withService: AppServices(authService: AuthService()), isNew: true)), sender: self, transition: .navigation)
-        }.disposed(by: disposedBag)
-        // 월 달력 이전달 ClickEvent
-        self.btnPrev.rx.tap.bind {
-            self.dateCheck -= 1
-            self.calendarViewModel.getLastMonth(currentMonth: self.calendarMonth!, currentYear: self.calendarYear!)
-        }.disposed(by: disposedBag)
-        // 월 달력 다음달 ClickEvent
-        self.btnNext.rx.tap.bind {
-            self.dateCheck += 1
-            self.calendarViewModel.getNextMonth(currentMonth: self.calendarMonth!, currentYear: self.calendarYear!)
-        }.disposed(by: disposedBag)
-    }
-
 }
 
+// MARK: - 캘린더 UI
 extension DiaryView {
     /**
      # emptyFrameView

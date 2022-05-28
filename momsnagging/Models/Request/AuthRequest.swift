@@ -1,12 +1,12 @@
 //
-//  LoginRequest.swift
+//  AuthRequest.swift
 //  momsnagging
 //
 //  Created by suni on 2022/05/25.
 //
 
 /**
- # (S) Login
+ # (S) LoginRequest
  - Authors: suni
  - Note: 로그인 Request 모델
  */

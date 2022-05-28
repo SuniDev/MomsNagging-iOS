@@ -171,9 +171,4 @@ extension IntroViewModel {
 
 // MARK: API
 extension IntroViewModel {
-//    private func reqeustGetUser() -> Observable<GetUser> {
-//        let reqeust = GetUserRequest()
-//        return self.services.authService.getUser(request: reqeust)
-//    }
-
 }

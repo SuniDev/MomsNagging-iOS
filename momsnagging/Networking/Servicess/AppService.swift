@@ -12,6 +12,7 @@ import Foundation
  - Author: suni
  - Note: 앱에서 사용될 서비스를 관리하는 구조체
 */
-struct AppServices: AppUserService {
+struct AppServices: AppUserService, AppDiaryService {
     let authService: AuthService
+    let diaryService: DiaryService
 }

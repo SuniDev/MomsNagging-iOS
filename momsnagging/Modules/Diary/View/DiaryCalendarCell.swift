@@ -10,94 +10,118 @@ import Then
 import SnapKit
 
 class DiaryCalendarCell: UICollectionViewCell {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setUI()
-        todayCheck()
+    
+    // MARK: - Diary 디테일 작업 수정
+    var normalBackgroundColor: UIColor = Asset.Color.monoWhite.color {
+        didSet {
+            self.viewBackground.backgroundColor = normalBackgroundColor
+        }
+    }
+    var normalBorderColor: UIColor = Asset.Color.monoLight030.color {
+        didSet {
+            self.viewBackground.addBorder(color: normalBorderColor, width: 1)
+        }
+    }
+    var normalTitleColor: UIColor = Asset.Color.monoDark010.color {
+        didSet {
+            self.number.textColor = normalTitleColor
+        }
+    }
+    
+    let selectedBorderColor: UIColor = Asset.Color.priMain.color
+    
+    let disabledTitleColor: UIColor = Asset.Color.monoDark040.color
+    let disabledBorderColor: UIColor = Asset.Color.monoWhite.color
+    
+    let wroteBackgroundColor: UIColor = Asset.Color.subLight030.color
+    let wroteBorderColor: UIColor = Asset.Color.subLight030.color
+    
+    let todayBackgroundColor: UIColor = Asset.Color.priMain.color
+    let todayBorderColor: UIColor = Asset.Color.priMain.color
+    let todayTitleColor: UIColor = Asset.Color.monoWhite.color
+    
+    let sundayTitleColor: UIColor = Asset.Color.error.color
+    
+    override var isSelected: Bool {
+        didSet {
+            if isEnabled {
+                configure()
+            }
+        }
     }
     // MARK: - Variable
-    var isToday = false // 오늘인지 아닌지 여부
-    var isWroteDiary = false //일기 씀 여부
-    var isEmpty = false //숫자가 없는 빈 배열처리를 위함
+    var isToday = false// 오늘인지 아닌지 여부
+    var isSunday = false
+    var isWroteDiary = false// 일기 씀 여부
+    var isEnabled = false
+        
     // MARK: - UI Properties
-    lazy var defaultRoundFrame = UIView().then({
+    lazy var viewBackground = UIView().then({
         $0.layer.cornerRadius = 20
-        $0.layer.masksToBounds = true
-        $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
-        $0.layer.borderColor = UIColor(asset: Asset.Color.monoLight030)?.cgColor
-        $0.layer.borderWidth = 1
-    })
-    lazy var wroteDiaryRoundFrame = UIView().then({
-        $0.layer.cornerRadius = 20
-        $0.layer.masksToBounds = true
-        $0.backgroundColor = UIColor(asset: Asset.Color.subLight020)
+        $0.backgroundColor = normalBackgroundColor
+        $0.addBorder(color: normalBorderColor, width: 1)
     })
     lazy var number = UILabel().then({
-        $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+        $0.textColor = normalTitleColor
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
     })
-    lazy var todayRoundFrame = UIView().then({
-        $0.layer.cornerRadius = 20
-        $0.layer.masksToBounds = true
-        $0.backgroundColor = UIColor(asset: Asset.Color.priMain)
-        $0.isHidden = true
-    })
-    lazy var selectDayRoundFrame = UIView().then({
-        $0.layer.cornerRadius = 20
-        $0.layer.masksToBounds = true
-        $0.layer.borderColor = UIColor(asset: Asset.Color.priMain)?.cgColor
-        $0.layer.borderWidth = 1
-        $0.isHidden = true
-    })
+    
+    // MARK: - init
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        initUI()
+    }
+        
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+    }
+    
+    func configure() {
+        if isEnabled {
+            if isToday {
+                self.viewBackground.backgroundColor = todayBackgroundColor
+                self.viewBackground.addBorder(color: todayBorderColor, width: 1)
+                self.number.textColor = todayTitleColor
+            } else {
+                if isWroteDiary {
+                    self.viewBackground.backgroundColor = wroteBackgroundColor
+                    self.viewBackground.addBorder(color: isSelected ? selectedBorderColor : wroteBorderColor, width: 1)
+                    self.number.textColor = isSunday ? sundayTitleColor : normalTitleColor
+                } else {
+                    self.viewBackground.backgroundColor = normalBackgroundColor
+                    self.viewBackground.addBorder(color: isSelected ? selectedBorderColor : normalBorderColor, width: 1)
+                    self.number.textColor = isSunday ? sundayTitleColor : normalTitleColor
+                }
+            }
+        } else {
+            self.viewBackground.backgroundColor = normalBackgroundColor
+            self.viewBackground.addBorder(color: disabledBorderColor, width: 0)
+            self.number.textColor = disabledTitleColor
+            
+            if isSunday {
+                self.number.alpha = 0.4
+            }
+        }
+    }
     
 }
 extension DiaryCalendarCell {
-    private func setUI() {
-        contentView.addSubview(defaultRoundFrame)
-        contentView.addSubview(wroteDiaryRoundFrame)
-        contentView.addSubview(todayRoundFrame)
-        contentView.addSubview(selectDayRoundFrame)
+    private func initUI() {
+        contentView.addSubview(viewBackground)
         contentView.addSubview(number)
         
-        defaultRoundFrame.snp.makeConstraints({
-            $0.center.equalTo(contentView.snp.center)
-            $0.width.height.equalTo(40)
-        })
-        wroteDiaryRoundFrame.snp.makeConstraints({
+        viewBackground.snp.makeConstraints({
             $0.center.equalTo(contentView.snp.center)
             $0.width.height.equalTo(40)
         })
         number.snp.makeConstraints({
             $0.center.equalTo(contentView.snp.center)
         })
-        todayRoundFrame.snp.makeConstraints({
-            $0.center.equalTo(contentView.snp.center)
-            $0.width.height.equalTo(40)
-        })
-        selectDayRoundFrame.snp.makeConstraints({
-            $0.center.equalTo(contentView.snp.center)
-            $0.width.height.equalTo(40)
-        })
-    }
-    
-    func todayCheck() {
-        if isToday {
-            todayRoundFrame.isHidden = false
-            defaultRoundFrame.isHidden = true
-            wroteDiaryRoundFrame.isHidden = true
-        } else {
-            todayRoundFrame.isHidden = true
-            if isWroteDiary {
-                defaultRoundFrame.isHidden = true
-                wroteDiaryRoundFrame.isHidden = false
-            } else {
-                defaultRoundFrame.isHidden = false
-                wroteDiaryRoundFrame.isHidden = true
-            }
-        }
-        if isEmpty {
-            defaultRoundFrame.isHidden = true
-            wroteDiaryRoundFrame.isHidden = true
-        }
     }
 }
