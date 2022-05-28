@@ -408,9 +408,9 @@ class HomeView: BaseViewController, Navigatable {
         
         // 일기장 ClickEvent
         self.diaryBtn.rx.tap.bind {
-            let viewModel = DiaryViewModel()
-            let vc = self.navigator.get(seque: .diary(viewModel: viewModel))
-            self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)
+//            let viewModel = DiaryViewModel()
+//            let vc = self.navigator.get(seque: .diary(viewModel: viewModel))
+//            self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)
         }.disposed(by: disposedBag)
         // 정렬 ClickEvent
         self.listBtn.rx.tap.bind {

@@ -16,3 +16,12 @@ struct DiaryCalendarRequest: RequestModelType {
     var retrieveYear: Int   // 조회할 년도
     var retrieveMonth: Int  // 조회할 월
 }
+
+/**
+ # (S) GetDiaryReqeust
+ - Authors: suni
+ - Note: 일기장 조회 Request 모델
+ */
+struct GetDiaryReqeust: RequestModelType {
+    var retrieveDate: String   // 조회 일자
+}

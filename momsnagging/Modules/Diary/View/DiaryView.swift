@@ -107,7 +107,7 @@ class DiaryView: BaseViewController, Navigatable {
     var todayDiaryTitleLbl = UILabel().then({
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
-        $0.text = "오늘의 일기 (날짜로 변경) "
+        $0.text = "오늘의 일기"
     })
     var diaryDeleteBtn = UIButton().then({
         $0.setImage(UIImage(asset: Asset.Icon.delete), for: .normal)
@@ -117,12 +117,12 @@ class DiaryView: BaseViewController, Navigatable {
     var diaryTitleLbl = UILabel().then({
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
-        $0.text = "DiaryTitle"
+        $0.text = ""
     })
     var diaryContentsLbl = UILabel().then({
         $0.textColor = UIColor(asset: Asset.Color.monoDark030)
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
-        $0.text = "DiaryContents"
+        $0.text = ""
     })
     
     // MARK: - initUI
@@ -132,7 +132,6 @@ class DiaryView: BaseViewController, Navigatable {
         
         // Colleciton View
         monthCollectionViewHeight = 6
-        calendarFrame.backgroundColor = .red
         emptyDiaryFrame = emptyFrameView()
         diaryFrame = diaryFrameView()
     }
@@ -196,8 +195,8 @@ class DiaryView: BaseViewController, Navigatable {
         })
         backgroundFrame.addSubview(todayDiaryTitleLbl)
         backgroundFrame.addSubview(diaryDeleteBtn)
-//        backgroundFrame.addSubview(emptyDiaryFrame)
         backgroundFrame.addSubview(diaryFrame)
+        backgroundFrame.addSubview(emptyDiaryFrame)
         todayDiaryTitleLbl.snp.makeConstraints({
             $0.top.equalTo(dayCollectionView.snp.bottom).offset(48)
             $0.leading.equalTo(backgroundFrame.snp.leading).offset(20)
@@ -208,14 +207,14 @@ class DiaryView: BaseViewController, Navigatable {
             $0.trailing.equalTo(backgroundFrame.snp.trailing).offset(24)
             $0.centerY.equalTo(todayDiaryTitleLbl.snp.centerY).offset(1)
         })
-//        emptyDiaryFrame.snp.makeConstraints({
-//            $0.top.equalTo(todayDiaryTitleLbl.snp.bottom).offset(14)
-//            $0.leading.equalTo(backgroundFrame.snp.leading).offset(16)
-//            $0.trailing.equalTo(backgroundFrame.snp.trailing).offset(-16)
-//            $0.bottom.equalTo(backgroundFrame.snp.bottom).offset(-20)
-//            $0.height.equalTo(172)
-//        })
         diaryFrame.snp.makeConstraints({
+            $0.top.equalTo(todayDiaryTitleLbl.snp.bottom).offset(14)
+            $0.leading.equalTo(backgroundFrame.snp.leading).offset(16)
+            $0.trailing.equalTo(backgroundFrame.snp.trailing).offset(-16)
+            $0.bottom.equalTo(backgroundFrame.snp.bottom).offset(-20)
+            $0.height.equalTo(172)
+        })
+        emptyDiaryFrame.snp.makeConstraints({
             $0.top.equalTo(todayDiaryTitleLbl.snp.bottom).offset(14)
             $0.leading.equalTo(backgroundFrame.snp.leading).offset(16)
             $0.trailing.equalTo(backgroundFrame.snp.trailing).offset(-16)
@@ -235,7 +234,7 @@ class DiaryView: BaseViewController, Navigatable {
             setCalendarMonth: self.calendarViewModel.monthObservable.asDriverOnErrorJustComplete(),
             setCalendarYear: self.calendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
             loadDayList: self.calendarViewModel.daylist.asDriverOnErrorJustComplete(),
-            dayItemSelected: self.dayCollectionView.rx.itemSelected.asDriverOnErrorJustComplete(),
+            dayModelSelected: self.dayCollectionView.rx.modelSelected(DiaryDayItem.self).asDriverOnErrorJustComplete(),
             btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
@@ -248,20 +247,6 @@ class DiaryView: BaseViewController, Navigatable {
         output.goToBack
             .drive(onNext: {
                 self.navigator.pop(sender: self)
-            }).disposed(by: disposedBag)
-        
-        output.dayItemSelected
-            .drive(onNext: { indexPath in
-//                self.calendarSelectIndex = indexPath.row
-//                for i in 0..<37 {
-//                    let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? DiaryCalendarCell
-//                    if i == indexPath.row {
-//                        cell?.selectDayRoundFrame.isHidden = false
-//                    } else {
-//                        cell?.selectDayRoundFrame.isHidden = true
-//                    }
-//                }
-//                self.selectMonth = self.dateCheck
             }).disposed(by: disposedBag)
         
         output.dayItems
@@ -284,7 +269,28 @@ class DiaryView: BaseViewController, Navigatable {
                 self.calendarViewModel.getNextMonth(currentMonth: date.month, currentYear: date.year)
             }).disposed(by: disposedBag)
         
+        output.setDiaryData
+            .drive(onNext: { data in
+                self.diaryTitleLbl.text = data.title ?? ""
+                self.diaryContentsLbl.text = data.context ?? ""
+                
+                self.todayDiaryTitleLbl.text = data.today == true ? "오늘의 일기" : self.getDiaryDateTitle(strDate: data.diaryDate ?? "")
+            }).disposed(by: disposedBag)
+        
+        output.isEmptyDiary
+            .drive(onNext: { isEmpty in
+                Log.debug(isEmpty)
+                self.emptyDiaryFrame.isHidden = !isEmpty
+            }).disposed(by: disposedBag)
         self.bindCalendar()
+    }
+    
+    private func getDiaryDateTitle(strDate: String) -> String {
+        if let date = strDate.toDate(for: "yyyy.MM.dd") {
+            return date.toString(for: "yyyy.MM.dd")
+        } else {
+            return "오늘의 일기"
+        }
     }
     
     // MARK: - Action
@@ -337,8 +343,8 @@ extension DiaryView {
         ic.snp.makeConstraints({
             $0.top.equalTo(view.snp.top).offset(43)
             $0.centerX.equalTo(view.snp.centerX)
-            $0.width.equalTo(55.05)
-            $0.height.equalTo(50.39)
+            $0.width.equalTo(56)
+            $0.height.equalTo(56)
         })
         lbl.snp.makeConstraints({
             $0.top.equalTo(ic.snp.bottom).offset(12)

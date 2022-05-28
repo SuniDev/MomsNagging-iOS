@@ -23,7 +23,8 @@ enum MomsNaggingAPI {
     case join(JoinRequest)
     // 월간 달력 일기장 조회
     case diaryCalendar(DiaryCalendarRequest)
-    //
+    // 일기장 조회
+    case getDiary(GetDiaryReqeust)
     // 회원 정보 조회
 //    case getUser(GetUserRequest)
 }
@@ -58,6 +59,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return "/auth/\(request.provider)"
         case .diaryCalendar:
             return "/diary/calendar"
+        case .getDiary:
+            return "/diary"
         }
     }
     
@@ -77,13 +80,15 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestCompositeData(bodyData: Data(), urlParameters: parameters ?? [:])
       case .diaryCalendar:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .getDiary:
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       }
     }
     
     // 각 case의 메소드 타입 get / post
     var method: Moya.Method {
         switch self {
-        case .login, .validateID, .diaryCalendar:
+        case .login, .validateID, .diaryCalendar, .getDiary:
             return .get
         case .join:
             return .post
@@ -95,7 +100,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         switch self {
         case .login, .validateID, .join:
             return ["Content-Type": "application/json"]
-        case .diaryCalendar:
+        case .diaryCalendar, .getDiary:
             if let token: String = CommonUser.authorization {
                 return ["Content-Type": "application/json", "Authorization": "Bearer \(token)"]
             }
@@ -127,6 +132,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         case .join(let request):
             return request.toDictionary()
         case .diaryCalendar(let request):
+            return request.toDictionary()
+        case .getDiary(let request):
             return request.toDictionary()
         default:
             return [:]

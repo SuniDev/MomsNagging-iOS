@@ -28,7 +28,7 @@ class DiaryViewModel: ViewModel, ViewModelType {
         /// 캘린더 날짜 데이터
         let loadDayList: Driver<[String]>
         /// 캘린더 날짜 선택
-        let dayItemSelected: Driver<IndexPath>
+        let dayModelSelected: Driver<DiaryDayItem>
         /// 캘린더 이동
         let btnPrevTapped: Driver<Void>
         let btnNextTapped: Driver<Void>
@@ -43,22 +43,28 @@ class DiaryViewModel: ViewModel, ViewModelType {
         /// 캘린더 날짜 아이템
         let dayItems: Observable<[DiaryDayItem]>
         /// 캘린더 날짜 선택
-        let dayItemSelected: Driver<IndexPath>
+//        let dayItemSelected: Driver<IndexPath>
         /// 이전 달 이동
         let setLastMonth: Driver<CalendarDate>
         /// 다음 달 이동
         let setNextMonth: Driver<CalendarDate>
+        /// 다이어리 데이터
+        let setDiaryData: Driver<GetDiary>
+        let isEmptyDiary: Driver<Bool>
     }
     
     func transform(input: Input) -> Output {
         // 캘린더 날짜
         let setCalendarDate = BehaviorRelay<CalendarDate>(value: CalendarDate())
+        // 선택 날짜
+        let selectedDate = BehaviorRelay<String>(value: String())
         
         // 캘린더 로드
         let loadCalendar = input.loadCalendar.asObservable().share()
-        loadCalendar.debug()
+        loadCalendar
             .subscribe(onNext: { date in
                 setCalendarDate.accept(date)
+                selectedDate.accept(Date().toString(for: "yyyy-MM-dd"))
             }).disposed(by: disposeBag)
         
         // 다음 달
@@ -75,7 +81,7 @@ class DiaryViewModel: ViewModel, ViewModelType {
         
         // 캘린더 달 적용
         let setCalendarMonth = input.setCalendarMonth.asObservable().share()
-        setCalendarMonth.skip(1).debug()
+        setCalendarMonth.skip(1)
             .map { month -> CalendarDate in
                 var date = setCalendarDate.value
                 date.month = month
@@ -87,7 +93,7 @@ class DiaryViewModel: ViewModel, ViewModelType {
         
         // 캘린더 년 적용
         let setCalendarYear = input.setCalendarYear.asObservable().share()
-        setCalendarYear.skip(1).debug()
+        setCalendarYear.skip(1)
             .map { year -> CalendarDate in
                 var date = setCalendarDate.value
                 date.year = year
@@ -98,7 +104,7 @@ class DiaryViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         // 캘린더 API Request
-        let requestCalendarDate = setCalendarDate.debug()
+        let requestCalendarDate = setCalendarDate
             .flatMapLatest { date -> Observable<DiaryCalendar> in
                 return self.requestDiaryCalendar(year: date.year, month: date.month)
             }.share()
@@ -114,14 +120,31 @@ class DiaryViewModel: ViewModel, ViewModelType {
         let dayItems = Observable.zip(input.loadDayList.asObservable(), arrDay)
             .flatMapLatest { arrStrDay, arrDay -> Observable<[DiaryDayItem]> in
                 return self.getDayItems(arrStrDay: arrStrDay, arrDay: arrDay)
-            }.debug()
+            }
         
+        input.dayModelSelected
+            .drive(onNext: { dayItem in
+                if let strDate = dayItem.day?.diaryDate {
+                    selectedDate.accept(strDate)
+                }
+            }).disposed(by: disposeBag)
+        
+        let requestGetDiary = selectedDate
+            .asObservable()
+            .flatMapLatest { strDate -> Observable<GetDiary> in
+                return self.requestGetDiary(date: strDate)
+            }.share()
+        
+        let isEmptyDiary = requestGetDiary
+            .map { return $0.title?.isEmpty ?? true }
+            
         return Output(goToBack: input.btnBackTapped,
                       setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
                       dayItems: dayItems,
-                      dayItemSelected: input.dayItemSelected,
                       setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
-                      setNextMonth: setNextMonth.asDriverOnErrorJustComplete()
+                      setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
+                      setDiaryData: requestGetDiary.asDriverOnErrorJustComplete(),
+                      isEmptyDiary: isEmptyDiary.asDriverOnErrorJustComplete()
         )
     }
 }
@@ -140,7 +163,7 @@ extension DiaryViewModel {
                     dayItem = DiaryDayItem(strDay: strDay, day: day, isToday: false, isThisMonth: true)
                     
                     if let strDate = day.diaryDate {
-                        dayItem.isToday = strDate == self.yyyyMMddString(date: Date())
+                        dayItem.isToday = strDate == Date().toString(for: "yyyy-MM-dd")
                     }
                     
                     cntDay += 1
@@ -152,31 +175,17 @@ extension DiaryViewModel {
             return Disposables.create()
         }
     }
-    
-    private func yyyMMddDate(str: String) -> Date? { // "yyyy-MM-dd"
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        if let date = dateFormatter.date(from: str) {
-            return date
-        } else {
-            return nil
-        }
-    }
-    
-    private func yyyyMMddString(date: Date) -> String { // "yyyy-MM-dd"
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        let str = dateFormatter.string(from: date)
-        return str
-    }
 }
 // MARK: - API
 extension DiaryViewModel {
     private func requestDiaryCalendar(year: Int, month: Int) -> Observable<DiaryCalendar> {
         let request = DiaryCalendarRequest(retrieveYear: year, retrieveMonth: month)
         return self.provider.diaryService.diaryCalendar(request: request)
+    }
+    
+    private func requestGetDiary(date: String) -> Observable<GetDiary> {
+        let request = GetDiaryReqeust(retrieveDate: date)
+        return self.provider.diaryService.getDiary(request: request)
     }
 }
 

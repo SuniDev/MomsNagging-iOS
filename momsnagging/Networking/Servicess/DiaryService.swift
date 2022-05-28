@@ -32,4 +32,10 @@ class DiaryService {
             .map(to: DiaryCalendar.self)
             .asObservable()
     }
+    
+    func getDiary(request: GetDiaryReqeust) -> Observable<GetDiary> {
+        return networking.request(.getDiary(request))
+            .map(to: GetDiary.self)
+            .asObservable()
+    }
 }
