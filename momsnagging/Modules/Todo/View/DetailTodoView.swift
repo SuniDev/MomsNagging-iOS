@@ -89,12 +89,20 @@ class DetailTodoView: BaseViewController, Navigatable {
             $0.preferredDatePickerStyle = .wheels
         }
     })
+    /// Common 수정을 하지 않고 진행하기 위해 임의로 수정버튼 숨김을 위한 emptyView
+    lazy var hideModifyEmptyView = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+        $0.isHidden = true
+    })
     
     // MARK: - init
     init(viewModel: DetailTodoViewModel, navigator: Navigator) {
         self.viewModel = viewModel
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
+//        viewModel.todoModelOb.subscribe(onNext: { data in
+//            Log.debug("testData", "\(data)")
+//        }).disposed(by: disposeBag)
     }
     
     @available(*, unavailable)
@@ -199,6 +207,14 @@ class DetailTodoView: BaseViewController, Navigatable {
             $0.bottom.equalToSuperview().offset(-20)
         })
         
+        view.addSubview(hideModifyEmptyView)
+        hideModifyEmptyView.snp.makeConstraints({
+            $0.top.equalTo(viewAddPushTime.snp.top)
+            $0.trailing.equalTo(viewAddPushTime.snp.trailing).offset(-7)
+            $0.bottom.equalTo(viewAddPushTime.snp.bottom)
+            $0.width.equalTo(UIScreen.main.bounds.width / 3)
+        })
+        
         view.layoutIfNeeded()
     }
     
@@ -248,6 +264,13 @@ class DetailTodoView: BaseViewController, Navigatable {
                 self.btnPerformTime.isEnabled = isWriting
                 self.tfPicker.isEnabled = isWriting
                 self.switchPush.isEnable = isWriting
+                
+                // 수정 버튼 숨김
+                if isWriting {
+                    self.hideModifyEmptyView.isHidden = true
+                } else {
+                    self.hideModifyEmptyView.isHidden = false
+                }
             }).disposed(by: disposeBag)
         
         output.showBackAlert
@@ -338,7 +361,7 @@ class DetailTodoView: BaseViewController, Navigatable {
                     dateFormatter.timeStyle = .short
                     dateFormatter.dateFormat = "hh:mm a"
                     self.lblTime.text = dateFormatter.string(from: date)
-                    
+
                     if !self.viewDefaultNaggingPush.isHidden {
                         self.viewDefaultNaggingPush.fadeOut()
                         self.viewTimeNaggingPush.fadeIn()
@@ -358,6 +381,48 @@ class DetailTodoView: BaseViewController, Navigatable {
             .drive(onNext: {
                 self.navigator.pop(sender: self, toRoot: true)
             }).disposed(by: disposeBag)
+        
+        viewModel.todoInfoOb.subscribe(onNext: { data in
+            self.tfName.text = data.scheduleName
+            self.tfPerformTime.text = data.scheduleTime
+            if data.alarmTime != nil {
+                self.switchPush.isOn = true
+                self.viewAddPushTime.fadeIn()
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeStyle = .short
+                dateFormatter.dateFormat = "hh:mm a"
+                self.viewTimeNaggingPush.fadeIn()
+
+            } else {
+                self.switchPush.isOn = false
+                self.viewAddPushTime.fadeOut()
+            }
+            
+            let height = data.alarmTime != nil ? self.viewAddPushTimeHeight : 0
+            self.viewAddPushTime.snp.updateConstraints({
+                $0.height.equalTo(height)
+            })
+            self.detailNaggingPushFrame.snp.updateConstraints({
+                $0.height.equalTo(65 + height)
+            })
+            
+            UIView.animate(withDuration: 0.15) {
+                self.view.layoutIfNeeded()
+            }
+            
+            self.lblTime.text = TaviCommon.alarmTimeStringToDateToString(stringData: data.alarmTime ?? "")
+        }).disposed(by: disposeBag)
+        
+//        output.todoModel.drive(onNext: { data in
+//            Log.debug("todoModelObData", "\(data)")
+//            self.tfName.text = data.scheduleName ?? ""
+//            self.tfPerformTime.text = data.scheduleTime ?? ""
+//        }).disposed(by: disposeBag)
+//        //output
+//        viewModel.todoModelOb.subscribe(onNext: { data in
+//            Log.debug("todoModelObData", "\(data)")
+//            self.tfName.text = data.scheduleName ?? ""
+//        }).disposed(by: disposeBag)
     }
     
     // MARK: - performTimeViewModel bind

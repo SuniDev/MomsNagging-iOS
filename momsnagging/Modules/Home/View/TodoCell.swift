@@ -22,11 +22,12 @@ class TodoCell: UITableViewCell {
 //    var cellType: TodoCellType = .normal
     // MARK: UI Properties
     lazy var toggleIc = UIButton().then({
-        if todoIsSelected {
-            $0.setImage(UIImage(asset: Asset.Icon.todoSelect), for: .normal)
-        } else {
-            $0.setImage(UIImage(asset: Asset.Icon.todoNonSelect), for: .normal)
-        }
+        $0.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 0)
+//        if todoIsSelected {
+//            $0.setImage(UIImage(asset: Asset.Icon.todoSelect), for: .normal)
+//        } else {
+//            $0.setImage(UIImage(asset: Asset.Icon.todoNonSelect), for: .normal)
+//        }
     })
     lazy var timeBtn = UIButton().then({
         $0.setTitleColor(UIColor(asset: Asset.Color.monoDark010), for: .normal)
@@ -35,8 +36,14 @@ class TodoCell: UITableViewCell {
         $0.layer.cornerRadius = 8
         $0.layer.masksToBounds = true
     })
-    lazy var prefixView = UIView()
-    lazy var prefixLbl = UILabel()
+    lazy var prefixView = UIView().then({
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+    })
+    lazy var prefixLbl = UILabel().then({
+        $0.font = FontFamily.Pretendard.semiBold.font(size: 12)
+        $0.text = "할일"
+    })
     lazy var titleLbl = UILabel().then({
         $0.numberOfLines = 2
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
@@ -57,8 +64,6 @@ class TodoCell: UITableViewCell {
 
 extension TodoCell {
     func setUI() {
-        
-        contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         contentView.addSubview(toggleIc)
         contentView.addSubview(timeBtn)
         contentView.addSubview(titleLbl)
@@ -68,14 +73,14 @@ extension TodoCell {
         
         toggleIc.snp.makeConstraints({
             $0.centerY.equalTo(contentView.snp.centerY)
-            $0.leading.equalTo(contentView.snp.leading).offset(20)
-            $0.width.height.equalTo(24)
+            $0.leading.equalTo(contentView.snp.leading).offset(5)
+            $0.width.height.equalTo(44)
         })
         timeBtn.snp.makeConstraints({
             $0.centerY.equalTo(contentView.snp.centerY)
             $0.width.equalTo(80)
             $0.height.equalTo(30)
-            $0.leading.equalTo(toggleIc.snp.trailing).offset(12)
+            $0.leading.equalTo(toggleIc.snp.trailing).offset(7)
         })
         bottomDivider.snp.makeConstraints({
             $0.bottom.equalTo(contentView.snp.bottom)
@@ -83,7 +88,6 @@ extension TodoCell {
             $0.trailing.equalTo(contentView.snp.trailing)
             $0.height.equalTo(1)
         })
-        prefixView = HomeView.cellTodoIconView(lbl: prefixLbl, count: nil, isDone: todoIsSelected)
         contentView.addSubview(prefixView)
         contentView.addSubview(prefixLbl)
         prefixView.snp.makeConstraints({

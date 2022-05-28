@@ -13,6 +13,14 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
+    var dateParam: String?
+    var homeViewModel: HomeViewModel?
+    
+    init(dateParam: String, homeViewModel:HomeViewModel) {
+        self.dateParam = dateParam
+        self.homeViewModel = homeViewModel
+    }
+    
     // MARK: - Input
     struct Input {
         let willAppearAddHabit: Driver<Void>

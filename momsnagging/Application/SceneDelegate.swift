@@ -28,10 +28,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigator = Navigator.default
         
-        let viewModel = IntroViewModel(withService: appService)
-        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
-//        let viewModel = MainContainerViewModel()
-//        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
+//        let viewModel = IntroViewModel(withService: appService)
+//        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
+        let viewModel = MainContainerViewModel()
+        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
 //        let viewModel = DeleteAccountViewModel()
 //        navigator.show(seque: .deleteAccount(viewModel: viewModel), sender: nil, transition: .root)
           
