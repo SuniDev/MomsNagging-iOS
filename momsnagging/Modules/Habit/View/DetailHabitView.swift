@@ -409,6 +409,8 @@ class DetailHabitView: BaseViewController, Navigatable {
         output.showDeleteAlert
             .drive(onNext: { message in
                 CommonView.showAlert(vc: self, title: "", message: message, cancelTitle: STR_NO, destructiveTitle: STR_DELETE, destructiveHandler: {
+                    Log.debug("아이디 확인", "\(self.viewModel?.todoModel?.id ?? 0)")
+                    self.viewModel?.requestDeleteRoutine(scheduleId: self.viewModel?.todoModel?.id ?? 0)
                     deleteAlertDoneHandler.accept(())
                 })
             }).disposed(by: disposeBag)

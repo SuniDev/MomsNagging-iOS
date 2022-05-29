@@ -45,6 +45,7 @@ class HomeView: BaseViewController, Navigatable {
     var collectionViewOutput: HomeViewModel.Output?
     var todoList: [TodoListModel] = []
     var todoListType: [Int] = []
+    var moveList: [TodoListModel] = []
     /*
      prefix : head
      Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일

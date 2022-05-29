@@ -589,4 +589,23 @@ extension DetailHabitViewModel {
         })
     }
     
+    func requestDeleteRoutine(scheduleId: Int) {
+        provider.request(.deleteTodo(scheduleId: scheduleId), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("deleteTodo json : \(json)")
+                    self.modifySuccessOb.onNext(())
+                    self.homeViewModel.addHabitSuccessOb.onNext(())
+                } catch let error {
+                    Log.error("deleteTodo error", "\(error)")
+                    self.modifySuccessOb.onNext(())
+                    self.homeViewModel.addHabitSuccessOb.onNext(())
+                }
+            case .failure(let error):
+                Log.error("deleteTodo failure error", "\(error)")
+            }
+        })
+    }
 }

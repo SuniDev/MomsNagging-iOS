@@ -7,6 +7,7 @@
 import UIKit
 import Then
 import SnapKit
+import RxSwift
 
 class RoutineCountCell: UITableViewCell {
     
@@ -15,7 +16,12 @@ class RoutineCountCell: UITableViewCell {
         setUI()
         selectionStyle = .none
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
     // MARK: Properties & Variable
+    var disposeBag = DisposeBag()
     var todoIsSelected: Bool = false // 투두리스트 완료,선택 여부
     // MARK: UI Properties
     lazy var toggleIc = UIButton().then({

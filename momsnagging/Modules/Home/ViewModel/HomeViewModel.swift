@@ -22,6 +22,7 @@ class HomeViewModel: BaseViewModel, ViewModelType {
     var addHabitSuccessOb = PublishSubject<Void>()
     var toggleIcSuccessOb = PublishSubject<Void>()
     var toggleCancelOb = PublishSubject<Void>()
+    var delaySuccessOb = PublishSubject<Void>()
     
     override init() {
     }
@@ -205,13 +206,13 @@ extension HomeViewModel {
             case .success(let result):
                 do {
                     let json = JSON(try result.mapJSON())
-                    print("json : \(json)")
+                    print("requestRoutineDone json : \(json)")
                     self.toggleIcSuccessOb.onNext(())
                 } catch let error {
-                    print("error : \(error)")
+                    print("requestRoutineDone error : \(error)")
                 }
             case .failure(let error):
-                print("failure error : \(error)")
+                print("requestRoutineDone failure error : \(error)")
             }
         })
     }
@@ -227,14 +228,56 @@ extension HomeViewModel {
             case .success(let result):
                 do {
                     let json = JSON(try result.mapJSON())
-                    print("json : \(json)")
+                    print("requestRoutineCancel json : \(json)")
                     self.toggleCancelOb.onNext(())
                 } catch let error {
-                    print("error : \(error)")
+                    print("requestRoutineCancel error : \(error)")
                 }
             case .failure(let error):
-                print("failure error : \(error)")
+                print("requestRoutineCancel failure error : \(error)")
             }
         })
     }
+    
+    func requestDelete(scheduleId: Int) {
+        provider.request(.deleteTodo(scheduleId: scheduleId), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("deleteTodo json : \(json)")
+                    self.addHabitSuccessOb.onNext(())
+                } catch let error {
+                    Log.error("deleteTodo error", "\(error)")
+                    self.addHabitSuccessOb.onNext(())
+                }
+            case .failure(let error):
+                Log.error("deleteTodo failure error", "\(error)")
+            }
+        })
+    }
+    
+    func requestDeleay(scheduleId: Int) {
+        var param: [ModifyTodoRequestModel] = []
+        var model = ModifyTodoRequestModel()
+        model.op = "replace"
+        model.path = "/done"
+        model.value = nil
+        param.append(model)
+        provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestDeleay : \(json)")
+                    self.delaySuccessOb.onNext(())
+                } catch let error {
+                    Log.error("requestDeleay failure error", "\(error)")
+                }
+            case .failure(let error):
+                Log.error("requestDeleay failure error", "\(error)")
+            }
+        })
+    }
+    
 }

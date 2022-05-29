@@ -46,9 +46,9 @@ class TaviCommon {
 }
 
 extension UIViewController {
-    func showToast(message : String) {
+    func showToast(message: String) {
         let frameView = UIView().then({
-            $0.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+            $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.6)
             $0.alpha = 0.8
             $0.layer.cornerRadius = 6
         })
@@ -56,7 +56,7 @@ extension UIViewController {
             $0.image = UIImage(asset: Asset.Assets.emojiDefault)
         })
         let toastLabel = UILabel()
-        toastLabel.textColor = UIColor(named:"white")
+        toastLabel.textColor = UIColor(asset: Asset.Color.monoWhite)
         toastLabel.font = FontFamily.Pretendard.bold.font(size: 16)
         toastLabel.text = message
         
@@ -83,4 +83,238 @@ extension UIViewController {
         UIView.animate(withDuration: 1.5, delay: 1.5, options: .curveEaseOut, animations: { frameView.alpha = 0.0 }, completion: { isCompleted in
             frameView.removeFromSuperview()
         })}
+}
+
+extension HomeView {
+    enum CellItemMoreType {
+        case todo
+        case countRoutine
+        case routine
+    }
+    func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController) {
+        let emptyBtn = UIButton()
+        let backgroundView = UIView().then({
+            $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
+        })
+        let stackView = UIStackView().then({
+            $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+            $0.layer.cornerRadius = 6
+            $0.layer.masksToBounds = true
+            $0.axis = .vertical
+            $0.distribution = .fillEqually
+        })
+        emptyBtn.rx.tap.bind {
+            backgroundView.removeFromSuperview()
+        }.disposed(by: disposedBag)
+        
+        let modifyView = UIView()
+        let modifyLbl = UILabel().then({
+            $0.text = "수정"
+            $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        let modifyImg = UIImageView().then({
+            $0.image = UIImage(asset: Asset.Icon.edit)
+        })
+        let modifyBtn = UIButton()
+        modifyView.addSubview(modifyLbl)
+        modifyView.addSubview(modifyImg)
+        modifyView.addSubview(modifyBtn)
+        modifyLbl.snp.makeConstraints({
+            $0.centerY.equalTo(modifyView.snp.centerY)
+            $0.leading.equalTo(modifyView.snp.leading).offset(29)
+        })
+        modifyImg.snp.makeConstraints({
+            $0.centerY.equalTo(modifyView.snp.centerY)
+            $0.leading.equalTo(modifyLbl.snp.trailing).offset(18)
+            $0.width.height.equalTo(16)
+        })
+        modifyBtn.snp.makeConstraints({
+            $0.edges.equalTo(modifyView.snp.edges)
+        })
+        
+        modifyBtn.rx.tap.subscribe(onNext: {
+            // 수정 API 호출
+            if type == .todo {
+                let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: self.todoList[index])
+                let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
+                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: vc, transition: .navigation)
+            } else {
+                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: self.todoList[index])
+                self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self, transition: .navigation)
+            }
+            backgroundView.removeFromSuperview()
+        }).disposed(by: disposedBag)
+        
+        let deleteView = UIView()
+        let deleteLbl = UILabel().then({
+            $0.text = "삭제"
+            $0.textColor = UIColor(asset: Asset.Color.error)
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        let deleteImg = UIImageView().then({
+            $0.image = UIImage(asset: Asset.Icon.deleteRed)
+        })
+        let deleteBtn = UIButton()
+        deleteView.addSubview(deleteLbl)
+        deleteView.addSubview(deleteImg)
+        deleteView.addSubview(deleteBtn)
+        
+        deleteLbl.snp.makeConstraints({
+            $0.centerY.equalTo(deleteView.snp.centerY)
+            $0.leading.equalTo(deleteView.snp.leading).offset(29)
+        })
+        deleteImg.snp.makeConstraints({
+            $0.centerY.equalTo(deleteView.snp.centerY)
+            $0.leading.equalTo(deleteLbl.snp.trailing).offset(18)
+            $0.width.height.equalTo(16)
+        })
+        deleteBtn.snp.makeConstraints({
+            $0.edges.equalTo(deleteView.snp.edges)
+        })
+        
+        deleteBtn.rx.tap.subscribe(onNext: {
+            backgroundView.removeFromSuperview()
+            // 삭제 API 호출
+            CommonView.showAlert(vc: vc, type: .twoBtn, title: nil, message: "정말로 삭제할꺼니?", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
+
+            }, doneHandler: {
+                self.viewModel.requestDelete(scheduleId: itemId)
+            })
+//            self.viewModel.requestDelete(scheduleId: itemId)
+
+        }).disposed(by: disposedBag)
+        
+        let delayView = UIView()
+        let delayLbl = UILabel().then({
+            $0.text = "미룸"
+            $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        let delayImg = UIImageView().then({
+            $0.image = UIImage(asset: Asset.Icon.curveRight)
+        })
+        let delayBtn = UIButton()
+        delayView.addSubview(delayLbl)
+        delayView.addSubview(delayImg)
+        delayView.addSubview(delayBtn)
+        delayLbl.snp.makeConstraints({
+            $0.centerY.equalTo(delayView.snp.centerY)
+            $0.leading.equalTo(delayView.snp.leading).offset(29)
+        })
+        delayImg.snp.makeConstraints({
+            $0.centerY.equalTo(delayView.snp.centerY)
+            $0.leading.equalTo(delayLbl.snp.trailing).offset(18)
+            $0.width.height.equalTo(16)
+        })
+        delayBtn.snp.makeConstraints({
+            $0.edges.equalTo(delayView.snp.edges)
+        })
+        delayBtn.rx.tap.subscribe(onNext: {
+            //미룸 API 호출
+            CommonView.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
+            }, doneHandler: {
+                self.viewModel.requestDeleay(scheduleId: itemId)
+            })
+            backgroundView.removeFromSuperview()
+        }).disposed(by: disposedBag)
+        
+        let skipView = UIView()
+        let skipLbl = UILabel().then({
+            $0.text = "건너뜀"
+            $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        let skipImg = UIImageView().then({
+            $0.image = UIImage(asset: Asset.Icon.curveRight)
+        })
+        let skipBtn = UIButton()
+        skipView.addSubview(skipLbl)
+        skipView.addSubview(skipImg)
+        skipView.addSubview(skipBtn)
+        skipLbl.snp.makeConstraints({
+            $0.centerY.equalTo(skipView.snp.centerY)
+            $0.leading.equalTo(skipView.snp.leading).offset(29)
+        })
+        skipImg.snp.makeConstraints({
+            $0.centerY.equalTo(skipView.snp.centerY)
+            $0.leading.equalTo(skipLbl.snp.trailing).offset(18)
+            $0.width.height.equalTo(16)
+        })
+        skipBtn.snp.makeConstraints({
+            $0.edges.equalTo(skipView.snp.edges)
+        })
+        skipBtn.rx.tap.subscribe(onNext: {
+            //건너뜀 API 호출
+            backgroundView.removeFromSuperview()
+        }).disposed(by: disposedBag)
+        
+        switch type {
+        case .todo:
+            view.addSubview(backgroundView)
+            backgroundView.addSubview(emptyBtn)
+            backgroundView.addSubview(stackView)
+            stackView.addArrangedSubview(modifyView)
+            stackView.addArrangedSubview(deleteView)
+            backgroundView.snp.makeConstraints({
+                $0.top.equalTo(view.snp.top)
+                $0.leading.equalTo(view.snp.leading)
+                $0.trailing.equalTo(view.snp.trailing)
+                $0.bottom.equalTo(view.snp.bottom)
+            })
+            emptyBtn.snp.makeConstraints({
+                $0.edges.equalTo(backgroundView.snp.edges)
+            })
+            stackView.snp.makeConstraints({
+                $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
+                $0.width.equalTo(110)
+                $0.height.equalTo(100)
+                $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+            })
+        case .countRoutine:
+            view.addSubview(backgroundView)
+            backgroundView.addSubview(emptyBtn)
+            backgroundView.addSubview(stackView)
+            stackView.addArrangedSubview(skipView)
+            stackView.addArrangedSubview(modifyView)
+            stackView.addArrangedSubview(deleteView)
+            backgroundView.snp.makeConstraints({
+                $0.top.equalTo(view.snp.top)
+                $0.leading.equalTo(view.snp.leading)
+                $0.trailing.equalTo(view.snp.trailing)
+                $0.bottom.equalTo(view.snp.bottom)
+            })
+            emptyBtn.snp.makeConstraints({
+                $0.edges.equalTo(backgroundView.snp.edges)
+            })
+            stackView.snp.makeConstraints({
+                $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
+                $0.width.equalTo(110)
+                $0.height.equalTo(150)
+                $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+            })
+        case .routine:
+            view.addSubview(backgroundView)
+            backgroundView.addSubview(emptyBtn)
+            backgroundView.addSubview(stackView)
+            stackView.addArrangedSubview(delayView)
+            stackView.addArrangedSubview(modifyView)
+            stackView.addArrangedSubview(deleteView)
+            backgroundView.snp.makeConstraints({
+                $0.top.equalTo(view.snp.top)
+                $0.leading.equalTo(view.snp.leading)
+                $0.trailing.equalTo(view.snp.trailing)
+                $0.bottom.equalTo(view.snp.bottom)
+            })
+            emptyBtn.snp.makeConstraints({
+                $0.edges.equalTo(backgroundView.snp.edges)
+            })
+            stackView.snp.makeConstraints({
+                $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
+                $0.width.equalTo(110)
+                $0.height.equalTo(150)
+                $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+            })
+        }
+    }
 }

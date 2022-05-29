@@ -11,6 +11,7 @@ import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 /**
  # HomeTodoList, HomeViewExtension
@@ -83,13 +84,40 @@ extension HomeView {
         } else if sender.accessibilityLabel == "false" {
             self.viewModel.requestRoutineDone(scheduleId: sender.tag)
         }
+//        showMorePopup(type: .todo, itemId: 0, index: 1)
+    }
+    
+    @objc func selectTodoMoreAction(_ sender: UIButton) {
+        Log.debug("senderTag 투두", "\(sender.tag)")
+        let itemId = todoList[sender.tag]
+        showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self)
+    }
+    @objc func selectRoutineMoreAction(_ sender: UIButton) {
+        Log.debug("senderTag 습관요일", "\(sender.tag)")
+        let itemId = todoList[sender.tag]
+        showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self)
+    }
+    @objc func selectCountRoutineMoreAction(_ sender: UIButton) {
+        Log.debug("senderTag 습관횟수", "\(sender.tag)")
+        let itemId = todoList[sender.tag]
+        showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self)
     }
     
     func todoBind() {
+//        viewModel.todoListDataOB.subscribe(onNext: { list in
+//            self.todoList = list
+//        }).disposed(by: disposedBag)
+//        viewModel.todoListDataObserver.subscribe(onNext: { list in
+//            self.todoList = list
+//        }).disposed(by: disposedBag)
         let dv = viewModel.todoListDataObserver.asDriverOnErrorJustComplete()
         dv.drive { list in
             list.bind(to: self.todoListTableView.rx.items) { tableView, row, item -> UITableViewCell in
+                if row == 0 {
+                    self.todoList.removeAll()
+                }
                 self.todoList.append(item)
+                self.moveList = self.todoList
                 if item.goalCount == 0 {
                     if item.scheduleType == "TODO" {
                         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: IndexPath.init(row: row, section: 0)) as? TodoCell
@@ -127,6 +155,8 @@ extension HomeView {
                         }
                         cell?.toggleIc.tag = item.id ?? 0
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectTodoCheck), for: .touchUpInside)
+                        cell?.moreIc.tag = row
+                        cell?.moreIc.addTarget(self, action: #selector(self.selectTodoMoreAction), for: .touchUpInside)
                         
                         self.todoListType.append(0)
                         return cell!
@@ -168,6 +198,8 @@ extension HomeView {
                         }
                         cell?.toggleIc.tag = item.id ?? 0
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectRoutineCheck), for: .touchUpInside)
+                        cell?.moreIc.tag = row
+                        cell?.moreIc.addTarget(self, action: #selector(self.selectRoutineMoreAction), for: .touchUpInside)
                         self.todoListType.append(1)
                         return cell!
                     }
@@ -209,6 +241,8 @@ extension HomeView {
                     }
                     cell?.toggleIc.tag = item.id ?? 0
                     cell?.toggleIc.addTarget(self, action: #selector(self.selectCountRoutineCheck), for: .touchUpInside)
+                    cell?.moreIc.tag = row
+                    cell?.moreIc.addTarget(self, action: #selector(self.selectCountRoutineMoreAction), for: .touchUpInside)
                     self.todoListType.append(2)
                     return cell!
                 }
@@ -220,15 +254,26 @@ extension HomeView {
         }).disposed(by: disposedBag)
         
         viewModel.addHabitSuccessOb.subscribe(onNext: { _ in
+            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
+            self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         
         viewModel.toggleIcSuccessOb.subscribe(onNext: { _ in
+            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             self.showToast(message: "우리 ~~ 너무너무 잘했어~^^")
+            self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         viewModel.toggleCancelOb.subscribe(onNext: { _ in
+            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
+            self.todoListTableView.reloadData()
+        }).disposed(by: disposedBag)
+        viewModel.delaySuccessOb.subscribe(onNext: { _ in
+            self.todoList.removeAll()
+            self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
+            self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         
         todoListTableView.rx.itemSelected.subscribe(onNext: { indexPath in
@@ -244,136 +289,18 @@ extension HomeView {
             }
         }).disposed(by: disposedBag)
         
-//        collectionViewOutput?.todoListData?.drive { list in
-//            list.bind(to: self.todoListTableView.rx.items(cellIdentifier: "HomeTodoListCell", cellType: HomeTodoListCell.self)) { _, item, cell in
-//                self.todoList.append(item)
-//                cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
-//                print("listTest : \(item)")
-//                cell.todoIsSelected = item.done ?? false
-//                cell.timeBtn.setTitle(item.scheduleTime ?? "", for: .normal)
-//                cell.titleLbl.text = item.scheduleName ?? ""
-//                if item.scheduleType == "TODO" {
-//
-//                } else if item.scheduleType == "ROUTINE" {
-//
-//                }
-////                cell.prefixLbl.text = item.prefix ?? ""
-////                cell.cellType = item.type ?? .normal
-//                self.collectionViewOutput?.listBtnStatus?.drive {
-//                    cell.sortIc.isHidden = !$0
-//                }.disposed(by: self.disposedBag)
-//                /*
-//                 select colorList
-//                 0 : contentViewColor
-//                 1 : timeBtnbackground
-//                 2 : timeLbl
-//                 3 : prefixBackground
-//                 4 : prefixLbl
-//                 */
-////                if item.type == .todo {
-//////                    print("itemType: \(item.type)")
-//
-////                    cell.toggleIc.rx.tap.bind { colorList in
-////                        if cell.toggleIc.isSelected {
-////                            cell.toggleIc.isSelected = false
-////                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: false)
-////                            lazy var output = viewModel.transform(input: input)
-////                            output.toggleImage.drive { img in
-////                                cell.toggleIc.setImage(img, for: .normal)
-////                            }.disposed(by: self.disposedBag)
-////                            output.cellColorList.drive { colorList in
-////                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-////                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-////                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-////                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
-////                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
-////                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
-////                            }.disposed(by: self.disposedBag)
-////                        } else {
-////                            cell.toggleIc.isSelected = true
-////                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: true)
-////                            lazy var output = viewModel.transform(input: input)
-////                            output.toggleImage.drive { img in
-////                                cell.toggleIc.setImage(img, for: .normal)
-////                            }.disposed(by: self.disposedBag)
-////                            output.cellColorList.drive { colorList in
-////                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-////                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-////                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-////                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
-////                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
-////                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
-////                            }.disposed(by: self.disposedBag)
-////                        }
-////                    }.disposed(by: self.disposedBag)
-//
-////                } else if item.type == .count {
-////                    cell.toggleIc.rx.tap.bind { colorList in
-////                        if cell.toggleIc.isSelected {
-////                            cell.toggleIc.isSelected = false
-////                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: false, cellType: .count)
-////                            lazy var output = viewModel.transform(input: input)
-////                            output.toggleImage.drive { img in
-////                                cell.toggleIc.setImage(img, for: .normal)
-////                            }.disposed(by: self.disposedBag)
-////                            output.cellColorList.drive { colorList in
-////                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-////                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-////                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-////                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
-////                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
-////                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
-////                            }.disposed(by: self.disposedBag)
-////                        } else {
-////                            cell.toggleIc.isSelected = true
-////                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: true, cellType: .count)
-////                            lazy var output = viewModel.transform(input: input)
-////                            output.toggleImage.drive { img in
-////                                cell.toggleIc.setImage(img, for: .normal)
-////                            }.disposed(by: self.disposedBag)
-////                            output.cellColorList.drive { colorList in
-////                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-////                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-////                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-////                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
-////                                cell.prefixView.backgroundColor = UIColor(asset: colorList[3])
-////                                cell.prefixLbl.textColor = UIColor(asset: colorList[4])
-////                            }.disposed(by: self.disposedBag)
-////                        }
-////                    }.disposed(by: self.disposedBag)
-////                } else {
-////                    cell.toggleIc.rx.tap.bind { colorList in
-////                        if cell.toggleIc.isSelected {
-////                            cell.toggleIc.isSelected = false
-////                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: false, cellType: .normal)
-////                            lazy var output = viewModel.transform(input: input)
-////                            output.toggleImage.drive { img in
-////                                cell.toggleIc.setImage(img, for: .normal)
-////                            }.disposed(by: self.disposedBag)
-////                            output.cellColorList.drive { colorList in
-////                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-////                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-////                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-////                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
-////                            }.disposed(by: self.disposedBag)
-////                        } else {
-////                            cell.toggleIc.isSelected = true
-////                            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: true, cellType: .normal)
-////                            lazy var output = viewModel.transform(input: input)
-////                            output.toggleImage.drive { img in
-////                                cell.toggleIc.setImage(img, for: .normal)
-////                            }.disposed(by: self.disposedBag)
-////                            output.cellColorList.drive { colorList in
-////                                cell.contentView.backgroundColor = UIColor(asset: colorList[0])
-////                                cell.timeBtn.backgroundColor = UIColor(asset: colorList[1])
-////                                cell.timeBtn.setTitleColor(UIColor(asset: colorList[2]), for: .normal)
-////                                cell.titleLbl.textColor = UIColor(asset: colorList[2])
-////                            }.disposed(by: self.disposedBag)
-////                        }
-////                    }.disposed(by: self.disposedBag)
-////                }
-//            }.disposed(by: disposedBag)
-//        }
+        // 이동 처리
+        todoListTableView.rx.itemMoved.bind { sIndexPath, dIndexPath in
+            let sRow = self.todoList[sIndexPath.row]
+            let dRow = self.todoList[dIndexPath.row]
+            let sIndex = sIndexPath.row
+            let dIndex = dIndexPath.row
+            
+//            self.moveList[sIndexPath.row] = dRow
+            self.moveList[dIndexPath.row] = sRow
+//            print("moveRowAt ! \(sIndexPath),\(dIndexPath),\n \(self.todoList),\n\n \(self.moveList)")
+        }.disposed(by: disposedBag)
+        
         todoListTableView.rx.setDelegate(self).disposed(by: disposedBag)
         todoListTableView.dragDelegate = self
         todoListTableView.dropDelegate = self
@@ -382,6 +309,7 @@ extension HomeView {
 }
 
 extension HomeView: UITableViewDelegate, UITableViewDragDelegate, UITableViewDropDelegate, UIDropInteractionDelegate {
+    
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) { }
     
     func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
@@ -393,18 +321,7 @@ extension HomeView: UITableViewDelegate, UITableViewDragDelegate, UITableViewDro
     
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = todoList[indexPath.row]
         return [ dragItem ]
-    }
-    
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        lazy var input = HomeViewModel.Input(sourceIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
-        lazy var output = viewModel.transform(input: input)
-        output.todoListData?.drive { list in
-            Log.debug("List!!", "\(list)")
-        }.disposed(by: disposedBag)
-        print("moveRowAt !")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

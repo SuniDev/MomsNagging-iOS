@@ -8,6 +8,7 @@
 import UIKit
 import Then
 import SnapKit
+import RxSwift
 
 class RoutineCell: UITableViewCell {
     
@@ -16,7 +17,12 @@ class RoutineCell: UITableViewCell {
         setUI()
         selectionStyle = .none
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
     // MARK: Properties & Variable
+    var disposeBag = DisposeBag()
     var todoIsSelected: Bool = false // 투두리스트 완료,선택 여부
     var count: Int = 0 // 반복횟수
 //    var cellType: TodoCellType = .normal

@@ -33,8 +33,8 @@ extension ScheduleService: TargetType {
             return "schedules"
         case .todoDetailLookUp(scheduleId: let id):
             return "schedules/\(id)"
-        case .deleteTodo:
-            return "schedules"
+        case .deleteTodo(scheduleId: let id):
+            return "schedules/\(id)"
         case .modifyTodo(scheduleId: let id, modifyParam: _):
             return "schedules/\(id)"
         case .sortingTodoList:
@@ -75,8 +75,8 @@ extension ScheduleService: TargetType {
             return .requestJSONEncodable(param)
         case .todoDetailLookUp:
             return .requestPlain
-        case .deleteTodo(scheduleId: let scheduleId):
-            return .requestParameters(parameters: ["scheduleId": scheduleId], encoding: URLEncoding.queryString)
+        case .deleteTodo:
+            return .requestPlain
         case .modifyTodo(scheduleId: _, modifyParam: let param):
             return .requestJSONEncodable(param)
         case .sortingTodoList(idArray: let array):
