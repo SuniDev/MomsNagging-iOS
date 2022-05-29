@@ -21,6 +21,12 @@ enum MomsNaggingAPI {
     case validateID(ValidateIDRequest)
     // 회원 가입
     case join(JoinRequest)
+    // 회원 정보 조회
+    case getUser(GetUserRequest)
+    // 회원 정보 수정
+    case putUser(PutUserRequest)
+    // 회원 탈퇴
+    case deleteUser(DeleteUserRequest)
     // 월간 달력 일기장 조회
     case diaryCalendar(DiaryCalendarRequest)
     // 일기장 조회
@@ -59,6 +65,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return "/auth/validate/\(request.id)"
         case .join(let request):
             return "/auth/\(request.provider)"
+        case .getUser, .putUser, .deleteUser:
+            return "/users"
         case .diaryCalendar:
             return "/diary/calendar"
         case .getDiary, .putDiary:
@@ -80,24 +88,32 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .join:
           return .requestCompositeData(bodyData: Data(), urlParameters: parameters ?? [:])
+      case .getUser:
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .putUser(let request):
+          return .requestJSONEncodable(request)
+      case .deleteUser:
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .diaryCalendar:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .getDiary:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .putDiary(let request):
-          return .requestJSONEncodable(["title": request.title, "context": request.context, "diaryDate": request.diaryDate])
+          return .requestJSONEncodable(request)
       }
     }
     
     // 각 case의 메소드 타입 get / post
     var method: Moya.Method {
         switch self {
-        case .login, .validateID, .diaryCalendar, .getDiary:
+        case .login, .validateID, .diaryCalendar, .getDiary, .getUser:
             return .get
         case .join:
             return .post
-        case .putDiary:
+        case .putDiary, .putUser:
             return .put
+        case .deleteUser:
+            return .delete
         }
     }
     
@@ -106,7 +122,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         switch self {
         case .login, .validateID, .join:
             return ["Content-Type": "application/json"]
-        case .diaryCalendar, .getDiary, .putDiary:
+        case .diaryCalendar, .getDiary, .putDiary, .getUser, .putUser, .deleteUser:
             if let token: String = CommonUser.authorization {
                 return ["Content-Type": "application/json", "Authorization": "Bearer \(token)"]
             }
@@ -136,6 +152,12 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         case .login(let request):
             return request.toDictionary()
         case .join(let request):
+            return request.toDictionary()
+        case .getUser(let request):
+            return request.toDictionary()
+        case .putUser(let request):
+            return request.toDictionary()
+        case .deleteUser(let request):
             return request.toDictionary()
         case .diaryCalendar(let request):
             return request.toDictionary()

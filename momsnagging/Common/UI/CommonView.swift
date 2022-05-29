@@ -783,7 +783,7 @@ class CommonView {
      - Returns: UIView
      - Note: 잔소리 강도 라디오 버튼 프레임
      */
-    static func naggingRadioButtonFrame(naggingIntensity: NaggingIntensity, rbNagging: CommonTextRadioButton) -> UIView {
+    static func naggingRadioButtonFrame(naggingIntensity: NaggingLevel, rbNagging: CommonTextRadioButton) -> UIView {
         
         lazy var view = UIView().then({
             $0.backgroundColor = Asset.Color.monoWhite.color

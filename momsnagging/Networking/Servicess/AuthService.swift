@@ -11,18 +11,18 @@ import Moya
 import SwiftyJSON
 
 /**
- # (P) AppUserService
+ # (P) AppAuthService
  - Authors: suni
- - Note: 회원 관련 서비스 프로토콜을 사용하기 위한 변수를 선언한 프로토콜
+ - Note: 인증 관련 서비스 프로토콜을 사용하기 위한 변수를 선언한 프로토콜
  */
-protocol AppUserService {
+protocol AppAuthService {
     var authService: AuthService { get }
 }
 
 /**
  # (C) AuthService
  - Authors: suni
- - Note: 회원  관련 서비스 클래스.
+ - Note: 인증 관련 서비스 클래스.
  */
 class AuthService {
     private let networking = AppNetworking()

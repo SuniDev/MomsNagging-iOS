@@ -233,8 +233,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         requestGetDiary
             .filter { $0.context == nil || $0.context?.isEmpty ?? true }
             .flatMapLatest({ _ -> Observable<String> in
-                // TODO: 사용자 잔소리 강도
-                return self.getContentsPlaceholder(.fondMom)
+                return self.getContentsPlaceholder()
             })
             .subscribe(onNext: { text in
                 if textContents.value.isEmpty {
@@ -268,8 +267,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         isWriting
             .filter { $0 == true }
             .flatMapLatest({ _ -> Observable<String> in
-                // TODO: 사용자 잔소리 강도
-                return self.getContentsPlaceholder(.fondMom)
+                return self.getContentsPlaceholder()
             })
             .subscribe(onNext: { text in
                 if textContents.value.isEmpty {
@@ -350,8 +348,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         input.didEndEditingContents
             .asObservable()
             .flatMapLatest({ _ -> Observable<String> in
-                // TODO: 사용자 잔소리 강도
-                return self.getContentsPlaceholder(.fondMom)
+                return self.getContentsPlaceholder()
             })
             .subscribe(onNext: { text in
                 if textContents.value.isEmpty {
@@ -370,8 +367,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         let successDoneDiary = input.btnDoneTapped
             .asObservable()
             .flatMapLatest { _ -> Observable<String> in
-                // TODO: 사용자 잔소리 강도
-                return self.getDoneAlertTitle(.fondMom)
+                return self.getDoneAlertTitle()
             }
         
         let reqeustSaveDiary = input.doneAlertDoneHandler.debug()
@@ -419,8 +415,9 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
 }
 extension DetailDiaryViewModel {
     
-    private func getContentsPlaceholder( _ type: NaggingIntensity) -> Observable<String> {
+    private func getContentsPlaceholder() -> Observable<String> {
         return Observable<String>.create { observer -> Disposable in
+            let type = CommonUser.naggingLevel ?? .fondMom
             switch type {
             case .fondMom: observer.onNext("오늘 하루 어땠어~^^?")
             case .coolMom: observer.onNext("오늘 어땠니.")
@@ -431,10 +428,10 @@ extension DetailDiaryViewModel {
         }
     }
     
-    private func getDoneAlertTitle(_ type: NaggingIntensity) -> Observable<String> {
+    private func getDoneAlertTitle() -> Observable<String> {
         return Observable<String>.create { observer -> Disposable in
-            // TODO: 사용자 호칭 가져오기
-            let nickName = "자식"
+            let type = CommonUser.naggingLevel ?? .fondMom
+            let nickName = CommonUser.nickName ?? "자식"
             switch type {
             case .fondMom: observer.onNext("우리 \(nickName) 오늘 하루도 수고 많았어^^")
             case .coolMom: observer.onNext("그래. 수고했다.")

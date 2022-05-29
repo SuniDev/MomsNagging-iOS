@@ -166,7 +166,6 @@ class DiaryViewModel: ViewModel, ViewModelType {
         let goToDetail = input.btnDetailTappd
             .asObservable()
             .map { _ -> DetailDiaryViewModel? in
-                Log.debug("goToDetail", selectedDate.value)
                 let viewModel = DetailDiaryViewModel(withService: self.provider, selectedDate: selectedDate.value)
                 return viewModel
             }.filter { $0 != nil }

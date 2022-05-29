@@ -16,7 +16,7 @@
 		86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */; };
 		8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F75F282A5891007998CE /* PerformTimeSettingView.swift */; };
 		8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */; };
-		866F2C1A283EFA36004B5691 /* GetUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C19283EFA36004B5691 /* GetUser.swift */; };
+		866F2C1A283EFA36004B5691 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C19283EFA36004B5691 /* User.swift */; };
 		866F2C1D283EFE60004B5691 /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1C283EFE60004B5691 /* AppService.swift */; };
 		866F2C1F283EFEAA004B5691 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C1E283EFEAA004B5691 /* AuthService.swift */; };
 		866F2C21283F0B5C004B5691 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866F2C20283F0B5C004B5691 /* Networking.swift */; };
@@ -122,6 +122,9 @@
 		A0066C3428432E9C00805570 /* DetailDiaryCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3328432E9C00805570 /* DetailDiaryCalendarCell.swift */; };
 		A0066C3628437BF600805570 /* PushSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3528437BF600805570 /* PushSettingView.swift */; };
 		A0066C3828437C3800805570 /* PushSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3728437C3800805570 /* PushSettingViewModel.swift */; };
+		A0066C3A284381AD00805570 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C39284381AD00805570 /* UserService.swift */; };
+		A0066C3C2843829000805570 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3B2843829000805570 /* UserRequest.swift */; };
+		A0066C3E2843890900805570 /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3D2843890900805570 /* UserResult.swift */; };
 		A00AFEDE283FAF2A005565FE /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00AFEDD283FAF2A005565FE /* Validate.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
 		A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0269004283148E0009A40A0 /* CommonSwitch.swift */; };
@@ -175,7 +178,7 @@
 		86523CA12824FD7F00F243A8 /* DetailHabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewModel.swift; sourceTree = "<group>"; };
 		8662F75F282A5891007998CE /* PerformTimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingView.swift; sourceTree = "<group>"; };
 		8662F761282A5C9B007998CE /* PerformTimeSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformTimeSettingViewModel.swift; sourceTree = "<group>"; };
-		866F2C19283EFA36004B5691 /* GetUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUser.swift; sourceTree = "<group>"; };
+		866F2C19283EFA36004B5691 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		866F2C1C283EFE60004B5691 /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
 		866F2C1E283EFEAA004B5691 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		866F2C20283F0B5C004B5691 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
@@ -283,6 +286,9 @@
 		A0066C3328432E9C00805570 /* DetailDiaryCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryCalendarCell.swift; sourceTree = "<group>"; };
 		A0066C3528437BF600805570 /* PushSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingView.swift; sourceTree = "<group>"; };
 		A0066C3728437C3800805570 /* PushSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingViewModel.swift; sourceTree = "<group>"; };
+		A0066C39284381AD00805570 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		A0066C3B2843829000805570 /* UserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
+		A0066C3D2843890900805570 /* UserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResult.swift; sourceTree = "<group>"; };
 		A00AFEDD283FAF2A005565FE /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
 		A0269004283148E0009A40A0 /* CommonSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSwitch.swift; sourceTree = "<group>"; };
@@ -401,6 +407,7 @@
 				866F2C1C283EFE60004B5691 /* AppService.swift */,
 				866F2C1E283EFEAA004B5691 /* AuthService.swift */,
 				A03D13D3284124A10012C406 /* DiaryService.swift */,
+				A0066C39284381AD00805570 /* UserService.swift */,
 			);
 			path = Servicess;
 			sourceTree = "<group>";
@@ -470,7 +477,6 @@
 				A0AA717128426F7A005ABAF6 /* Response */,
 				86E699FB2822722E00EA6BC3 /* Request */,
 				866F2C2F283F4B5D004B5691 /* SNSLogin.swift */,
-				866F2C19283EFA36004B5691 /* GetUser.swift */,
 				A0A674232813EC6900E0223B /* Onboarding.swift */,
 				A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */,
 				A0A992BF282EB8F8009049CF /* Habit.swift */,
@@ -495,6 +501,7 @@
 				866F2C24283F17EE004B5691 /* RequestModelType.swift */,
 				86BBE05F283E1672002AA1F9 /* AuthRequest.swift */,
 				A0AA7167284143F6005ABAF6 /* DiaryRequest.swift */,
+				A0066C3B2843829000805570 /* UserRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1117,6 +1124,8 @@
 				A00AFEDD283FAF2A005565FE /* Validate.swift */,
 				A0AA7169284144EB005ABAF6 /* DiaryCalendar.swift */,
 				A0AA716F28426F11005ABAF6 /* Diary.swift */,
+				866F2C19283EFA36004B5691 /* User.swift */,
+				A0066C3D2843890900805570 /* UserResult.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1471,6 +1480,7 @@
 				A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */,
 				8F990F0F283D341C00A5D2AA /* DeleteAccountModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
+				A0066C3C2843829000805570 /* UserRequest.swift in Sources */,
 				8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */,
 				A0AA7175284274A2005ABAF6 /* String+Extension.swift in Sources */,
 				8F334E362831109100E731E8 /* ReportWeekDayCell.swift in Sources */,
@@ -1509,12 +1519,14 @@
 				86BBE060283E1672002AA1F9 /* AuthRequest.swift in Sources */,
 				A0AA716C2841B69E005ABAF6 /* JSON+Extension.swift in Sources */,
 				867C1413281A7615007E5590 /* IDSettingViewModel.swift in Sources */,
+				A0066C3E2843890900805570 /* UserResult.swift in Sources */,
 				A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */,
 				A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */,
 				8F334E2B2830BEB100E731E8 /* RecommendedHabitView.swift in Sources */,
 				8F22F830281D0B1D00AB4180 /* HomeViewModel.swift in Sources */,
 				A035B0762812A0A100747389 /* StringDefinition.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
+				A0066C3A284381AD00805570 /* UserService.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
 				A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */,
 				86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */,
@@ -1567,7 +1579,7 @@
 				866F2C2C283F450A004B5691 /* Response+SwiftyJSONMapper.swift in Sources */,
 				866F2C34283F58B7004B5691 /* AppMoyaProvider.swift in Sources */,
 				8FEEE5AA283A25DD00764C43 /* AwardView.swift in Sources */,
-				866F2C1A283EFA36004B5691 /* GetUser.swift in Sources */,
+				866F2C1A283EFA36004B5691 /* User.swift in Sources */,
 				A00AFEDE283FAF2A005565FE /* Validate.swift in Sources */,
 				A0A992C0282EB8F8009049CF /* Habit.swift in Sources */,
 				8F22F83E281D0BB100AB4180 /* HomeView.swift in Sources */,

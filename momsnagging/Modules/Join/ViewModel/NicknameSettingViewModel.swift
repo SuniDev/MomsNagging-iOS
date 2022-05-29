@@ -155,12 +155,27 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
             }.map { $0.token }
             .share()
         
-        let successJoin = requestJoin.filter { $0 != nil }.share()
+        let requestGetUser = requestJoin
+            .filter { $0 != nil }
+            .map { CommonUser.authorization = $0 }
+            .flatMapLatest { _ -> Observable<User> in
+                return self.requestGetUser()
+            }.share()
         
-        successJoin
-            .bind(onNext: { token in
-                CommonUser.authorization = token
+        let setUser = requestGetUser
+            .filter { $0.id != nil }
+            .share()
+        
+        setUser
+            .subscribe(onNext: { user in
+                CommonUser.setUser(user)
             }).disposed(by: disposeBag)
+        
+        let goToMain = setUser
+            .map { _ -> MainContainerViewModel in
+                let viewModel = MainContainerViewModel()
+                return viewModel
+            }
         
         return Output(
             goToBack: input.btnBackTapped,
@@ -169,7 +184,7 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
             isEditingName: isEditingName.asDriverOnErrorJustComplete(),
             textHint: textHint.asDriverOnErrorJustComplete(),
             isAvailableName: isAvailableName.asDriverOnErrorJustComplete(),
-            goToMain: successJoin.mapToVoid().asDriverOnErrorJustComplete())
+            goToMain: goToMain.mapToVoid().asDriverOnErrorJustComplete())
     }
     
 }
@@ -202,5 +217,10 @@ extension NicknameSettingViewModel {
                                   id: joinRequest.value.id,
                                   nickname: nickName)
         return self.provider.authService.join(request: request)
+    }
+    
+    private func requestGetUser() -> Observable<User> {
+        let request = GetUserRequest()
+        return self.provider.userService.getUser(request: request)
     }
 }

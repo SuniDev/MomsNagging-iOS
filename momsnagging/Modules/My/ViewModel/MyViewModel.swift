@@ -42,7 +42,7 @@ class MyViewModel: BaseViewModel, ViewModelType {
         /// 호칭 설정
         let showNicknameSettingAlert: Driver<Alert>
         /// 잔소리 강도 설정
-        let setNaggingIntensity: Driver<NaggingIntensity>
+        let setNaggingIntensity: Driver<NaggingLevel>
         /// PUSH 알림 설정
         let goToPushSetting: Driver<Void>
         /// 로그아웃
@@ -122,7 +122,7 @@ class MyViewModel: BaseViewModel, ViewModelType {
             }).disposed(by: disposeBag)
                 
         // 잔소리 강도 설정
-        let setNaggingIntensity = BehaviorRelay<NaggingIntensity>(value: NaggingIntensity.fondMom)
+        let setNaggingIntensity = BehaviorRelay<NaggingLevel>(value: NaggingLevel.fondMom)
         
         input.rbFondMomTapped
             .drive(onNext: {

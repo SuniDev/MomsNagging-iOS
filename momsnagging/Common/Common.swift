@@ -263,7 +263,7 @@ class Common {
         return height - topPadding - bottomPadding
     }
     
-    static func getNaggingEmoji(naggingIntensity: NaggingIntensity) -> UIImage {
+    static func getNaggingEmoji(naggingIntensity: NaggingLevel) -> UIImage {
         switch naggingIntensity {
         case .fondMom:
             return Asset.Assets.emojiDefault.image
@@ -274,7 +274,7 @@ class Common {
         }
     }
     
-    static func getNaggingTip(naggingIntensity: NaggingIntensity) -> UIImage {
+    static func getNaggingTip(naggingIntensity: NaggingLevel) -> UIImage {
         switch naggingIntensity {
         case .fondMom:
             return Asset.Assets.myTipFondMom.image

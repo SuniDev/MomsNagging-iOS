@@ -166,9 +166,9 @@ class MyView: BaseViewController, Navigatable {
         
         viewNickname = CommonView.goToSubviewFrame(title: "호칭 설정")
         
-        fondMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingIntensity.fondMom, rbNagging: rbFondMom)
-        coolMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingIntensity.coolMom, rbNagging: rbCoolMom)
-        angryMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingIntensity.angryMom, rbNagging: rbAngryMom)
+        fondMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingLevel.fondMom, rbNagging: rbFondMom)
+        coolMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingLevel.coolMom, rbNagging: rbCoolMom)
+        angryMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingLevel.angryMom, rbNagging: rbAngryMom)
         
         viewPush = CommonView.goToSubviewFrame(title: "PUSH 알림 설정")
     }
