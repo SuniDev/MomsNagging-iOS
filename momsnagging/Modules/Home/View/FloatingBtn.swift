@@ -150,7 +150,7 @@ extension HomeView {
                     self.todoItem.frame = self.todoItem.frame.offsetBy(dx: 0, dy: 80)
                     self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: 160)
                 }
-                let viewModel = AddHabitViewModel()
+                let viewModel = AddHabitViewModel(dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel)
                 let vc = self.navigator.get(seque: .addHabit(viewModel: viewModel))
                 self.navigator.show(seque: .addHabit(viewModel: viewModel), sender: vc, transition: .navigation)
                 
@@ -163,7 +163,14 @@ extension HomeView {
             lbl.textColor = UIColor(asset: Asset.Color.monoDark010)
             ic.image = UIImage(asset: Asset.Icon.todoAddFloating)
             btn.rx.tap.bind {
-                let viewModel = DetailTodoViewModel(isNew: true)
+                self.floatingBackgroundView.isHidden = true
+                self.floatingBtn.isSelected = false
+                self.floatingBind(btnSelected: true, img: self.floatingBtnIc)
+                UIView.animate(withDuration: 0.1) {
+                    self.todoItem.frame = self.todoItem.frame.offsetBy(dx: 0, dy: 80)
+                    self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: 160)
+                }
+                let viewModel = DetailTodoViewModel(isNew: true, homeVM: self.viewModel, dateParam: self.todoListLookUpParam)
                 let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
                 self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: vc, transition: .navigation)
                 

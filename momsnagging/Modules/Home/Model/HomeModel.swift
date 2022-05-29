@@ -16,4 +16,5 @@ struct TodoListModel {
     var scheduleTime: String?
     var done: Bool?
     var id: Int?
+    var goalCount: Int?
 }

@@ -21,7 +21,8 @@ class HomeView: BaseViewController, Navigatable {
         setTodoTableView()
         setHomeCalendarView()
         setFloatingBtn()
-//        viewModel.requestTodoListLookUp(date: todoListParam())
+        self.todoListType.removeAll()
+        viewModel.requestTodoListLookUp(date: todoListParam())
     }
     // MARK: - Temp
     // MARK: - Init
@@ -34,6 +35,8 @@ class HomeView: BaseViewController, Navigatable {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    // MARK: - Param
+    var todoListLookUpParam: String = ""
     // MARK: - Properties & Variable
     var navigator: Navigator!
     var viewModel: HomeViewModel!
@@ -41,6 +44,8 @@ class HomeView: BaseViewController, Navigatable {
     var disposedBag = DisposeBag()
     var collectionViewOutput: HomeViewModel.Output?
     var todoList: [TodoListModel] = []
+    var todoListType: [Int] = []
+    var moveList: [TodoListModel] = []
     /*
      prefix : head
      Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일
@@ -179,6 +184,7 @@ class HomeView: BaseViewController, Navigatable {
         $0.register(HomeTodoListCell.self, forCellReuseIdentifier: "HomeTodoListCell")
         $0.register(RoutineCell.self, forCellReuseIdentifier: "RoutineCell")
         $0.register(TodoCell.self, forCellReuseIdentifier: "TodoCell")
+        $0.register(RoutineCountCell.self, forCellReuseIdentifier: "RoutineCountCell")
     })
     
     // MARK: - InitUI
@@ -223,6 +229,7 @@ class HomeView: BaseViewController, Navigatable {
     }
     // MARK: - Bind _ Output
     override func bind() {
+//        headTitleLbl.rx.text
         calendarViewModel.monthObservable.subscribe( onNext: { [weak self] in
             self?.calendarMonth = $0
             self?.calendarDateLbl.text = "\(self?.calendarYear ?? 0)년 \($0)월"
@@ -271,6 +278,10 @@ class HomeView: BaseViewController, Navigatable {
             }
             self.selectDate = "\(self.headTitleLbl.text ?? "")\(day)"
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
+            self.todoListLookUpParam = "20\(self.headTitleLbl.text ?? "")"
+            self.todoListLookUpParam = self.todoListLookUpParam.replacingOccurrences(of: ".", with: "-")
+            self.todoListType.removeAll()
+            self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             
             let currentYearMonth = self.calendarViewModel.todayFormatteryyyyMM()
             let calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
@@ -369,6 +380,10 @@ class HomeView: BaseViewController, Navigatable {
             }
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             self.selectMonth = self.dateCheck
+            self.todoListLookUpParam = "20\(self.headTitleLbl.text ?? "")"
+            self.todoListLookUpParam = self.todoListLookUpParam.replacingOccurrences(of: ".", with: "-")
+            self.todoListType.removeAll()
+            self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
         }).disposed(by: disposedBag)
     }
     
@@ -408,9 +423,10 @@ class HomeView: BaseViewController, Navigatable {
         
         // 일기장 ClickEvent
         self.diaryBtn.rx.tap.bind {
-//            let viewModel = DiaryViewModel()
-//            let vc = self.navigator.get(seque: .diary(viewModel: viewModel))
-//            self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)
+            // TODO: service 
+            let viewModel = DiaryViewModel(withService: SceneDelegate.appService)
+            let vc = self.navigator.get(seque: .diary(viewModel: viewModel))
+            self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)
         }.disposed(by: disposedBag)
         // 정렬 ClickEvent
         self.listBtn.rx.tap.bind {
@@ -487,6 +503,7 @@ class HomeView: BaseViewController, Navigatable {
         } else {
             day = "\(calendarDay!)"
         }
+        todoListLookUpParam = "\(calendarYear!)-\(month)-\(day)"
         return "\(calendarYear!)-\(month)-\(day)"
     }
     

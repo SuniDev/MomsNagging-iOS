@@ -14,7 +14,7 @@ enum ScheduleService {
     case createTodo(param: CreateTodoRequestModel)
     case todoDetailLookUp(scheduleId: Int)
     case deleteTodo(scheduleId: Int)
-    case modifyTodo(scheduleId: Int)
+    case modifyTodo(scheduleId: Int, modifyParam: Array<ModifyTodoRequestModel>)
     case sortingTodoList(idArray: Array<Int>)
     case recommendedHabitCategoryLookUp
     case recommnededHabitListLookUp(categoryId: Int)
@@ -31,12 +31,12 @@ extension ScheduleService: TargetType {
             return "schedules"
         case .createTodo:
             return "schedules"
-        case .todoDetailLookUp:
-            return "schedules"
-        case .deleteTodo:
-            return "schedules"
-        case .modifyTodo:
-            return "schedules"
+        case .todoDetailLookUp(scheduleId: let id):
+            return "schedules/\(id)"
+        case .deleteTodo(scheduleId: let id):
+            return "schedules/\(id)"
+        case .modifyTodo(scheduleId: let id, modifyParam: _):
+            return "schedules/\(id)"
         case .sortingTodoList:
             return "schedules/array"
         case .recommendedHabitCategoryLookUp:
@@ -73,12 +73,12 @@ extension ScheduleService: TargetType {
             return .requestParameters(parameters: ["retrieveDate": retrieveDate], encoding: URLEncoding.queryString)
         case .createTodo(param: let param):
             return .requestJSONEncodable(param)
-        case .todoDetailLookUp(scheduleId: let scheduleId):
-            return .requestParameters(parameters: ["scheduleId": scheduleId], encoding: URLEncoding.queryString)
-        case .deleteTodo(scheduleId: let scheduleId):
-            return .requestParameters(parameters: ["scheduleId": scheduleId], encoding: URLEncoding.queryString)
-        case .modifyTodo(scheduleId: let scheduleId):
-            return .requestParameters(parameters: ["scheduleId": scheduleId], encoding: URLEncoding.queryString)
+        case .todoDetailLookUp:
+            return .requestPlain
+        case .deleteTodo:
+            return .requestPlain
+        case .modifyTodo(scheduleId: _, modifyParam: let param):
+            return .requestJSONEncodable(param)
         case .sortingTodoList(idArray: let array):
             return .requestJSONEncodable(array)
         case .recommendedHabitCategoryLookUp:
@@ -91,21 +91,29 @@ extension ScheduleService: TargetType {
     var headers: [String: String]? {
         switch self {
         case .todoListLookUp:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         case .createTodo:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         case .todoDetailLookUp:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         case .deleteTodo:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         case .modifyTodo:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json-patch+json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         case .sortingTodoList:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         case .recommendedHabitCategoryLookUp:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         case .recommnededHabitListLookUp:
-            return ["Content-Type": "application/json"]
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
         }
     }
 

@@ -8,6 +8,8 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Moya
+import SwiftyJSON
 
 class DetailTodoViewModel: BaseViewModel {
     
@@ -18,10 +20,21 @@ class DetailTodoViewModel: BaseViewModel {
     }
     
     var disposeBag = DisposeBag()
+    var provider = MoyaProvider<ScheduleService>()
+    var homeViewModel: HomeViewModel?
+    var todoModel: TodoListModel?
     private let isNew: BehaviorRelay<Bool>
+    private var param = CreateTodoRequestModel()
+    var todoInfoOb = PublishSubject<TodoInfoResponseModel>()
+    private var isModify: Bool = false
     
-    init(isNew: Bool) {
+    init(isNew: Bool, homeVM: HomeViewModel, dateParam: String, todoModel: TodoListModel?=nil) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
+        self.homeViewModel = homeVM
+        self.param.scheduleDate = dateParam
+        if let todoModel = todoModel {
+            self.todoModel = todoModel
+        }
     }
     
     // MARK: - Input
@@ -82,12 +95,15 @@ class DetailTodoViewModel: BaseViewModel {
         
     func transform(input: Input) -> Output {
         
+        self.requestTodoInfo(scheduleId: todoModel?.id ?? 0)
+        
         /// 작성 모드
         let isWriting = BehaviorRelay<Bool>(value: false)
         let isNew = self.isNew
         isNew
             .bind(onNext: {
                 isWriting.accept($0)
+                self.isModify = $0
             }).disposed(by: disposeBag)
         
         let btnModifyTapped = input.btnModifyTapped.asObservable().share()
@@ -135,13 +151,14 @@ class DetailTodoViewModel: BaseViewModel {
             }).disposed(by: disposeBag)
         
         /// 할일 이름
-        let textName = BehaviorRelay<String>(value: "")
+        let textName = BehaviorRelay<String>(value: self.todoModel?.scheduleName ?? "")
         let isEditingName = BehaviorRelay<Bool>(value: false)
         let textHint = BehaviorRelay<TextHintType>(value: .none)
         
         input.textName
             .drive(onNext: { text in
                 textName.accept(text)
+                self.param.scheduleName = text
             }).disposed(by: disposeBag)
         
         input.editingDidBeginName
@@ -154,6 +171,7 @@ class DetailTodoViewModel: BaseViewModel {
             .drive(onNext: { () in
                 isEditingName.accept(false)
                 textName.accept(textName.value)
+                self.param.scheduleName = textName.value
             }).disposed(by: disposeBag)
         
         let isEmptyName = input.editingDidEndName
@@ -189,6 +207,7 @@ class DetailTodoViewModel: BaseViewModel {
         input.textPerformTime
             .drive(onNext: { text in
                 textPerformTime.accept(text ?? "")
+                self.param.scheduleTime = text ?? ""
             }).disposed(by: disposeBag)
         
         /// 잔소리 알림 설정
@@ -204,12 +223,14 @@ class DetailTodoViewModel: BaseViewModel {
             .subscribe(onNext: { isOn in
                 if !isOn {
                     timeNaggingPush.accept(nil)
+                    self.param.alarmTime = nil
                 }
             }).disposed(by: disposeBag)
         
         input.valueChangedTimePicker
             .drive(onNext: { date in
                 timeNaggingPush.accept(date)
+                self.param.alarmTime = "\(TaviCommon.alarmTimeDateToStringFormatHHMM(date: date)):00"
             }).disposed(by: disposeBag)
         
         let canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
@@ -232,7 +253,14 @@ class DetailTodoViewModel: BaseViewModel {
         // 추가
         let successDoneAddTodo = done
             .flatMapLatest { () -> Observable<Bool> in
+                if !(self.isModify) {
+                    Log.debug("[Log~~~~~]", "할일 수정 완료 클릭")
+//                    self.requestModifyRoutine(scheduleId: self.todoModel?.id ?? 0)
+                } else {
+                    self.requestRegistTodo()
+                }
                 return isNew.asObservable()
+                
             }.filter { $0 == true }.mapToVoid().debug()
         
         // 수정
@@ -262,4 +290,60 @@ class DetailTodoViewModel: BaseViewModel {
                       successDoneModifyTodo: successDoneModifyTodo.asDriverOnErrorJustComplete())
     }
     
+}
+
+extension DetailTodoViewModel {
+    func requestRegistTodo() {
+        provider.request(.createTodo(param: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    Log.debug("createTodo json:", "\(json)")
+                    self.homeViewModel?.addHabitSuccessOb.onNext(())
+                } catch let error {
+                    Log.error("createTodo error", "\(error)")
+                    return
+                }
+            case .failure(let error):
+                Log.error("createTodo failure error", "\(error)")
+            }
+        })
+        Log.debug("requestParamData:", "\(self.param)")
+    }
+    
+    func requestTodoInfo(scheduleId: Int) {
+        provider.request(.todoDetailLookUp(scheduleId: scheduleId), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    var model = TodoInfoResponseModel()
+                    model.id = json.dictionary?["id"]?.intValue ?? nil
+                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? nil
+                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? nil
+                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? nil
+                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? nil
+                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? nil
+                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? nil
+                    model.done = json.dictionary?["done"]?.boolValue ?? nil
+                    model.mon = json.dictionary?["mon"]?.boolValue ?? nil
+                    model.tue = json.dictionary?["tue"]?.boolValue ?? nil
+                    model.wed = json.dictionary?["wed"]?.boolValue ?? nil
+                    model.thu = json.dictionary?["thu"]?.boolValue ?? nil
+                    model.fri = json.dictionary?["fri"]?.boolValue ?? nil
+                    model.sat = json.dictionary?["sat"]?.boolValue ?? nil
+                    model.sun = json.dictionary?["sun"]?.boolValue ?? nil
+                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? nil
+                    
+                    self.todoInfoOb.onNext(model)
+                    Log.debug("todoDetailLookUp json:", "\(json)")
+                } catch let error {
+                    Log.error("todoDetailLookUp error", "\(error)")
+                }
+            case .failure(let error):
+                Log.error("todoDetailLookUp error", "\(error)")
+            }
+        })
+    }
 }
