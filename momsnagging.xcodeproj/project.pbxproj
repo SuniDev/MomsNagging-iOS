@@ -119,6 +119,8 @@
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A0066C3428432E9C00805570 /* DetailDiaryCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3328432E9C00805570 /* DetailDiaryCalendarCell.swift */; };
+		A0066C3628437BF600805570 /* PushSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3528437BF600805570 /* PushSettingView.swift */; };
+		A0066C3828437C3800805570 /* PushSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3728437C3800805570 /* PushSettingViewModel.swift */; };
 		A00AFEDE283FAF2A005565FE /* Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00AFEDD283FAF2A005565FE /* Validate.swift */; };
 		A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A024E04F281EA3F600AA60D6 /* CommonButton.swift */; };
 		A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0269004283148E0009A40A0 /* CommonSwitch.swift */; };
@@ -277,6 +279,8 @@
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A0066C3328432E9C00805570 /* DetailDiaryCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryCalendarCell.swift; sourceTree = "<group>"; };
+		A0066C3528437BF600805570 /* PushSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingView.swift; sourceTree = "<group>"; };
+		A0066C3728437C3800805570 /* PushSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingViewModel.swift; sourceTree = "<group>"; };
 		A00AFEDD283FAF2A005565FE /* Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate.swift; sourceTree = "<group>"; };
 		A024E04F281EA3F600AA60D6 /* CommonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonButton.swift; sourceTree = "<group>"; };
 		A0269004283148E0009A40A0 /* CommonSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSwitch.swift; sourceTree = "<group>"; };
@@ -666,6 +670,7 @@
 			isa = PBXGroup;
 			children = (
 				8F22F835281D0B4400AB4180 /* MyViewModel.swift */,
+				A0066C3728437C3800805570 /* PushSettingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -674,6 +679,7 @@
 			isa = PBXGroup;
 			children = (
 				8F22F839281D0B5800AB4180 /* MyView.swift */,
+				A0066C3528437BF600805570 /* PushSettingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1473,6 +1479,7 @@
 				8F16725F283E67BB007A699B /* ScheduleRequestModel.swift in Sources */,
 				A0AA716A284144EB005ABAF6 /* DiaryCalendar.swift in Sources */,
 				86BBE063283E1944002AA1F9 /* Login.swift in Sources */,
+				A0066C3828437C3800805570 /* PushSettingViewModel.swift in Sources */,
 				8F334E292830BEB100E731E8 /* RecommendedHabitViewModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
 				A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */,
@@ -1533,6 +1540,7 @@
 				8F8D11DB282665EE00E7DA6C /* HomeTodoListCell.swift in Sources */,
 				8F990F0B283D340F00A5D2AA /* DeleteAccountViewModel.swift in Sources */,
 				866F2C1F283EFEAA004B5691 /* AuthService.swift in Sources */,
+				A0066C3628437BF600805570 /* PushSettingView.swift in Sources */,
 				A0B6AD92282639E400F02E71 /* AddHabitViewModel.swift in Sources */,
 				8FEEE5C4283A4BFF00764C43 /* PrivacyPolicyView.swift in Sources */,
 				866F2C25283F17EE004B5691 /* RequestModelType.swift in Sources */,
