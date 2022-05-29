@@ -92,28 +92,28 @@ extension ScheduleService: TargetType {
         switch self {
         case .todoListLookUp:
             return ["Content-Type": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .createTodo:
             return ["Content-Type": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .todoDetailLookUp:
             return ["Content-Type": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .deleteTodo:
             return ["Content-Type": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .modifyTodo:
             return ["Content-Type": "application/json-patch+json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .sortingTodoList:
             return ["Content-Type": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .recommendedHabitCategoryLookUp:
             return ["Content-Type": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .recommnededHabitListLookUp:
             return ["Content-Type": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Iktha2FvIiwiaWQiOiJsZWVqYXNpayIsImVtYWlsIjoiamFzaWtAdGVzdC5jb20iLCJzdWIiOiI4IiwiaWF0IjoxNjUzNjUzMDI2fQ.R8LnhFaBV2bxlS5tciKYrsCmsX_pOoBnNuUQIOPh9RDLdTfIKzsqz90shQsqj64918fTqQN7j0WpFy1vKB3KVg"]
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         }
     }
 

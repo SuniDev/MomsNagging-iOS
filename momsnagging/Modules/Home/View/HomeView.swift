@@ -23,6 +23,7 @@ class HomeView: BaseViewController, Navigatable {
         setFloatingBtn()
         self.todoListType.removeAll()
         viewModel.requestTodoListLookUp(date: todoListParam())
+        Log.debug("CommonUser.authorization", "Bearer \(CommonUser.authorization)")
     }
     // MARK: - Temp
     // MARK: - Init
