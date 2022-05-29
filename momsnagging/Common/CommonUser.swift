@@ -60,6 +60,25 @@ class CommonUser: NSObject {
         completion?()
     }
     
+    static func logout(_ completion:(() -> Void)? = nil) {
+        self.authorization = nil
+        
+        self.id = nil
+        self.email = nil
+        self.provider = nil
+        self.nickName = nil
+        self.personalId = nil
+        self.naggingLevel = .fondMom
+        self.statusMsg = STR_STATUSMSG_DEFAULT
+        self.allowGeneralNotice = nil
+        self.allowTodoNotice = nil
+        self.allowRoutineNotice = nil
+        self.allowWeeklyNotice = nil
+        self.allowOtherNotice = nil
+    
+        completion?()
+    }
+    
     static func getSnsType(_ provider: String?) -> SnsType? {
         
         guard let provider = provider else {

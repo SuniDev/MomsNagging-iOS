@@ -36,6 +36,7 @@ class MyViewModel: ViewModel, ViewModelType {
         let btnPushSettingTapped: Driver<Void>
         /// 로그아웃
         let btnLogoutTapped: Driver<Void>
+        let logoutAlertDoneHandler: Driver<Void>
     }
     // MARK: - Output
     struct Output {
@@ -57,6 +58,7 @@ class MyViewModel: ViewModel, ViewModelType {
         let goToPushSetting: Driver<Void>
         /// 로그아웃
         let showLogoutAlert: Driver<String>
+        let goToLogin: Driver<LoginViewModel>
     }
     
     func transform(input: Input) -> Output {
@@ -206,6 +208,14 @@ class MyViewModel: ViewModel, ViewModelType {
                 return Observable.just(STR_LOGOUT)
             }
         
+        let goToLogin = input.logoutAlertDoneHandler
+            .asObservable()
+            .map { _ -> LoginViewModel in
+                CommonUser.logout()
+                let viewModel = LoginViewModel(withService: self.provider)
+                return viewModel
+            }
+        
         return Output(goToSetting: input.btnSettingTapped,
                       id: id.asDriverOnErrorJustComplete(),
 //                      email: email.asDriverOnErrorJustComplete(),
@@ -215,7 +225,8 @@ class MyViewModel: ViewModel, ViewModelType {
                       showNicknameSettingAlert: showNicknameSettingAlert.asDriverOnErrorJustComplete(),
                       setNaggingIntensity: setNaggingIntensity.asDriverOnErrorJustComplete(),
                       goToPushSetting: input.btnPushSettingTapped,
-                      showLogoutAlert: showLogoutAlert.asDriver(onErrorJustReturn: STR_LOGOUT))
+                      showLogoutAlert: showLogoutAlert.asDriver(onErrorJustReturn: STR_LOGOUT),
+                      goToLogin: goToLogin.asDriverOnErrorJustComplete())
     }
 }
 extension MyViewModel {

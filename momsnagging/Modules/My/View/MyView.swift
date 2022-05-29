@@ -395,6 +395,7 @@ class MyView: BaseViewController, Navigatable {
         guard let viewModel = viewModel else { return }
         let statusModifyAlertDoneHandler = PublishRelay<String?>()
         let nicknameSettingAlertDoneHandler = PublishRelay<String?>()
+        let logoutAlertDoneHandler = PublishRelay<Void>()
                 
         let input = MyViewModel.Input(
             btnSettingTapped: self.btnSetting.rx.tap.asDriverOnErrorJustComplete(),
@@ -406,7 +407,8 @@ class MyView: BaseViewController, Navigatable {
             rbCoolMomTapped: self.rbCoolMom.rx.tap.asDriverOnErrorJustComplete(),
             rbAngryMomTapped: self.rbAngryMom.rx.tap.asDriverOnErrorJustComplete(),
             btnPushSettingTapped: self.btnPushSetting.rx.tap.asDriverOnErrorJustComplete(),
-            btnLogoutTapped: self.btnLogout.rx.tap.asDriverOnErrorJustComplete())
+            btnLogoutTapped: self.btnLogout.rx.tap.asDriverOnErrorJustComplete(),
+            logoutAlertDoneHandler: logoutAlertDoneHandler.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         // 설정
@@ -504,8 +506,14 @@ class MyView: BaseViewController, Navigatable {
                     
                 } doneHandler: {
                     Log.debug("TODO: 로그아웃")
+                    logoutAlertDoneHandler.accept(())
                 }
 
+            }).disposed(by: disposeBag)
+        
+        output.goToLogin
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .login(viewModel: viewModel), sender: nil, transition: .root)
             }).disposed(by: disposeBag)
     }
 }
