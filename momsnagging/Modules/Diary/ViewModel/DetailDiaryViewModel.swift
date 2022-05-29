@@ -97,7 +97,6 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         let isWriting = BehaviorRelay<Bool>(value: false)
         let contentsPlaceHolder = BehaviorRelay<String>(value: "")
-        let isNew = BehaviorRelay<Bool>(value: false)
         
         let textTitle = BehaviorRelay<String>(value: "")
         let textContents = BehaviorRelay<String>(value: "")
@@ -110,11 +109,6 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         // 선택 날짜
         let selectedDate = BehaviorRelay<String>(value: self.selectedDate.value)
         let setTitleDate = PublishRelay<String>()
-        
-        input.willAppearDetailDiary
-            .drive(onNext: {
-//                selectedDate.accept(self.selectedDate.value)
-            }).disposed(by: disposeBag)
         
         // 캘린더 로드
         let loadCalendar = input.loadCalendar.asObservable().share()
@@ -220,7 +214,16 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 return self.requestGetDiary(date: date)
             }.share()
         
-        requestGetDiary.debug()
+        let isWroteDiary = requestGetDiary
+            .flatMapLatest { diary -> Observable<Bool> in
+                return Observable.just(diary.title != nil && !(diary.title?.isEmpty ?? true))
+            }.share()
+        isWroteDiary
+            .subscribe(onNext: { isWrote in
+                isWriting.accept(!isWrote)
+            }).disposed(by: disposeBag)
+        
+        requestGetDiary
             .subscribe(onNext: { diary in
                 textTitle.accept(diary.title ?? "")
                 textContents.accept(diary.context ?? "")
@@ -247,16 +250,10 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         /// 작성 모드
-        isNew
-            .bind(onNext: {
-                isWriting.accept($0)
-            }).disposed(by: disposeBag)
-        
         let btnModifyTapped = input.btnModifyTapped.asObservable().share()
         
         btnModifyTapped
             .subscribe(onNext: {
-                isNew.accept(false)
                 isWriting.accept(true)
             }).disposed(by: disposeBag)
         
@@ -294,12 +291,8 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         let backAlertDoneHandler = input.backAlertDoneHandler
             .asObservable()
             .flatMapLatest { _ -> Observable<Bool> in
-                return Observable.just(isNew.value)
+                return Observable.just(isWriting.value)
             }.share()
-        
-        let goToBack = Observable.merge(
-            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
-            btnBackTapped.filter { $0 == false }.mapToVoid(), input.deleteAlertDoneHandler.asObservable())
             
         backAlertDoneHandler
             .filter { $0 == false }
@@ -307,6 +300,16 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             .subscribe(onNext: {
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
+        
+        ///  삭제하기
+        let requestDeleteDiary = input.deleteAlertDoneHandler
+            .asObservable()
+            .flatMapLatest { _ -> Observable<Diary> in
+                let title = ""
+                let context = ""
+                let date = selectedDate.value
+                return self.requestPutDiary(title: title, context: context, diaryDate: date)
+            }.share()
         
         /// 일기작 작성
         input.textTitle
@@ -384,6 +387,11 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             .subscribe(onNext: { _ in
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
+        
+        let goToBack = Observable.merge(
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
+            btnBackTapped.filter { $0 == false }.mapToVoid(),
+            requestDeleteDiary.mapToVoid().asObservable())
         
         return Output(setTitleDate: setTitleDate.asDriverOnErrorJustComplete(),
                       setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),

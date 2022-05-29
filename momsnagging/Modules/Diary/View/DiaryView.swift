@@ -123,6 +123,7 @@ class DiaryView: BaseViewController, Navigatable {
         $0.textColor = UIColor(asset: Asset.Color.monoDark030)
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.text = ""
+        $0.numberOfLines = 0
     })
     
     // MARK: - initUI
@@ -227,6 +228,7 @@ class DiaryView: BaseViewController, Navigatable {
         guard let viewModel = viewModel else { return }
                 
         let input = DiaryViewModel.Input(
+            willAppearDiary: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
             btnBackTapped: self.backBtn.rx.tap.asDriverOnErrorJustComplete(),
             loadCalendar: Observable.just(CalendarDate(year: self.calendarViewModel.getYear(),
                                                        month: self.calendarViewModel.getMonth(),

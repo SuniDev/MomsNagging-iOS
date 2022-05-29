@@ -19,6 +19,7 @@ class DiaryViewModel: ViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
+        let willAppearDiary: Driver<Void>
         /// 뒤로가기
         let btnBackTapped: Driver<Void>
         /// 캘린더 데이터
@@ -62,12 +63,22 @@ class DiaryViewModel: ViewModel, ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        // 캘린더 날짜
+        // 로드 캘린더 날짜
         let setCalendarDate = BehaviorRelay<CalendarDate>(value: CalendarDate())
+        // 캘린더 날짜 목록
+        let dayList = BehaviorRelay<[String]>(value: [])
         // 선택 날짜
         let selectedDate = BehaviorRelay<String>(value: "")
         // 현재 선택 일기
-        let selectedDiary = BehaviorRelay<Diary?>(value: nil)
+//        let selectedDiary = BehaviorRelay<Diary?>(value: nil)
+    
+        let reloadData = input.willAppearDiary.skip(1)
+        reloadData
+            .drive(onNext: {
+                setCalendarDate.accept(setCalendarDate.value)
+                selectedDate.accept(selectedDate.value)
+                dayList.accept(dayList.value)
+            }).disposed(by: disposeBag)
         
         // 캘린더 로드
         let loadCalendar = input.loadCalendar.asObservable().share()
@@ -75,6 +86,11 @@ class DiaryViewModel: ViewModel, ViewModelType {
             .subscribe(onNext: { date in
                 setCalendarDate.accept(date)
                 selectedDate.accept(self.getStrDate(date: date))
+            }).disposed(by: disposeBag)
+        
+        input.loadDayList
+            .drive(onNext: { list in
+                dayList.accept(list)
             }).disposed(by: disposeBag)
         
         // 다음 달
@@ -114,7 +130,7 @@ class DiaryViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         // 캘린더 API Request
-        let requestCalendarDate = setCalendarDate
+        let requestCalendarDate = setCalendarDate.debug()
             .flatMapLatest { date -> Observable<DiaryCalendar> in
                 return self.requestDiaryCalendar(year: date.year, month: date.month)
             }.share()
@@ -127,7 +143,7 @@ class DiaryViewModel: ViewModel, ViewModelType {
                 return Observable.just(arrDay)
             }.share()
         
-        let dayItems = Observable.zip(input.loadDayList.asObservable(), arrDay)
+        let dayItems = Observable.zip(dayList.asObservable(), arrDay).debug()
             .flatMapLatest { arrStrDay, arrDay -> Observable<[DiaryDayItem]> in
                 return self.getDayItems(arrStrDay: arrStrDay, arrDay: arrDay)
             }
@@ -139,21 +155,10 @@ class DiaryViewModel: ViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
         
-        let requestGetDiaryTrigger = PublishRelay<String>()        
-        selectedDate
-            .subscribe(onNext: { date in
-                requestGetDiaryTrigger.accept(date)
-            }).disposed(by: disposeBag)
-        
-        let requestGetDiary = requestGetDiaryTrigger
+        let requestGetDiary = selectedDate
             .flatMapLatest { date -> Observable<Diary> in
                 return self.requestGetDiary(date: date)
-            }.share()
-        
-        requestGetDiary
-            .subscribe(onNext: { diary in
-                selectedDiary.accept(diary)
-            }).disposed(by: disposeBag)
+            }
         
         let isEmptyDiary = requestGetDiary
             .map { return $0.title?.isEmpty ?? true }

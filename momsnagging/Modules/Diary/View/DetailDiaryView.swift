@@ -319,8 +319,6 @@ class DetailDiaryView: BaseViewController, Navigatable {
         
         output.selectedDayIndex
             .drive(onNext: { index in
-//                let cell = self.dayCollectionView.cellForItem(at: [0, index]) as? DetailDiaryCalendarCell
-
                 self.dayCollectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
             }).disposed(by: disposeBag)
 
