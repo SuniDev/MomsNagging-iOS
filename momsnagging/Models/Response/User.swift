@@ -21,8 +21,9 @@ class User: ModelType {
     var email: String?
     var provider: String?
     var nickName: String?
-    var personId: String?
+    var personalId: String?
     var naggingLevel: Int?
+    var statusMsg: String?
     var device: String?
     var allowGeneralNotice: Bool?
     var allowTodoNotice: Bool?
@@ -35,8 +36,9 @@ class User: ModelType {
         email = jsonData["email"].string
         provider = jsonData["provider"].string
         nickName = jsonData["nickName"].string
-        personId = jsonData["personId"].string
+        personalId = jsonData["personalId"].string
         naggingLevel = jsonData["naggingLevel"].int
+        statusMsg = jsonData["statusMsg"].string
         device = jsonData["device"].string
         allowGeneralNotice = jsonData["allowGeneralNotice"].bool
         allowTodoNotice = jsonData["allowTodoNotice"].bool

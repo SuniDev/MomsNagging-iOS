@@ -22,6 +22,7 @@ struct GetUserRequest: RequestModelType { }
 struct PutUserRequest: RequestModelType, Encodable {
     var nickName: String?
     var naggingLevel: Int?
+    var statusMsg: String?
     var allowGeneralNotice: Bool?
     var allowTodoNotice: Bool?
     var allowRoutineNotice: Bool?

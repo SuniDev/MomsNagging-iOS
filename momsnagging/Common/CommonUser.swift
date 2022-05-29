@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 /**
  # (C) CommonUser.swift
  - Author: suni
@@ -33,8 +34,9 @@ class CommonUser: NSObject {
     static var email: String?
     static var provider: SnsType?
     static var nickName: String?
-    static var personId: String?
-    static var naggingLevel: NaggingLevel?
+    static var personalId: String?
+    static var naggingLevel: NaggingLevel = NaggingLevel.fondMom
+    static var statusMsg: String = STR_STATUSMSG_DEFAULT
     static var allowGeneralNotice: Bool?
     static var allowTodoNotice: Bool?
     static var allowRoutineNotice: Bool?
@@ -46,8 +48,9 @@ class CommonUser: NSObject {
         self.email = user.email
         self.provider = self.getSnsType(user.provider)
         self.nickName = user.nickName ?? ""
-        self.personId = user.personId ?? ""
+        self.personalId = user.personalId ?? ""
         self.naggingLevel = self.getNaggingLevel(user.naggingLevel)
+        self.statusMsg = user.statusMsg ?? STR_STATUSMSG_DEFAULT
         self.allowGeneralNotice = user.allowGeneralNotice
         self.allowTodoNotice = user.allowTodoNotice
         self.allowRoutineNotice = user.allowRoutineNotice
@@ -85,6 +88,29 @@ class CommonUser: NSObject {
         case 2: return NaggingLevel.angryMom
         default: return NaggingLevel.fondMom
         }
+    }
+    
+    static func getNaggingLevel(_ level: NaggingLevel) -> Int {
+        switch level {
+        case .fondMom:
+            return 0
+        case .coolMom:
+            return 1
+        case .angryMom:
+            return 2
+        }
+    }
+    
+    static func getNicknameImage(_ nickName: String?) -> UIImage {
+        guard let nickName = nickName else {
+            return Asset.Assets.emojiDaughter.image
+        }
+        
+        if nickName == "아들" {
+            return Asset.Assets.emojiSon.image
+        }
+        
+        return Asset.Assets.emojiDaughter.image
     }
 }
 

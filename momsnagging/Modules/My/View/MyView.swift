@@ -39,21 +39,21 @@ class MyView: BaseViewController, Navigatable {
         $0.image = Asset.Assets.emojiDaughter.image
     })
     lazy var lblID = UILabel().then({
-        $0.text = "ID"
+        $0.text = ""
         $0.font = FontFamily.Pretendard.bold.font(size: 24)
         $0.textColor = Asset.Color.monoDark010.color
     })
-    lazy var viewMessage = UIView()
-    lazy var lblMessage = UILabel().then({
-        $0.text = "각오"
+    lazy var viewStatusMsg = UIView()
+    lazy var lblStatusMsg = UILabel().then({
+        $0.text = STR_STATUSMSG_DEFAULT
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.textColor = Asset.Color.monoDark020.color
     })
-    lazy var btnModifyMessage = UIButton().then({
+    lazy var btnModifyStatusMsg = UIButton().then({
         $0.setImage(Asset.Icon.editMessage.image, for: .normal)
     })
     lazy var lblEmail = UILabel().then({
-        $0.text = "Email"
+        $0.text = ""
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.textColor = Asset.Color.priLight030.color
     })
@@ -238,18 +238,18 @@ class MyView: BaseViewController, Navigatable {
         })
         
         viewProfile.addSubview(lblID)
-        viewProfile.addSubview(viewMessage)
-        viewMessage.addSubview(lblMessage)
-        viewMessage.addSubview(btnModifyMessage)
+        viewProfile.addSubview(viewStatusMsg)
+        viewStatusMsg.addSubview(lblStatusMsg)
+        viewStatusMsg.addSubview(btnModifyStatusMsg)
         
-        lblMessage.snp.makeConstraints({
+        lblStatusMsg.snp.makeConstraints({
             $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
         })
-        btnModifyMessage.snp.makeConstraints({
+        btnModifyStatusMsg.snp.makeConstraints({
             $0.width.height.equalTo(18)
             $0.trailing.equalToSuperview()
-            $0.leading.equalTo(lblMessage.snp.trailing).offset(10)
+            $0.leading.equalTo(lblStatusMsg.snp.trailing).offset(10)
             $0.centerY.equalToSuperview()
         })
         
@@ -260,7 +260,7 @@ class MyView: BaseViewController, Navigatable {
             $0.top.equalTo(viewProfileImage.snp.bottom).offset(12)
             $0.centerX.equalToSuperview()
         })
-        viewMessage.snp.makeConstraints({
+        viewStatusMsg.snp.makeConstraints({
             $0.height.equalTo(22)
             $0.top.equalTo(lblID.snp.bottom).offset(8)
             $0.leading.greaterThanOrEqualToSuperview().offset(18)
@@ -269,7 +269,7 @@ class MyView: BaseViewController, Navigatable {
         })
         
         lblEmail.snp.makeConstraints({
-            $0.top.equalTo(viewMessage.snp.bottom).offset(4)
+            $0.top.equalTo(viewStatusMsg.snp.bottom).offset(4)
             $0.centerX.equalToSuperview()
         })
         dividerProfile.snp.makeConstraints({
@@ -393,13 +393,13 @@ class MyView: BaseViewController, Navigatable {
     // MARK: - bind
     override func bind() {
         guard let viewModel = viewModel else { return }
-        let messageModifyAlertDoneHandler = PublishRelay<String?>()
+        let statusModifyAlertDoneHandler = PublishRelay<String?>()
         let nicknameSettingAlertDoneHandler = PublishRelay<String?>()
                 
         let input = MyViewModel.Input(
             btnSettingTapped: self.btnSetting.rx.tap.asDriverOnErrorJustComplete(),
-            btnModifyMessageTapped: self.btnModifyMessage.rx.tap.asDriverOnErrorJustComplete(),
-            messageModifyAlertDoneHandler: messageModifyAlertDoneHandler.asDriverOnErrorJustComplete(),
+            btnModifyStatusTapped: self.btnModifyStatusMsg.rx.tap.asDriverOnErrorJustComplete(),
+            statusModifyAlertDoneHandler: statusModifyAlertDoneHandler.asDriverOnErrorJustComplete(),
             btnNicknameSetting: self.btnNicknameSetting.rx.tap.asDriverOnErrorJustComplete(),
             nicknameSettingAlertDoneHandler: nicknameSettingAlertDoneHandler.asDriverOnErrorJustComplete(),
             rbFondMomTapped: self.rbFondMom.rx.tap.asDriverOnErrorJustComplete(),
@@ -415,12 +415,24 @@ class MyView: BaseViewController, Navigatable {
                 self.navigator.show(seque: .setting(viewModel: SettingViewModel()), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
         
-        // 각오
-        output.message
-            .drive(onNext: { message in
-                self.lblMessage.text = message
+        // 아이디
+        output.id
+            .drive(onNext: { id in
+                self.lblID.text = id
             }).disposed(by: disposeBag)
-        output.showMessageModifyAlert
+        
+        // 이메일
+//        output.email
+//            .drive(onNext: { email in
+//                self.lblEmail.text = email
+//            }).disposed(by: disposeBag)
+        
+        // 각오
+        output.statusMsg
+            .drive(onNext: { statusMsg in
+                self.lblStatusMsg.text = statusMsg
+            }).disposed(by: disposeBag)
+        output.showStatusModifyAlert
             .drive(onNext: { model in
                 let alert = CommonView.getAlert(vc: self, title: model.title, message: model.message, cancelTitle: model.cancelTitle ?? STR_CANCEL)
                 
@@ -431,7 +443,7 @@ class MyView: BaseViewController, Navigatable {
                 }
                 
                 let doneAction = UIAlertAction(title: model.doneTitle, style: .default) { _ in
-                    messageModifyAlertDoneHandler.accept(alert.textFields?[0].text)
+                    statusModifyAlertDoneHandler.accept(alert.textFields?[0].text)
                 }
                 alert.addAction(doneAction)
                 
@@ -439,6 +451,11 @@ class MyView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         // 호칭 설정
+        output.nickName
+            .debug()
+            .drive(onNext: { nickName in
+                self.imgvProfile.image = CommonUser.getNicknameImage(nickName)
+            }).disposed(by: disposeBag)
         output.showNicknameSettingAlert
             .drive(onNext: { model in
                 let alert = CommonView.getAlert(vc: self, title: model.title, message: model.message, cancelTitle: model.cancelTitle ?? STR_CANCEL)

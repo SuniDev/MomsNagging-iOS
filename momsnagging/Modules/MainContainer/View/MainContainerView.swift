@@ -57,7 +57,7 @@ class MainContainerView: BaseViewController, Navigatable {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         let homeViewModel = HomeViewModel()
         let reportCardViewModel = ReportCardViewModel()
-        let myViewModel = MyViewModel()
+        let myViewModel = MyViewModel(withService: SceneDelegate.appService)
         tab0 = navigator.get(seque: .home(viewModel: homeViewModel))
         tab1 = navigator.get(seque: .reportCard(viewModel: reportCardViewModel))
         tab2 = navigator.get(seque: .my(viewModel: myViewModel))
