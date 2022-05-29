@@ -39,4 +39,10 @@ class DiaryService {
             .asObservable()
     }
     
+    func putDiary(request: PutDiaryReqeust) -> Observable<Diary> {
+        return networking.request(.putDiary(request))
+            .map(to: Diary.self)
+            .asObservable()
+    }
+    
 }

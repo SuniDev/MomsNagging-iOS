@@ -239,6 +239,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
     // MARK: - bind
     override func bind() {
         guard let viewModel = viewModel else { return }
+        let dateChangeAlertHandler = PublishRelay<Bool>()
         let doneAlertDoneHandler = PublishRelay<Void>()
         let backAlertDoneHandler = PublishRelay<Void>()
         let deleteAlertDoneHandler = PublishRelay<Void>()
@@ -253,10 +254,11 @@ class DetailDiaryView: BaseViewController, Navigatable {
                 setCalendarYear: self.calendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
                 loadDayList: self.calendarViewModel.daylist.asDriverOnErrorJustComplete(),
                 loadWeekDay: self.calendarViewModel.weekDay.asDriverOnErrorJustComplete(),
-                dayModelSelected: self.dayCollectionView.rx.modelSelected(DetailDiaryDayItem.self).asDriverOnErrorJustComplete(),
+//                dayModelSelected: self.dayCollectionView.rx.modelSelected(DetailDiaryDayItem.self).asDriverOnErrorJustComplete(),
+                dayItemsSelected: self.dayCollectionView.rx.itemSelected.asDriverOnErrorJustComplete(),
                 btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
                 btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
-                
+                dateChangeAlertHandler: dateChangeAlertHandler.asDriverOnErrorJustComplete(),
                 btnMoreTapped: self.btnMore.rx.tap.asDriverOnErrorJustComplete(),
                 dimViewTapped: self.bottomSheet.dimView.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
                 btnModifyTapped: self.bottomSheet.btnModify.rx.tap.asDriverOnErrorJustComplete(),
@@ -282,6 +284,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
         
         output.setTitleDate
             .drive(onNext: { date in
+                Log.debug("setTitleDate", date)
                 self.headTitleLbl.text = date
             }).disposed(by: disposeBag)
         
@@ -314,6 +317,13 @@ class DetailDiaryView: BaseViewController, Navigatable {
                 self.calendarViewModel.getNextMonth(currentMonth: date.month, currentYear: date.year)
             }).disposed(by: disposeBag)
         
+        output.selectedDayIndex
+            .drive(onNext: { index in
+//                let cell = self.dayCollectionView.cellForItem(at: [0, index]) as? DetailDiaryCalendarCell
+
+                self.dayCollectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
+            }).disposed(by: disposeBag)
+
         /// 바텀 시트
         output.showBottomSheet
             .drive(onNext: {
@@ -323,6 +333,16 @@ class DetailDiaryView: BaseViewController, Navigatable {
         output.hideBottomSheet
             .drive(onNext: {
                 self.bottomSheet.hideAnim()
+            }).disposed(by: disposeBag)
+        
+        /// 날짜 이동
+        output.showDateChangeAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, title: "", message: message, cancelHandler: {
+                    dateChangeAlertHandler.accept(false)
+                }, destructiveHandler: {
+                    dateChangeAlertHandler.accept(true)
+                })
             }).disposed(by: disposeBag)
                         
         /// 작성 모드
@@ -334,8 +354,9 @@ class DetailDiaryView: BaseViewController, Navigatable {
                 
                 self.tfTitle.isEnabled = isWriting
                 self.tfTitle.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
+                
                 self.tvContents.isEditable = isWriting
-                self.tvContents.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
+//                self.tvContents.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
             }).disposed(by: disposeBag)
         
         /// 뒤로 가기

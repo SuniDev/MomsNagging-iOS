@@ -11,7 +11,7 @@ import SwiftyJSON
 /**
  # (C) Diary
  - Authors: suni
- - Note: 일기장 조회  API Response 모델 클래스
+ - Note: 일기장 조회 / 수정  API Response 모델 클래스
  */
 class Diary: ModelType {
     enum Event { }

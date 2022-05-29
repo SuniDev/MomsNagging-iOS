@@ -29,9 +29,11 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         let setCalendarYear: Driver<Int>
         let loadDayList: Driver<[String]>
         let loadWeekDay: Driver<[String]>
-        let dayModelSelected: Driver<DetailDiaryDayItem>
+//        let dayModelSelected: Driver<DetailDiaryDayItem>
+        let dayItemsSelected: Driver<IndexPath>
         let btnPrevTapped: Driver<Void>
         let btnNextTapped: Driver<Void>
+        let dateChangeAlertHandler: Driver<Bool>        // true : 네 / false : 아니오
         /// 더보기
         let btnMoreTapped: Driver<Void>
         let dimViewTapped: Driver<Void>
@@ -58,10 +60,12 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         /// 캘린더 날짜 설정
         let setTitleDate: Driver<String>
         let setCalendarDate: Driver<CalendarDate>
-        let dayItems: Observable<[DetailDiaryDayItem]>
+        let dayItems: BehaviorRelay<[DetailDiaryDayItem]>
         let weekItems: Observable<[String]>
         let setLastMonth: Driver<CalendarDate>
         let setNextMonth: Driver<CalendarDate>
+        let showDateChangeAlert: Driver<String>
+        let selectedDayIndex: Driver<Int>
         ///  바텀 시트
         let showBottomSheet: Driver<Void>
         let hideBottomSheet: Driver<Void>
@@ -104,13 +108,12 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         // 캘린더 날짜
         let setCalendarDate = BehaviorRelay<CalendarDate>(value: CalendarDate())
         // 선택 날짜
-        let selectedDate = self.selectedDate
-        // 현재 선택 일기
-        let selectedDiary = BehaviorRelay<Diary?>(value: nil)
+        let selectedDate = BehaviorRelay<String>(value: self.selectedDate.value)
+        let setTitleDate = PublishRelay<String>()
         
         input.willAppearDetailDiary
             .drive(onNext: {
-                selectedDate.accept(selectedDate.value)
+//                selectedDate.accept(self.selectedDate.value)
             }).disposed(by: disposeBag)
         
         // 캘린더 로드
@@ -157,32 +160,71 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
                 
         // 캘린더 콜렉션뷰 Item 세팅
-        let dayItems = input.loadDayList
+        let dayItems = BehaviorRelay<[DetailDiaryDayItem]>(value: [])
+        input.loadDayList
             .asObservable()
             .flatMapLatest { arrStrDay -> Observable<[DetailDiaryDayItem]> in
                 return self.getDayItems(arrStrDay: arrStrDay, date: setCalendarDate.value)
+            }.subscribe(onNext: { items in
+                dayItems.accept(items)
+            }).disposed(by: disposeBag)
+        
+        let selectedDayTrigger = BehaviorRelay<Int>(value: 0)
+        let cancelSelectedDayIndex = BehaviorRelay<Int>(value: 0)
+        let selectedDayIndex = BehaviorRelay<Int>(value: 0)
+        
+         input.dayItemsSelected.debug()
+             .drive(onNext: { indexPath in
+                 selectedDayTrigger.accept(indexPath.row)
+             }).disposed(by: disposeBag)
+        
+        selectedDayTrigger.skip(1)
+            .subscribe(onNext: { _ in
+                cancelSelectedDayIndex.accept(selectedDayIndex.value)
+            }).disposed(by: disposeBag)
+        
+        selectedDayIndex.skip(1)
+            .subscribe(onNext: { index in
+                let model = dayItems.value[index]
+                selectedDate.accept(model.strDate)
+            }).disposed(by: disposeBag)
+       
+        let isCanDateChange = selectedDayTrigger.skip(1)
+            .flatMapLatest { _ -> Observable<Bool> in
+                return Observable.just(!isWriting.value)
+            }.share()
+        
+        let showDateChangeAlert = isCanDateChange
+            .filter { $0 == false }
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_DIARY_BACK)
             }
         
-        input.dayModelSelected
-            .drive(onNext: { dayItem in
-                selectedDate.accept(dayItem.strDate)
+        let dateChangeAlertHandler = input.dateChangeAlertHandler.asObservable().share()
+        
+        Observable.merge(isCanDateChange.filter { $0 == true }.asObservable(),
+                         dateChangeAlertHandler.filter { $0 == true })
+            .subscribe(onNext: { _ in
+                selectedDayIndex.accept(selectedDayTrigger.value)
             }).disposed(by: disposeBag)
         
-        let setTitleDate = PublishRelay<String>()
-        selectedDate
-            .subscribe(onNext: { date in
-                setTitleDate.accept(self.getTitleDateString(dateString: date))
+        dateChangeAlertHandler.debug()
+            .filter { $0 == false }
+            .subscribe(onNext: { _ in
+                selectedDayIndex.accept(cancelSelectedDayIndex.value)
             }).disposed(by: disposeBag)
-        
-        let requestGetDiary = selectedDate
+                
+        let requestGetDiary = selectedDate.debug()
             .asObservable()
             .flatMapLatest { date -> Observable<Diary> in
                 return self.requestGetDiary(date: date)
             }.share()
         
-        requestGetDiary
+        requestGetDiary.debug()
             .subscribe(onNext: { diary in
-                selectedDiary.accept(diary)
+                textTitle.accept(diary.title ?? "")
+                textContents.accept(diary.context ?? "")
+                setTitleDate.accept(self.getTitleDateString(dateString: diary.diaryDate ?? ""))
             }).disposed(by: disposeBag)
         
         requestGetDiary
@@ -322,7 +364,6 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 return false
             })
         
-        // TODO: Request 일기장 저장 API
         let successDoneDiary = input.btnDoneTapped
             .asObservable()
             .flatMapLatest { _ -> Observable<String> in
@@ -330,8 +371,17 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 return self.getDoneAlertTitle(.fondMom)
             }
         
-        input.doneAlertDoneHandler
-            .drive(onNext: {
+        let reqeustSaveDiary = input.doneAlertDoneHandler.debug()
+            .asObservable()
+            .flatMapLatest { _ -> Observable<Diary> in
+                let title = textTitle.value
+                let context = textContents.value
+                let date = selectedDate.value
+                return self.requestPutDiary(title: title, context: context, diaryDate: date)
+            }.share()
+        
+        reqeustSaveDiary
+            .subscribe(onNext: { _ in
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
         
@@ -341,6 +391,8 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                       weekItems: input.loadWeekDay.asObservable(),
                       setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
                       setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
+                      showDateChangeAlert: showDateChangeAlert.asDriverOnErrorJustComplete(),
+                      selectedDayIndex: selectedDayIndex.asDriverOnErrorJustComplete(),
                       showBottomSheet: input.btnMoreTapped,
                       hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
@@ -446,6 +498,10 @@ extension DetailDiaryViewModel {
     private func requestGetDiary(date: String) -> Observable<Diary> {
         let request = GetDiaryReqeust(retrieveDate: date)
         return self.provider.diaryService.getDiary(request: request)
+    }
+    private func requestPutDiary(title: String, context: String, diaryDate: String) -> Observable<Diary> {
+        let request = PutDiaryReqeust(title: title, context: context, diaryDate: diaryDate)
+        return self.provider.diaryService.putDiary(request: request)
     }
 }
 

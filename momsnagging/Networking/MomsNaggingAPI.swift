@@ -25,6 +25,8 @@ enum MomsNaggingAPI {
     case diaryCalendar(DiaryCalendarRequest)
     // 일기장 조회
     case getDiary(GetDiaryReqeust)
+    // 일기장 수정
+    case putDiary(PutDiaryReqeust)
     // 회원 정보 조회
 //    case getUser(GetUserRequest)
 }
@@ -59,7 +61,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return "/auth/\(request.provider)"
         case .diaryCalendar:
             return "/diary/calendar"
-        case .getDiary:
+        case .getDiary, .putDiary:
             return "/diary"
         }
     }
@@ -82,6 +84,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .getDiary:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .putDiary(let request):
+          return .requestJSONEncodable(["title": request.title, "context": request.context, "diaryDate": request.diaryDate])
       }
     }
     
@@ -92,6 +96,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return .get
         case .join:
             return .post
+        case .putDiary:
+            return .put
         }
     }
     
@@ -100,7 +106,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         switch self {
         case .login, .validateID, .join:
             return ["Content-Type": "application/json"]
-        case .diaryCalendar, .getDiary:
+        case .diaryCalendar, .getDiary, .putDiary:
             if let token: String = CommonUser.authorization {
                 return ["Content-Type": "application/json", "Authorization": "Bearer \(token)"]
             }
@@ -134,6 +140,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         case .diaryCalendar(let request):
             return request.toDictionary()
         case .getDiary(let request):
+            return request.toDictionary()
+        case .putDiary(let request):
             return request.toDictionary()
         default:
             return [:]
