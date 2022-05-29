@@ -81,6 +81,7 @@ internal enum Asset {
     internal static let pagecontrol3 = ImageAsset(name: "pagecontrol3")
     internal static let pagecontrol4 = ImageAsset(name: "pagecontrol4")
     internal static let pagecontrol5 = ImageAsset(name: "pagecontrol5")
+      internal static let contactUs = ImageAsset(named: "contactUs")
   }
   internal enum Color {
     internal static let black = ColorAsset(name: "black")

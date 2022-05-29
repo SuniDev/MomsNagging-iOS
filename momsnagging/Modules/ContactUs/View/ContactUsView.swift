@@ -31,6 +31,10 @@ class ContactUsView: BaseViewController, Navigatable {
     var navigator: Navigator!
     var viewModel: ContactUsViewModel!
     // MARK: - UI Properties
+    var backBtn = UIButton()
+    var headFramm = UIView()
+    
+    var 
     // MARK: - InitUI
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
@@ -44,4 +48,3 @@ class ContactUsView: BaseViewController, Navigatable {
     }
     
 }
-
