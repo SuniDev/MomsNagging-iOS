@@ -1,16 +1,15 @@
 //
-//  RoutineCell.swift
+//  RoutineCountCell.swift
 //  momsnagging
 //
-//  Created by 전창평 on 2022/05/26.
+//  Created by 전창평 on 2022/05/28.
 //
-
 import UIKit
 import Then
 import SnapKit
 import RxSwift
 
-class RoutineCell: UITableViewCell {
+class RoutineCountCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -24,8 +23,6 @@ class RoutineCell: UITableViewCell {
     // MARK: Properties & Variable
     var disposeBag = DisposeBag()
     var todoIsSelected: Bool = false // 투두리스트 완료,선택 여부
-    var count: Int = 0 // 반복횟수
-//    var cellType: TodoCellType = .normal
     // MARK: UI Properties
     lazy var toggleIc = UIButton().then({
         $0.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 0)
@@ -37,8 +34,14 @@ class RoutineCell: UITableViewCell {
         $0.layer.cornerRadius = 8
         $0.layer.masksToBounds = true
     })
-    lazy var prefixView = UIView()
-    lazy var prefixLbl = UILabel()
+    lazy var prefixView = UIView().then({
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+    })
+    lazy var prefixLbl = UILabel().then({
+        $0.font = FontFamily.Pretendard.semiBold.font(size: 12)
+        $0.text = "~회"
+    })
     lazy var titleLbl = UILabel().then({
         $0.numberOfLines = 2
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
@@ -57,7 +60,7 @@ class RoutineCell: UITableViewCell {
     })
 }
 
-extension RoutineCell {
+extension RoutineCountCell {
     func setUI() {
         contentView.addSubview(toggleIc)
         contentView.addSubview(timeBtn)
@@ -83,12 +86,21 @@ extension RoutineCell {
             $0.trailing.equalTo(contentView.snp.trailing)
             $0.height.equalTo(1)
         })
+        contentView.addSubview(prefixView)
+        contentView.addSubview(prefixLbl)
+        prefixView.snp.makeConstraints({
+            $0.leading.equalTo(timeBtn.snp.trailing).offset(12)
+            $0.width.height.equalTo(24)
+            $0.centerY.equalTo(contentView.snp.centerY)
+        })
+        prefixLbl.snp.makeConstraints({
+            $0.center.equalTo(prefixView.snp.center)
+        })
         titleLbl.snp.makeConstraints({
             $0.centerY.equalTo(contentView.snp.centerY)
-            $0.leading.equalTo(timeBtn.snp.trailing).offset(12)
+            $0.leading.equalTo(prefixLbl.snp.trailing).offset(8)
             $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
         })
-        
         moreIc.snp.makeConstraints({
             $0.width.height.equalTo(24)
             $0.centerY.equalTo(contentView.snp.centerY)

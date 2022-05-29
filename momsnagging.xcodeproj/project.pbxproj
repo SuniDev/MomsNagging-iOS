@@ -116,6 +116,8 @@
 		8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */; };
 		8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */; };
 		8FEEE5CA283AA8B100764C43 /* PrivacyPolicyOpenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */; };
+		8FF8DB132841F80B00F745BE /* RoutineCountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8DB122841F80B00F745BE /* RoutineCountCell.swift */; };
+		8FF8DB1728420FCA00F745BE /* DetailTodoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8DB1628420FCA00F745BE /* DetailTodoModel.swift */; };
 		A0024DDD2813227800645F25 /* OnboardingItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDC2813227800645F25 /* OnboardingItemView.swift */; };
 		A0024DDF281322E100645F25 /* OnboardingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */; };
 		A0066C3428432E9C00805570 /* DetailDiaryCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0066C3328432E9C00805570 /* DetailDiaryCalendarCell.swift */; };
@@ -274,6 +276,8 @@
 		8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyModel.swift; sourceTree = "<group>"; };
 		8FEEE5C7283A500200764C43 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
 		8FEEE5C9283AA8B100764C43 /* PrivacyPolicyOpenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyOpenCell.swift; sourceTree = "<group>"; };
+		8FF8DB122841F80B00F745BE /* RoutineCountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineCountCell.swift; sourceTree = "<group>"; };
+		8FF8DB1628420FCA00F745BE /* DetailTodoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoModel.swift; sourceTree = "<group>"; };
 		A0024DDC2813227800645F25 /* OnboardingItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemView.swift; sourceTree = "<group>"; };
 		A0024DDE281322E000645F25 /* OnboardingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemViewModel.swift; sourceTree = "<group>"; };
 		A0066C3328432E9C00805570 /* DetailDiaryCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryCalendarCell.swift; sourceTree = "<group>"; };
@@ -357,6 +361,7 @@
 		863A556428321BBA00995BC9 /* Todo */ = {
 			isa = PBXGroup;
 			children = (
+				8FF8DB1528420FBA00F745BE /* Model */,
 				863A556528321C1100995BC9 /* View */,
 				863A556628321C1500995BC9 /* ViewModel */,
 			);
@@ -599,6 +604,7 @@
 				8F8D11DA282665EE00E7DA6C /* HomeTodoListCell.swift */,
 				8F167260283E8877007A699B /* TodoCell.swift */,
 				8F167262283E8887007A699B /* RoutineCell.swift */,
+				8FF8DB122841F80B00F745BE /* RoutineCountCell.swift */,
 				8F8D11D52826225300E7DA6C /* FloatingBtn.swift */,
 				8F8D11D8282663B600E7DA6C /* HomeTodoList.swift */,
 			);
@@ -1008,6 +1014,14 @@
 			isa = PBXGroup;
 			children = (
 				8FEEE5C5283A4C0500764C43 /* PrivacyPolicyModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8FF8DB1528420FBA00F745BE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8FF8DB1628420FCA00F745BE /* DetailTodoModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1495,6 +1509,7 @@
 				8FEEE5BC283A48D400764C43 /* TaviCommon.swift in Sources */,
 				A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */,
 				8662F762282A5C9B007998CE /* PerformTimeSettingViewModel.swift in Sources */,
+				8FF8DB1728420FCA00F745BE /* DetailTodoModel.swift in Sources */,
 				8638A552281B7874003D771B /* UITextField+Extension.swift in Sources */,
 				86BBE060283E1672002AA1F9 /* AuthRequest.swift in Sources */,
 				A0AA716C2841B69E005ABAF6 /* JSON+Extension.swift in Sources */,
@@ -1517,6 +1532,7 @@
 				A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */,
 				8FEEE5C6283A4C0500764C43 /* PrivacyPolicyModel.swift in Sources */,
 				868A57532828B70F004153BB /* CommonHintLabel.swift in Sources */,
+				8FF8DB132841F80B00F745BE /* RoutineCountCell.swift in Sources */,
 				A0B6AD90282639D100F02E71 /* AddHabitView.swift in Sources */,
 				8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */,
 				8FEEE5C2283A4BF900764C43 /* PrivacyPolicyViewModel.swift in Sources */,

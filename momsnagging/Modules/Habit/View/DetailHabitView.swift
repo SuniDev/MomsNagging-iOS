@@ -25,6 +25,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     private let cycleIdentifier = "CycleCell"
     private let viewAddPushTimeHeight: CGFloat = 40.0
     
+    private var weekData: [String] = []
+    
     // MARK: - UI Properties
     lazy var viewHeader = UIView()
     lazy var btnBack = UIButton()
@@ -143,6 +145,12 @@ class DetailHabitView: BaseViewController, Navigatable {
         if #available(iOS 13.4, *) {
             $0.preferredDatePickerStyle = .wheels
         }
+    })
+    
+    /// Common 수정을 하지 않고 진행하기 위해 임의로 수정버튼 숨김을 위한 emptyView
+    lazy var hideModifyEmptyView = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+        $0.isHidden = true
     })
     
     // MARK: - init
@@ -311,6 +319,14 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.bottom.equalToSuperview().offset(-20)
         })
         
+        view.addSubview(hideModifyEmptyView)
+        hideModifyEmptyView.snp.makeConstraints({
+            $0.top.equalTo(viewAddPushTime.snp.top)
+            $0.trailing.equalTo(viewAddPushTime.snp.trailing).offset(-7)
+            $0.bottom.equalTo(viewAddPushTime.snp.bottom)
+            $0.width.equalTo(UIScreen.main.bounds.width / 3)
+        })
+        
         view.layoutIfNeeded()
     }
     
@@ -367,6 +383,13 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.cycleCollectionView.isUserInteractionEnabled = isWriting
                 self.tfPicker.isEnabled = isWriting
                 self.switchPush.isEnable = isWriting
+                
+                // 수정 버튼 숨김
+                if isWriting {
+                    self.hideModifyEmptyView.isHidden = true
+                } else {
+                    self.hideModifyEmptyView.isHidden = false
+                }
             }).disposed(by: disposeBag)
         
         /// 뒤로 가기
@@ -386,6 +409,8 @@ class DetailHabitView: BaseViewController, Navigatable {
         output.showDeleteAlert
             .drive(onNext: { message in
                 CommonView.showAlert(vc: self, title: "", message: message, cancelTitle: STR_NO, destructiveTitle: STR_DELETE, destructiveHandler: {
+                    Log.debug("아이디 확인", "\(self.viewModel?.todoModel?.id ?? 0)")
+                    self.viewModel?.requestDeleteRoutine(scheduleId: self.viewModel?.todoModel?.id ?? 0)
                     deleteAlertDoneHandler.accept(())
                 })
             }).disposed(by: disposeBag)
@@ -497,6 +522,74 @@ class DetailHabitView: BaseViewController, Navigatable {
             .drive(onNext: {
                 self.navigator.pop(sender: self, toRoot: true)
             }).disposed(by: disposeBag)
+        
+        viewModel.routineInfoOb.subscribe(onNext: { data in
+            self.tfName.text = data.scheduleName
+            self.tfPerformTime.text = data.scheduleTime
+            
+            if data.mon ?? false {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, 0]) as? CycleCell
+                cell?.select()
+            }
+            if data.tue ?? false {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, 1]) as? CycleCell
+                cell?.select()
+            }
+            if data.wed ?? false {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, 2]) as? CycleCell
+                cell?.select()
+            }
+            if data.thu ?? false {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, 3]) as? CycleCell
+                cell?.select()
+            }
+            if data.fri ?? false {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, 4]) as? CycleCell
+                cell?.select()
+            }
+            if data.sat ?? false {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, 5]) as? CycleCell
+                cell?.select()
+            }
+            if data.sun ?? false {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, 6]) as? CycleCell
+                cell?.select()
+            }
+            
+            if data.goalCount != 0 && data.goalCount != nil {
+                let indexRow: Int = Int(data.goalCount!) - 1
+                let cell = self.cycleCollectionView.cellForItem(at: [0, indexRow]) as? CycleCell
+                cell?.isSelected = true
+            }
+            if data.alarmTime != nil {
+                self.switchPush.isOn = true
+                self.viewAddPushTime.fadeIn()
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeStyle = .short
+                dateFormatter.dateFormat = "hh:mm a"
+                self.viewTimeNaggingPush.fadeIn()
+
+            } else {
+                self.switchPush.isOn = false
+                self.viewAddPushTime.fadeOut()
+            }
+            let height = data.alarmTime != nil ? self.viewAddPushTimeHeight : 0
+            self.viewAddPushTime.snp.updateConstraints({
+                $0.height.equalTo(height)
+            })
+            self.detailNaggingPushFrame.snp.updateConstraints({
+                $0.height.equalTo(65 + height)
+            })
+            
+            UIView.animate(withDuration: 0.15) {
+                self.view.layoutIfNeeded()
+            }
+            self.lblTime.text = TaviCommon.alarmTimeStringToDateToString(stringData: data.alarmTime ?? "")
+        }).disposed(by: disposeBag)
+        
+        viewModel.modifySuccessOb.subscribe(onNext: { _ in
+            self.navigator.pop(sender: self)
+        }).disposed(by: disposeBag)
         
     }
     

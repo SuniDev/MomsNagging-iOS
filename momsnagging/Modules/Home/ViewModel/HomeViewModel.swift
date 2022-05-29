@@ -19,6 +19,10 @@ class HomeViewModel: BaseViewModel, ViewModelType {
     var disposeBag = DisposeBag()
     var todoListData: [TodoListModel] = []
     var todoListDataOB = BehaviorRelay<[TodoListModel]>(value: [])
+    var addHabitSuccessOb = PublishSubject<Void>()
+    var toggleIcSuccessOb = PublishSubject<Void>()
+    var toggleCancelOb = PublishSubject<Void>()
+    var delaySuccessOb = PublishSubject<Void>()
     
     override init() {
     }
@@ -47,6 +51,10 @@ class HomeViewModel: BaseViewModel, ViewModelType {
         
         var inputValue: Driver<HomeViewModel.Input>?
     }
+    
+    // MARK: - Temp
+    var isEndProgress = PublishSubject<Void>()
+    var todoListDataObserver = PublishSubject<[TodoListModel]>()
     
     func transform(input: Input) -> Output {
         let floatingBtnIc = BehaviorRelay<Bool>(value: false)
@@ -148,7 +156,6 @@ class HomeViewModel: BaseViewModel, ViewModelType {
         return returnList.asDriver()
     }
     
-    
 }
 
 extension HomeViewModel {
@@ -160,24 +167,117 @@ extension HomeViewModel {
                     let json = JSON(try result.mapJSON())
                     print("requestTodoListLookUp json : \(json)")
                     self.todoListData.removeAll()
-                    for item in json.array! {
-                        var model = TodoListModel()
-                        model.seqNumber = item.dictionary?["seqNumber"]?.intValue ?? 0
-                        model.scheduleType = item.dictionary?["scheduleType"]?.stringValue ?? ""
-                        model.scheduleName = item.dictionary?["scheduleName"]?.stringValue ?? ""
-                        model.naggingId = item.dictionary?["naggingId"]?.intValue ?? 0
-                        model.scheduleTime = item.dictionary?["scheduleTime"]?.stringValue ?? ""
-                        model.done = item.dictionary?["done"]?.boolValue ?? false
-                        model.id = item.dictionary?["id"]?.intValue ?? 0
-                        self.todoListData.append(model)
+                    if json.dictionary?["status"]?.intValue == nil {
+                        for item in json.array! {
+                            var model = TodoListModel()
+                            model.seqNumber = item.dictionary?["seqNumber"]?.intValue ?? 0
+                            model.scheduleType = item.dictionary?["scheduleType"]?.stringValue ?? ""
+                            model.scheduleName = item.dictionary?["scheduleName"]?.stringValue ?? ""
+                            model.naggingId = item.dictionary?["naggingId"]?.intValue ?? 0
+                            model.scheduleTime = item.dictionary?["scheduleTime"]?.stringValue ?? ""
+                            model.done = item.dictionary?["done"]?.boolValue ?? nil
+                            model.id = item.dictionary?["id"]?.intValue ?? 0
+                            model.goalCount = item.dictionary?["goalCount"]?.intValue ?? 0
+                            self.todoListData.append(model)
+                        }
                     }
+                    
                     self.todoListDataOB.accept(self.todoListData)
+                    self.todoListDataObserver.onNext(self.todoListData)
+                    self.isEndProgress.onNext(())
                 } catch(let error) {
-                    print("requestTodoListLookUp error : \(error)")
+                    Log.error("requestTodoListLookUp error", "\(error)")
                 }
             case .failure(let error):
-                print("requestTodoListLookUp failure error : \(error)")
+                Log.error("requestTodoListLookUp failure error", "\(error)")
             }
         })
     }
+    
+    func requestRoutineDone(scheduleId: Int) {
+        var param: [ModifyTodoRequestModel] = []
+        var model = ModifyTodoRequestModel()
+        model.op = "replace"
+        model.path = "/done"
+        model.value = "true"
+        param.append(model)
+        provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestRoutineDone json : \(json)")
+                    self.toggleIcSuccessOb.onNext(())
+                } catch let error {
+                    print("requestRoutineDone error : \(error)")
+                }
+            case .failure(let error):
+                print("requestRoutineDone failure error : \(error)")
+            }
+        })
+    }
+    func requestRoutineCancel(scheduleId: Int) {
+        var param: [ModifyTodoRequestModel] = []
+        var model = ModifyTodoRequestModel()
+        model.op = "replace"
+        model.path = "/done"
+        model.value = "false"
+        param.append(model)
+        provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestRoutineCancel json : \(json)")
+                    self.toggleCancelOb.onNext(())
+                } catch let error {
+                    print("requestRoutineCancel error : \(error)")
+                }
+            case .failure(let error):
+                print("requestRoutineCancel failure error : \(error)")
+            }
+        })
+    }
+    
+    func requestDelete(scheduleId: Int) {
+        provider.request(.deleteTodo(scheduleId: scheduleId), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("deleteTodo json : \(json)")
+                    self.addHabitSuccessOb.onNext(())
+                } catch let error {
+                    Log.error("deleteTodo error", "\(error)")
+                    self.addHabitSuccessOb.onNext(())
+                }
+            case .failure(let error):
+                Log.error("deleteTodo failure error", "\(error)")
+            }
+        })
+    }
+    
+    func requestDeleay(scheduleId: Int) {
+        var param: [ModifyTodoRequestModel] = []
+        var model = ModifyTodoRequestModel()
+        model.op = "replace"
+        model.path = "/done"
+        model.value = nil
+        param.append(model)
+        provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestDeleay : \(json)")
+                    self.delaySuccessOb.onNext(())
+                } catch let error {
+                    Log.error("requestDeleay failure error", "\(error)")
+                }
+            case .failure(let error):
+                Log.error("requestDeleay failure error", "\(error)")
+            }
+        })
+    }
+    
 }
