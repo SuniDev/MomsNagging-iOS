@@ -284,7 +284,6 @@ class DetailDiaryView: BaseViewController, Navigatable {
         
         output.setTitleDate
             .drive(onNext: { date in
-                Log.debug("setTitleDate", date)
                 self.headTitleLbl.text = date
             }).disposed(by: disposeBag)
         

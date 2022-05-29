@@ -100,9 +100,6 @@ class DetailTodoView: BaseViewController, Navigatable {
         self.viewModel = viewModel
         self.navigator = navigator
         super.init(nibName: nil, bundle: nil)
-//        viewModel.todoModelOb.subscribe(onNext: { data in
-//            Log.debug("testData", "\(data)")
-//        }).disposed(by: disposeBag)
     }
     
     @available(*, unavailable)
@@ -412,17 +409,6 @@ class DetailTodoView: BaseViewController, Navigatable {
             
             self.lblTime.text = TaviCommon.alarmTimeStringToDateToString(stringData: data.alarmTime ?? "")
         }).disposed(by: disposeBag)
-        
-//        output.todoModel.drive(onNext: { data in
-//            Log.debug("todoModelObData", "\(data)")
-//            self.tfName.text = data.scheduleName ?? ""
-//            self.tfPerformTime.text = data.scheduleTime ?? ""
-//        }).disposed(by: disposeBag)
-//        //output
-//        viewModel.todoModelOb.subscribe(onNext: { data in
-//            Log.debug("todoModelObData", "\(data)")
-//            self.tfName.text = data.scheduleName ?? ""
-//        }).disposed(by: disposeBag)
     }
     
     // MARK: - performTimeViewModel bind

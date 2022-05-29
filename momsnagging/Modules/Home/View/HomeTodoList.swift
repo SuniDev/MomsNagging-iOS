@@ -249,7 +249,6 @@ extension HomeView {
             }.disposed(by: disposedBag)
         }
         viewModel.isEndProgress.subscribe(onNext: { _ in
-            Log.debug("endProgress", "!")
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         

@@ -375,7 +375,6 @@ class HomeView: BaseViewController, Navigatable {
                         cell?.selectDayRoundFrame.isHidden = true
                     }
                 }
-                Log.debug("이번달인지 테스트", "true")
             } else {
                 self.weekDaySelectClear()
             }

@@ -188,7 +188,6 @@ class DeleteAccountView: BaseViewController, Navigatable {
             self.placeHolderLbl.isHidden = true
             self.tableView.isHidden = true
             self.selectItemOb.onNext(true)
-            Log.debug("불편함 selectIndex", "\(indexPath.row)")
         }).disposed(by: disposedBag)
         self.tableView.rx.setDelegate(self).disposed(by: disposedBag)
         

@@ -16,7 +16,6 @@ class RecommendedHabitView: BaseViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         action()
-        Log.debug("헤드타이틀", "\(headTitle)")
     }
     // MARK: - Init
     init(viewModel: RecommendedHabitViewModel, navigator: Navigator) {
