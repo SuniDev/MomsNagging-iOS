@@ -42,11 +42,11 @@ public let STR_TODO_DELETE      = "할일을 삭제하면 되돌릴 수 없단�
 public let STR_DIARY_DELETE     = "일기를 삭제하면 되돌릴 수 없단다\n그래도 삭제하겠니?"
 
 /// 마이
-public let STR_MESSAGE_DEFAULT          = "오늘 하루도 파이팅 🔥"
-public let STR_MESSAGE_MODIFY_TITLE     = "각오 한마디 적어볼래?"
-public let STR_MESSAGE_MODIFY_ERROR     = "다른 각오를 생각해보겠니?"
-public let STR_MESSAGE_MODIFY_PLACEHOLDER = "띄어쓰기 포함 한/영/특수문자 30글자 이내"
-public let STR_MESSAGE_MODIFY_DONE      = "이렇게 할게요!"
+public let STR_STATUSMSG_DEFAULT          = "오늘 하루도 파이팅 🔥"
+public let STR_STATUSMSG_MODIFY_TITLE     = "각오 한마디 적어볼래?"
+public let STR_STATUSMSG_MODIFY_ERROR     = "다른 각오를 생각해보겠니?"
+public let STR_STATUSMSG_MODIFY_PLACEHOLDER = "띄어쓰기 포함 한/영/특수문자 30글자 이내"
+public let STR_STATUSMSG_MODIFY_DONE      = "이렇게 할게요!"
 
 public let STR_NICKNAME_SETTING_TITLE   = "엄마가 뭐라고 불러줄까?"
 public let STR_NICKNAME_SETTING_ERROR   = "다른 이름을 생각해보겠니?"

@@ -17,10 +17,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     /// Service
     static let authService = AuthService()
+    static let userService = UserService()
     static let diaryService = DiaryService()
     
     static var appService = {
         return AppServices(authService: SceneDelegate.authService,
+                           userService: SceneDelegate.userService,
                            diaryService: SceneDelegate.diaryService)
     }()
     

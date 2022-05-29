@@ -22,7 +22,7 @@ struct DiaryCalendarRequest: RequestModelType {
  - Authors: suni
  - Note: 일기장 조회 Request 모델
  */
-struct GetDiaryReqeust: RequestModelType {
+struct GetDiaryReqeust: RequestModelType, Encodable {
     var retrieveDate: String   // 조회 일자
 }
 

@@ -94,18 +94,33 @@ class IntroViewModel: ViewModel, ViewModelType {
             .flatMapLatest { _ -> Observable<String?> in
                 return self.getAuthorization()
             }.share()
-        
-        let goToMain = getAuthorization
+                
+        let requestGetUser = getAuthorization
             .filter({ $0 != nil })
-            .map { authorization -> MainContainerViewModel in
-                CommonUser.authorization = authorization
+            .map { CommonUser.authorization = $0 }
+            .flatMapLatest { _ -> Observable<User> in
+                return self.requestGetUser()
+            }.share()
+        
+        let setUser = requestGetUser
+            .filter { $0.id != nil }
+            .share()
+        
+        setUser
+            .subscribe(onNext: { user in
+                CommonUser.setUser(user)
+            }).disposed(by: disposeBag)
+        
+        let goToMain = setUser
+            .map { _ -> MainContainerViewModel in
                 let viewModel = MainContainerViewModel()
                 return viewModel
             }
         
         let goToLogin = Observable.merge(
             isAutoLogin.filter({ $0 == false }).mapToVoid(),
-            getAuthorization.filter({ $0 == nil }).mapToVoid()
+            getAuthorization.filter({ $0 == nil }).mapToVoid(),
+            requestGetUser.filter { $0.id == nil }.mapToVoid()
         ).map { _ -> LoginViewModel in
             let viewModel = LoginViewModel(withService: self.provider)
             return viewModel
@@ -171,4 +186,8 @@ extension IntroViewModel {
 
 // MARK: API
 extension IntroViewModel {
+    private func requestGetUser() -> Observable<User> {
+        let request = GetUserRequest()
+        return self.provider.userService.getUser(request: request)
+    }
 }

@@ -164,10 +164,24 @@ class LoginViewModel: ViewModel, ViewModelType {
                 return viewModel
             }
         
-        let goToMain = requestLogin
+        let requestGetUser = requestLogin
             .filter { $0.token != nil }
-            .map { login -> MainContainerViewModel in
-                CommonUser.authorization = login.token
+            .map { CommonUser.authorization = $0.token }
+            .flatMapLatest { _ -> Observable<User> in
+                return self.requestGetUser()
+            }.share()
+        
+        let setUser = requestGetUser
+            .filter { $0.id != nil }
+            .share()
+        
+        setUser
+            .subscribe(onNext: { user in
+                CommonUser.setUser(user)
+            }).disposed(by: disposeBag)
+        
+        let goToMain = setUser
+            .map { _ -> MainContainerViewModel in
                 let viewModel = MainContainerViewModel()
                 return viewModel
             }
@@ -198,5 +212,10 @@ extension LoginViewModel {
     private func requestLogin(snsType: String, code: String) -> Observable<Login> {
         let request = LoginRequest(provider: snsType, code: code)
         return self.provider.authService.login(request: request)
+    }
+    
+    private func requestGetUser() -> Observable<User> {
+        let request = GetUserRequest()
+        return self.provider.userService.getUser(request: request)
     }
 }
