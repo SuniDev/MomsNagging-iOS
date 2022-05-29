@@ -97,9 +97,13 @@ class SettingView: BaseViewController, Navigatable {
                 Log.debug("개인정보 처리방침", "클릭")
                 self.navigator.show(seque: .privacyPolicy(viewModel: PrivacyPolicyViewModel()), sender: self)
             } else if indexPath.row == 1 {
+                let viewModel = ContactUsViewModel()
+                self.navigator.show(seque: .contactUs(viewModel: viewModel), sender: self, transition: .navigation)
                 Log.debug("문의하기", "클릭")
             } else if indexPath.row == 2 {
                 Log.debug("회월탈퇴", "클릭")
+                let viewModel = DeleteAccountViewModel()
+                self.navigator.show(seque: .deleteAccount(viewModel: viewModel), sender: self, transition: .navigation)
             }
         }).disposed(by: disposedBag)
         

@@ -14,6 +14,8 @@ import RxCocoa
 class ContactUsViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
+    var provider = MoyaProvider<QuestionService>()
+    var requestQuestionSuccessOb = PublishSubject<Void>()
 
     override init() {
     }
@@ -30,5 +32,21 @@ class ContactUsViewModel: BaseViewModel, ViewModelType {
 }
 // MARK: - API
 extension ContactUsViewModel {
-    
+    func requestCreateQuestion(context: String?){
+        let param = QuestionRequestModel.init(title: "사용자 문의", context: context)
+        provider.request(.createQuestion(param: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestCreateQuestion json : \(json)")
+                    self.requestQuestionSuccessOb.onNext(())
+                } catch let error {
+                    Log.debug("requestCreateQuestion error", "\(error)")
+                }
+            case .failure(let error):
+                Log.debug("requestCreateQuestion failure error", "\(error)")
+            }
+        })
+    }
 }

@@ -201,6 +201,10 @@ class DeleteAccountView: BaseViewController, Navigatable {
             Log.debug("탈퇴하기", "클릭")
         }.disposed(by: disposedBag)
         
+        backBtn.rx.tap.bind {
+            self.navigator.pop(sender: self)
+        }.disposed(by: disposedBag)
+        
     }
     
 }

@@ -24,8 +24,9 @@ class InconvenienceListCell: UITableViewCell {
 }
 
 extension InconvenienceListCell {
-    private func setUI(){
+    private func setUI() {
         contentView.addSubview(contentLbl)
+        contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         contentLbl.snp.makeConstraints({
             $0.centerY.equalTo(contentView.snp.centerY)
             $0.leading.equalTo(contentView.snp.leading).offset(16)

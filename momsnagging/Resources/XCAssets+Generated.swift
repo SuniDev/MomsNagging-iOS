@@ -32,6 +32,7 @@ internal enum Asset {
     internal static let awardEnable2 = ImageAsset(name: "awardEnable2")
     internal static let awardEnable3 = ImageAsset(name: "awardEnable3")
     internal static let awardEnable4 = ImageAsset(name: "awardEnable4")
+    internal static let contactUs = ImageAsset(name: "contactUs")
     internal static let defautImage = ImageAsset(name: "defautImage")
     internal static let emojiAngry = ImageAsset(name: "emoji_angry")
     internal static let emojiAngryDis = ImageAsset(name: "emoji_angry_dis")
@@ -81,7 +82,6 @@ internal enum Asset {
     internal static let pagecontrol3 = ImageAsset(name: "pagecontrol3")
     internal static let pagecontrol4 = ImageAsset(name: "pagecontrol4")
     internal static let pagecontrol5 = ImageAsset(name: "pagecontrol5")
-      internal static let contactUs = ImageAsset(name: "contactUs")
   }
   internal enum Color {
     internal static let black = ColorAsset(name: "black")
