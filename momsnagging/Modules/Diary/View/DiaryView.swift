@@ -47,7 +47,7 @@ class DiaryView: BaseViewController, Navigatable {
     
     // MARK: - UI Properties
     var backBtn = UIButton()
-    var writeBtn = UIButton()
+    var btnDetail = UIButton()
     var headFrame = UIView()
     
     var scrollView = UIScrollView()
@@ -128,7 +128,7 @@ class DiaryView: BaseViewController, Navigatable {
     // MARK: - initUI
     override func initUI() {
         // 헤더
-        headFrame = CommonView.defaultHeadFrame(leftIcBtn: backBtn, headTitle: "일기장", rightIcBtn: writeBtn)
+        headFrame = CommonView.defaultHeadFrame(leftIcBtn: backBtn, headTitle: "일기장", rightIcBtn: btnDetail)
         
         // Colleciton View
         monthCollectionViewHeight = 6
@@ -234,9 +234,11 @@ class DiaryView: BaseViewController, Navigatable {
             setCalendarMonth: self.calendarViewModel.monthObservable.asDriverOnErrorJustComplete(),
             setCalendarYear: self.calendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
             loadDayList: self.calendarViewModel.daylist.asDriverOnErrorJustComplete(),
+            loadWeekDay: self.calendarViewModel.weekDay.asDriverOnErrorJustComplete(),
             dayModelSelected: self.dayCollectionView.rx.modelSelected(DiaryDayItem.self).asDriverOnErrorJustComplete(),
             btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
-            btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete())
+            btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
+            btnDetailTappd: self.btnDetail.rx.tap.mapToVoid().asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.setCalendarDate
@@ -259,6 +261,16 @@ class DiaryView: BaseViewController, Navigatable {
                 cell.configure()
             }.disposed(by: disposedBag)
         
+        output.weekItems
+            .bind(to: self.weekDayCollectionView.rx.items(cellIdentifier: "CalendarWeekDayCell", cellType: CalendarWeekDayCell.self)) { index, item, cell in
+                if (index % 7) == 6 {
+                    cell.dayWeekLabel.textColor = UIColor(asset: Asset.Color.error)
+                } else {
+                    cell.dayWeekLabel.textColor = UIColor(asset: Asset.Color.monoDark010)
+                }
+                cell.dayWeekLabel.text = item
+            }.disposed(by: disposedBag)
+        
         output.setLastMonth
             .drive(onNext: { date in
                 self.calendarViewModel.getLastMonth(currentMonth: date.month, currentYear: date.year)
@@ -279,10 +291,15 @@ class DiaryView: BaseViewController, Navigatable {
         
         output.isEmptyDiary
             .drive(onNext: { isEmpty in
-                Log.debug(isEmpty)
                 self.emptyDiaryFrame.isHidden = !isEmpty
             }).disposed(by: disposedBag)
-        self.bindCalendar()
+        
+        output.goToDetail
+            .drive(onNext: { viewModel in
+                if let viewModel = viewModel {
+                    self.navigator.show(seque: .detailDiary(viewModel: viewModel), sender: self, transition: .navigation)
+                }
+            }).disposed(by: disposedBag)
     }
     
     private func getDiaryDateTitle(strDate: String) -> String {
@@ -291,29 +308,6 @@ class DiaryView: BaseViewController, Navigatable {
         } else {
             return "오늘의 일기"
         }
-    }
-    
-    // MARK: - Action
-    func action() {
-        // 작성하기, 수정하기 액션
-        writeBtn.rx.tap.bind {
-//            self.navigator.show(seque: .detailDiary(viewModel: DetailDiaryViewModel(withService: AppServices(authService: AuthService()), isNew: true)), sender: self, transition: .navigation)
-        }.disposed(by: disposedBag)
-    }
-    
-    // MARK: - CalendarViewModel bind
-    func bindCalendar() {
-        
-        calendarViewModel.weekDay // 월 ~ 일
-            .bind(to: self.weekDayCollectionView.rx.items(cellIdentifier: "CalendarWeekDayCell", cellType: CalendarWeekDayCell.self)) { index, item, cell in
-                if (index % 7) == 6 {
-                    cell.dayWeekLabel.textColor = UIColor(asset: Asset.Color.error)
-                } else {
-                    cell.dayWeekLabel.textColor = UIColor(asset: Asset.Color.monoDark010)
-                }
-                cell.dayWeekLabel.text = item
-            }.disposed(by: disposedBag)
-        
     }
 }
 

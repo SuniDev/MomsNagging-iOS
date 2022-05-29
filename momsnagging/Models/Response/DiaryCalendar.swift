@@ -38,5 +38,4 @@ class DiaryDay: ModelType {
         diaryExists = jsonData["diaryExists"].bool
         diaryDate = jsonData["diaryDate"].string
     }
-    
 }

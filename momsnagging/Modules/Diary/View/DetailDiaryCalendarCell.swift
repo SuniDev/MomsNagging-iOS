@@ -1,25 +1,24 @@
 //
-//  DiaryCalendarCell.swift
+//  DetailDiaryCalendarCell.swift
 //  momsnagging
 //
-//  Created by 전창평 on 2022/05/06.
+//  Created by suni on 2022/05/29.
 //
 
 import UIKit
 import Then
 import SnapKit
 
-class DiaryCalendarCell: UICollectionViewCell {
+class DetailDiaryCalendarCell: UICollectionViewCell {
     
-    // MARK: - Diary 디테일 작업 수정
     var normalBackgroundColor: UIColor = Asset.Color.monoWhite.color {
         didSet {
             self.viewBackground.backgroundColor = normalBackgroundColor
         }
     }
-    var normalBorderColor: UIColor = Asset.Color.monoLight030.color {
+    var normalBorderColor: UIColor = .clear {
         didSet {
-            self.viewBackground.addBorder(color: normalBorderColor, width: 1)
+            self.viewBackground.addBorder(color: .clear, width: 1)
         }
     }
     var normalTitleColor: UIColor = Asset.Color.monoDark010.color {
@@ -32,9 +31,6 @@ class DiaryCalendarCell: UICollectionViewCell {
     
     let disabledTitleColor: UIColor = Asset.Color.monoDark040.color
     let disabledBorderColor: UIColor = Asset.Color.monoWhite.color
-    
-    let wroteBackgroundColor: UIColor = Asset.Color.subLight030.color
-    let wroteBorderColor: UIColor = Asset.Color.subLight030.color
     
     let todayBackgroundColor: UIColor = Asset.Color.priMain.color
     let todayBorderColor: UIColor = Asset.Color.priMain.color
@@ -57,7 +53,7 @@ class DiaryCalendarCell: UICollectionViewCell {
         
     // MARK: - UI Properties
     lazy var viewBackground = UIView().then({
-        $0.layer.cornerRadius = 20
+        $0.layer.cornerRadius = 14
         $0.backgroundColor = normalBackgroundColor
         $0.addBorder(color: normalBorderColor, width: 1)
     })
@@ -90,15 +86,9 @@ class DiaryCalendarCell: UICollectionViewCell {
                 self.viewBackground.addBorder(color: todayBorderColor, width: 1)
                 self.number.textColor = todayTitleColor
             } else {
-                if isWroteDiary {
-                    self.viewBackground.backgroundColor = wroteBackgroundColor
-                    self.viewBackground.addBorder(color: isSelected ? selectedBorderColor : wroteBorderColor, width: 1)
-                    self.number.textColor = isSunday ? sundayTitleColor : normalTitleColor
-                } else {
-                    self.viewBackground.backgroundColor = normalBackgroundColor
-                    self.viewBackground.addBorder(color: isSelected ? selectedBorderColor : normalBorderColor, width: 1)
-                    self.number.textColor = isSunday ? sundayTitleColor : normalTitleColor
-                }
+                self.viewBackground.backgroundColor = normalBackgroundColor
+                self.viewBackground.addBorder(color: isSelected ? selectedBorderColor : normalBorderColor, width: 1)
+                self.number.textColor = isSunday ? sundayTitleColor : normalTitleColor
             }
         } else {
             self.isUserInteractionEnabled = false
@@ -113,14 +103,14 @@ class DiaryCalendarCell: UICollectionViewCell {
     }
     
 }
-extension DiaryCalendarCell {
+extension DetailDiaryCalendarCell {
     private func initUI() {
         contentView.addSubview(viewBackground)
         contentView.addSubview(number)
         
         viewBackground.snp.makeConstraints({
             $0.center.equalTo(contentView.snp.center)
-            $0.width.height.equalTo(40)
+            $0.width.height.equalTo(28)
         })
         number.snp.makeConstraints({
             $0.center.equalTo(contentView.snp.center)

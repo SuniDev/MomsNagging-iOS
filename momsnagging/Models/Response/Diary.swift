@@ -1,5 +1,5 @@
 //
-//  GetDiary.swift
+//  Diary.swift
 //  momsnagging
 //
 //  Created by suni on 2022/05/28.
@@ -9,11 +9,11 @@ import Foundation
 import SwiftyJSON
 
 /**
- # (C) GetDiary
+ # (C) Diary
  - Authors: suni
  - Note: 일기장 조회  API Response 모델 클래스
  */
-class GetDiary: ModelType {
+class Diary: ModelType {
     enum Event { }
     
     var title: String?

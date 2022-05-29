@@ -12,16 +12,26 @@ import RxCocoa
 class DetailDiaryViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
-    private let isNew: BehaviorRelay<Bool>
+    private let selectedDate: BehaviorRelay<String>
     
     // TODO: Diary 날짜 받기
-    init(withService provider: AppServices, isNew: Bool) {
-        self.isNew = BehaviorRelay<Bool>(value: isNew)
+    init(withService provider: AppServices, selectedDate: String) {
+        self.selectedDate = BehaviorRelay<String>(value: selectedDate)
         super.init(provider: provider)
     }
     
     // MARK: - Input
     struct Input {
+        let willAppearDetailDiary: Driver<Void>
+        /// 캘린더
+        let loadCalendar: Driver<CalendarDate>
+        let setCalendarMonth: Driver<Int>
+        let setCalendarYear: Driver<Int>
+        let loadDayList: Driver<[String]>
+        let loadWeekDay: Driver<[String]>
+        let dayModelSelected: Driver<DetailDiaryDayItem>
+        let btnPrevTapped: Driver<Void>
+        let btnNextTapped: Driver<Void>
         /// 더보기
         let btnMoreTapped: Driver<Void>
         let dimViewTapped: Driver<Void>
@@ -45,6 +55,13 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
+        /// 캘린더 날짜 설정
+        let setTitleDate: Driver<String>
+        let setCalendarDate: Driver<CalendarDate>
+        let dayItems: Observable<[DetailDiaryDayItem]>
+        let weekItems: Observable<[String]>
+        let setLastMonth: Driver<CalendarDate>
+        let setNextMonth: Driver<CalendarDate>
         ///  바텀 시트
         let showBottomSheet: Driver<Void>
         let hideBottomSheet: Driver<Void>
@@ -76,12 +93,116 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         let isWriting = BehaviorRelay<Bool>(value: false)
         let contentsPlaceHolder = BehaviorRelay<String>(value: "")
-        let isNew = self.isNew
+        let isNew = BehaviorRelay<Bool>(value: false)
         
         let textTitle = BehaviorRelay<String>(value: "")
         let textContents = BehaviorRelay<String>(value: "")
         let lengthExceededTitle = PublishRelay<Void>()
         let lengthExceededContents = PublishRelay<Void>()
+        
+        /// 캘린더
+        // 캘린더 날짜
+        let setCalendarDate = BehaviorRelay<CalendarDate>(value: CalendarDate())
+        // 선택 날짜
+        let selectedDate = self.selectedDate
+        // 현재 선택 일기
+        let selectedDiary = BehaviorRelay<Diary?>(value: nil)
+        
+        input.willAppearDetailDiary
+            .drive(onNext: {
+                selectedDate.accept(selectedDate.value)
+            }).disposed(by: disposeBag)
+        
+        // 캘린더 로드
+        let loadCalendar = input.loadCalendar.asObservable().share()
+        loadCalendar
+            .subscribe(onNext: { date in
+                setCalendarDate.accept(date)
+            }).disposed(by: disposeBag)
+        
+        // 다음 달
+        let setLastMonth = input.btnPrevTapped.asObservable()
+            .map { _ -> CalendarDate in
+                return setCalendarDate.value
+            }
+        
+        // 이전 달
+        let setNextMonth = input.btnNextTapped.asObservable()
+            .map { _ -> CalendarDate in
+                return setCalendarDate.value
+            }
+        
+        // 캘린더 달 적용
+        let setCalendarMonth = input.setCalendarMonth.asObservable().share()
+        setCalendarMonth.skip(1)
+            .map { month -> CalendarDate in
+                var date = setCalendarDate.value
+                date.month = month
+                return date
+            }
+            .subscribe(onNext: { date in
+                setCalendarDate.accept(date)
+            }).disposed(by: disposeBag)
+        
+        // 캘린더 년 적용
+        let setCalendarYear = input.setCalendarYear.asObservable().share()
+        setCalendarYear.skip(1)
+            .map { year -> CalendarDate in
+                var date = setCalendarDate.value
+                date.year = year
+                return date
+            }
+            .subscribe(onNext: { date in
+                setCalendarDate.accept(date)
+            }).disposed(by: disposeBag)
+                
+        // 캘린더 콜렉션뷰 Item 세팅
+        let dayItems = input.loadDayList
+            .asObservable()
+            .flatMapLatest { arrStrDay -> Observable<[DetailDiaryDayItem]> in
+                return self.getDayItems(arrStrDay: arrStrDay, date: setCalendarDate.value)
+            }
+        
+        input.dayModelSelected
+            .drive(onNext: { dayItem in
+                selectedDate.accept(dayItem.strDate)
+            }).disposed(by: disposeBag)
+        
+        let setTitleDate = PublishRelay<String>()
+        selectedDate
+            .subscribe(onNext: { date in
+                setTitleDate.accept(self.getTitleDateString(dateString: date))
+            }).disposed(by: disposeBag)
+        
+        let requestGetDiary = selectedDate
+            .asObservable()
+            .flatMapLatest { date -> Observable<Diary> in
+                return self.requestGetDiary(date: date)
+            }.share()
+        
+        requestGetDiary
+            .subscribe(onNext: { diary in
+                selectedDiary.accept(diary)
+            }).disposed(by: disposeBag)
+        
+        requestGetDiary
+            .filter { $0.context == nil || $0.context?.isEmpty ?? true }
+            .flatMapLatest({ _ -> Observable<String> in
+                // TODO: 사용자 잔소리 강도
+                return self.getContentsPlaceholder(.fondMom)
+            })
+            .subscribe(onNext: { text in
+                if textContents.value.isEmpty {
+                    contentsPlaceHolder.accept(text)
+                }
+            }).disposed(by: disposeBag)
+        
+        requestGetDiary
+            .filter { $0.context != nil && !($0.context?.isEmpty ?? true) }
+            .subscribe(onNext: { diary in
+                textTitle.accept(diary.title ?? "")
+                textContents.accept(diary.context ?? "")
+            }).disposed(by: disposeBag)
         
         /// 작성 모드
         isNew
@@ -131,7 +252,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         let backAlertDoneHandler = input.backAlertDoneHandler
             .asObservable()
             .flatMapLatest { _ -> Observable<Bool> in
-                return Observable.just(self.isNew.value)
+                return Observable.just(isNew.value)
             }.share()
         
         let goToBack = Observable.merge(
@@ -214,7 +335,13 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
         
-        return Output(showBottomSheet: input.btnMoreTapped,
+        return Output(setTitleDate: setTitleDate.asDriverOnErrorJustComplete(),
+                      setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
+                      dayItems: dayItems,
+                      weekItems: input.loadWeekDay.asObservable(),
+                      setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
+                      setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
+                      showBottomSheet: input.btnMoreTapped,
                       hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
                       showBackAlert: showBackAlert.asDriver(onErrorJustReturn: STR_DIARY_BACK),
@@ -257,4 +384,74 @@ extension DetailDiaryViewModel {
             return Disposables.create()
         }
     }
+    
+    func getTitleDateString(dateString: String) -> String {
+        var st = ""
+        let formatterToString = DateFormatter()
+        formatterToString.dateFormat = "yyyy-MM-dd"
+        let date = formatterToString.date(from: dateString)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy.MM.dd"
+        st = formatter.string(from: date ?? Date())
+        
+        return st
+    }
+    
+}
+extension DetailDiaryViewModel {
+    func getDayItems(arrStrDay: [String], date: CalendarDate) -> Observable<[DetailDiaryDayItem]> {
+        return Observable<[DetailDiaryDayItem]>.create { observer -> Disposable in
+            var dayItems = [DetailDiaryDayItem]()
+            for strDay in arrStrDay {
+                var dayItem: DetailDiaryDayItem
+                if strDay == "emptyCell" {
+                    dayItem = DetailDiaryDayItem(strDay: "", strDate: "", isToday: false, isThisMonth: false)
+                } else {
+                    var date = date
+                    date.day = Int(strDay) ?? 1
+                    
+                    let strDate = self.getStrDate(date: date)
+                    dayItem = DetailDiaryDayItem(strDay: strDay, strDate: strDate, isToday: false, isThisMonth: true)
+                    dayItem.isToday = strDate == Date().toString(for: "yyyy-MM-dd")
+                }
+                dayItems.append(dayItem)
+            }
+            observer.onNext(dayItems)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+    }
+    
+    func getStrDate(date: CalendarDate) -> String {
+        let strYear = "\(date.year)"
+        
+        var strMonth = "\(date.month)"
+        var strDay = "\(date.day)"
+        
+        if date.month < 10 {
+            strMonth = "0\(date.month)"
+        }
+        
+        if date.day < 10 {
+            strDay = "0\(date.day)"
+        }
+        
+        return "\(strYear)-\(strMonth)-\(strDay)"
+    }
+}
+
+// MARK: - API
+extension DetailDiaryViewModel {
+    private func requestGetDiary(date: String) -> Observable<Diary> {
+        let request = GetDiaryReqeust(retrieveDate: date)
+        return self.provider.diaryService.getDiary(request: request)
+    }
+}
+
+struct DetailDiaryDayItem {
+    let strDay: String
+    var strDate: String
+    var isToday: Bool
+    var isThisMonth: Bool
 }

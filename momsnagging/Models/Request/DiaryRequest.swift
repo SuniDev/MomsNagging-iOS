@@ -25,3 +25,14 @@ struct DiaryCalendarRequest: RequestModelType {
 struct GetDiaryReqeust: RequestModelType {
     var retrieveDate: String   // 조회 일자
 }
+
+/**
+ # (S) PutDiaryReqeust
+ - Authors: suni
+ - Note: 일기장 수정 Request 모델
+ */
+struct PutDiaryReqeust: RequestModelType {
+    var title: String       // 타이틀
+    var context: String     // 내용
+    var diaryDate: String   // 일기장 날짜
+}
