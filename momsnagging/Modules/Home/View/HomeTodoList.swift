@@ -295,8 +295,30 @@ extension HomeView {
             let sIndex = sIndexPath.row
             let dIndex = dIndexPath.row
             
+            if dIndex > sIndex { // 위에서 밑으로
+                let count = -(sIndex - dIndex)
+                for i in sIndex + 1...count {
+                    var model = ScheduleArrayModel()
+                    model.oneOriginalId = self.todoList[sIndex].originalId ?? 0
+                    model.theOtherOriginalId = self.todoList[i].originalId ?? 0
+                    self.moveListModel.append(model)
+                }
+            } else if dIndex < sIndex { // 밑에서 위로
+                print("밑에서 위로 \(sIndex - dIndex)")
+                let count = sIndex - dIndex
+                for i in (0...count - 1).reversed() {
+                    var model = ScheduleArrayModel()
+                    model.oneOriginalId = self.todoList[sIndex].originalId ?? 0
+                    model.theOtherOriginalId = self.todoList[i].originalId ?? 0
+                    self.moveListModel.append(model)
+                }
+            }
+//            var model = ScheduleArrayModel()
+//            model.oneOriginalId = self.todoList[sIndexPath.row].originalId ?? 0
+//            model.theOtherOriginalId = self.todoList[dIndexPath.row].originalId ?? 0
+//            self.moveListModel.append(model)
 //            self.moveList[sIndexPath.row] = dRow
-            self.moveList[dIndexPath.row] = sRow
+//            self.moveList[dIndexPath.row] = sRow
 //            print("moveRowAt ! \(sIndexPath),\(dIndexPath),\n \(self.todoList),\n\n \(self.moveList)")
         }.disposed(by: disposedBag)
         

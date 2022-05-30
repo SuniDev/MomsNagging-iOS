@@ -15,7 +15,7 @@ enum ScheduleService {
     case todoDetailLookUp(scheduleId: Int)
     case deleteTodo(scheduleId: Int)
     case modifyTodo(scheduleId: Int, modifyParam: Array<ModifyTodoRequestModel>)
-    case sortingTodoList(idArray: Array<Int>)
+    case sortingTodoList(param: Array<ScheduleArrayModel>)
     case recommendedHabitCategoryLookUp
     case recommnededHabitListLookUp(categoryId: Int)
 }
@@ -79,8 +79,8 @@ extension ScheduleService: TargetType {
             return .requestPlain
         case .modifyTodo(scheduleId: _, modifyParam: let param):
             return .requestJSONEncodable(param)
-        case .sortingTodoList(idArray: let array):
-            return .requestJSONEncodable(array)
+        case .sortingTodoList(param: let param):
+            return .requestJSONEncodable(param)
         case .recommendedHabitCategoryLookUp:
             return .requestPlain
         case .recommnededHabitListLookUp(categoryId: let categoryId):

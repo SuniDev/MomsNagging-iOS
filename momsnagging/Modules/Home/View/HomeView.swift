@@ -47,6 +47,7 @@ class HomeView: BaseViewController, Navigatable {
     var todoList: [TodoListModel] = []
     var todoListType: [Int] = []
     var moveList: [TodoListModel] = []
+    var moveListModel:[ScheduleArrayModel] = []
     /*
      prefix : head
      Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일
@@ -385,6 +386,16 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListType.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
         }).disposed(by: disposedBag)
+        
+        viewModel.arraySuccessOb.subscribe(onNext: { _ in
+            self.moveListModel.removeAll()
+            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
+            self.headBtnBind(input: input)
+            self.collectionViewOutput = self.viewModel.transform(input: input)
+            self.todoListTableView.dragInteractionEnabled = false
+            self.todoList.removeAll()
+            self.todoListTableView.reloadData()
+        }).disposed(by: disposedBag)
     }
     
     // MARK: - Action Bind _ Input
@@ -447,12 +458,16 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headSave.rx.tap.bind {
-            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
-            self.headBtnBind(input: input)
-            self.collectionViewOutput = viewModel.transform(input: input)
-            self.todoListTableView.dragInteractionEnabled = false
-            self.todoList.removeAll()
-            self.todoListTableView.reloadData()
+            if self.moveListModel.count != 0 {
+                self.viewModel.requestArray(param: self.moveListModel)
+            } else {
+                lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
+                self.headBtnBind(input: input)
+                self.collectionViewOutput = viewModel.transform(input: input)
+                self.todoListTableView.dragInteractionEnabled = false
+                self.todoList.removeAll()
+                self.todoListTableView.reloadData()
+            }
         }.disposed(by: disposedBag)
     }
     // MARK: - Other
