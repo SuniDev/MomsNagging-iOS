@@ -20,7 +20,8 @@ public let STR_DONE                 = "확인"
 public let STR_DONE_UPDATE          = "업데이트 하러가기"
 public let STR_CANCEL_UPDATE        = "나중에"
 public let STR_YES                  = "네"
-public let STR_NO                   = "아니오"
+public let STR_NO                   = "아니요"
+public let STR_CLOSE                = "닫기"
 public let STR_DELETE               = "네, 삭제할게요"
 
 /// 인트로 & 로그인
@@ -54,3 +55,7 @@ public let STR_NICKNAME_SETTING_PLACEHOLDER = "띄어쓰기 포함 한/영/숫�
 public let STR_NICKNAME_SETTING_DONE    = "이렇게요!"
 
 public let STR_LOGOUT                   = "로그아웃 할꺼니?"
+
+/// 설정
+public let STR_DELETE_ACCOUNT           = "정말로 탈퇴하시겠습니까?"
+public let STR_SUCCESS_ACCOUNT          = "주신 의견 반영하여 더 나은 엄마의 잔소리가 되겠습니다. 감사합니다!"

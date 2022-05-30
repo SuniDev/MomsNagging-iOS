@@ -95,7 +95,7 @@
 		8F990F0B283D340F00A5D2AA /* DeleteAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F0A283D340F00A5D2AA /* DeleteAccountViewModel.swift */; };
 		8F990F0D283D341600A5D2AA /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F0C283D341600A5D2AA /* DeleteAccountView.swift */; };
 		8F990F0F283D341C00A5D2AA /* DeleteAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F0E283D341C00A5D2AA /* DeleteAccountModel.swift */; };
-		8F990F14283D3AE900A5D2AA /* InconvenienceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F13283D3AE900A5D2AA /* InconvenienceListCell.swift */; };
+		8F990F14283D3AE900A5D2AA /* DeleteAccountReasonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F13283D3AE900A5D2AA /* DeleteAccountReasonCell.swift */; };
 		8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA6873F281CF39400F91EB8 /* MainContainerView.swift */; };
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
 		8FBA852C281E4C940013C91C /* HomeCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */; };
@@ -261,7 +261,7 @@
 		8F990F0A283D340F00A5D2AA /* DeleteAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewModel.swift; sourceTree = "<group>"; };
 		8F990F0C283D341600A5D2AA /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		8F990F0E283D341C00A5D2AA /* DeleteAccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountModel.swift; sourceTree = "<group>"; };
-		8F990F13283D3AE900A5D2AA /* InconvenienceListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InconvenienceListCell.swift; sourceTree = "<group>"; };
+		8F990F13283D3AE900A5D2AA /* DeleteAccountReasonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountReasonCell.swift; sourceTree = "<group>"; };
 		8FA6873F281CF39400F91EB8 /* MainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerView.swift; sourceTree = "<group>"; };
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
 		8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCalendarCell.swift; sourceTree = "<group>"; };
@@ -898,7 +898,7 @@
 			isa = PBXGroup;
 			children = (
 				8F990F0C283D341600A5D2AA /* DeleteAccountView.swift */,
-				8F990F13283D3AE900A5D2AA /* InconvenienceListCell.swift */,
+				8F990F13283D3AE900A5D2AA /* DeleteAccountReasonCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1588,7 +1588,7 @@
 				A0B581B02827A0010099C9BA /* BaseCollectionViewCell.swift in Sources */,
 				8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
-				8F990F14283D3AE900A5D2AA /* InconvenienceListCell.swift in Sources */,
+				8F990F14283D3AE900A5D2AA /* DeleteAccountReasonCell.swift in Sources */,
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,

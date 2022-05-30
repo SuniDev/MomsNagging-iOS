@@ -1,5 +1,5 @@
 //
-//  InconvenienceListCell.swift
+//  DeleteAccountReasonCell.swift
 //  momsnagging
 //
 //  Created by 전창평 on 2022/05/25.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class InconvenienceListCell: UITableViewCell {
+class DeleteAccountReasonCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -23,7 +23,7 @@ class InconvenienceListCell: UITableViewCell {
     })
 }
 
-extension InconvenienceListCell {
+extension DeleteAccountReasonCell {
     private func setUI() {
         contentView.addSubview(contentLbl)
         contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)

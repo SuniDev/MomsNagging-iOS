@@ -100,7 +100,7 @@ class SettingView: BaseViewController, Navigatable {
                 self.navigator.show(seque: .contactUs(viewModel: viewModel), sender: self, transition: .navigation)
             } else if indexPath.row == 2 {
                 Log.debug("회월탈퇴", "클릭")
-                let viewModel = DeleteAccountViewModel()
+                let viewModel = DeleteAccountViewModel(withService: SceneDelegate.appService)
                 self.navigator.show(seque: .deleteAccount(viewModel: viewModel), sender: self, transition: .navigation)
             }
         }).disposed(by: disposedBag)

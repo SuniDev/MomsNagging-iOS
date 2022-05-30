@@ -12,10 +12,12 @@ import RxSwift
 import RxCocoa
 
 class DeleteAccountView: BaseViewController, Navigatable {
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     // MARK: - Init
     init(viewModel: DeleteAccountViewModel, navigator: Navigator) {
         super.init(nibName: nil, bundle: nil)
@@ -26,11 +28,13 @@ class DeleteAccountView: BaseViewController, Navigatable {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // MARK: - Properties & Variable
     var disposedBag = DisposeBag()
     var navigator: Navigator!
     var viewModel: DeleteAccountViewModel!
-    var selectItemOb = PublishSubject<Bool>()
+//    var selectItemOb = PublishSubject<Bool>()
+    
     // MARK: - UI Properties
     var backBtn = UIButton()
     var headFrame = UIView()
@@ -72,20 +76,21 @@ class DeleteAccountView: BaseViewController, Navigatable {
         $0.separatorStyle = .none
         $0.isScrollEnabled = false
         $0.showsVerticalScrollIndicator = false
-        $0.register(InconvenienceListCell.self, forCellReuseIdentifier: "InconvenienceListCell")
+        $0.register(DeleteAccountReasonCell.self, forCellReuseIdentifier: "DeleteAccountReasonCell")
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(asset: Asset.Color.monoLight030)?.cgColor
         $0.isHidden = true
     })
-    var deleteAccountBtn = UIButton().then({
-        $0.setTitle("탈퇴하기", for: .normal)
-        $0.setTitleColor(UIColor(asset: Asset.Color.monoWhite), for: .normal)
-        $0.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 20)
-        $0.backgroundColor = UIColor(asset: Asset.Color.priLight018Dis)
+    var deleteAccountBtn = CommonButton().then({
+        $0.normalBackgroundColor = Asset.Color.priMain.color
+        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
+        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
         $0.layer.cornerRadius = 20
-        $0.layer.masksToBounds = true
-        $0.isUserInteractionEnabled = false
+        $0.setTitle("탈퇴하기", for: .normal)
+        $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
+        $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
+        $0.isEnabled = false
     })
     // MARK: - InitUI
     override func initUI() {
@@ -153,59 +158,76 @@ class DeleteAccountView: BaseViewController, Navigatable {
     // MARK: - Bind
     override func bind() {
         guard let viewModel = viewModel else { return }
-        let input = DeleteAccountViewModel.Input()
+        
+        let confirmDeleteAlertHandler = PublishRelay<Bool>()
+        let successDeleteAlertHandler = PublishRelay<Void>()
+        
+        let input = DeleteAccountViewModel.Input(
+            willAppearView: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
+            btnBackTapped: self.backBtn.rx.tap.asDriverOnErrorJustComplete(),
+            btnSelectTapped: self.selectBtn.rx.tap.asDriverOnErrorJustComplete(),
+            reasonItemSelected: self.tableView.rx.itemSelected.asDriverOnErrorJustComplete(),
+            btnDeleteAccountTapped: self.deleteAccountBtn.rx.tap.asDriverOnErrorJustComplete(),
+            confirmDeleteAlertHandler: confirmDeleteAlertHandler.asDriverOnErrorJustComplete(),
+            successDeleteAlertHandler: successDeleteAlertHandler.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
-        output.inconvenienceList?.drive { list in
-            list.bind(to: self.tableView.rx.items(cellIdentifier: "InconvenienceListCell", cellType: InconvenienceListCell.self)) { _, item, cell in
-                cell.contentLbl.text = item.contents ?? ""
-            }
-        }.disposed(by: disposedBag)
+        output.reasonItems
+            .asObservable()
+            .bind(to: self.tableView.rx.items(cellIdentifier: "DeleteAccountReasonCell", cellType: DeleteAccountReasonCell.self)) { _, item, cell in
+                cell.contentLbl.text = item
+            }.disposed(by: disposedBag)
         
-        selectBtn.rx.tap.bind {
-            if self.tableView.isHidden {
-                self.tableView.isHidden = false
-                self.dropIc.image = UIImage(asset: Asset.Icon.chevronUp)
-                if self.selectLbl.text != "이런 점이 불편했어요." {
-                    self.placeHolderLbl.isHidden = true
-                    self.selectLbl.isHidden = false
-                } else {
-                    self.placeHolderLbl.isHidden = false
-                    self.selectLbl.isHidden = true
+        output.goToBack
+            .drive(onNext: {
+                self.navigator.pop(sender: self)
+            }).disposed(by: disposedBag)
+        
+        output.isShowReasonList
+            .drive(onNext: { isShow in
+                self.tableView.isHidden = !isShow
+                self.dropIc.image = isShow ? Asset.Icon.chevronUp.image : Asset.Icon.chevronDown.image
+            }).disposed(by: disposedBag)
+        
+        output.isShowPlaceHolder
+            .drive(onNext: { isShow in
+                self.placeHolderLbl.isHidden = !isShow
+                self.selectLbl.isHidden = isShow
+            }).disposed(by: disposedBag)
+        
+        output.setReasonText
+            .drive(onNext: { text in
+                self.selectLbl.text = text
+            }).disposed(by: disposedBag)
+        
+        output.isEnabledBtnDeleteAccount
+            .drive(onNext: { isEnabled in
+                self.deleteAccountBtn.isEnabled = isEnabled
+            }).disposed(by: disposedBag)
+        
+        output.showConfirmDeleteAlert
+            .drive(onNext: { alert in
+                CommonView.showAlert(vc: self, type: .twoBtn, title: alert.title, message: alert.message, cancelTitle: alert.cancelTitle, doneTitle: alert.doneTitle ?? STR_YES) {
+                    confirmDeleteAlertHandler.accept(false)
+                } doneHandler: {
+                    confirmDeleteAlertHandler.accept(true)
                 }
-            } else {
-                self.tableView.isHidden = true
-                self.dropIc.image = UIImage(asset: Asset.Icon.chevronDown)
-                self.placeHolderLbl.isHidden = true
-                self.selectLbl.isHidden = false
-            }
-        }.disposed(by: disposedBag)
+            }).disposed(by: disposedBag)
         
-        tableView.rx.itemSelected.subscribe(onNext: { indexPath in
-            let cell = self.tableView.cellForRow(at: indexPath) as? InconvenienceListCell
-            self.selectLbl.text = cell?.contentLbl.text
-            self.selectLbl.isHidden = false
-            self.placeHolderLbl.isHidden = true
-            self.tableView.isHidden = true
-            self.selectItemOb.onNext(true)
-        }).disposed(by: disposedBag)
+        output.showSuccessDeleteAlert
+            .drive(onNext: { alert in
+                CommonView.showAlert(vc: self, type: .oneBtn, title: alert.title, message: alert.message, doneTitle: alert.doneTitle ?? STR_CLOSE, doneHandler: {
+                    successDeleteAlertHandler.accept(())
+                })
+            }).disposed(by: disposedBag)
+        
+        output.goToLogin
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .login(viewModel: viewModel), sender: nil, transition: .root)
+            }).disposed(by: disposedBag)
+        
         self.tableView.rx.setDelegate(self).disposed(by: disposedBag)
-        
-        selectItemOb.subscribe(onNext: { _ in
-            self.deleteAccountBtn.backgroundColor = UIColor(asset: Asset.Color.priMain)
-            self.deleteAccountBtn.isUserInteractionEnabled = true
-        }).disposed(by: disposedBag)
-        
-        deleteAccountBtn.rx.tap.bind {
-            Log.debug("탈퇴하기", "클릭")
-        }.disposed(by: disposedBag)
-        
-        backBtn.rx.tap.bind {
-            self.navigator.pop(sender: self)
-        }.disposed(by: disposedBag)
-        
     }
-    
 }
 
 extension DeleteAccountView: UITableViewDelegate {
