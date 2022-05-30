@@ -79,9 +79,9 @@ class MyViewModel: ViewModel, ViewModelType {
         let setNaggingIntensity = BehaviorRelay<NaggingLevel>(value: CommonUser.naggingLevel)
         
         // 수정 business logic
-        let requestPutUserTrriger = PublishRelay<PutUserRequest>()
+        let requestPutUserTrigger = PublishRelay<PutUserRequest>()
         
-        let requestPutUser = requestPutUserTrriger
+        let requestPutUser = requestPutUserTrigger
             .flatMapLatest { request in
                 return self.requestPutUser(request)
             }.share()
@@ -135,7 +135,7 @@ class MyViewModel: ViewModel, ViewModelType {
             .bind(onNext: { statusMsg in
                 var request = PutUserRequest()
                 request.statusMsg = statusModifyText.value
-                requestPutUserTrriger.accept(request)
+                requestPutUserTrigger.accept(request)
             }).disposed(by: disposeBag)
         
         isValidStatusMsg
@@ -167,7 +167,7 @@ class MyViewModel: ViewModel, ViewModelType {
             .bind(onNext: { nickName in
                 var request = PutUserRequest()
                 request.nickName = nicknameModifyText.value
-                requestPutUserTrriger.accept(request)
+                requestPutUserTrigger.accept(request)
             }).disposed(by: disposeBag)
         
         isValidName
@@ -199,7 +199,7 @@ class MyViewModel: ViewModel, ViewModelType {
             .subscribe(onNext: { level in
                 var request = PutUserRequest()
                 request.naggingLevel = level
-                requestPutUserTrriger.accept(request)
+                requestPutUserTrigger.accept(request)
             }).disposed(by: disposeBag)
         
         let showLogoutAlert = input.btnLogoutTapped

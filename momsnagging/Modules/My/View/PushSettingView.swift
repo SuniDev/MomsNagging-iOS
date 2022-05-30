@@ -136,7 +136,38 @@ class PushSettingView: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         
-        let input = PushSettingViewModel.Input()
+        let input = PushSettingViewModel.Input(
+            btnBackTapped: self.btnBack.rx.tap.asDriverOnErrorJustComplete(),
+            valueChangedGeneral: self.swGeneralNotice.rx.controlEvent(.valueChanged).withLatestFrom(self.swGeneralNotice.rx.value).asDriverOnErrorJustComplete(),
+            valueChangedTodo: self.swTodoNotice.rx.controlEvent(.valueChanged).withLatestFrom(self.swTodoNotice.rx.value).asDriverOnErrorJustComplete(),
+            valueChangedRoutine: self.swRoutineNotice.rx.controlEvent(.valueChanged).withLatestFrom(self.swRoutineNotice.rx.value).asDriverOnErrorJustComplete(),
+            valueChangedWeekyly: self.swWeeklyNotice.rx.controlEvent(.valueChanged).withLatestFrom(self.swWeeklyNotice.rx.value).asDriverOnErrorJustComplete(),
+            valueChangedOther: self.swOtherNotice.rx.controlEvent(.valueChanged).withLatestFrom(self.swOtherNotice.rx.value).asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
+        
+        output.setGeneralNotice
+            .drive(onNext: { isOn in
+                self.swGeneralNotice.isOn = isOn
+            }).disposed(by: disposeBag)
+        
+        output.setTodoNotice
+            .drive(onNext: { isOn in
+                self.swTodoNotice.isOn = isOn
+            }).disposed(by: disposeBag)
+        
+        output.setRoutineNotice
+            .drive(onNext: { isOn in
+                self.swRoutineNotice.isOn = isOn
+            }).disposed(by: disposeBag)
+        
+        output.setWeeklyNotice
+            .drive(onNext: { isOn in
+                self.swWeeklyNotice.isOn = isOn
+            }).disposed(by: disposeBag)
+        
+        output.setOtherNotice
+            .drive(onNext: { isOn in
+                self.swOtherNotice.isOn = isOn
+            }).disposed(by: disposeBag)
     }
 }
