@@ -62,6 +62,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// APNs에서 `device token 등록 요청`에 관한 응답이 온 경우, Provider Server인 Firebase에 등록
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
+        
+        // FCM 토큰 정보
+        if let fcmToken = Messaging.messaging().fcmToken {
+            Log.debug("FCM device token: \(fcmToken)")
+        }
     }
 
 }
@@ -74,14 +79,13 @@ extension AppDelegate: MessagingDelegate {
           object: nil,
           userInfo: dataDict
         )
-        // TODO: - 새 등록 토큰 -> 서버 전송.
     }
 }
 
 // MARK: - UNUserNotificationCenterDelegate
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
+    // MARK: - 딥링크
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-//        // TODO: - deepLink 형태에 따른 처리 필요.
 //    }
 }

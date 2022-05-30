@@ -7,12 +7,12 @@
 
 import Foundation
 import UIKit
+import Firebase
 /**
  # (C) CommonUser.swift
  - Author: suni
  - Note: 회원 정보를 관리하는 공용 클래스
  */
-// TODO: 클래스 이름 변견 예정
 class CommonUser: NSObject {
     
     static var isLogin: Bool = false
@@ -130,6 +130,20 @@ class CommonUser: NSObject {
         }
         
         return Asset.Assets.emojiDaughter.image
+    }
+    
+    
+    /**
+     # getFCMToken
+     - Authors: suni
+     - Returns: FCM 토큰 String
+     - Note: FCM 토큰을 반환하는 함수
+     */
+    static func getFCMToken() -> String {
+        if let fcmToken = Messaging.messaging().fcmToken {
+            return fcmToken
+        }
+        return ""
     }
 }
 

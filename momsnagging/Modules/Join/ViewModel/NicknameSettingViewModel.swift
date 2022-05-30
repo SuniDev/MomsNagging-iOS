@@ -215,7 +215,8 @@ extension NicknameSettingViewModel {
                                   code: joinRequest.value.code,
                                   email: joinRequest.value.email,
                                   id: joinRequest.value.id,
-                                  nickname: nickName)
+                                  nickname: nickName,
+                                  firebaseToken:  CommonUser.getFCMToken())
         return self.provider.authService.join(request: request)
     }
     

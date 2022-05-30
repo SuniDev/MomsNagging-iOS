@@ -40,11 +40,34 @@ class PushSettingViewModel: ViewModel, ViewModelType {
     
     func transform(input: Input) -> Output {
         let requestPutUserTrigger = PublishRelay<PutUserRequest>()
+        // 상태 체크
         let isOnGeneralNotice = BehaviorRelay<Bool>(value: CommonUser.allowGeneralNotice ?? false)
         let isOnTodoNotice = BehaviorRelay<Bool>(value: CommonUser.allowTodoNotice ?? false)
         let isOnRoutineNotice = BehaviorRelay<Bool>(value: CommonUser.allowRoutineNotice ?? false)
         let isOnWeeklyNotice = BehaviorRelay<Bool>(value: CommonUser.allowWeeklyNotice ?? false)
         let isOnOtherNotice = BehaviorRelay<Bool>(value: CommonUser.allowOtherNotice ?? false)
+        
+        // 스위치 트리거
+        let setGeneralNotice = BehaviorRelay<Bool>(value: CommonUser.allowGeneralNotice ?? false)
+        setGeneralNotice
+            .bind(to: isOnGeneralNotice)
+            .disposed(by: disposeBag)
+        let setTodoNotice = BehaviorRelay<Bool>(value: CommonUser.allowTodoNotice ?? false)
+        setTodoNotice
+            .bind(to: isOnTodoNotice)
+            .disposed(by: disposeBag)
+        let setRoutineNotice = BehaviorRelay<Bool>(value: CommonUser.allowRoutineNotice ?? false)
+        setRoutineNotice
+            .bind(to: isOnRoutineNotice)
+            .disposed(by: disposeBag)
+        let setWeeklyNotice = BehaviorRelay<Bool>(value: CommonUser.allowWeeklyNotice ?? false)
+        setWeeklyNotice
+            .bind(to: isOnWeeklyNotice)
+            .disposed(by: disposeBag)
+        let setOtherNotice = BehaviorRelay<Bool>(value: CommonUser.allowOtherNotice ?? false)
+        setOtherNotice
+            .bind(to: isOnOtherNotice)
+            .disposed(by: disposeBag)
         
         let requestPutUser = requestPutUserTrigger
             .flatMapLatest { request in
@@ -64,55 +87,80 @@ class PushSettingViewModel: ViewModel, ViewModelType {
         setUser
             .subscribe(onNext: { user in
                 CommonUser.setUser(user) {
-                    isOnGeneralNotice.accept(user.allowGeneralNotice ?? isOnGeneralNotice.value)
-                    isOnTodoNotice.accept(user.allowTodoNotice ?? isOnTodoNotice.value)
-                    isOnRoutineNotice.accept(user.allowRoutineNotice ?? isOnRoutineNotice.value)
-                    isOnWeeklyNotice.accept(user.allowWeeklyNotice ?? isOnWeeklyNotice.value)
-                    isOnOtherNotice.accept(user.allowOtherNotice ?? isOnOtherNotice.value)
+                    // TODO: 네트워크가 느리면 오류로 보여서.. 네이티브에서 자연스럽게 하는 것으로 변경
+//                    isOnGeneralNotice.accept(user.allowGeneralNotice ?? isOnGeneralNotice.value)
+//                    isOnTodoNotice.accept(user.allowTodoNotice ?? isOnTodoNotice.value)
+//                    isOnRoutineNotice.accept(user.allowRoutineNotice ?? isOnRoutineNotice.value)
+//                    isOnWeeklyNotice.accept(user.allowWeeklyNotice ?? isOnWeeklyNotice.value)
+//                    isOnOtherNotice.accept(user.allowOtherNotice ?? isOnOtherNotice.value)
                 }
             }).disposed(by: disposeBag)
         
         input.valueChangedGeneral.debug()
             .drive(onNext: { isOn in
+                isOnGeneralNotice.accept(isOn)
+                
                 var request = PutUserRequest()
                 request.allowGeneralNotice = isOn
                 requestPutUserTrigger.accept(request)
+                
+                setTodoNotice.accept(isOn)
+                setRoutineNotice.accept(isOn)
+                setWeeklyNotice.accept(isOn)
+                setOtherNotice.accept(isOn)
             }).disposed(by: disposeBag)
         
-        input.valueChangedTodo
-            .drive(onNext: { isOn in
+        let valueChangedTodo = input.valueChangedTodo.asObservable().share()
+        valueChangedTodo
+            .subscribe(onNext: { isOn in
+                isOnTodoNotice.accept(isOn)
+                
                 var request = PutUserRequest()
                 request.allowTodoNotice = isOn
                 requestPutUserTrigger.accept(request)
             }).disposed(by: disposeBag)
         
-        input.valueChangedRoutine
-            .drive(onNext: { isOn in
+        let valueChangedRoutine = input.valueChangedRoutine.asObservable().share()
+        valueChangedRoutine
+            .subscribe(onNext: { isOn in
+                isOnRoutineNotice.accept(isOn)
+                
                 var request = PutUserRequest()
                 request.allowRoutineNotice = isOn
                 requestPutUserTrigger.accept(request)
             }).disposed(by: disposeBag)
         
-        input.valueChangedWeekyly
-            .drive(onNext: { isOn in
+        let valueChangedWeekyly = input.valueChangedWeekyly.asObservable().share()
+        valueChangedWeekyly
+            .subscribe(onNext: { isOn in
+                isOnWeeklyNotice.accept(isOn)
+                
                 var request = PutUserRequest()
                 request.allowWeeklyNotice = isOn
                 requestPutUserTrigger.accept(request)
             }).disposed(by: disposeBag)
         
-        input.valueChangedOther
-            .drive(onNext: { isOn in
+        let valueChangedOther = input.valueChangedOther.asObservable().share()
+        valueChangedOther
+            .subscribe(onNext: { isOn in
+                isOnOtherNotice.accept(isOn)
+                
                 var request = PutUserRequest()
                 request.allowOtherNotice = isOn
                 requestPutUserTrigger.accept(request)
             }).disposed(by: disposeBag)
         
+        Observable.combineLatest(isOnTodoNotice, isOnRoutineNotice, isOnWeeklyNotice, isOnOtherNotice)
+            .subscribe(onNext: { todo, routine, weekly, other in
+                setGeneralNotice.accept(todo && routine && weekly && other)
+            }).disposed(by: disposeBag)
+        
         return Output(goToBack: input.btnBackTapped,
-                      setGeneralNotice: isOnGeneralNotice.asDriverOnErrorJustComplete(),
-                      setTodoNotice: isOnTodoNotice.asDriverOnErrorJustComplete(),
-                      setRoutineNotice: isOnRoutineNotice.asDriverOnErrorJustComplete(),
-                      setWeeklyNotice: isOnWeeklyNotice.asDriverOnErrorJustComplete(),
-                      setOtherNotice: isOnOtherNotice.asDriverOnErrorJustComplete()
+                      setGeneralNotice: setGeneralNotice.distinctUntilChanged().asDriverOnErrorJustComplete(),
+                      setTodoNotice: setTodoNotice.distinctUntilChanged().asDriverOnErrorJustComplete(),
+                      setRoutineNotice: setRoutineNotice.distinctUntilChanged().asDriverOnErrorJustComplete(),
+                      setWeeklyNotice: setWeeklyNotice.distinctUntilChanged().asDriverOnErrorJustComplete(),
+                      setOtherNotice: setOtherNotice.distinctUntilChanged().asDriverOnErrorJustComplete()
         )
     }
 }
