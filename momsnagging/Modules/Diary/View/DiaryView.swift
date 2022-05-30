@@ -333,6 +333,7 @@ extension DiaryView {
         let lbl = UILabel().then({
             $0.text = "해당 날짜에 일기가 없단다"
             $0.font = FontFamily.Pretendard.regular.font(size: 16)
+            $0.textColor = Asset.Color.monoDark030.color
         })
         view.addSubview(ic)
         view.addSubview(lbl)
