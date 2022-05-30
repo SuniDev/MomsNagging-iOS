@@ -55,7 +55,7 @@ class MyViewModel: ViewModel, ViewModelType {
         /// 잔소리 강도 설정
         let setNaggingIntensity: Driver<NaggingLevel>
         /// PUSH 알림 설정
-        let goToPushSetting: Driver<Void>
+        let goToPushSetting: Driver<PushSettingViewModel>
         /// 로그아웃
         let showLogoutAlert: Driver<String>
         let goToLogin: Driver<LoginViewModel>
@@ -216,6 +216,13 @@ class MyViewModel: ViewModel, ViewModelType {
                 return viewModel
             }
         
+        let goToPushSetting = input.btnPushSettingTapped
+            .asObservable()
+            .map { _ -> PushSettingViewModel in
+                let viewModel = PushSettingViewModel(withService: self.provider)
+                return viewModel
+            }
+        
         return Output(goToSetting: input.btnSettingTapped,
                       id: id.asDriverOnErrorJustComplete(),
 //                      email: email.asDriverOnErrorJustComplete(),
@@ -224,7 +231,7 @@ class MyViewModel: ViewModel, ViewModelType {
                       nickName: nickName.asDriverOnErrorJustComplete(),
                       showNicknameSettingAlert: showNicknameSettingAlert.asDriverOnErrorJustComplete(),
                       setNaggingIntensity: setNaggingIntensity.asDriverOnErrorJustComplete(),
-                      goToPushSetting: input.btnPushSettingTapped,
+                      goToPushSetting: goToPushSetting.asDriverOnErrorJustComplete(),
                       showLogoutAlert: showLogoutAlert.asDriver(onErrorJustReturn: STR_LOGOUT),
                       goToLogin: goToLogin.asDriverOnErrorJustComplete())
     }

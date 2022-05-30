@@ -495,8 +495,8 @@ class MyView: BaseViewController, Navigatable {
         
         // PUSH 알림 설정
         output.goToPushSetting
-            .drive(onNext: {
-                Log.debug("TODO: PUSH 알림 설정 이동")
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .pushSetting(viewModel: viewModel), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
         
         // 로그아웃

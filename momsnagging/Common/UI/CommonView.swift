@@ -841,4 +841,42 @@ class CommonView {
         
         return view
     }
+    
+    /**
+     # defaultSwitchFrame
+     - parameters:
+        - lblTitle : 스위치 타이틀
+        - switch : UISwitch
+     - Authors: suni
+     - Returns: UIView
+     - Note: 기본 스위치가 포함된 공통 프레임
+     */
+    static func defaultSwitchFrame(lblTitle: UILabel, switchPush: UISwitch) -> UIView {
+        lazy var view = UIView()
+        lazy var divider = divider()
+        
+        view.addSubview(lblTitle)
+        view.addSubview(switchPush)
+        view.addSubview(divider)
+        
+        let _ = lblTitle.then({
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 16)
+        })
+        
+        lblTitle.snp.makeConstraints({
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(18)
+        })
+        switchPush.snp.makeConstraints({
+            $0.centerY.equalTo(lblTitle)
+            $0.trailing.equalToSuperview().offset(-18)
+        })
+        
+        divider.snp.makeConstraints({
+            $0.bottom.leading.trailing.equalToSuperview()
+        })
+        
+        return view
+    }
 }

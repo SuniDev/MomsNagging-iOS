@@ -9,9 +9,14 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class PushSettingViewModel: BaseViewModel, ViewModelType {
+class PushSettingViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
+    
+    // MARK: - init
+    init(withService provider: AppServices) {
+        super.init(provider: provider)
+    }
     
     // MARK: - Input
     struct Input {

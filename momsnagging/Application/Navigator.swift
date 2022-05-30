@@ -49,6 +49,7 @@ class Navigator {
         case privacyPolicy(viewModel: PrivacyPolicyViewModel)
         case deleteAccount(viewModel: DeleteAccountViewModel)
         case contactUs(viewModel: ContactUsViewModel)
+        case pushSetting(viewModel: PushSettingViewModel)
     }
     
     enum Transition {
@@ -85,6 +86,7 @@ class Navigator {
         case .privacyPolicy(viewModel: let viewModel): return PrivacyPolicyView(viewModel: viewModel, navigator: self)
         case .deleteAccount(viewModel: let viewModel): return DeleteAccountView(viewModel: viewModel, navigator: self)
         case .contactUs(viewModel: let viewModel): return ContactUsView(viewModel: viewModel, navigator: self)
+        case .pushSetting(viewModel: let viewModel): return PushSettingView(viewModel: viewModel, navigator: self)
         }
     }
     
