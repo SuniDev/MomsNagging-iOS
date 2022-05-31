@@ -156,5 +156,5 @@ enum SnsType: String {
 enum NaggingLevel: String {
     case fondMom = "다정한 엄마"
     case coolMom = "냉정한 엄마"
-    case angryMom = "화난 엄마"
+    case angryMom = "화가 많은 엄마"
 }

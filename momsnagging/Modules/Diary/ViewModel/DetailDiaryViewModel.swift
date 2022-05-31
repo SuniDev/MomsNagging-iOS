@@ -328,7 +328,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             .asObservable()
             .scan("") { previous, new -> String in
                 guard let new = new else { return "" }
-                if new.count > 20 {
+                if new.count > 1000 {
                     lengthExceededContents.accept(())
                     return previous
                 } else {
