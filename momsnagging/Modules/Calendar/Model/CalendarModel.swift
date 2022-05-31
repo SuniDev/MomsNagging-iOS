@@ -241,7 +241,7 @@ class CalendarModel {
         }
         for i in 0..<weekDayList.count where weekDayList[i] > getMonthDaysCount(currentMonth: currentMonth, currentYear: currentYear) {
             weekDayList[i] = nextMonthDay
-            nextMonthDay += nextMonthDay
+            nextMonthDay += 1
         }
         lastMonthDay -= lastMonthDayCount
         lastMonthDay += 1
