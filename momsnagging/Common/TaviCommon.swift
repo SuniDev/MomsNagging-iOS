@@ -43,17 +43,55 @@ class TaviCommon {
         return toStringFormatter.string(from: date)
     }
     
+    enum AlertType {
+        case oneBtn
+        case twoBtn
+    }
+    static func showAlert(vc: UIViewController, type: AlertType, title: String? = "", message: String? = "", cancelTitle: String? = STR_CANCEL, doneTitle: String = STR_DONE, cancelHandler:(() -> Void)? = nil, doneHandler:(() -> Void)? = nil) {
+        let attributeString = NSMutableAttributedString(string: message!)
+//        let font = FontFamily.Pretendard.regular.font(size: 10)
+        let font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        attributeString.addAttribute(.font, value: font, range: (message! as NSString).range(of: "\(message)"))
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+            alert.setValue(attributeString, forKey: "attributedMessage")
+    //        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
+            
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
+                cancelHandler?()
+            }
+            let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
+                doneHandler?()
+            }
+            switch type {
+            case .oneBtn:
+                alert.addAction(doneAction)
+            case .twoBtn:
+                alert.addAction(cancelAction)
+                alert.addAction(doneAction)
+            }
+            Log.debug(alert.actions)
+            vc.present(alert, animated: true, completion: nil)
+        }
+    }
+    
 }
 
 extension UIViewController {
-    func showToast(message: String) {
+    func showToast(message: String, naggingLevel: Int) {
         let frameView = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.6)
             $0.alpha = 0.8
             $0.layer.cornerRadius = 6
         })
         let imageView = UIImageView().then({
-            $0.image = UIImage(asset: Asset.Assets.emojiDefault)
+            if naggingLevel == 0 {
+                $0.image = UIImage(asset: Asset.Assets.emojiDefault)
+            } else if naggingLevel == 1{
+                $0.image = UIImage(asset: Asset.Assets.emojiCool)
+            } else {
+                $0.image = UIImage(asset: Asset.Assets.emojiAngry)
+            }
         })
         let toastLabel = UILabel()
         toastLabel.textColor = UIColor(asset: Asset.Color.monoWhite)
@@ -175,7 +213,7 @@ extension HomeView {
         deleteBtn.rx.tap.subscribe(onNext: {
             backgroundView.removeFromSuperview()
             // 삭제 API 호출
-            CommonView.showAlert(vc: vc, type: .twoBtn, title: nil, message: "정말로 삭제할꺼니?", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
+            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "정말로 삭제할꺼니?", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
 
             }, doneHandler: {
                 self.viewModel.requestDelete(scheduleId: itemId)
@@ -210,8 +248,8 @@ extension HomeView {
             $0.edges.equalTo(delayView.snp.edges)
         })
         delayBtn.rx.tap.subscribe(onNext: {
-            //미룸 API 호출
-            CommonView.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
+            // 미룸 API 호출
+            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
             }, doneHandler: {
                 self.viewModel.requestDeleay(scheduleId: itemId)
             })
@@ -233,7 +271,7 @@ extension HomeView {
         skipView.addSubview(skipBtn)
         skipLbl.snp.makeConstraints({
             $0.centerY.equalTo(skipView.snp.centerY)
-            $0.leading.equalTo(skipView.snp.leading).offset(29)
+            $0.leading.equalTo(skipView.snp.leading).offset(20)
         })
         skipImg.snp.makeConstraints({
             $0.centerY.equalTo(skipView.snp.centerY)

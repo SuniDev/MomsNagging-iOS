@@ -57,6 +57,7 @@ class TodoCell: UITableViewCell {
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
     lazy var moreIc = UIButton().then({
+        $0.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         $0.setImage(UIImage(asset: Asset.Icon.moreVertical), for: .normal)
     })
     lazy var sortIc = UIButton().then({
@@ -111,9 +112,9 @@ extension TodoCell {
             $0.trailing.equalTo(moreIc.snp.leading).offset(-16)
         })
         moreIc.snp.makeConstraints({
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(44)
             $0.centerY.equalTo(contentView.snp.centerY)
-            $0.trailing.equalTo(contentView.snp.trailing).offset(-12)
+            $0.trailing.equalTo(contentView.snp.trailing).offset(-2)
         })
         
         sortIc.snp.makeConstraints({

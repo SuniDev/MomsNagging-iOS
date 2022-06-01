@@ -33,7 +33,7 @@ extension HomeView {
             $0.top.equalTo(tableViewTopDivider.snp.bottom)
             $0.leading.equalTo(view.snp.leading)
             $0.trailing.equalTo(view.snp.trailing)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-80)
         })
         
         todoBind()
@@ -261,7 +261,15 @@ extension HomeView {
         viewModel.toggleIcSuccessOb.subscribe(onNext: { _ in
             self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
-            self.showToast(message: "우리 ~~ 너무너무 잘했어~^^")
+            Log.debug("잔소리레벨!", "\(CommonUser.naggingLevel)")
+            switch CommonUser.naggingLevel {
+            case .fondMom:
+                self.showToast(message: "우리 \(CommonUser.nickName ?? "") 너무너무 잘했어~^^", naggingLevel: 0)
+            case .coolMom:
+                self.showToast(message: "열심히 했네.", naggingLevel: 1)
+            case .angryMom:
+                self.showToast(message: "이렇게 잘할 줄 알았으면 진작부터 잘하지!", naggingLevel: 2)
+            }
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         viewModel.toggleCancelOb.subscribe(onNext: { _ in
@@ -275,18 +283,18 @@ extension HomeView {
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         
-        todoListTableView.rx.itemSelected.subscribe(onNext: { indexPath in
-            let row = self.todoList[indexPath.row]
-            if row.scheduleType == "TODO" {
-                // 투두 페이지로 이동
-                let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: row)
-                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
-            } else if row.scheduleType == "ROUTINE" {
-                // 루틴 페이지로 이동
-                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: row)
-                self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self, transition: .navigation)
-            }
-        }).disposed(by: disposedBag)
+//        todoListTableView.rx.itemSelected.subscribe(onNext: { indexPath in
+//            let row = self.todoList[indexPath.row]
+//            if row.scheduleType == "TODO" {
+//                // 투두 페이지로 이동
+//                let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: row)
+//                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
+//            } else if row.scheduleType == "ROUTINE" {
+//                // 루틴 페이지로 이동
+//                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: row)
+//                self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self, transition: .navigation)
+//            }
+//        }).disposed(by: disposedBag)
         
         // 이동 처리
         todoListTableView.rx.itemMoved.bind { sIndexPath, dIndexPath in
