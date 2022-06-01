@@ -64,6 +64,10 @@ class HomeView: BaseViewController, Navigatable {
     var calendarMonth: Int?
     var calendarDay: Int?
     
+    var weekCalendarYear: Int?
+    var weekCalendarMonth: Int?
+    var weekCalendarDay: Int?
+    
     var monthCollectionViewHeight: Int? // 월별로 주(4주~6주)수를 카운팅하여 CollectionView의 높이를 remake하기 위함.
     var dateCheck: Int = 0 // 현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
@@ -198,6 +202,12 @@ class HomeView: BaseViewController, Navigatable {
         calendarYear = calendarViewModel.getYear()
         calendarMonth = calendarViewModel.getMonth()
         calendarDay = calendarViewModel.getToday()
+        weekCalendarYear = calendarViewModel.getYear()
+        weekCalendarMonth = calendarViewModel.getMonth()
+        weekCalendarDay = calendarViewModel.getToday()
+        
+        
+        
         calendarDateLbl.text = "\(calendarYear ?? 0)년 \(calendarMonth ?? 0)월"
         monthCollectionViewHeight = 7
         calendarFrame = homeCalendarView()
@@ -268,17 +278,27 @@ class HomeView: BaseViewController, Navigatable {
                 }
             }
             let cell = self.weekCalendarCollectionView.cellForItem(at: [0, indexPath.row]) as? WeekDayCalendarCell
-            self.headTitleLbl.text = self.calendarViewModel.todayFormatteryyyyMM()
-            var day: String = cell?.numberLbl.text ?? ""
-            var month: String = "\(self.calendarMonth ?? 0)"
-            var calendarMonth: Int = Int(exactly: self.calendarMonth ?? 0)!
-            if Int(month)! < 10 {
-                month = "0\(month)"
+            self.headTitleLbl.text = self.calendarViewModel.todayFormatteryyyy()
+            let day: Int = Int((cell?.numberLbl.text)!)!
+            var month: Int = self.weekCalendarMonth!
+            if day > self.calendarViewModel.getToday() + 6 { // 이전달의 날짜클릭시 month - 1처리 ex.) 6월첫번째 주 주간달력의 5월31일 선택시.
+                month -= 1
             }
-            if Int(day)! < 10 {
-                day = "0\(day)"
+            Log.debug("day!", "\(day), \(month)")
+//            var calendarMonth: Int = Int(exactly: self.calendarMonth ?? 0)!
+            if day < 10 {
+                if month < 10 {
+                    self.selectDate = "\(self.headTitleLbl.text ?? "")0\(month)0\(day)"
+                } else {
+                    self.selectDate = "\(self.headTitleLbl.text ?? "")\(month)0\(day)"
+                }
+            } else {
+                if month < 10 {
+                    self.selectDate = "\(self.headTitleLbl.text ?? "")0\(month)\(day)"
+                } else {
+                    self.selectDate = "\(self.headTitleLbl.text ?? "")\(month)\(day)"
+                }
             }
-            self.selectDate = "\(self.headTitleLbl.text ?? "")\(day)"
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             self.todoListLookUpParam = "20\(self.headTitleLbl.text ?? "")"
             self.todoListLookUpParam = self.todoListLookUpParam.replacingOccurrences(of: ".", with: "-")
@@ -286,16 +306,29 @@ class HomeView: BaseViewController, Navigatable {
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             
             let currentYearMonth = self.calendarViewModel.todayFormatteryyyyMM()
-            let calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
+            var calendarYearMonth = ""
+            if month < 10 {
+                calendarYearMonth = "\(self.calendarYear ?? 0)0\(month)"
+            } else {
+                calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
+            }
             print("__\(calendarYearMonth)__\(currentYearMonth)")
             if calendarYearMonth == "\(currentYearMonth)" {
                 print("이번달!")
                 for i in 0..<37 {
                     let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
-                    if cell?.number.text == day {
-                        cell?.selectDayRoundFrame.isHidden = false
+                    if day < 10 {
+                        if cell?.number.text == "\(day)" {
+                            cell?.selectDayRoundFrame.isHidden = false
+                        } else {
+                            cell?.selectDayRoundFrame.isHidden = true
+                        }
                     } else {
-                        cell?.selectDayRoundFrame.isHidden = true
+                        if cell?.number.text == "\(day)" {
+                            cell?.selectDayRoundFrame.isHidden = false
+                        } else {
+                            cell?.selectDayRoundFrame.isHidden = true
+                        }
                     }
                 }
             }

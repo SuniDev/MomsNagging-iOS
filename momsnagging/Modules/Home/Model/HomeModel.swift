@@ -21,6 +21,6 @@ struct TodoListModel {
 }
 
 struct ScheduleArrayModel: Encodable{
-    var oneOriginalId: Int?
-    var theOtherOriginalId: Int?
+    var oneOriginalId: Int
+    var theOtherOriginalId: Int
 }

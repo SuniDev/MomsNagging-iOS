@@ -109,7 +109,7 @@ extension HomeView {
         
         let modifyView = UIView()
         let modifyLbl = UILabel().then({
-            $0.text = "수정"
+            $0.text = "상세"
             $0.textColor = UIColor(asset: Asset.Color.monoDark010)
             $0.font = FontFamily.Pretendard.regular.font(size: 16)
         })
@@ -134,7 +134,6 @@ extension HomeView {
         })
         
         modifyBtn.rx.tap.subscribe(onNext: {
-            // 수정 API 호출
             if type == .todo {
                 let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: self.todoList[index])
                 let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
@@ -254,6 +253,7 @@ extension HomeView {
             view.addSubview(backgroundView)
             backgroundView.addSubview(emptyBtn)
             backgroundView.addSubview(stackView)
+            stackView.addArrangedSubview(delayView)
             stackView.addArrangedSubview(modifyView)
             stackView.addArrangedSubview(deleteView)
             backgroundView.snp.makeConstraints({
@@ -268,7 +268,7 @@ extension HomeView {
             stackView.snp.makeConstraints({
                 $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
                 $0.width.equalTo(110)
-                $0.height.equalTo(100)
+                $0.height.equalTo(150)
                 $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
             })
         case .countRoutine:
@@ -297,7 +297,6 @@ extension HomeView {
             view.addSubview(backgroundView)
             backgroundView.addSubview(emptyBtn)
             backgroundView.addSubview(stackView)
-            stackView.addArrangedSubview(delayView)
             stackView.addArrangedSubview(modifyView)
             stackView.addArrangedSubview(deleteView)
             backgroundView.snp.makeConstraints({
@@ -312,7 +311,7 @@ extension HomeView {
             stackView.snp.makeConstraints({
                 $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
                 $0.width.equalTo(110)
-                $0.height.equalTo(150)
+                $0.height.equalTo(100)
                 $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
             })
         }

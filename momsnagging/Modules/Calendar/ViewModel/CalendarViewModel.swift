@@ -42,6 +42,7 @@ class CalendarViewModel {
             daylist.onNext(model.getOtherMonthDayList(currentMonth: model.getNextMonth(currentMonth: currentMonth), currentYear: model.getNextYear(currentYear: currentYear)))
             collectionViewHeight.onNext(rowCount(currentMonth: model.getLastMonth(currentMonth: currentMonth), currentYear: model.getLastYear(currentYear: currentYear)))
         }
+        Log.debug("다음달 데이터가져오기", "\(currentYear), \(currentMonth)")
         monthObservable.onNext(model.getNextMonth(currentMonth: currentMonth))
         daylist.onNext(model.getOtherMonthDayList(currentMonth: model.getNextMonth(currentMonth: currentMonth), currentYear: currentYear))
         collectionViewHeight.onNext(rowCount(currentMonth: model.getLastMonth(currentMonth: currentMonth), currentYear: currentYear))
@@ -72,6 +73,13 @@ class CalendarViewModel {
         formatter.dateFormat = "yyyyMM"
         return formatter.string(from: date)
     }
+    /// 오늘날짜 yyyy 형태로 string return
+    func todayFormatteryyyy() -> String {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter.string(from: date)
+    }
     /// 오늘날짜 dd 형태로 string return
     func todaydd() -> String {
         let date = Date()
@@ -89,7 +97,7 @@ class CalendarViewModel {
         return model.getYear()
     }
 
-    func getWeekDaySelectDate(dateString: String) -> String{
+    func getWeekDaySelectDate(dateString: String) -> String {
         var st = ""
         let formatterToString = DateFormatter()
         formatterToString.dateFormat = "yyyyMMdd"
@@ -102,7 +110,7 @@ class CalendarViewModel {
         return st
     }
     
-    func getSelectDate(dateString: String) -> String{
+    func getSelectDate(dateString: String) -> String {
         var st = ""
         let formatterToString = DateFormatter()
         formatterToString.dateFormat = "yyyyMMdd"

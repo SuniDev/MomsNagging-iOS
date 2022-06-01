@@ -298,18 +298,14 @@ extension HomeView {
             if dIndex > sIndex { // 위에서 밑으로
                 let count = -(sIndex - dIndex)
                 for i in sIndex + 1...count {
-                    var model = ScheduleArrayModel()
-                    model.oneOriginalId = self.todoList[sIndex].originalId ?? 0
-                    model.theOtherOriginalId = self.todoList[i].originalId ?? 0
+                    var model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
                     self.moveListModel.append(model)
                 }
             } else if dIndex < sIndex { // 밑에서 위로
                 print("밑에서 위로 \(sIndex - dIndex)")
                 let count = sIndex - dIndex
                 for i in (0...count - 1).reversed() {
-                    var model = ScheduleArrayModel()
-                    model.oneOriginalId = self.todoList[sIndex].originalId ?? 0
-                    model.theOtherOriginalId = self.todoList[i].originalId ?? 0
+                    var model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
                     self.moveListModel.append(model)
                 }
             }
