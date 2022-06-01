@@ -263,6 +263,32 @@ class Common {
         return height - topPadding - bottomPadding
     }
     
+    /**
+     # getTopPadding
+     - Authors: suni
+     - Parameters:
+     - Returns: CGFloat
+     - Note: 현재 디바이스의 탑 영역 값을 리턴하는 함수
+     */
+    static func getTopPadding() -> CGFloat {
+        let window = UIApplication.shared.windows.first
+        guard let topPadding = window?.safeAreaInsets.top else { return 0 }
+        return topPadding
+   }
+    
+    /**
+     # getBottomPadding
+     - Authors: suni
+     - Parameters:
+     - Returns: CGFloat
+     - Note: 현재 디바이스의 바텀 영역 값을 리턴하는 함수
+     */
+    static func getBottomPadding() -> CGFloat {
+        let window = UIApplication.shared.windows.first
+        guard let bottomPadding = window?.safeAreaInsets.bottom else { return 0 }
+        return bottomPadding
+   }
+    
     static func getNaggingEmoji(naggingIntensity: NaggingLevel) -> UIImage {
         switch naggingIntensity {
         case .fondMom:

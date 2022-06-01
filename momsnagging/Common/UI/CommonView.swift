@@ -859,7 +859,7 @@ class CommonView {
         view.addSubview(switchPush)
         view.addSubview(divider)
         
-        let _ = lblTitle.then({
+        _ = lblTitle.then({
             $0.textColor = Asset.Color.monoDark010.color
             $0.font = FontFamily.Pretendard.regular.font(size: 16)
         })
@@ -879,4 +879,5 @@ class CommonView {
         
         return view
     }
+
 }
