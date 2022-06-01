@@ -279,32 +279,32 @@ class HomeView: BaseViewController, Navigatable {
             }
             let cell = self.weekCalendarCollectionView.cellForItem(at: [0, indexPath.row]) as? WeekDayCalendarCell
             self.headTitleLbl.text = self.calendarViewModel.todayFormatteryyyy()
-            let year = self.calendarYear
+            var year: Int = Int(self.calendarYear!)
             let day: Int = Int((cell?.numberLbl.text)!)!
             var month: Int = self.weekCalendarMonth!
             if day > self.calendarViewModel.getToday() + 6 { // 이전달의 날짜클릭시 month - 1처리 ex.) 6월첫번째 주 주간달력의 5월31일 선택시.
                 month -= 1
-                if month == 0 {/
+                if month == 0 {
                     month = 12
-                    year -= year!
+                    year -= year
                 }
             }
             Log.debug("day!", "\(day), \(month)")
-            self.calendarYear = year
-            self.calendarMonth = month
-            self.calendarDay = day
+//            self.weekCalendarYear = year
+//            self.weekCalendarMonth = month
+//            self.weekCalendarMonth = day
 //            var calendarMonth: Int = Int(exactly: self.calendarMonth ?? 0)!
             if day < 10 {
                 if month < 10 {
-                    self.selectDate = "\(year ?? 0)0\(month)0\(day)"
+                    self.selectDate = "\(year)0\(month)0\(day)"
                 } else {
-                    self.selectDate = "\(year ?? 0)\(month)0\(day)"
+                    self.selectDate = "\(year)\(month)0\(day)"
                 }
             } else {
                 if month < 10 {
-                    self.selectDate = "\(year ?? 0)0\(month)\(day)"
+                    self.selectDate = "\(year)0\(month)\(day)"
                 } else {
-                    self.selectDate = "\(year ?? 0)\(month)\(day)"
+                    self.selectDate = "\(year)\(month)\(day)"
                 }
             }
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)

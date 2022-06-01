@@ -105,19 +105,22 @@ extension HomeView {
     }
     
     @objc func selectTodoMoreAction(_ sender: UIButton) {
+        Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 투두", "\(sender.tag)")
         let itemId = todoList[sender.tag]
-        showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self)
+        showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender)
     }
     @objc func selectRoutineMoreAction(_ sender: UIButton) {
+        Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관요일", "\(sender.tag)")
         let itemId = todoList[sender.tag]
-        showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self)
+        showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender)
     }
     @objc func selectCountRoutineMoreAction(_ sender: UIButton) {
+        Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관횟수", "\(sender.tag)")
         let itemId = todoList[sender.tag]
-        showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self)
+        showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender)
     }
     
     func todoBind() {
@@ -129,11 +132,15 @@ extension HomeView {
 //        }).disposed(by: disposedBag)
         let dv = viewModel.todoListDataObserver.asDriverOnErrorJustComplete()
         dv.drive { list in
+            self.todoList = list
+        }.disposed(by: disposedBag)
+        dv.drive { list in
             list.bind(to: self.todoListTableView.rx.items) { tableView, row, item -> UITableViewCell in
-                if row == 0 {
-                    self.todoList.removeAll()
-                }
-                self.todoList.append(item)
+                Log.debug("itemLog", "\(item), \(row)")
+//                if row == 0 {
+//                    self.todoList.removeAll()
+//                }
+//                self.todoList.append(item)s
                 self.moveList = self.todoList
                 if item.goalCount == 0 {
                     if item.scheduleType == "TODO" {

@@ -129,7 +129,7 @@ extension HomeView {
         case countRoutine
         case routine
     }
-    func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController) {
+    func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController, senderBtn: UIButton) {
         let emptyBtn = UIButton()
         let backgroundView = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
@@ -303,12 +303,21 @@ extension HomeView {
             emptyBtn.snp.makeConstraints({
                 $0.edges.equalTo(backgroundView.snp.edges)
             })
-            stackView.snp.makeConstraints({
-                $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
-                $0.width.equalTo(110)
-                $0.height.equalTo(150)
-                $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
-            })
+            if index > 4 {
+                stackView.snp.makeConstraints({
+                    $0.bottom.equalTo(senderBtn.snp.centerY)
+                    $0.width.equalTo(110)
+                    $0.height.equalTo(150)
+                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+                })
+            } else {
+                stackView.snp.makeConstraints({
+                    $0.top.equalTo(senderBtn.snp.centerY)
+                    $0.width.equalTo(110)
+                    $0.height.equalTo(150)
+                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+                })
+            }
         case .countRoutine:
             view.addSubview(backgroundView)
             backgroundView.addSubview(emptyBtn)
@@ -325,12 +334,21 @@ extension HomeView {
             emptyBtn.snp.makeConstraints({
                 $0.edges.equalTo(backgroundView.snp.edges)
             })
-            stackView.snp.makeConstraints({
-                $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
-                $0.width.equalTo(110)
-                $0.height.equalTo(150)
-                $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
-            })
+            if index > 4 {
+                stackView.snp.makeConstraints({
+                    $0.bottom.equalTo(senderBtn.snp.centerY)
+                    $0.width.equalTo(110)
+                    $0.height.equalTo(150)
+                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+                })
+            } else {
+                stackView.snp.makeConstraints({
+                    $0.top.equalTo(senderBtn.snp.centerY)
+                    $0.width.equalTo(110)
+                    $0.height.equalTo(150)
+                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+                })
+            }
         case .routine:
             view.addSubview(backgroundView)
             backgroundView.addSubview(emptyBtn)
@@ -346,12 +364,21 @@ extension HomeView {
             emptyBtn.snp.makeConstraints({
                 $0.edges.equalTo(backgroundView.snp.edges)
             })
-            stackView.snp.makeConstraints({
-                $0.top.equalTo(todoListTableView.snp.top).offset(30 + (60 * index))
-                $0.width.equalTo(110)
-                $0.height.equalTo(100)
-                $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
-            })
+            if index > 4 {
+                stackView.snp.makeConstraints({
+                    $0.bottom.equalTo(senderBtn.snp.centerY)
+                    $0.width.equalTo(110)
+                    $0.height.equalTo(100)
+                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+                })
+            } else {
+                stackView.snp.makeConstraints({
+                    $0.top.equalTo(senderBtn.snp.centerY)
+                    $0.width.equalTo(110)
+                    $0.height.equalTo(100)
+                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+                })
+            }
         }
     }
 }
