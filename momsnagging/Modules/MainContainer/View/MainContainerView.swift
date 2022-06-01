@@ -54,7 +54,8 @@ class MainContainerView: BaseViewController, Navigatable {
     var containerView: UIContentContainer?
     // MARK: - InitUI
     override func initUI() {
-        view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+//        view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+        view.backgroundColor = .clear
         let homeViewModel = HomeViewModel()
         let reportCardViewModel = ReportCardViewModel()
         let myViewModel = MyViewModel(withService: SceneDelegate.appService)

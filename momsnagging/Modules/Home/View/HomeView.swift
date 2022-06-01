@@ -48,6 +48,7 @@ class HomeView: BaseViewController, Navigatable {
     var todoListType: [Int] = []
     var moveList: [TodoListModel] = []
     var moveListModel:[ScheduleArrayModel] = []
+    var checkBtnInteractionEnable = true
     /*
      prefix : head
      Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일
@@ -209,7 +210,6 @@ class HomeView: BaseViewController, Navigatable {
         
         
         calendarDateLbl.text = "\(calendarYear ?? 0)년 \(calendarMonth ?? 0)월"
-        monthCollectionViewHeight = 7
         calendarFrame = homeCalendarView()
     }
     // MARK: - LayoutSetting
@@ -279,24 +279,32 @@ class HomeView: BaseViewController, Navigatable {
             }
             let cell = self.weekCalendarCollectionView.cellForItem(at: [0, indexPath.row]) as? WeekDayCalendarCell
             self.headTitleLbl.text = self.calendarViewModel.todayFormatteryyyy()
+            let year = self.calendarYear
             let day: Int = Int((cell?.numberLbl.text)!)!
             var month: Int = self.weekCalendarMonth!
             if day > self.calendarViewModel.getToday() + 6 { // 이전달의 날짜클릭시 month - 1처리 ex.) 6월첫번째 주 주간달력의 5월31일 선택시.
                 month -= 1
+                if month == 0 {/
+                    month = 12
+                    year -= year!
+                }
             }
             Log.debug("day!", "\(day), \(month)")
+            self.calendarYear = year
+            self.calendarMonth = month
+            self.calendarDay = day
 //            var calendarMonth: Int = Int(exactly: self.calendarMonth ?? 0)!
             if day < 10 {
                 if month < 10 {
-                    self.selectDate = "\(self.headTitleLbl.text ?? "")0\(month)0\(day)"
+                    self.selectDate = "\(year ?? 0)0\(month)0\(day)"
                 } else {
-                    self.selectDate = "\(self.headTitleLbl.text ?? "")\(month)0\(day)"
+                    self.selectDate = "\(year ?? 0)\(month)0\(day)"
                 }
             } else {
                 if month < 10 {
-                    self.selectDate = "\(self.headTitleLbl.text ?? "")0\(month)\(day)"
+                    self.selectDate = "\(year ?? 0)0\(month)\(day)"
                 } else {
-                    self.selectDate = "\(self.headTitleLbl.text ?? "")\(month)\(day)"
+                    self.selectDate = "\(year ?? 0)\(month)\(day)"
                 }
             }
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
@@ -345,8 +353,11 @@ class HomeView: BaseViewController, Navigatable {
                 cell.dayWeekLabel.text = item
             }.disposed(by: disposedBag)
         
-        calendarViewModel.collectionViewHeight.subscribe { self.dayCollectionViewRemakeConstraint(count: $0) }.disposed(by: disposedBag)
+//        calendarViewModel.collectionViewHeight.subscribe { self.dayCollectionViewRemakeConstraint(count: $0) }.disposed(by: disposedBag)
         
+        calendarViewModel.daylist.subscribe(onNext: { list in
+            Log.debug("dayList", "\(list)")
+        }).disposed(by: disposedBag)
         calendarViewModel.daylist // 월 달력 데이터 [String]
             .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "HomeCalendarCell", cellType: HomeCalendarCell.self)) { index, item, cell in
                 if item == "emptyCell" {
@@ -381,6 +392,11 @@ class HomeView: BaseViewController, Navigatable {
             }.disposed(by: disposedBag)
         
         dayCollectionView.rx.itemSelected.subscribe(onNext: { indexPath in
+            
+            self.calendarFrame.isHidden = true
+            self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
+            self.headDropDownBtn.isSelected = false
+            
             self.calendarSelectIndex = indexPath.row
             for i in 0..<37 {
                 let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
@@ -436,6 +452,7 @@ class HomeView: BaseViewController, Navigatable {
         guard let viewModel = viewModel else { return }
         // dropDown Ic ClickEvent
         headDropDownBtn.rx.tap.bind(onNext: { _ in
+            self.checkBtnInteractionEnable = true
             if self.headDropDownBtn.isSelected {
                 self.calendarFrame.isHidden = true
                 self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
@@ -444,6 +461,14 @@ class HomeView: BaseViewController, Navigatable {
                 self.calendarFrame.isHidden = false
                 self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronUp)
                 self.headDropDownBtn.isSelected = true
+                
+                // 리스트 정렬 하는 상태 종료
+                lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
+                self.headBtnBind(input: input)
+                self.collectionViewOutput = viewModel.transform(input: input)
+                self.todoListTableView.dragInteractionEnabled = false
+                self.todoList.removeAll()
+                self.todoListTableView.reloadData()
             }
         }).disposed(by: disposedBag)
         
@@ -474,6 +499,12 @@ class HomeView: BaseViewController, Navigatable {
         }.disposed(by: disposedBag)
         // 정렬 ClickEvent
         self.listBtn.rx.tap.bind {
+            self.checkBtnInteractionEnable = false
+            //리스트 정렬 클릭시 캘린더 숨김
+            self.calendarFrame.isHidden = true
+            self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
+            self.headDropDownBtn.isSelected = false
+            
             lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: true)
 //            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: true, sourceIndex: nil, destinationIndex: nil, scheduleType: nil)
             self.headBtnBind(input: input)
@@ -483,6 +514,7 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headCancel.rx.tap.bind {
+            self.checkBtnInteractionEnable = true
             lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
@@ -491,6 +523,7 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headSave.rx.tap.bind {
+            self.checkBtnInteractionEnable = true
             if self.moveListModel.count != 0 {
                 self.viewModel.requestArray(param: self.moveListModel)
             } else {
@@ -623,7 +656,7 @@ extension HomeView {
             $0.top.equalTo(weekDayCollectionView.snp.bottom).offset(16)
             $0.leading.equalTo(calendarView.snp.leading).offset(20)
             $0.trailing.equalTo(calendarView.snp.trailing).offset(-20)
-            $0.height.equalTo(38 * monthCollectionViewHeight!)
+            $0.height.equalTo(38 * 7)
         })
         
         return view
@@ -631,13 +664,13 @@ extension HomeView {
     
     // MARK: - Other
     /// 일(1 ~ 28,29,30,31)표시 컬렉션뷰를 주(4주~6주)수에 따라 컬렉션뷰 레이아웃 재설정 함수
-    func dayCollectionViewRemakeConstraint(count: Int) {
-        dayCollectionView.snp.remakeConstraints({
-            $0.top.equalTo(weekDayCollectionView.snp.bottom).offset(16)
-            $0.leading.equalTo(calendarView.snp.leading).offset(20)
-            $0.trailing.equalTo(calendarView.snp.trailing).offset(-20)
-            $0.height.equalTo(38 * count)
-        })
-    }
+//    func dayCollectionViewRemakeConstraint(count: Int) {
+//        dayCollectionView.snp.remakeConstraints({
+//            $0.top.equalTo(weekDayCollectionView.snp.bottom).offset(16)
+//            $0.leading.equalTo(calendarView.snp.leading).offset(20)
+//            $0.trailing.equalTo(calendarView.snp.trailing).offset(-20)
+//            $0.height.equalTo(38 * count)
+//        })
+//    }
     
 }

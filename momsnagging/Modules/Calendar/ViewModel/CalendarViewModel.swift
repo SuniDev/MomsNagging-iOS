@@ -42,7 +42,6 @@ class CalendarViewModel {
             daylist.onNext(model.getOtherMonthDayList(currentMonth: model.getNextMonth(currentMonth: currentMonth), currentYear: model.getNextYear(currentYear: currentYear)))
             collectionViewHeight.onNext(rowCount(currentMonth: model.getLastMonth(currentMonth: currentMonth), currentYear: model.getLastYear(currentYear: currentYear)))
         }
-        Log.debug("다음달 데이터가져오기", "\(currentYear), \(currentMonth)")
         monthObservable.onNext(model.getNextMonth(currentMonth: currentMonth))
         daylist.onNext(model.getOtherMonthDayList(currentMonth: model.getNextMonth(currentMonth: currentMonth), currentYear: currentYear))
         collectionViewHeight.onNext(rowCount(currentMonth: model.getLastMonth(currentMonth: currentMonth), currentYear: currentYear))

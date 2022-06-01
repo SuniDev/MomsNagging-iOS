@@ -64,6 +64,7 @@ class TodoCell: UITableViewCell {
         $0.isUserInteractionEnabled = false
         $0.setImage(UIImage(asset: Asset.Icon.listSortIc), for: .normal)
         $0.isHidden = true
+        $0.backgroundColor = .clear
     })
     lazy var bottomDivider = UIView().then({
         $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)

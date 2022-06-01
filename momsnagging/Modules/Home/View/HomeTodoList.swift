@@ -21,8 +21,13 @@ import RxDataSources
 extension HomeView {
     
     func setTodoTableView() {
+        let bottomEmptyImge = UIImageView().then({
+            $0.image = UIImage(asset: Asset.Assets.todoBottomEmptyImage)
+        })
         view.addSubview(tableViewTopDivider)
         view.addSubview(todoListTableView)
+        todoListTableView.addSubview(bottomEmptyImge)
+        todoListTableView.contentInset.bottom = 100
         tableViewTopDivider.snp.makeConstraints({
             $0.top.equalTo(weekCalendarCollectionView.snp.bottom)
             $0.height.equalTo(1)
@@ -33,7 +38,13 @@ extension HomeView {
             $0.top.equalTo(tableViewTopDivider.snp.bottom)
             $0.leading.equalTo(view.snp.leading)
             $0.trailing.equalTo(view.snp.trailing)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-80)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        })
+        bottomEmptyImge.snp.makeConstraints({
+            $0.top.equalTo(todoListTableView.snp.bottom).offset(-100)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         })
         
         todoBind()
@@ -65,24 +76,30 @@ extension HomeView {
 //
 //    }
     @objc func selectTodoCheck(_ sender: UIButton) {
-        if sender.accessibilityLabel == "true" {
-            self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
-        } else if sender.accessibilityLabel == "false" {
-            self.viewModel.requestRoutineDone(scheduleId: sender.tag)
+        if checkBtnInteractionEnable {
+            if sender.accessibilityLabel == "true" {
+                self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
+            } else if sender.accessibilityLabel == "false" {
+                self.viewModel.requestRoutineDone(scheduleId: sender.tag)
+            }
         }
     }
     @objc func selectRoutineCheck(_ sender: UIButton) {
-        if sender.accessibilityLabel == "true" {
-            self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
-        } else if sender.accessibilityLabel == "false" {
-            self.viewModel.requestRoutineDone(scheduleId: sender.tag)
+        if checkBtnInteractionEnable {
+            if sender.accessibilityLabel == "true" {
+                self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
+            } else if sender.accessibilityLabel == "false" {
+                self.viewModel.requestRoutineDone(scheduleId: sender.tag)
+            }
         }
     }
     @objc func selectCountRoutineCheck(_ sender: UIButton) {
-        if sender.accessibilityLabel == "true" {
-            self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
-        } else if sender.accessibilityLabel == "false" {
-            self.viewModel.requestRoutineDone(scheduleId: sender.tag)
+        if checkBtnInteractionEnable {
+            if sender.accessibilityLabel == "true" {
+                self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
+            } else if sender.accessibilityLabel == "false" {
+                self.viewModel.requestRoutineDone(scheduleId: sender.tag)
+            }
         }
 //        showMorePopup(type: .todo, itemId: 0, index: 1)
     }
@@ -157,6 +174,13 @@ extension HomeView {
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectTodoCheck), for: .touchUpInside)
                         cell?.moreIc.tag = row
                         cell?.moreIc.addTarget(self, action: #selector(self.selectTodoMoreAction), for: .touchUpInside)
+                        if self.checkBtnInteractionEnable {
+                            cell?.moreIc.isHidden = false
+                            cell?.sortIc.isHidden = true
+                        } else {
+                            cell?.moreIc.isHidden = true
+                            cell?.sortIc.isHidden = false
+                        }
                         
                         self.todoListType.append(0)
                         return cell!
@@ -200,6 +224,13 @@ extension HomeView {
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectRoutineCheck), for: .touchUpInside)
                         cell?.moreIc.tag = row
                         cell?.moreIc.addTarget(self, action: #selector(self.selectRoutineMoreAction), for: .touchUpInside)
+                        if self.checkBtnInteractionEnable {
+                            cell?.moreIc.isHidden = false
+                            cell?.sortIc.isHidden = true
+                        } else {
+                            cell?.moreIc.isHidden = true
+                            cell?.sortIc.isHidden = false
+                        }
                         self.todoListType.append(1)
                         return cell!
                     }
@@ -243,6 +274,13 @@ extension HomeView {
                     cell?.toggleIc.addTarget(self, action: #selector(self.selectCountRoutineCheck), for: .touchUpInside)
                     cell?.moreIc.tag = row
                     cell?.moreIc.addTarget(self, action: #selector(self.selectCountRoutineMoreAction), for: .touchUpInside)
+                    if self.checkBtnInteractionEnable {
+                        cell?.moreIc.isHidden = false
+                        cell?.sortIc.isHidden = true
+                    } else {
+                        cell?.moreIc.isHidden = true
+                        cell?.sortIc.isHidden = false
+                    }
                     self.todoListType.append(2)
                     return cell!
                 }
