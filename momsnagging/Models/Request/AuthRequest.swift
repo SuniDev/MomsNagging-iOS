@@ -13,6 +13,8 @@
 struct LoginRequest: RequestModelType {
     var provider: String   // 소셜 로그인 플랫폼
     var code: String       // 플랫폼 코드
+    var device: String = "IOS"  // 디바이스
+    var firebaseToken: String   // 파이어베이스 토큰
 }
 
 /**
@@ -36,4 +38,5 @@ struct JoinRequest: RequestModelType {
     var email: String       // 유저 이메일
     var id: String          // 아이디
     var nickname: String    // 호칭
+    var firebaseToken: String // 파이어베이스 토큰
 }

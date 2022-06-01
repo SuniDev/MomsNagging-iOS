@@ -169,5 +169,10 @@ class PushSettingView: BaseViewController, Navigatable {
             .drive(onNext: { isOn in
                 self.swOtherNotice.isOn = isOn
             }).disposed(by: disposeBag)
+        
+        output.goToBack
+            .drive(onNext: {
+                self.navigator.pop(sender: self)
+            }).disposed(by: disposeBag)
     }
 }

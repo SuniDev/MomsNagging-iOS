@@ -159,7 +159,8 @@ class LoginViewModel: ViewModel, ViewModelType {
                                        code: snsLogin.id,
                                        email: snsLogin.email ?? "",
                                        id: "",
-                                       nickname: "")
+                                       nickname: "",
+                                       firebaseToken: CommonUser.getFCMToken())
                 let viewModel = IDSettingViewModel(withService: self.provider, joinRequest: join)
                 return viewModel
             }
@@ -210,7 +211,7 @@ class LoginViewModel: ViewModel, ViewModelType {
 // MARK: API
 extension LoginViewModel {
     private func requestLogin(snsType: String, code: String) -> Observable<Login> {
-        let request = LoginRequest(provider: snsType, code: code)
+        let request = LoginRequest(provider: snsType, code: code, firebaseToken: CommonUser.getFCMToken())
         return self.provider.authService.login(request: request)
     }
     

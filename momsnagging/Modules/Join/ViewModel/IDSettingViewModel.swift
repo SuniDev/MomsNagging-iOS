@@ -137,7 +137,8 @@ class IDSettingViewModel: ViewModel, ViewModelType {
                                        code: request.code,
                                        email: request.email,
                                        id: textID.value,
-                                       nickname: "")
+                                       nickname: "",
+                                       firebaseToken:  CommonUser.getFCMToken())
                 let viewModel = NicknameSettingViewModel(withService: self.provider, joinRequest: join)
                 return viewModel
             }

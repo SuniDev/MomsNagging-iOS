@@ -17,4 +17,10 @@ struct TodoListModel {
     var done: Bool?
     var id: Int?
     var goalCount: Int?
+    var originalId: Int?
+}
+
+struct ScheduleArrayModel: Encodable{
+    var oneOriginalId: Int?
+    var theOtherOriginalId: Int?
 }

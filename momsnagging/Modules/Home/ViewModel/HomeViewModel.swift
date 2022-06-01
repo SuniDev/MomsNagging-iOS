@@ -23,6 +23,7 @@ class HomeViewModel: BaseViewModel, ViewModelType {
     var toggleIcSuccessOb = PublishSubject<Void>()
     var toggleCancelOb = PublishSubject<Void>()
     var delaySuccessOb = PublishSubject<Void>()
+    var arraySuccessOb = PublishSubject<Void>()
     
     override init() {
     }
@@ -178,6 +179,7 @@ extension HomeViewModel {
                             model.done = item.dictionary?["done"]?.boolValue ?? nil
                             model.id = item.dictionary?["id"]?.intValue ?? 0
                             model.goalCount = item.dictionary?["goalCount"]?.intValue ?? 0
+                            model.originalId = item.dictionary?["originalId"]?.intValue ?? 0
                             self.todoListData.append(model)
                         }
                     }
@@ -272,10 +274,30 @@ extension HomeViewModel {
                     print("requestDeleay : \(json)")
                     self.delaySuccessOb.onNext(())
                 } catch let error {
-                    Log.error("requestDeleay failure error", "\(error)")
+                    Log.error("requestDeleay error", "\(error)")
                 }
             case .failure(let error):
                 Log.error("requestDeleay failure error", "\(error)")
+            }
+        })
+    }
+    
+    func requestArray(param: [ScheduleArrayModel]) {
+        let param: [ScheduleArrayModel] = param
+        print("request param : \(param)")
+        provider.request(.sortingTodoList(param: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestArray Json : \(json)")
+                    self.arraySuccessOb.onNext(())
+                } catch let error {
+                    Log.error("requestArray failure error", "\(error) 빈값이 와요 근데 성공")
+                    self.arraySuccessOb.onNext(())
+                }
+            case .failure(let error):
+                Log.error("requestArray failure error", "\(error)")
             }
         })
     }
