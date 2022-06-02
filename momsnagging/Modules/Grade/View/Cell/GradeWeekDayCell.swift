@@ -1,5 +1,5 @@
 //
-//  ReportWeekDayCell.swift
+//  GradeWeekDayCell.swift
 //  momsnagging
 //
 //  Created by 전창평 on 2022/05/15.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class ReportWeekDayCell: UICollectionViewCell {
+class GradeWeekDayCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         setUI()
@@ -21,7 +21,7 @@ class ReportWeekDayCell: UICollectionViewCell {
     })
     
 }
-extension ReportWeekDayCell {
+extension GradeWeekDayCell {
     private func setUI() {
         contentView.addSubview(dayWeekLabel)
         dayWeekLabel.snp.makeConstraints({

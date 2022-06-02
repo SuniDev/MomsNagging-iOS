@@ -19,11 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     static let authService = AuthService()
     static let userService = UserService()
     static let diaryService = DiaryService()
+    static let gradeService = GradeService()
     
     static var appService = {
         return AppServices(authService: SceneDelegate.authService,
                            userService: SceneDelegate.userService,
-                           diaryService: SceneDelegate.diaryService)
+                           diaryService: SceneDelegate.diaryService,
+                           gradeService: SceneDelegate.gradeService)
     }()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

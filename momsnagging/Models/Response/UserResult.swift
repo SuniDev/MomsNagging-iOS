@@ -22,4 +22,3 @@ class UserResult: ModelType {
         id = jsonData["id"].int
     }
 }
-

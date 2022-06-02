@@ -33,8 +33,16 @@ enum MomsNaggingAPI {
     case getDiary(GetDiaryReqeust)
     // 일기장 수정
     case putDiary(PutDiaryReqeust)
-    // 회원 정보 조회
-//    case getUser(GetUserRequest)
+    // 상장 등급 조회
+    case gradeAwards(GradeAwardsRequest)
+    // 월간 달력 성적표 조회
+    case gradeCalendar(GradeCalendarRequest)
+    // 직전 주의 주간평가 조회
+    case gradeLastWeek(GradeLastWeekRequest)
+    // 월간 주간평가 조회
+    case gradeMonthly(GradeMonthlyRequest)
+    // 성적표 통계 조회
+    case gradeStatistics(GradeStatisticsRequest)
 }
 
 extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
@@ -71,6 +79,16 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
             return "/diary/calendar"
         case .getDiary, .putDiary:
             return "/diary"
+        case .gradeAwards:
+            return "/grades/awards"
+        case .gradeCalendar:
+            return "/grades/calendar"
+        case .gradeLastWeek:
+            return "/grades/lastWeek"
+        case .gradeMonthly:
+            return "/grades/monthly"
+        case .gradeStatistics:
+            return "/grades/statistics"
         }
     }
     
@@ -100,13 +118,23 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .putDiary(let request):
           return .requestJSONEncodable(request)
+      case .gradeAwards(_):
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .gradeCalendar(_):
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .gradeLastWeek(_):
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .gradeMonthly(_):
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .gradeStatistics(_):
+          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       }
     }
     
     // 각 case의 메소드 타입 get / post
     var method: Moya.Method {
         switch self {
-        case .login, .validateID, .diaryCalendar, .getDiary, .getUser:
+        case .login, .validateID, .diaryCalendar, .getDiary, .getUser, .gradeAwards, .gradeMonthly, .gradeCalendar, .gradeStatistics, .gradeLastWeek:
             return .get
         case .join:
             return .post
@@ -122,7 +150,7 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         switch self {
         case .login, .validateID, .join:
             return ["Content-Type": "application/json"]
-        case .diaryCalendar, .getDiary, .putDiary, .getUser, .putUser, .deleteUser:
+        case .diaryCalendar, .getDiary, .putDiary, .getUser, .putUser, .deleteUser, .gradeAwards, .gradeMonthly, .gradeCalendar, .gradeStatistics, .gradeLastWeek:
             if let token: String = CommonUser.authorization {
                 return ["Content-Type": "application/json", "Authorization": "Bearer \(token)"]
             }
@@ -164,6 +192,16 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
         case .getDiary(let request):
             return request.toDictionary()
         case .putDiary(let request):
+            return request.toDictionary()
+        case .gradeAwards(let request):
+            return request.toDictionary()
+        case .gradeMonthly(let request):
+            return request.toDictionary()
+        case .gradeCalendar(let request):
+            return request.toDictionary()
+        case .gradeStatistics(let request):
+            return request.toDictionary()
+        case .gradeLastWeek(let request):
             return request.toDictionary()
         default:
             return [:]
