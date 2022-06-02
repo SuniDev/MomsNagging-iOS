@@ -41,14 +41,14 @@ class PushSettingViewModel: ViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         let requestPutUserTrigger = PublishRelay<PutUserRequest>()
         // 상태 체크
-        let isOnGeneralNotice = BehaviorRelay<Bool>(value: CommonUser.allowGeneralNotice ?? false)
         let isOnTodoNotice = BehaviorRelay<Bool>(value: CommonUser.allowTodoNotice ?? false)
         let isOnRoutineNotice = BehaviorRelay<Bool>(value: CommonUser.allowRoutineNotice ?? false)
         let isOnWeeklyNotice = BehaviorRelay<Bool>(value: CommonUser.allowWeeklyNotice ?? false)
         let isOnOtherNotice = BehaviorRelay<Bool>(value: CommonUser.allowOtherNotice ?? false)
+        let isOnGeneralNotice = BehaviorRelay<Bool>(value: CommonUser.getGeneralNotice())
         
         // 스위치 트리거
-        let setGeneralNotice = BehaviorRelay<Bool>(value: CommonUser.allowGeneralNotice ?? false)
+        let setGeneralNotice = BehaviorRelay<Bool>(value: CommonUser.getGeneralNotice())
         setGeneralNotice
             .bind(to: isOnGeneralNotice)
             .disposed(by: disposeBag)
@@ -86,22 +86,18 @@ class PushSettingViewModel: ViewModel, ViewModelType {
         
         setUser
             .subscribe(onNext: { user in
-                CommonUser.setUser(user) {
-                    // TODO: 네트워크가 느리면 오류로 보여서.. 네이티브에서 자연스럽게 하는 것으로 변경
-//                    isOnGeneralNotice.accept(user.allowGeneralNotice ?? isOnGeneralNotice.value)
-//                    isOnTodoNotice.accept(user.allowTodoNotice ?? isOnTodoNotice.value)
-//                    isOnRoutineNotice.accept(user.allowRoutineNotice ?? isOnRoutineNotice.value)
-//                    isOnWeeklyNotice.accept(user.allowWeeklyNotice ?? isOnWeeklyNotice.value)
-//                    isOnOtherNotice.accept(user.allowOtherNotice ?? isOnOtherNotice.value)
-                }
+                CommonUser.setUser(user)
             }).disposed(by: disposeBag)
         
-        input.valueChangedGeneral.debug()
+        input.valueChangedGeneral
             .drive(onNext: { isOn in
                 isOnGeneralNotice.accept(isOn)
                 
                 var request = PutUserRequest()
-                request.allowGeneralNotice = isOn
+                request.allowTodoNotice = isOn
+                request.allowRoutineNotice = isOn
+                request.allowWeeklyNotice = isOn
+                request.allowOtherNotice = isOn
                 requestPutUserTrigger.accept(request)
                 
                 setTodoNotice.accept(isOn)

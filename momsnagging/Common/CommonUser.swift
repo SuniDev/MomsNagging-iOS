@@ -37,7 +37,6 @@ class CommonUser: NSObject {
     static var personalId: String?
     static var naggingLevel: NaggingLevel = NaggingLevel.fondMom
     static var statusMsg: String = STR_STATUSMSG_DEFAULT
-    static var allowGeneralNotice: Bool?
     static var allowTodoNotice: Bool?
     static var allowRoutineNotice: Bool?
     static var allowWeeklyNotice: Bool?
@@ -51,7 +50,6 @@ class CommonUser: NSObject {
         self.personalId = user.personalId ?? ""
         self.naggingLevel = self.getNaggingLevel(user.naggingLevel)
         self.statusMsg = user.statusMsg ?? STR_STATUSMSG_DEFAULT
-        self.allowGeneralNotice = user.allowGeneralNotice
         self.allowTodoNotice = user.allowTodoNotice
         self.allowRoutineNotice = user.allowRoutineNotice
         self.allowWeeklyNotice = user.allowWeeklyNotice
@@ -70,7 +68,6 @@ class CommonUser: NSObject {
         self.personalId = nil
         self.naggingLevel = .fondMom
         self.statusMsg = STR_STATUSMSG_DEFAULT
-        self.allowGeneralNotice = nil
         self.allowTodoNotice = nil
         self.allowRoutineNotice = nil
         self.allowWeeklyNotice = nil
@@ -132,7 +129,6 @@ class CommonUser: NSObject {
         return Asset.Assets.emojiDaughter.image
     }
     
-    
     /**
      # getFCMToken
      - Authors: suni
@@ -144,6 +140,13 @@ class CommonUser: NSObject {
             return fcmToken
         }
         return ""
+    }
+    
+    static func getGeneralNotice() -> Bool {
+        return CommonUser.allowTodoNotice ?? false
+        && CommonUser.allowRoutineNotice ?? false
+        && CommonUser.allowWeeklyNotice ?? false
+        && CommonUser.allowOtherNotice ?? false
     }
 }
 

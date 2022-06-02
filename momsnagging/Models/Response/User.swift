@@ -25,7 +25,6 @@ class User: ModelType {
     var naggingLevel: Int?
     var statusMsg: String?
     var device: String?
-    var allowGeneralNotice: Bool?
     var allowTodoNotice: Bool?
     var allowRoutineNotice: Bool?
     var allowWeeklyNotice: Bool?
@@ -40,7 +39,6 @@ class User: ModelType {
         naggingLevel = jsonData["naggingLevel"].int
         statusMsg = jsonData["statusMsg"].string
         device = jsonData["device"].string
-        allowGeneralNotice = jsonData["allowGeneralNotice"].bool
         allowTodoNotice = jsonData["allowTodoNotice"].bool
         allowRoutineNotice = jsonData["allowRoutineNotice"].bool
         allowWeeklyNotice = jsonData["allowWeeklyNotice"].bool

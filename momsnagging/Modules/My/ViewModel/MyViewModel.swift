@@ -44,8 +44,6 @@ class MyViewModel: ViewModel, ViewModelType {
         let goToSetting: Driver<Void>
         /// 아이디
         let id: Driver<String>
-        /// 이메일
-//        let email: Driver<String>
         /// 각오
         let statusMsg: Driver<String>
         let showStatusModifyAlert: Driver<Alert>
@@ -53,7 +51,7 @@ class MyViewModel: ViewModel, ViewModelType {
         let nickName: Driver<String>
         let showNicknameSettingAlert: Driver<Alert>
         /// 잔소리 강도 설정
-        let setNaggingIntensity: Driver<NaggingLevel>
+        let setNaggingLevel: Driver<NaggingLevel>
         /// PUSH 알림 설정
         let goToPushSetting: Driver<PushSettingViewModel>
         /// 로그아웃
@@ -65,18 +63,17 @@ class MyViewModel: ViewModel, ViewModelType {
         
         // 아이디
         let id = BehaviorRelay<String>(value: CommonUser.personalId ?? "")
-        
-        // 이메일
-//        let email = BehaviorRelay<String>(value: CommonUser.email ?? "")
 
         // 각오
         let statusMsg = BehaviorRelay<String>(value: CommonUser.statusMsg.isEmpty == true ? STR_STATUSMSG_DEFAULT : CommonUser.statusMsg)
+        let statusModifyText = BehaviorRelay<String>(value: "")
         
         // 호칭
         let nickName = BehaviorRelay<String>(value: CommonUser.nickName ?? "자식")
+        let nicknameModifyText = BehaviorRelay<String>(value: "")
         
         // 잔소리 강도
-        let setNaggingIntensity = BehaviorRelay<NaggingLevel>(value: CommonUser.naggingLevel)
+        let setNaggingLevel = BehaviorRelay<NaggingLevel>(value: CommonUser.naggingLevel)
         
         // 수정 business logic
         let requestPutUserTrigger = PublishRelay<PutUserRequest>()
@@ -86,23 +83,31 @@ class MyViewModel: ViewModel, ViewModelType {
                 return self.requestPutUser(request)
             }.share()
         
-        let requestGetUser = requestPutUser
+        let successPutUser = requestPutUser
             .filter({ $0.id != nil })
+            .share()
+        
+        let failPutUser = requestPutUser
+            .filter({ $0.id == nil })
+            .share()
+        
+        failPutUser
+            .subscribe(onNext: { _ in
+                // TODO: 네트워크 실패
+                statusMsg.accept(CommonUser.statusMsg.isEmpty == true ? STR_STATUSMSG_DEFAULT : CommonUser.statusMsg)
+                nickName.accept(CommonUser.nickName ?? "자식")
+                setNaggingLevel.accept(CommonUser.naggingLevel)
+            }).disposed(by: disposeBag)
+        
+        let requestGetUser = successPutUser
             .flatMapLatest { _ in
                 return self.requestGetUser()
             }.share()
-        
-        let setUser = requestGetUser
-            .filter { $0.id != nil }
-            .share()
-        
-        setUser
+                
+        requestGetUser
+            .filter({ $0.id != nil })
             .subscribe(onNext: { user in
-                CommonUser.setUser(user) {
-                    statusMsg.accept(user.statusMsg ?? statusMsg.value)
-                    nickName.accept(user.nickName ?? nickName.value)
-                    setNaggingIntensity.accept(CommonUser.getNaggingLevel(user.naggingLevel))
-                }
+                CommonUser.setUser(user)
             }).disposed(by: disposeBag)
         
         // 각오 business logic
@@ -114,7 +119,6 @@ class MyViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         let statusModifyAlertDoneHandler = input.statusModifyAlertDoneHandler.asObservable().share()
-        let statusModifyText = BehaviorRelay<String>(value: "")
         statusModifyAlertDoneHandler
             .bind(onNext: { statusMsg in
                 statusModifyText.accept(statusMsg ?? "")
@@ -132,7 +136,9 @@ class MyViewModel: ViewModel, ViewModelType {
         
         isValidStatusMsg
             .filter({ $0 == true })
-            .bind(onNext: { statusMsg in
+            .bind(onNext: { _ in
+                statusMsg.accept(statusModifyText.value)
+                
                 var request = PutUserRequest()
                 request.statusMsg = statusModifyText.value
                 requestPutUserTrigger.accept(request)
@@ -147,7 +153,6 @@ class MyViewModel: ViewModel, ViewModelType {
                 
         // 호칭 business logic
         let showNicknameSettingAlert = PublishRelay<Alert>()
-        let nicknameModifyText = BehaviorRelay<String>(value: "")
         
         input.btnNicknameSetting
             .drive(onNext: { _ in
@@ -164,7 +169,9 @@ class MyViewModel: ViewModel, ViewModelType {
         
         isValidName
             .filter({ $0 == true })
-            .bind(onNext: { nickName in
+            .bind(onNext: { _ in
+                nickName.accept(nicknameModifyText.value)
+                
                 var request = PutUserRequest()
                 request.nickName = nicknameModifyText.value
                 requestPutUserTrigger.accept(request)
@@ -181,17 +188,17 @@ class MyViewModel: ViewModel, ViewModelType {
         let requestNaggingLevel = PublishRelay<Int>()
         input.rbFondMomTapped
             .drive(onNext: {
-                setNaggingIntensity.accept(.fondMom)
+                setNaggingLevel.accept(.fondMom)
                 requestNaggingLevel.accept(0)
             }).disposed(by: disposeBag)
         input.rbCoolMomTapped
             .drive(onNext: {
-                setNaggingIntensity.accept(.coolMom)
+                setNaggingLevel.accept(.coolMom)
                 requestNaggingLevel.accept(1)
             }).disposed(by: disposeBag)
         input.rbAngryMomTapped
             .drive(onNext: {
-                setNaggingIntensity.accept(.angryMom)
+                setNaggingLevel.accept(.angryMom)
                 requestNaggingLevel.accept(2)
             }).disposed(by: disposeBag)
         
@@ -225,12 +232,11 @@ class MyViewModel: ViewModel, ViewModelType {
         
         return Output(goToSetting: input.btnSettingTapped,
                       id: id.asDriverOnErrorJustComplete(),
-//                      email: email.asDriverOnErrorJustComplete(),
                       statusMsg: statusMsg.asDriver(onErrorJustReturn: STR_STATUSMSG_DEFAULT),
                       showStatusModifyAlert: showStatusModifyAlert.asDriverOnErrorJustComplete(),
                       nickName: nickName.asDriverOnErrorJustComplete(),
                       showNicknameSettingAlert: showNicknameSettingAlert.asDriverOnErrorJustComplete(),
-                      setNaggingIntensity: setNaggingIntensity.asDriverOnErrorJustComplete(),
+                      setNaggingLevel: setNaggingLevel.asDriverOnErrorJustComplete(),
                       goToPushSetting: goToPushSetting.asDriverOnErrorJustComplete(),
                       showLogoutAlert: showLogoutAlert.asDriver(onErrorJustReturn: STR_LOGOUT),
                       goToLogin: goToLogin.asDriverOnErrorJustComplete())

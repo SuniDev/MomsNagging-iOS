@@ -477,7 +477,7 @@ class MyView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         // 잔소리 강도 설정
-        output.setNaggingIntensity
+        output.setNaggingLevel
             .drive(onNext: { naggingIntensity in
                 self.rbFondMom.isSelected = naggingIntensity == .fondMom
                 self.imgvTipFondMom.isHidden = naggingIntensity != .fondMom
