@@ -50,11 +50,11 @@ struct Onboarding {
     
     func getImage() -> UIImage {
         switch getCurrentPage() {
-        case 0: return Asset.Assets.defautImage.image
-        case 1: return Asset.Assets.defautImage.image
-        case 2: return Asset.Assets.defautImage.image
-        case 3: return Asset.Assets.defautImage.image
-        case 4: return Asset.Assets.defautImage.image
+        case 0: return Asset.Assets.onboardingImage1.image
+        case 1: return Asset.Assets.onboardingImage2.image
+        case 2: return Asset.Assets.onboardingImage3.image
+        case 3: return Asset.Assets.onboardingImage4.image
+        case 4: return Asset.Assets.onboardingImage5.image
         default: return Asset.Assets.defautImage.image
         }
     }
