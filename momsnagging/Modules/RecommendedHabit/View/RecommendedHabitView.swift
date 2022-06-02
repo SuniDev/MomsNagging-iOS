@@ -16,6 +16,7 @@ class RecommendedHabitView: BaseViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         action()
+        viewModel.requestRecommendedHabitItemList()
     }
     // MARK: - Init
     init(viewModel: RecommendedHabitViewModel, navigator: Navigator) {
@@ -42,6 +43,7 @@ class RecommendedHabitView: BaseViewController, Navigatable {
     var headTitle: String = ""
     var cellColor: String = ""
     var cellSelectedColor: String = ""
+    var itemList: [RecommendedHabitModel] = []
     // MARK: - UI Properties
     var backBtn = UIButton()
     var headFrame = UIView()
@@ -75,11 +77,14 @@ class RecommendedHabitView: BaseViewController, Navigatable {
     }
     // MARK: - Bind
     override func bind() {
+        viewModel.itemList.subscribe(onNext: { list in
+            self.itemList = list
+        }).disposed(by: disposedBag)
         viewModel.itemList
             .bind(to: self.habitTableView.rx.items(cellIdentifier: "RecommendedHabitCell", cellType: RecommendedHabitCell.self)) { _, item, cell in
                 cell.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
                 cell.itemFrame.backgroundColor = UIColor(hexString: self.cellColor)
-                cell.title.text = item
+                cell.title.text = item.scheduleName
             }.disposed(by: disposedBag)
         habitTableView.rx.setDelegate(self).disposed(by: disposedBag)
         
@@ -96,6 +101,8 @@ class RecommendedHabitView: BaseViewController, Navigatable {
                     }
                 }
             })
+            let viewModel = DetailHabitViewModel(isNew: true, isRecommendHabit: true, dateParam: self.viewModel.dateParam ?? "", homeViewModel: self.viewModel.homeViewModel ?? HomeViewModel(), recommendHabitName: self.itemList[indexPath.row].scheduleName ?? "")
+            self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self)
         }).disposed(by: disposedBag)
         
     }

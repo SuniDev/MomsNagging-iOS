@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import Moya
 import SwiftyJSON
+import UIKit
 
 class AddHabitViewModel: BaseViewModel, ViewModelType {
     
@@ -18,6 +19,10 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
 
     var dateParam: String?
     var homeViewModel: HomeViewModel?
+    
+    private var normalColor: [String] = ["FFECD6", "FFE8EA", "E4F2C6", "CDDCFA", "F1E8FF", "CFFFF0"]
+    private var hightlightColor: [String] = ["FDC685", "FAC0C5", "C5DE90", "AAC0EB", "D1C0EC", "95E0CA"]
+    private var image: [UIImage] = [UIImage(asset: Asset.Assets.recommendHabit1)!, UIImage(asset: Asset.Assets.recommendHabit2)!, UIImage(asset: Asset.Assets.recommendHabit3)!, UIImage(asset: Asset.Assets.recommendHabit4)!, UIImage(asset: Asset.Assets.recommendHabit5)!, UIImage(asset: Asset.Assets.recommendHabit6)!]
     
     init(dateParam: String, homeViewModel:HomeViewModel) {
         self.dateParam = dateParam
@@ -84,12 +89,18 @@ extension AddHabitViewModel {
     func getRecommendHabitTitle() -> Observable<[RecommendHabitTitle]> {
         return Observable<[RecommendHabitTitle]>.create { observer -> Disposable in
             
+            var getRecommendHabitTitle = [RecommendHabitTitle]()
+            
             self.provider.request(.recommendedHabitCategoryLookUp, completion: { res in
                 switch res {
                 case .success(let result):
                     do {
                         let json = JSON(try result.mapJSON())
-                        Log.debug("getRecommendHabitTitle json", "\(json)")
+                        for (index, item) in json.array!.enumerated() {
+                            getRecommendHabitTitle.append(RecommendHabitTitle.init(title: nil, normalColor: self.normalColor[index], highlightColor: self.hightlightColor[index], image: self.image[index], id: item.dictionary?["id"]?.intValue ?? 0, categoryName: item.dictionary?["categoryName"]?.stringValue ?? ""))
+                        }
+                        observer.onNext(getRecommendHabitTitle)
+                        observer.onCompleted()
                     } catch let error {
                         print("error : \(error)")
                     }
@@ -97,18 +108,14 @@ extension AddHabitViewModel {
                     print("failure error : \(error)")
                 }
             })
-            
-            var getRecommendHabitTitle = [RecommendHabitTitle]()
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생활", normalColor: "FFECD6", highlightColor: "FDC685", image: Asset.Assets.recommendHabit1.image))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "운동", normalColor: "FFE8EA", highlightColor: "FAC0C5", image: Asset.Assets.recommendHabit2.image))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "성장", normalColor: "E4F2C6", highlightColor: "C5DE90", image: Asset.Assets.recommendHabit3.image))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생산성", normalColor: "CDDCFA", highlightColor: "AAC0EB", image: Asset.Assets.recommendHabit4.image))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "식습관", normalColor: "F1E8FF", highlightColor: "D1C0EC", image: Asset.Assets.recommendHabit5.image))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "기타", normalColor: "CFFFF0", highlightColor: "95E0CA", image: Asset.Assets.recommendHabit6.image))
-            
-            observer.onNext(getRecommendHabitTitle)
-            observer.onCompleted()
             return Disposables.create()
+//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생활", normalColor: "FFECD6", highlightColor: "FDC685", image: Asset.Assets.recommendHabit1.image))
+//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "운동", normalColor: "FFE8EA", highlightColor: "FAC0C5", image: Asset.Assets.recommendHabit2.image))
+//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "성장", normalColor: "E4F2C6", highlightColor: "C5DE90", image: Asset.Assets.recommendHabit3.image))
+//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생산성", normalColor: "CDDCFA", highlightColor: "AAC0EB", image: Asset.Assets.recommendHabit4.image))
+//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "식습관", normalColor: "F1E8FF", highlightColor: "D1C0EC", image: Asset.Assets.recommendHabit5.image))
+//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "기타", normalColor: "CFFFF0", highlightColor: "95E0CA", image: Asset.Assets.recommendHabit6.image))
+            
         }
     }
 }
