@@ -44,34 +44,38 @@ class AwardView: BaseViewController, Navigatable {
     var closeBtn = UIButton().then({
         $0.setImage(UIImage(asset: Asset.Icon.x), for: .normal)
     })
-    var awardItemImage1 = UIImageView().then({
+    
+    var imgvAwardLevel1 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable1)
     })
-    var awardItemLbl1 = UILabel().then({
+    var lblAwardLevel1 = UILabel().then({
         $0.text = "수x5"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
-    var awardItemImage2 = UIImageView().then({
+    
+    var imgvAwardLevel2 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable2)
     })
-    var awardItemLbl2 = UILabel().then({
+    var lblAwardLevel2 = UILabel().then({
         $0.text = "수x10"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
-    var awardItemImage3 = UIImageView().then({
+    
+    var imgvAwardLevel3 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable3)
     })
-    var awardItemLbl3 = UILabel().then({
+    var lblAwardLevel3 = UILabel().then({
         $0.text = "수x30"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
-    var awardItemImage4 = UIImageView().then({
+    
+    var imgvAwardLevel4 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable4)
     })
-    var awardItemLbl4 = UILabel().then({
+    var lblAwardLevel4 = UILabel().then({
         $0.text = "수x50"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
@@ -93,15 +97,16 @@ class AwardView: BaseViewController, Navigatable {
         view.addSubview(awardFrame)
         awardFrame.addSubview(awardTitleLbl)
         awardFrame.addSubview(closeBtn)
-        awardFrame.addSubview(awardItemImage1)
-        awardFrame.addSubview(awardItemLbl1)
-        awardFrame.addSubview(awardItemImage2)
-        awardFrame.addSubview(awardItemLbl2)
-        awardFrame.addSubview(awardItemImage3)
-        awardFrame.addSubview(awardItemLbl3)
-        awardFrame.addSubview(awardItemImage4)
-        awardFrame.addSubview(awardItemLbl4)
+        awardFrame.addSubview(imgvAwardLevel1)
+        awardFrame.addSubview(lblAwardLevel1)
+        awardFrame.addSubview(imgvAwardLevel2)
+        awardFrame.addSubview(lblAwardLevel2)
+        awardFrame.addSubview(imgvAwardLevel3)
+        awardFrame.addSubview(lblAwardLevel3)
+        awardFrame.addSubview(imgvAwardLevel4)
+        awardFrame.addSubview(lblAwardLevel4)
         awardFrame.addSubview(awardDiscriptionLbl)
+        
         awardFrame.snp.makeConstraints({
             $0.width.equalTo(320)
             $0.height.equalTo(428)
@@ -116,41 +121,42 @@ class AwardView: BaseViewController, Navigatable {
             $0.trailing.equalTo(awardFrame.snp.trailing).offset(-16)
             $0.top.equalTo(awardFrame.snp.top).offset(16)
         })
-        awardItemImage1.snp.makeConstraints({
+        
+        imgvAwardLevel1.snp.makeConstraints({
             $0.width.height.equalTo(120)
             $0.top.equalTo(awardTitleLbl.snp.bottom).offset(16)
             $0.trailing.equalTo(awardFrame.snp.centerX).offset(-16)
         })
-        awardItemLbl1.snp.makeConstraints({
-            $0.top.equalTo(awardItemImage1.snp.bottom).offset(8)
-            $0.centerX.equalTo(awardItemImage1.snp.centerX)
+        lblAwardLevel1.snp.makeConstraints({
+            $0.top.equalTo(imgvAwardLevel1.snp.bottom).offset(8)
+            $0.centerX.equalTo(imgvAwardLevel1.snp.centerX)
         })
-        awardItemImage2.snp.makeConstraints({
+        imgvAwardLevel2.snp.makeConstraints({
             $0.width.height.equalTo(120)
             $0.top.equalTo(awardTitleLbl.snp.bottom).offset(16)
             $0.leading.equalTo(awardFrame.snp.centerX).offset(16)
         })
-        awardItemLbl2.snp.makeConstraints({
-            $0.top.equalTo(awardItemImage2.snp.bottom).offset(8)
-            $0.centerX.equalTo(awardItemImage2.snp.centerX)
+        lblAwardLevel2.snp.makeConstraints({
+            $0.top.equalTo(imgvAwardLevel2.snp.bottom).offset(8)
+            $0.centerX.equalTo(imgvAwardLevel2.snp.centerX)
         })
-        awardItemImage3.snp.makeConstraints({
-            $0.top.equalTo(awardItemImage1.snp.bottom).offset(40)
+        imgvAwardLevel3.snp.makeConstraints({
+            $0.top.equalTo(imgvAwardLevel1.snp.bottom).offset(40)
             $0.width.height.equalTo(120)
             $0.trailing.equalTo(awardFrame.snp.centerX).offset(-16)
         })
-        awardItemLbl3.snp.makeConstraints({
-            $0.top.equalTo(awardItemImage3.snp.bottom).offset(8)
-            $0.centerX.equalTo(awardItemImage3.snp.centerX)
+        lblAwardLevel3.snp.makeConstraints({
+            $0.top.equalTo(imgvAwardLevel3.snp.bottom).offset(8)
+            $0.centerX.equalTo(imgvAwardLevel3.snp.centerX)
         })
-        awardItemImage4.snp.makeConstraints({
-            $0.top.equalTo(awardItemImage2.snp.bottom).offset(40)
+        imgvAwardLevel4.snp.makeConstraints({
+            $0.top.equalTo(lblAwardLevel2.snp.bottom).offset(40)
             $0.width.height.equalTo(120)
             $0.leading.equalTo(awardFrame.snp.centerX).offset(16)
         })
-        awardItemLbl4.snp.makeConstraints({
-            $0.top.equalTo(awardItemImage4.snp.bottom).offset(8)
-            $0.centerX.equalTo(awardItemImage4.snp.centerX)
+        lblAwardLevel4.snp.makeConstraints({
+            $0.top.equalTo(imgvAwardLevel4.snp.bottom).offset(8)
+            $0.centerX.equalTo(imgvAwardLevel4.snp.centerX)
         })
         awardDiscriptionLbl.snp.makeConstraints({
             $0.bottom.equalTo(awardFrame.snp.bottom).offset(-20)
@@ -161,10 +167,33 @@ class AwardView: BaseViewController, Navigatable {
     }
     // MARK: - Bind
     override func bind() {
+        guard let viewModel = viewModel else { return }
         
-        closeBtn.rx.tap.bind {
-            self.navigator.dismiss(sender: self)
-        }.disposed(by: disposedBag)
+        let input = AwardViewModel.Input(willApearView: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
+                                         btnCloseTapped: self.closeBtn.rx.tap.asDriverOnErrorJustComplete(),
+                                         viewTapped: self.view.rx.tapGesture().mapToVoid().asDriverOnErrorJustComplete())
+        let output = viewModel.transform(input: input)
+        
+        output.setAwardLevel
+            .drive(onNext: { level in
+                
+                self.imgvAwardLevel1.image = level > 0 ? Asset.Assets.awardEnable1.image : Asset.Assets.awardDisable1.image
+                self.lblAwardLevel1.textColor = level > 0 ? Asset.Color.monoDark010.color : Asset.Color.monoDark040.color
+                
+                self.imgvAwardLevel2.image = level > 1 ? Asset.Assets.awardEnable2.image : Asset.Assets.awardDisable2.image
+                self.lblAwardLevel2.textColor = level > 1 ? Asset.Color.monoDark010.color : Asset.Color.monoDark040.color
+                
+                self.imgvAwardLevel3.image = level > 2 ? Asset.Assets.awardEnable3.image : Asset.Assets.awardDisable3.image
+                self.lblAwardLevel3.textColor = level > 2 ? Asset.Color.monoDark010.color : Asset.Color.monoDark040.color
+                
+                self.imgvAwardLevel4.image = level > 3 ? Asset.Assets.awardEnable4.image : Asset.Assets.awardDisable4.image
+                self.lblAwardLevel4.textColor = level > 3 ? Asset.Color.monoDark010.color : Asset.Color.monoDark040.color
+            }).disposed(by: disposedBag)
+        
+        output.dismiss
+            .drive(onNext: {
+                self.dismiss(animated: true)
+            }).disposed(by: disposedBag)
     }
     
 }

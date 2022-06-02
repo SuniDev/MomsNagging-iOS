@@ -27,7 +27,7 @@ protocol AppGradeService {
 class GradeService {
     private let networking = AppNetworking()
     
-    func award(request: GradeAwardsRequest) -> Observable<Awards> {
+    func award(request: AwardsRequest) -> Observable<Awards> {
         return networking.request(.gradeAwards(request))
             .map(to: Awards.self)
             .asObservable()

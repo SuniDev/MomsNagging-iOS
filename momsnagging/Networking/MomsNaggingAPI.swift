@@ -34,7 +34,7 @@ enum MomsNaggingAPI {
     // 일기장 수정
     case putDiary(PutDiaryRequest)
     // 상장 등급 조회
-    case gradeAwards(GradeAwardsRequest)
+    case gradeAwards(AwardsRequest)
     // 월간 달력 성적표 조회
     case gradeCalendar(GradeCalendarRequest)
     // 직전 주의 주간평가 조회

@@ -8,11 +8,11 @@
 import Foundation
 
 /**
- # (S) GradeAwardsRequest
+ # (S) AwardsRequest
  - Authors: suni
  - Note: 상장 등급 조회 Request 모델
  */
-struct GradeAwardsRequest: RequestModelType { }
+struct AwardsRequest: RequestModelType { }
 
 /**
  # (S) GradeCalendar

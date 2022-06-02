@@ -560,6 +560,12 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             }.disposed(by: disposedBag)
                 
         statisticsPerformTableView.rx.setDelegate(self).disposed(by: disposedBag)
+        
+        // MARK: - 상장 Bind
+        output.showAward
+            .drive(onNext: { viewModel in
+                self.navigator.show(seque: .award(viewModel: viewModel), sender: self, transition: .modal)
+            }).disposed(by: disposedBag)
     }
 }
     

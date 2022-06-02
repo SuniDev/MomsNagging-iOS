@@ -43,7 +43,7 @@ class Navigator {
         case detailTodo(viewModel: DetailTodoViewModel)
         case recommendedHabit(viewModel: RecommendedHabitViewModel)
         case grade(viewModel: GradeViewModel)
-        case awardViewModel(viewModel: AwardViewModel)
+        case award(viewModel: AwardViewModel)
         case my(viewModel: MyViewModel)
         case setting(viewModel: SettingViewModel)
         case privacyPolicy(viewModel: PrivacyPolicyViewModel)
@@ -81,7 +81,7 @@ class Navigator {
         case .detailTodo(viewModel: let viewModel): return DetailTodoView(viewModel: viewModel, navigator: self)
         case .recommendedHabit(viewModel: let viewModel): return RecommendedHabitView(viewModel: viewModel, navigator: self)
         case .grade(viewModel: let viewModel): return GradeView(viewModel: viewModel, navigator: self)
-        case .awardViewModel(viewModel: let viewModel): return AwardView(viewModel: viewModel, navigator: self)
+        case .award(viewModel: let viewModel): return AwardView(viewModel: viewModel, navigator: self)
         case .my(viewModel: let viewModel): return MyView(viewModel: viewModel, navigator: self)
         case .setting(viewModel: let viewModel): return SettingView(viewModel: viewModel, navigator: self)
         case .privacyPolicy(viewModel: let viewModel): return PrivacyPolicyView(viewModel: viewModel, navigator: self)
@@ -130,6 +130,8 @@ class Navigator {
             rootViewController.pushViewController(target, animated: true)
         case .modal:
             DispatchQueue.main.async {
+                target.modalPresentationStyle = .overFullScreen
+                target.modalTransitionStyle = .crossDissolve
                 sender.present(target, animated: true)
             }
         case .popup:

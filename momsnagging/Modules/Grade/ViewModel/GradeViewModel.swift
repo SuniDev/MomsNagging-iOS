@@ -100,6 +100,9 @@ class GradeViewModel: ViewModel, ViewModelType {
         let sttItems: Observable<[StatisticsItem]>
         /// 성적표 통게 개수
         let countStt: Driver<Int>
+        
+        // 상장
+        let showAward: Driver<AwardViewModel>
     }
     
     func transform(input: Input) -> Output {
@@ -301,7 +304,11 @@ class GradeViewModel: ViewModel, ViewModelType {
             .map { return $0.count }
         
         // 상장
-        
+        let showAward = input.btnAwardTapped
+            .map { _ -> AwardViewModel in
+                let viewModel = AwardViewModel(withService: self.provider)
+                return viewModel
+            }
         
         return Output(
                     tabCalendar: input.tabCalendar,
@@ -321,7 +328,8 @@ class GradeViewModel: ViewModel, ViewModelType {
                     sttMonthlyItems: sttMonthlyItems,
                     countSttMonthly: countSttMonthly.asDriverOnErrorJustComplete(),
                     sttItems: sttItems,
-                    countStt: countStt.asDriverOnErrorJustComplete()
+                    countStt: countStt.asDriverOnErrorJustComplete(),
+                    showAward: showAward.asDriver()
         )
     }
 }
