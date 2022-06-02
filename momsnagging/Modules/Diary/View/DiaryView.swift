@@ -257,7 +257,7 @@ class DiaryView: BaseViewController, Navigatable {
             .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "DiaryCalendarCell", cellType: DiaryCalendarCell.self)) { index, item, cell in
                 cell.number.text = item.strDay
                 cell.isToday = item.isToday
-                cell.isSunday = (index % 7) == 6
+                cell.isSunday = (index % 7) == 6 || (item.day?.holiday ?? false)
                 cell.isWroteDiary = item.day?.diaryExists ?? false
                 cell.isEnabled = item.isThisMonth
                 cell.configure()
