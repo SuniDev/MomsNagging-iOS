@@ -23,7 +23,9 @@ class HomeView: BaseViewController, Navigatable {
         setFloatingBtn()
         self.todoListType.removeAll()
         viewModel.requestTodoListLookUp(date: todoListParam())
-        Log.debug("CommonUser.authorization", "Bearer \(CommonUser.authorization)")
+//        Log.debug("CommonUser.authorization", "Bearer \(CommonUser.authorization)")
+//        CommonView.showAlert(vc: self, type: .oneBtn, message: "키키")
+        
     }
     // MARK: - Temp
     // MARK: - Init
@@ -442,7 +444,7 @@ class HomeView: BaseViewController, Navigatable {
             self.headBtnBind(input: input)
             self.collectionViewOutput = self.viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = false
-            self.todoList.removeAll()
+//            self.todoList.removeAll()
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
     }
@@ -467,7 +469,7 @@ class HomeView: BaseViewController, Navigatable {
                 self.headBtnBind(input: input)
                 self.collectionViewOutput = viewModel.transform(input: input)
                 self.todoListTableView.dragInteractionEnabled = false
-                self.todoList.removeAll()
+//                self.todoList.removeAll()
                 self.todoListTableView.reloadData()
             }
         }).disposed(by: disposedBag)
@@ -510,7 +512,7 @@ class HomeView: BaseViewController, Navigatable {
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = true
-            self.todoList.removeAll()
+//            self.todoList.removeAll()
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headCancel.rx.tap.bind {
@@ -519,7 +521,7 @@ class HomeView: BaseViewController, Navigatable {
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = false
-            self.todoList.removeAll()
+//            self.todoList.removeAll()
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headSave.rx.tap.bind {
@@ -531,7 +533,7 @@ class HomeView: BaseViewController, Navigatable {
                 self.headBtnBind(input: input)
                 self.collectionViewOutput = viewModel.transform(input: input)
                 self.todoListTableView.dragInteractionEnabled = false
-                self.todoList.removeAll()
+//                self.todoList.removeAll()
                 self.todoListTableView.reloadData()
             }
         }.disposed(by: disposedBag)

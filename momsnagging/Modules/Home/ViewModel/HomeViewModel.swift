@@ -177,6 +177,7 @@ extension HomeViewModel {
                             model.naggingId = item.dictionary?["naggingId"]?.intValue ?? 0
                             model.scheduleTime = item.dictionary?["scheduleTime"]?.stringValue ?? ""
                             model.done = item.dictionary?["done"]?.boolValue ?? nil
+                            model.status = item.dictionary?["status"]?.intValue ?? 0
                             model.id = item.dictionary?["id"]?.intValue ?? 0
                             model.goalCount = item.dictionary?["goalCount"]?.intValue ?? 0
                             model.originalId = item.dictionary?["originalId"]?.intValue ?? 0
@@ -200,8 +201,8 @@ extension HomeViewModel {
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         model.op = "replace"
-        model.path = "/done"
-        model.value = "true"
+        model.path = "/status"
+        model.value = "1"
         param.append(model)
         provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
             switch res {
@@ -222,8 +223,8 @@ extension HomeViewModel {
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         model.op = "replace"
-        model.path = "/done"
-        model.value = "false"
+        model.path = "/status"
+        model.value = "0"
         param.append(model)
         provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
             switch res {
@@ -263,8 +264,8 @@ extension HomeViewModel {
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         model.op = "replace"
-        model.path = "/done"
-        model.value = nil
+        model.path = "/status"
+        model.value = "2"
         param.append(model)
         provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
             switch res {
