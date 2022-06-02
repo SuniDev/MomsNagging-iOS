@@ -505,7 +505,6 @@ class MyView: BaseViewController, Navigatable {
                 CommonView.showAlert(vc: self, type: .twoBtn, title: "", message: message, cancelTitle: STR_NO, doneTitle: STR_YES) {
                     
                 } doneHandler: {
-                    Log.debug("TODO: 로그아웃")
                     logoutAlertDoneHandler.accept(())
                 }
 

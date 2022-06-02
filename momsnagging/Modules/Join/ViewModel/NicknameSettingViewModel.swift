@@ -62,6 +62,8 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         let isAvailableName: Driver<Bool>
         /// 코치마크 이동
         let goToCoachMark: Driver<CoachMarkViewModel>
+        /// 네트워크 오류
+        let networkError: PublishRelay<String>
     }
     
     func transform(input: Input) -> Output {
@@ -155,6 +157,13 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
             }.map { $0.token }
             .share()
         
+        // MARK: - 네트워크 오류
+        requestJoin
+            .filter { $0 == nil }
+            .bind(onNext: { _ in
+                self.networkError.accept(STR_NETWORK_ERROR_MESSAGE)
+            }).disposed(by: disposeBag)
+        
         let requestGetUser = requestJoin
             .filter { $0 != nil }
             .map { CommonUser.authorization = $0 }
@@ -184,7 +193,8 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
             isEditingName: isEditingName.asDriverOnErrorJustComplete(),
             textHint: textHint.asDriverOnErrorJustComplete(),
             isAvailableName: isAvailableName.asDriverOnErrorJustComplete(),
-            goToCoachMark: goToCoachMark.asDriverOnErrorJustComplete()
+            goToCoachMark: goToCoachMark.asDriverOnErrorJustComplete(),
+            networkError: self.networkError
         )
     }
     

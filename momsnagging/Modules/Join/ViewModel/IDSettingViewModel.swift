@@ -48,6 +48,8 @@ class IDSettingViewModel: ViewModel, ViewModelType {
         let isAvailableID: Driver<Bool>
         /// 아이디 설정 완료 -> 호칭 설정 이동
         let goToNicknameSetting: Driver<NicknameSettingViewModel>
+        /// 네트워크 오류
+        let networkError: PublishRelay<String>
     }
     
     func transform(input: Input) -> Output {
@@ -110,14 +112,21 @@ class IDSettingViewModel: ViewModel, ViewModelType {
                 
         requestValidateID
             .filter { $0.isExist != nil }
-            .bind(onNext: { validate in
-                let isExist = validate.isExist ?? false
+            .map { $0.isExist ?? false }
+            .bind(onNext: { isExist in
                 if isExist {
                     textHint.accept(.duplicate)
                 } else {
                     textHint.accept(.succes)
                 }
                 
+            }).disposed(by: disposeBag)
+        
+        // MARK: - 네트워크 오류
+        requestValidateID
+            .filter { $0.isExist == nil }
+            .bind(onNext: { _ in
+                self.networkError.accept(STR_NETWORK_ERROR_MESSAGE)
             }).disposed(by: disposeBag)
         
         textHint
@@ -138,7 +147,7 @@ class IDSettingViewModel: ViewModel, ViewModelType {
                                        email: request.email,
                                        id: textID.value,
                                        nickname: "",
-                                       firebaseToken:  CommonUser.getFCMToken())
+                                       firebaseToken: CommonUser.getFCMToken())
                 let viewModel = NicknameSettingViewModel(withService: self.provider, joinRequest: join)
                 return viewModel
             }
@@ -147,7 +156,8 @@ class IDSettingViewModel: ViewModel, ViewModelType {
                       isEditingID: isEditingID.asDriverOnErrorJustComplete(),
                       textHint: textHint.asDriverOnErrorJustComplete(),
                       isAvailableID: isAvailableID.asDriverOnErrorJustComplete(),
-                      goToNicknameSetting: goToNicknameSetting.asDriverOnErrorJustComplete()
+                      goToNicknameSetting: goToNicknameSetting.asDriverOnErrorJustComplete(),
+                      networkError: self.networkError
         )
     }
 }

@@ -24,6 +24,7 @@ class BaseViewModel: NSObject {
 
 class ViewModel: NSObject {
     let provider: AppServices
+    let networkError = PublishRelay<String>()
     
     init(provider: AppServices) {
         self.provider = provider

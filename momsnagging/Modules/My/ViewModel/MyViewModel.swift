@@ -203,6 +203,7 @@ class MyViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         requestNaggingLevel
+            .distinctUntilChanged()
             .subscribe(onNext: { level in
                 var request = PutUserRequest()
                 request.naggingLevel = level

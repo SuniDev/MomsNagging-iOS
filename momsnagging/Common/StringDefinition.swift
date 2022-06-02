@@ -59,3 +59,6 @@ public let STR_LOGOUT                   = "로그아웃 할꺼니?"
 /// 설정
 public let STR_DELETE_ACCOUNT           = "정말로 탈퇴하시겠습니까?"
 public let STR_SUCCESS_ACCOUNT          = "주신 의견 반영하여 더 나은 엄마의 잔소리가 되겠습니다. 감사합니다!"
+
+/// 네트워크
+public let STR_NETWORK_ERROR_MESSAGE    = "네트워크 연결이 실패했단다.\n다시 시도 해주겠니?"

@@ -425,7 +425,12 @@ class NicknameSettingView: BaseViewController, Navigatable {
                 CommonView.showAlert(vc: self, type: .oneBtn, title: "", message: STR_NICKNAME_SUCCESS, doneTitle: STR_DONE, doneHandler: {
                     self.navigator.show(seque: .coachMark(viewModel: viewModel), sender: nil, transition: .root)
                 })
-            }).disposed(by: disposeBag)        
+            }).disposed(by: disposeBag)
+        
+        output.networkError
+            .subscribe(onNext: { _ in
+                CommonView.showNetworkAlert(vc: self)
+            }).disposed(by: disposeBag)
     }
 }
 

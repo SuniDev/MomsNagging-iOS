@@ -59,6 +59,11 @@ class LoginViewModel: ViewModel, ViewModelType {
         let snsLoginInfo = BehaviorRelay<SNSLogin>(value: SNSLogin(snsType: "", id: ""))
         let errorMessage = PublishRelay<String>()
         
+        errorMessage
+            .subscribe(onNext: { error in
+                Log.error(error)
+            }).disposed(by: disposeBag)
+        
         /// 구글 로그인
         let googlgoogleSignInConfig = PublishRelay<GIDConfiguration>()
         

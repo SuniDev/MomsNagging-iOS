@@ -147,17 +147,6 @@ class IDSettingView: BaseViewController, Navigatable {
             $0.leading.equalTo(imgvAnswer).offset(20)
             $0.trailing.equalTo(imgvAnswer).offset(-28)
         })
-//        tfID.snp.makeConstraints({
-//            $0.height.equalTo(48)
-//            $0.top.equalTo(imgvAnswer).offset(26)
-//            $0.leading.equalTo(imgvAnswer).offset(20)
-//            $0.trailing.equalTo(imgvAnswer).offset(-28)
-//        })
-//
-//        lblHint.snp.makeConstraints({
-//            $0.top.equalTo(tfID.snp.bottom).offset(5)
-//            $0.leading.trailing.equalTo(tfID)
-//        })
                 
         viewConfirm.snp.makeConstraints({
             $0.height.equalTo(288)
@@ -230,6 +219,11 @@ class IDSettingView: BaseViewController, Navigatable {
         output.goToNicknameSetting
             .drive(onNext: { viewModel in
                 self.navigator.show(seque: .nicknameSetting(viewModel: viewModel), sender: self, transition: .navigation)
+            }).disposed(by: disposeBag)
+        
+        output.networkError
+            .subscribe(onNext: { _ in
+                CommonView.showNetworkAlert(vc: self)
             }).disposed(by: disposeBag)
     }
 }
