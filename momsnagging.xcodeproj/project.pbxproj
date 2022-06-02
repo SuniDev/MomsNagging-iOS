@@ -682,8 +682,6 @@
 			children = (
 				A06E057F28489D9B00183EF3 /* Cell */,
 				8F22F83B281D0B9000AB4180 /* GradeView.swift */,
-				8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */,
-				8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1142,9 +1140,11 @@
 		A06E057F28489D9B00183EF3 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				8FEEE5A12838F82500764C43 /* StatisticsCalendarCell.swift */,
 				8F334E352831109100E731E8 /* GradeWeekDayCell.swift */,
 				A06E057D28488F9900183EF3 /* GradeCalendarCell.swift */,
 				A06E05802848B54100183EF3 /* GradeTodoCell.swift */,
+				8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";

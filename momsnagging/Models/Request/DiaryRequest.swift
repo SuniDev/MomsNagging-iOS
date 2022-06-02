@@ -18,20 +18,20 @@ struct DiaryCalendarRequest: RequestModelType {
 }
 
 /**
- # (S) GetDiaryReqeust
+ # (S) GetDiaryRequest
  - Authors: suni
  - Note: 일기장 조회 Request 모델
  */
-struct GetDiaryReqeust: RequestModelType, Encodable {
+struct GetDiaryRequest: RequestModelType, Encodable {
     var retrieveDate: String   // 조회 일자
 }
 
 /**
- # (S) PutDiaryReqeust
+ # (S) PutDiaryRequest
  - Authors: suni
  - Note: 일기장 수정 Request 모델
  */
-struct PutDiaryReqeust: RequestModelType {
+struct PutDiaryRequest: RequestModelType {
     var title: String       // 타이틀
     var context: String     // 내용
     var diaryDate: String   // 일기장 날짜

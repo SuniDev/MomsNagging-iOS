@@ -11,7 +11,7 @@ extension String {
     func toDate(for dateFormat: String) -> Date? { // "yyyy-MM-dd"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
         if let date = dateFormatter.date(from: self) {
             return date
         } else {

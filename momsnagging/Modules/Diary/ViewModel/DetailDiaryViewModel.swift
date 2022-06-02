@@ -370,7 +370,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 return self.getDoneAlertTitle()
             }
         
-        let reqeustSaveDiary = input.doneAlertDoneHandler.debug()
+        let requestSaveDiary = input.doneAlertDoneHandler.debug()
             .asObservable()
             .flatMapLatest { _ -> Observable<Diary> in
                 let title = textTitle.value
@@ -379,7 +379,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 return self.requestPutDiary(title: title, context: context, diaryDate: date)
             }.share()
         
-        reqeustSaveDiary
+        requestSaveDiary
             .subscribe(onNext: { _ in
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
@@ -417,7 +417,7 @@ extension DetailDiaryViewModel {
     
     private func getContentsPlaceholder() -> Observable<String> {
         return Observable<String>.create { observer -> Disposable in
-            let type = CommonUser.naggingLevel ?? .fondMom
+            let type = CommonUser.naggingLevel
             switch type {
             case .fondMom: observer.onNext("오늘 하루 어땠어~^^?")
             case .coolMom: observer.onNext("오늘 어땠니.")
@@ -430,7 +430,7 @@ extension DetailDiaryViewModel {
     
     private func getDoneAlertTitle() -> Observable<String> {
         return Observable<String>.create { observer -> Disposable in
-            let type = CommonUser.naggingLevel ?? .fondMom
+            let type = CommonUser.naggingLevel
             let nickName = CommonUser.nickName ?? "자식"
             switch type {
             case .fondMom: observer.onNext("우리 \(nickName) 오늘 하루도 수고 많았어^^")
@@ -461,6 +461,8 @@ extension DetailDiaryViewModel {
         return Observable<[DetailDiaryDayItem]>.create { observer -> Disposable in
             var dayItems = [DetailDiaryDayItem]()
             for strDay in arrStrDay {
+                let now = Date().to(for: "yyyy-MM-dd")
+                
                 var dayItem: DetailDiaryDayItem
                 if strDay == "emptyCell" {
                     dayItem = DetailDiaryDayItem(strDay: "", strDate: "", isToday: false, isThisMonth: false)
@@ -470,7 +472,7 @@ extension DetailDiaryViewModel {
                     
                     let strDate = self.getStrDate(date: date)
                     dayItem = DetailDiaryDayItem(strDay: strDay, strDate: strDate, isToday: false, isThisMonth: true)
-                    dayItem.isToday = strDate == Date().toString(for: "yyyy-MM-dd")
+                    dayItem.isToday = strDate == now.toString(for: "yyyy-MM-dd")
                 }
                 dayItems.append(dayItem)
             }
@@ -501,11 +503,11 @@ extension DetailDiaryViewModel {
 // MARK: - API
 extension DetailDiaryViewModel {
     private func requestGetDiary(date: String) -> Observable<Diary> {
-        let request = GetDiaryReqeust(retrieveDate: date)
+        let request = GetDiaryRequest(retrieveDate: date)
         return self.provider.diaryService.getDiary(request: request)
     }
     private func requestPutDiary(title: String, context: String, diaryDate: String) -> Observable<Diary> {
-        let request = PutDiaryReqeust(title: title, context: context, diaryDate: diaryDate)
+        let request = PutDiaryRequest(title: title, context: context, diaryDate: diaryDate)
         return self.provider.diaryService.putDiary(request: request)
     }
 }

@@ -30,9 +30,9 @@ enum MomsNaggingAPI {
     // 월간 달력 일기장 조회
     case diaryCalendar(DiaryCalendarRequest)
     // 일기장 조회
-    case getDiary(GetDiaryReqeust)
+    case getDiary(GetDiaryRequest)
     // 일기장 수정
-    case putDiary(PutDiaryReqeust)
+    case putDiary(PutDiaryRequest)
     // 상장 등급 조회
     case gradeAwards(GradeAwardsRequest)
     // 월간 달력 성적표 조회
@@ -42,7 +42,7 @@ enum MomsNaggingAPI {
     // 월간 주간평가 조회
     case gradeMonthly(StatisticsMonthlyRequest)
     // 성적표 통계 조회
-    case gradeStatistics(GradeStatisticsRequest)
+    case gradeStatistics(StatisticsRequest)
 }
 
 extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {

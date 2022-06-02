@@ -235,7 +235,7 @@ extension DiaryViewModel {
     }
     
     private func requestGetDiary(date: String) -> Observable<Diary> {
-        let request = GetDiaryReqeust(retrieveDate: date)
+        let request = GetDiaryRequest(retrieveDate: date)
         return self.provider.diaryService.getDiary(request: request)
     }
 }

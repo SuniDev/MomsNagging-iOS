@@ -46,10 +46,11 @@ class GradeCalendarCell: UICollectionViewCell {
         }
     }
     // MARK: - Variable
-    var avg: Int = -1 // 달성도
+    var avg: Int? // 달성도
     var isToday = false // 오늘인지 아닌지 여부
     var isSunday = false
     var isEnabled = false
+    var isFuture = false // 미래 날짜
         
     // MARK: - UI Properties
     lazy var viewBackground = UIView().then({
@@ -84,12 +85,19 @@ class GradeCalendarCell: UICollectionViewCell {
     
     func configure() {
         
-        let emoji = self.getEmoji(avg: avg, isEnabled: isEnabled)
-        self.emoji.image = emoji
+        if let avg = avg {
+            self.emoji.image = self.getEmoji(avg: avg, isEnabled: isEnabled)
+        }
         
         if isEnabled {
-            self.emoji.isHidden = false
-            self.isUserInteractionEnabled = true
+            if self.isFuture || self.avg == nil {
+                self.emoji.isHidden = true
+                self.isUserInteractionEnabled = false
+            } else {
+                self.emoji.isHidden = false
+                self.isUserInteractionEnabled = true
+            }
+            
             if isToday {
                 self.viewBackground.backgroundColor = todayBackgroundColor
                 self.viewBackground.addBorder(color: todayBorderColor, width: 1.5)

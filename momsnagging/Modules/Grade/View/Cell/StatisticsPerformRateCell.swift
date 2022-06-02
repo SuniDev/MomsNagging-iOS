@@ -13,8 +13,8 @@ class StatisticsPerformRateCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        setUI()
         selectionStyle = .none
+        setUI()
     }
     
     lazy var titleLbl = UILabel().then({
@@ -32,18 +32,17 @@ class StatisticsPerformRateCell: UITableViewCell {
 }
 
 extension StatisticsPerformRateCell {
-    private func setUI(){
+    private func setUI() {
         contentView.addSubview(titleLbl)
         contentView.addSubview(dataLbl)
         contentView.addSubview(suffixLbl)
         
         titleLbl.snp.makeConstraints({
-            $0.top.equalTo(contentView.snp.top).offset(1.5)
-            $0.leading.equalTo(contentView.snp.leading)
+            $0.leading.centerY.equalToSuperview()
         })
         suffixLbl.snp.makeConstraints({
             $0.centerY.equalTo(titleLbl.snp.centerY)
-            $0.trailing.equalTo(contentView.snp.trailing)
+            $0.trailing.equalToSuperview()
         })
         dataLbl.snp.makeConstraints({
             $0.centerY.equalTo(titleLbl.snp.centerY)

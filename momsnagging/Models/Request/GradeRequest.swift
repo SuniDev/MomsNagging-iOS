@@ -25,7 +25,7 @@ struct GradeCalendarRequest: RequestModelType {
 }
 
 /**
- # (S) PutDiaryReqeust
+ # (S) GradeLastWeekRequest
  - Authors: suni
  - Note: 직전 주의 주간평가 조회 Request 모델
  */
@@ -42,8 +42,8 @@ struct StatisticsMonthlyRequest: RequestModelType {
 }
 
 /**
- # (S) GradeStatisticsRequest
+ # (S) StatisticsRequest
  - Authors: suni
  - Note: 성적표 통계 조회 Request 모델
  */
-struct GradeStatisticsRequest: RequestModelType { }
+struct StatisticsRequest: RequestModelType { }

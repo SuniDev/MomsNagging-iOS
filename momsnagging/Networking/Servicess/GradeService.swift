@@ -51,7 +51,8 @@ class GradeService {
             .asObservable()
     }
     
-    func statistics(request: GradeStatisticsRequest) -> Observable<Statistics> {
+    func statistics(request: StatisticsRequest
+    ) -> Observable<Statistics> {
         return networking.request(.gradeStatistics(request))
             .map(to: Statistics.self)
             .asObservable()

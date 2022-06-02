@@ -24,6 +24,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     let calendarLineSpacing: CGFloat = 10
     let todolistRowHeight: CGFloat = 60
     let statisticsMonthlyRowHeight: CGFloat = 48
+    let statisticsRowHeight: CGFloat = 48
     
     // MARK: - UI Properties
     // 헤더
@@ -121,7 +122,6 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     })
     lazy var statisticsViewContents = UIView()
     lazy var statisticsHeadFrame = UIView()
-    lazy var statisticsFrame = UIView()
     
     lazy var dayCountLblPre = UILabel().then({
         $0.text = "엄마와 함께한지"
@@ -153,14 +153,14 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
     })
-    lazy var statisticsRatingTableView = UITableView().then({
+    var statisticsRatingTableView = UITableView().then({
         $0.register(StatisticsCalendarCell.self, forCellReuseIdentifier: "StatisticsCalendarCell")
         $0.separatorStyle = .none
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         $0.isScrollEnabled = false
         $0.tag = 1
     })
-    lazy var statisticsPerformTableView = UITableView().then({
+    var statisticsPerformTableView = UITableView().then({
         $0.register(StatisticsPerformRateCell.self, forCellReuseIdentifier: "StatisticsPerformRateCell")
         $0.separatorStyle = .none
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
@@ -195,6 +195,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         
         calendarScrollView = CommonView.scrollView(viewContents: calendarViewContents, bounces: false)
         statisticsScrollView = CommonView.scrollView(viewContents: statisticsViewContents, bounces: false)
+        statisticsScrollView.isHidden = true
     }
     
     // MARK: - LayoutSetting
@@ -362,10 +363,11 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         
         statisticsViewContents.addSubview(statisticsPerformTableView)
         statisticsPerformTableView.snp.makeConstraints({
-            $0.top.equalTo(statisticsCalendarFrame.snp.bottom).offset(40)
+            $0.height.equalTo(self.statisticsRowHeight * 6)
+            $0.top.equalTo(statisticsCalendarFrame.snp.bottom).offset(28)
             $0.leading.equalTo(statisticsScrollView.snp.leading).offset(48)
             $0.trailing.equalTo(statisticsScrollView.snp.trailing).offset(-48)
-            $0.bottom.equalTo(statisticsScrollView.snp.bottom).offset(-48)
+            $0.bottom.equalTo(statisticsScrollView.snp.bottom).offset(-28)
         })
         
         self.view.layoutIfNeeded()
@@ -376,6 +378,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         guard let viewModel = viewModel else { return }
         
         let input = GradeViewModel.Input(
+            willApearView: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
             tabCalendar: self.calendarBtn.rx.tap.asDriverOnErrorJustComplete(),
             tabStatistics: self.statisticsBtn.rx.tap.asDriverOnErrorJustComplete(),
             loadCalendar: Observable.just(CalendarDate(year: self.calendarViewModel.getYear(),
@@ -391,7 +394,8 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             setSttCalendarMonth: self.sttCalendarViewModel.monthObservable.asDriverOnErrorJustComplete(),
             setSttCalendarYear: self.sttCalendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
             btnSttPrevTapped: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(),
-            btnSttNextTapped: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete())
+            btnSttNextTapped: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(),
+            btnAwardTapped: self.awardBtn.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         // MARK: - 탭 Bind
@@ -432,8 +436,9 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                 cell.number.text = item.strDay
                 cell.isToday = item.isToday
                 cell.isSunday = (index % 7) == 6
-                cell.avg = item.day?.avg ?? 100
+                cell.avg = item.day?.avg
                 cell.isEnabled = item.isThisMonth
+                cell.isFuture = item.isFuture
                 cell.configure()
             }.disposed(by: disposedBag)
         
@@ -464,7 +469,6 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                     row += 1
                 }
                 let height = ( row * Int(self.calendarRowHeight) ) + ( Int(self.calendarLineSpacing) * ( row - 1 ))
-                Log.debug(row)
                 self.dayCollectionView.snp.updateConstraints({
                     $0.height.equalTo(height)
                 })
@@ -539,11 +543,27 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                 })
             }).disposed(by: disposedBag)
         
+        output.countTogether
+            .drive(onNext: { cnt in
+                self.statisticsDateLbl.text = "D+\(cnt)"
+            }).disposed(by: disposedBag)
+        
         statisticsRatingTableView.rx.setDelegate(self).disposed(by: disposedBag)
+                       
+        output.sttItems
+            .bind(to: self.statisticsPerformTableView.rx.items(cellIdentifier: "StatisticsPerformRateCell", cellType: StatisticsPerformRateCell.self)) { _, item, cell in
+                
+                cell.titleLbl.text = item.title
+                cell.dataLbl.text = item.data
+                cell.suffixLbl.text = item.suffix
+                
+            }.disposed(by: disposedBag)
+                
+        statisticsPerformTableView.rx.setDelegate(self).disposed(by: disposedBag)
     }
 }
     
-// MARK: = UI
+// MARK: - UI
 extension GradeView {
 
     func tabView(btn: UIButton, underLine: UIView) -> UIView {
@@ -573,68 +593,13 @@ extension GradeView {
     }
 }
 
-//    func statisticsBind() {
-//        guard let viewModel = viewModel else { return }
-//        let input = ReportCardViewModel.Input(tabAction: nil, statisticsPrev: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(), statisticsNext: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(), currentMonth: self.statisticsMonth!, currentYear: self.statisticsYear!, awardTap: self.awardBtn.rx.tap.asDriverOnErrorJustComplete())
-//        tableViewOutput = viewModel.transform(input: input)
-//        tableViewOutput?.reportListData?.drive { list in
-//            list.bind(to: self.statisticsRatingTableView.rx.items(cellIdentifier: "StatisticsCalendarCell", cellType: StatisticsCalendarCell.self)) { _, item, cell in
-//                cell.weekLbl.text = "첫째주"
-//                cell.reportLbl.text = item.rating ?? ""
-//            }
-//        }.disposed(by: disposedBag)
-//        statisticsRatingTableView.rx.setDelegate(self).disposed(by: disposedBag)
-//
-//        tableViewOutput?.reportBottomData?.drive { list in
-//            list.bind(to: self.statisticsPerformTableView.rx.items(cellIdentifier: "StatisticsPerformRateCell", cellType: StatisticsPerformRateCell.self)) { index, item, cell in
-//                if index == 0 {
-//                    cell.titleLbl.text = "전체 수행"
-//                    cell.dataLbl.text = "\(item.days ?? 0)"
-//                    cell.suffixLbl.text = "일"
-//                } else if index == 1 {
-//                    cell.titleLbl.text = "일부 수행"
-//                    cell.dataLbl.text = "\(item.days ?? 0)"
-//                    cell.suffixLbl.text = "일"
-//                } else if index == 2 {
-//                    cell.titleLbl.text = "습관 수행"
-//                    cell.dataLbl.text = "\(item.days ?? 0)"
-//                    cell.suffixLbl.text = "일"
-//                } else if index == 3 {
-//                    cell.titleLbl.text = "할일 수행"
-//                    cell.dataLbl.text = "\(item.days ?? 0)"
-//                    cell.suffixLbl.text = "일"
-//                } else if index == 4 {
-//                    cell.titleLbl.text = "회고 작성"
-//                    cell.dataLbl.text = "\(item.count ?? 0)"
-//                    cell.suffixLbl.text = "번"
-//                } else {
-//                    cell.titleLbl.text = "평균 수행률"
-//                    cell.dataLbl.text = "\(item.percent ?? 0)"
-//                    cell.suffixLbl.text = "%"
-//                }
-//                cell.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
-//            }
-//        }.disposed(by: disposedBag)
-//        statisticsPerformTableView.rx.setDelegate(self).disposed(by: disposedBag)
-////
-//        output.awardTap.drive(onNext: {
-//            let mainvc = MainContainerView(viewModel: MainContainerViewModel(), navigator: self.navigator)
-//            mainvc.setReportCardView()
-//            let vc = self.navigator.get(seque: .awardViewModel(viewModel: AwardViewModel()))
-//            let navController = UINavigationController(rootViewController: vc!)
-//            navController.modalPresentationStyle = .overFullScreen
-//            navController.modalTransitionStyle = .crossDissolve
-//            navController.setNavigationBarHidden(true, animated: false)
-//            self.present(navController, animated: true, completion: nil)
-//        }).disposed(by: disposedBag)
-//    }
-//}
+// MARK: - UITableViewDelegate
 extension GradeView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView.tag == 1 {
             return self.statisticsMonthlyRowHeight
         } else if tableView.tag == 2 {
-            return self.statisticsMonthlyRowHeight
+            return self.statisticsRowHeight
         } else {
             return self.todolistRowHeight
         }

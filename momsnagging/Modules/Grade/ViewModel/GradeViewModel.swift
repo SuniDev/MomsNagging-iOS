@@ -27,6 +27,7 @@ class GradeViewModel: ViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
+        let willApearView: Driver<Void>
         // 탭
         let tabCalendar: Driver<Void>
         let tabStatistics: Driver<Void>
@@ -54,12 +55,8 @@ class GradeViewModel: ViewModel, ViewModelType {
         let btnSttPrevTapped: Driver<Void>
         let btnSttNextTapped: Driver<Void>
         
-//        var tabAction: Driver<Bool>?
-//        var statisticsPrev: Driver<Void>
-//        var statisticsNext: Driver<Void>
-//        var currentMonth: Int?
-//        var currentYear: Int?
-//        var awardTap: Driver<Void>
+        // 상장
+        let btnAwardTapped: Driver<Void>
     }
     // MARK: - Output
     struct Output {
@@ -87,6 +84,8 @@ class GradeViewModel: ViewModel, ViewModelType {
         let countTodoItems: Driver<Int>
         
         // 통계 - 월간 평가
+        /// 함께 한지
+        let countTogether: Driver<Int>
         /// 캘린더 날짜 설정
         let setSttCalendarDate: Driver<CalendarDate>
         /// 이전 달 이동
@@ -97,11 +96,10 @@ class GradeViewModel: ViewModel, ViewModelType {
         let sttMonthlyItems: Observable<[StatisticsMontlyItem]>
         /// 월간 평가 개수
         let countSttMonthly: Driver<Int>
-//        var reportListData: Driver<[ReportModel]>?
-//        var reportBottomData: Driver<[ReportBottomModel]>?
-//        var statisticsPrev: Driver<Void>
-//        var statisticsNext: Driver<Void>
-//        var awardTap: Driver<Void>
+        /// 성적표 통계
+        let sttItems: Observable<[StatisticsItem]>
+        /// 성적표 통게 개수
+        let countStt: Driver<Int>
     }
     
     func transform(input: Input) -> Output {
@@ -114,8 +112,10 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 달력 - 선택 날짜
         let selectedDate = BehaviorRelay<String>(value: "")
     
-        // 달력 - 캘린더 날짜
+        // 통계 - 캘린더 날짜
         let setSttCalendarDate = BehaviorRelay<CalendarDate>(value: CalendarDate())
+        // 통계 - 성적표 통계 트리거
+        let requestStatisticsTrigger = PublishSubject<Void>()
         
         self.mainTabHandler.skip(1)
             .distinctUntilChanged()
@@ -125,6 +125,13 @@ class GradeViewModel: ViewModel, ViewModelType {
                 setCalendarDate.accept(setCalendarDate.value)
                 dayList.accept(dayList.value)
                 selectedDate.accept(selectedDate.value)
+                setSttCalendarDate.accept(setSttCalendarDate.value)
+                requestStatisticsTrigger.onNext(())
+            }).disposed(by: disposeBag)
+        
+        input.willApearView
+            .drive(onNext: {
+                requestStatisticsTrigger.onNext(())
             }).disposed(by: disposeBag)
         
         // 캘린더 로드
@@ -209,7 +216,7 @@ class GradeViewModel: ViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
         
-        let todoItems = selectedDate
+        let todoItems = selectedDate.debug()
             .flatMapLatest { date -> Observable<[TodoListModel]> in
                 return self.requestSchedule(date: date)
             }
@@ -267,6 +274,10 @@ class GradeViewModel: ViewModel, ViewModelType {
                 return Observable.just(arrData)
             }.share()
         
+        let countTogether = requestStatisticsMonthly
+            .map { return $0.togetherCount ?? 0 }
+            .filter({ $0 > 0 })
+        
         let sttMonthlyItems = arrStatisticsMonthly
             .flatMapLatest { arrData -> Observable<[StatisticsMontlyItem]> in
                 return self.getStatisticsMonthlyItems(arrData: arrData)
@@ -274,6 +285,23 @@ class GradeViewModel: ViewModel, ViewModelType {
         
         let countSttMonthly = sttMonthlyItems
             .map { return $0.count }
+        
+        // 성적표 통계 API Request
+        let requestStatistics = requestStatisticsTrigger
+            .flatMapLatest { _ -> Observable<Statistics> in
+                return self.requestStatistics()
+            }.share()
+        
+        let sttItems = requestStatistics.debug()
+            .flatMapLatest { data -> Observable<[StatisticsItem]> in
+                return self.getStatisticsItems(data: data)
+            }.share()
+        
+        let countStt = sttItems
+            .map { return $0.count }
+        
+        // 상장
+        
         
         return Output(
                     tabCalendar: input.tabCalendar,
@@ -286,13 +314,16 @@ class GradeViewModel: ViewModel, ViewModelType {
                     countDayItems: countDayItems.asDriverOnErrorJustComplete(),
                     todoItems: todoItems,
                     countTodoItems: countTodoItems.asDriverOnErrorJustComplete(),
+                    countTogether: countTogether.asDriverOnErrorJustComplete(),
                     setSttCalendarDate: setSttCalendarDate.asDriverOnErrorJustComplete(),
                     setSttLastMonth: setSttLastMonth.asDriverOnErrorJustComplete(),
                     setSttNextMonth: setSttNextMonth.asDriverOnErrorJustComplete(),
                     sttMonthlyItems: sttMonthlyItems,
-                    countSttMonthly: countSttMonthly.asDriverOnErrorJustComplete()
+                    countSttMonthly: countSttMonthly.asDriverOnErrorJustComplete(),
+                    sttItems: sttItems,
+                    countStt: countStt.asDriverOnErrorJustComplete()
         )
-    }    
+    }
 }
 
 extension GradeViewModel {
@@ -304,13 +335,20 @@ extension GradeViewModel {
             for strDay in arrStrDay {
                 var dayItem: GradeDayItem
                 if strDay == "emptyCell" {
-                    dayItem = GradeDayItem(strDay: "", day: nil, isToday: false, isThisMonth: false)
+                    dayItem = GradeDayItem(strDay: "", day: nil, isToday: false, isThisMonth: false, isFuture: false)
                 } else {
+                    let now = Date().to(for: "yyyy-MM-dd")
+
                     let day = arrDay[cntDay]
-                    dayItem = GradeDayItem(strDay: strDay, day: day, isToday: false, isThisMonth: true)
+                    var isFuture = false
+                    if let date = day.date?.toDate(for: "yyyy-MM-dd"), now.dateCompare(fromDate: date) == "Future" {
+                        isFuture = true
+                    }
+                    
+                    dayItem = GradeDayItem(strDay: strDay, day: day, isToday: false, isThisMonth: true, isFuture: isFuture)
                     
                     if let strDate = day.date {
-                        dayItem.isToday = strDate == Date().toString(for: "yyyy-MM-dd")
+                        dayItem.isToday = strDate == now.toString(for: "yyyy-MM-dd")
                     }
                     
                     cntDay += 1
@@ -322,7 +360,7 @@ extension GradeViewModel {
             return Disposables.create()
         }
     }
-    
+        
     func getStrDate(date: CalendarDate) -> String {
         let strYear = "\(date.year)"
         
@@ -376,6 +414,22 @@ extension GradeViewModel {
             return Disposables.create()
         }
     }
+    
+    func getStatisticsItems(data: Statistics) -> Observable<[StatisticsItem]> {
+        return Observable<[StatisticsItem]>.create { observer -> Disposable in
+            var items = [StatisticsItem]()
+            
+            items.append(StatisticsItem(title: "전체 수행", data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "일부 수행", data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "습관 수행", data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "할일 수행", data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "회고 작성", data: "\(data.diaryCount ?? 0)", suffix: "번"))
+            items.append(StatisticsItem(title: "평균 수행률", data: "\(data.performanceAvg ?? 0)", suffix: "%"))
+            observer.onNext(items)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+    }
 }
 
 // MARK: - API
@@ -389,6 +443,11 @@ extension GradeViewModel {
     private func requestStatisticsMonthly(year: Int, month: Int) -> Observable<StatisticsMonthly> {
         let request = StatisticsMonthlyRequest(retrieveYear: year, retrieveMonth: month)
         return self.provider.gradeService.monthly(request: request)
+    }
+    
+    private func requestStatistics() -> Observable<Statistics> {
+        let request = StatisticsRequest()
+        return self.provider.gradeService.statistics(request: request)
     }
     
     private func requestSchedule(date: String) -> Observable<[TodoListModel]> {
@@ -439,9 +498,16 @@ struct GradeDayItem {
     var day: GradeDay?
     var isToday: Bool
     var isThisMonth: Bool
+    var isFuture: Bool
 }
 
 struct StatisticsMontlyItem {
     let week: String
     let grade: String
+}
+
+struct StatisticsItem {
+    let title: String
+    let data: String
+    let suffix: String
 }
