@@ -9,18 +9,22 @@ import Foundation
 
 extension Date {
     
-    func to(for dateFormat: String) -> Date { // "yyyy-MM-dd"
+    func to(for dateFormat: String, locale: Locale? = nil) -> Date { // "yyyy-MM-dd"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+        if let locale = locale {
+            dateFormatter.locale = locale
+        }
         let date = dateFormatter.date(from: self.toString())
         return date ?? self
     }
     
-    func toString(for dateFormat: String) -> String { // "yyyy-MM-dd"
+    func toString(for dateFormat: String, locale: Locale? = nil) -> String { // "yyyy-MM-dd"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+        if let locale = locale {
+            dateFormatter.locale = locale
+        }
         let str = dateFormatter.string(from: self)
         return str
     }

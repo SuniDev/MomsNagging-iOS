@@ -8,10 +8,12 @@
 import Foundation
 
 extension String {
-    func toDate(for dateFormat: String) -> Date? { // "yyyy-MM-dd"
+    func toDate(for dateFormat: String, locale: Locale? = nil) -> Date? { // "yyyy-MM-dd"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
-        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+        if let locale = locale {
+            dateFormatter.locale = locale
+        }
         if let date = dateFormatter.date(from: self) {
             return date
         } else {

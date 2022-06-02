@@ -15,9 +15,7 @@ class MainContainerViewModel: BaseViewModel, ViewModelType {
     
     var tabHandler = PublishRelay<Int>()
     var testOb = PublishSubject<Bool>()
-    
-    override init() {
-    }
+        
     // MARK: - Input
     struct Input {
         var buttonTag: Observable<Int>
@@ -61,5 +59,58 @@ class MainContainerViewModel: BaseViewModel, ViewModelType {
 }
 
 extension MainContainerViewModel {
+    func checkEvaluation() -> Observable<WeeklyEvaluationViewModel?> {
+        return Observable<WeeklyEvaluationViewModel?>.create { observer -> Disposable in
+            let isShow = self.isShowEvaluation()
+            isShow
+                .filter({ $0 == true })
+                .flatMapLatest { _ -> Observable<WeeklyEvaluationViewModel> in
+                    let viewModel = WeeklyEvaluationViewModel(withService: SceneDelegate.appService)
+                    return Observable.just(viewModel)
+                }.subscribe(onNext: { viewModel in
+                    observer.onNext(viewModel)
+                    observer.onCompleted()
+                }).disposed(by: self.disposeBag)
+            
+            observer.onNext(nil)
+            observer.onCompleted()
+            
+            return Disposables.create()
+        }
+    }
     
+    func isShowEvaluation() -> Observable<Bool> {
+        return Observable<Bool>.create { observer -> Disposable in
+            if let lastCheckDate = Common.getUserDefaultsObject(forKey: .dateLastCheckEvaluation) as? Date {
+                
+                // ======= Test Data Start ============
+//            if let lastCheckDate = "2022-05-30".toDate(for: "yyyy-MM-dd", locale: Locale(identifier: "ko_KR")) {
+                // ======= Test Data End ============
+                
+                // 기준 날짜의 월요일
+                let weekday = lastCheckDate.getWeekDay() // (월 : 0 ~ 일 :6)
+                let date = Calendar.current.date(byAdding: .day, value: -weekday, to: lastCheckDate) ?? lastCheckDate
+                
+                // 현재 날짜의 월요일
+                var now = Date().to(for: "yyyy-MM-dd", locale: Locale(identifier: "ko_KR"))
+                let nowWeekDay = now.getWeekDay()
+                now = Calendar.current.date(byAdding: .day, value: -nowWeekDay, to: now) ?? now
+                
+                // 비교
+                let componentDate = Calendar.current.dateComponents([.year, .month, .day], from: date)
+                let componentNow = Calendar.current.dateComponents([.year, .month, .day], from: now)
+                                
+                if componentNow.day == componentDate.day {
+                    observer.onNext(false)
+                    observer.onCompleted()
+                }
+                observer.onNext(true)
+                observer.onCompleted()
+            } else {
+                observer.onNext(true)
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
 }

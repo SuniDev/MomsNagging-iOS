@@ -17,6 +17,13 @@ class MainContainerView: BaseViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setHomeView()
+        
+        viewModel.checkEvaluation()
+            .filter({ $0 != nil })
+            .subscribe(onNext: { viewModel in
+                guard let viewModel = viewModel else { return }
+                self.navigator.show(seque: .weeklyEvaluation(viewModel: viewModel), sender: self, transition: .modal)
+            }).disposed(by: disposedBag)
     }
     // MARK: - Init
     init(viewModel: MainContainerViewModel, navigator: Navigator) {
@@ -110,6 +117,7 @@ class MainContainerView: BaseViewController, Navigatable {
         guard let viewModel = viewModel else { return }
         lazy var input = MainContainerViewModel.Input(buttonTag: Observable.just(buttonTag))
         lazy var output = viewModel.transform(input: input)
+        
         output.buttonLabelColorList[0].drive(onNext: { [weak self] in
             self?.tabbarIc1.tintColor = UIColor(asset: $0)
             self?.tabbarLbl1.textColor = UIColor(asset: $0)

@@ -29,6 +29,7 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
     lazy var btnClose = UIButton().then({
         $0.layer.cornerRadius = 21
         $0.setImage(Asset.Icon.x.image, for: .normal)
+        $0.backgroundColor = Asset.Color.monoWhite.color
     })
     lazy var lblTitle = UILabel().then({
         $0.text = "주간평가"
@@ -42,6 +43,7 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
         $0.addShadow(color: .black, alpha: 0.08, x: 0, y: 5.25, blur: 26.25, spread: 0)
     })
     lazy var lblMessage = UILabel().then({
+        
         $0.text = ""
         $0.numberOfLines = 3
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
@@ -99,10 +101,12 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
         
         evaluationFrame.addSubview(viewMessage)
         viewMessage.snp.makeConstraints({
+            $0.height.equalTo(72)
             $0.top.equalTo(imgvGrade.snp.bottom).offset(33)
             $0.centerX.equalToSuperview()
             $0.leading.greaterThanOrEqualToSuperview().offset(20)
             $0.trailing.lessThanOrEqualToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-20)
         })
         
         viewMessage.addSubview(imgvEmoji)
@@ -129,7 +133,8 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
     // MARK: - bind
     override func bind() {
         guard let viewModel = viewModel else { return }
-        let input = WeeklyEvaluationViewModel.Input(btnCloseTapped: self.btnClose.rx.tap.asDriverOnErrorJustComplete(),
+        let input = WeeklyEvaluationViewModel.Input(willApearView: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
+                                                    btnCloseTapped: self.btnClose.rx.tap.asDriverOnErrorJustComplete(),
                                                     viewTapped: self.view.rx.tapGesture().mapToVoid().asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
@@ -137,7 +142,7 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
             .drive(onNext: { grade in
                 self.imgvEmoji.image = Common.getNaggingEmoji(naggingLevel: grade.naggingLevel)
                 self.lblMessage.text = grade.message
-                
+
                 switch grade.level {
                 case 1: self.imgvGrade.image = Asset.Assets.gradeLevel1.image
                 case 2: self.imgvGrade.image = Asset.Assets.gradeLevel2.image

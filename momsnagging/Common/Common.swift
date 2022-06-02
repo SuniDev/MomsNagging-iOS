@@ -174,6 +174,7 @@ class Common {
     enum UserDefaultsKey: String {
         case isFirstEntryApp
         case isAutoLogin
+        case dateLastCheckEvaluation
     }
     
     /**
