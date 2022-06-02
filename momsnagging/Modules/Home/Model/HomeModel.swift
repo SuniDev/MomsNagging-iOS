@@ -18,6 +18,8 @@ struct TodoListModel {
     var id: Int?
     var goalCount: Int?
     var originalId: Int?
+    // 성적표를 위해 추가
+    var status: Int?
 }
 
 struct ScheduleArrayModel: Encodable{

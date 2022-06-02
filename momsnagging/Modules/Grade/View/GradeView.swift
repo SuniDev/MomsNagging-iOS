@@ -87,7 +87,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     /// 월간달력의 월~ 일 컬렉션뷰
     var weekDayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: weekDayCellLayout())
-        collectionView.register(GradeWeekDayCell.self, forCellWithReuseIdentifier: "ReportWeekDayCell")
+        collectionView.register(GradeWeekDayCell.self, forCellWithReuseIdentifier: "GradeWeekDayCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         return collectionView
@@ -125,7 +125,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     var todoListTableView = UITableView().then({
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         $0.separatorStyle = .none
-        $0.register(ReportCardTodoCell.self, forCellReuseIdentifier: "ReportCardTodoCell")
+        $0.register(GradeTodoCell.self, forCellReuseIdentifier: "GradeTodoCell")
     })
     
     // 통계 UI Properties
@@ -410,6 +410,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             setCalendarYear: self.calendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
             loadDayList: self.calendarViewModel.daylist.asDriverOnErrorJustComplete(),
             loadWeekDay: self.calendarViewModel.weekDay.asDriverOnErrorJustComplete(),
+            dayModelSelected: self.dayCollectionView.rx.modelSelected(GradeDayItem.self).asDriverOnErrorJustComplete(),
             btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
@@ -430,7 +431,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             }.disposed(by: disposedBag)
         
         output.weekItems
-            .bind(to: self.weekDayCollectionView.rx.items(cellIdentifier: "ReportWeekDayCell", cellType: GradeWeekDayCell.self)) { index, item, cell in
+            .bind(to: self.weekDayCollectionView.rx.items(cellIdentifier: "GradeWeekDayCell", cellType: GradeWeekDayCell.self)) { index, item, cell in
                 if (index % 7) == 6 {
                     cell.dayWeekLabel.textColor = UIColor(asset: Asset.Color.error)
                 } else {

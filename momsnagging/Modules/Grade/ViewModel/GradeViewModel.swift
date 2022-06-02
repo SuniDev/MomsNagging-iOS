@@ -8,10 +8,13 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Moya
+import SwiftyJSON
 
 class GradeViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
+    var scheduleService = MoyaProvider<ScheduleService>()
 //    var todoListData: [TodoListModel] = []
 //    var reportListData: [ReportModel] = []
 //    var cellCount: Int = -1
@@ -37,7 +40,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         /// 캘린더 요일 데이터
         let loadWeekDay: Driver<[String]>
         /// 캘린더 날짜 선택
-//        let dayModelSelected: Driver<DiaryDayItem>
+        let dayModelSelected: Driver<GradeDayItem>
         /// 캘린더 이동
         let btnPrevTapped: Driver<Void>
         let btnNextTapped: Driver<Void>
@@ -155,19 +158,24 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 캘린더 날짜 개수
         let countDayItems = dayItems.map { return $0.count }
         
+        input.dayModelSelected
+            .drive(onNext: { dayItem in
+                if let date = dayItem.day?.date {
+                    selectedDate.accept(date)
+                }
+            }).disposed(by: disposeBag)
+        
+        let reqeustSchedule = selectedDate
+            .flatMapLatest { date -> Observable<[TodoListModel]> in
+                return self.requestSchedule(date: date)
+            }
+        
         return Output(setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
                       dayItems: dayItems,
                       weekItems: input.loadWeekDay.asObservable(),
                       setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
                       setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
                       countDayItems: countDayItems.asDriverOnErrorJustComplete())
-        
-//        input.dayModelSelected
-//            .drive(onNext: { dayItem in
-//                if let date = dayItem.day?.date {
-//                    selectedDate.accept(date)
-//                }
-//            }).disposed(by: disposeBag)
         
 //        let requestGetDiary = selectedDate
 //            .flatMapLatest { date -> Observable<Diary> in
@@ -200,23 +208,6 @@ class GradeViewModel: ViewModel, ViewModelType {
 //
 //        return Output(tabAction: tabAction, todoListData: todoListData.asDriver(), cellItemCount: cellItemCount, reportListData: ratingData.asDriver(), reportBottomData: reportBottomData, statisticsPrev: input.statisticsPrev, statisticsNext: input.statisticsNext, awardTap: input.awardTap)
     }
-    // 더미데이터 부분
-//    func todoList() -> Driver<[TodoListModel]> {
-//        // 더미데이터 입니다. API 오면 붙이면 될듯합니다.
-//        let returnList = BehaviorRelay<[TodoListModel]>(value: [])
-//        var list: [TodoListModel] = []
-//        for _ in 0...2 {
-//            var model = TodoListModel()
-////            model.isSelected = true
-////            model.time = "time"
-////            model.title = "Title"
-//            list.append(model)
-//        }
-//        returnList.accept(list)
-//        self.cellCount = list.count
-//        return returnList.asDriver()
-//    }
-//
 //    // 통계페이지 등급 더미
 //    func ratingList() -> Driver<[ReportModel]> {
 //        let returnList = BehaviorRelay<[ReportModel]>(value: [])
@@ -329,10 +320,52 @@ extension GradeViewModel {
 
 // MARK: - API
 extension GradeViewModel {
-    // TODO: 임시 API
+    
     private func reqeustGradeCalendar(year: Int, month: Int) -> Observable<GradeCalendar> {
         let request = GradeCalendarRequest(retrieveYear: year, retrieveMonth: month)
         return self.provider.gradeService.calendar(request: request)
+    }
+    
+    private func requestSchedule(date: String) -> Observable<[TodoListModel]> {
+        return Observable<[TodoListModel]>.create { observer -> Disposable in
+            self.scheduleService.request(.todoListLookUp(retrieveDate: date), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestTodoListLookUp json : \(json)")
+                    
+                    var todoList = [TodoListModel]()
+                    
+                    if json.dictionary?["status"]?.intValue == nil {
+                        for item in json.array! {
+                            var model = TodoListModel()
+                            model.seqNumber = item.dictionary?["seqNumber"]?.intValue ?? 0
+                            model.scheduleType = item.dictionary?["scheduleType"]?.stringValue ?? ""
+                            model.scheduleName = item.dictionary?["scheduleName"]?.stringValue ?? ""
+                            model.naggingId = item.dictionary?["naggingId"]?.intValue ?? 0
+                            model.scheduleTime = item.dictionary?["scheduleTime"]?.stringValue ?? ""
+                            model.status = item.dictionary?["status"]?.intValue ?? 0
+                            model.id = item.dictionary?["id"]?.intValue ?? 0
+                            model.goalCount = item.dictionary?["goalCount"]?.intValue ?? 0
+                            model.originalId = item.dictionary?["originalId"]?.intValue ?? 0
+                            todoList.append(model)
+                        }
+                    }
+                    observer.onNext(todoList)
+                    observer.onCompleted()
+                    
+                } catch(let error) {
+                    Log.error("requestTodoListLookUp error", "\(error)")
+                    observer.onError(error)
+                }
+            case .failure(let error):
+                Log.error("requestTodoListLookUp failure error", "\(error)")
+                observer.onError(error)
+            }
+        })
+        return Disposables.create()
+        }
     }
 }
 
