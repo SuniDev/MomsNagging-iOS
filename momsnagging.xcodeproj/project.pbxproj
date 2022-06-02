@@ -151,6 +151,8 @@
 		A06E057C284886BE00183EF3 /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E057B284886BE00183EF3 /* Statistics.swift */; };
 		A06E057E28488F9900183EF3 /* GradeCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E057D28488F9900183EF3 /* GradeCalendarCell.swift */; };
 		A06E05812848B54100183EF3 /* GradeTodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E05802848B54100183EF3 /* GradeTodoCell.swift */; };
+		A06E058628491F4F00183EF3 /* WeeklyEvaluationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E058528491F4F00183EF3 /* WeeklyEvaluationView.swift */; };
+		A06E058828491F5800183EF3 /* WeeklyEvaluationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E058728491F5800183EF3 /* WeeklyEvaluationViewModel.swift */; };
 		A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */; };
 		A0A674242813EC6900E0223B /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A674232813EC6900E0223B /* Onboarding.swift */; };
 		A0A992C0282EB8F8009049CF /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A992BF282EB8F8009049CF /* Habit.swift */; };
@@ -326,6 +328,8 @@
 		A06E057B284886BE00183EF3 /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
 		A06E057D28488F9900183EF3 /* GradeCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalendarCell.swift; sourceTree = "<group>"; };
 		A06E05802848B54100183EF3 /* GradeTodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeTodoCell.swift; sourceTree = "<group>"; };
+		A06E058528491F4F00183EF3 /* WeeklyEvaluationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEvaluationView.swift; sourceTree = "<group>"; };
+		A06E058728491F5800183EF3 /* WeeklyEvaluationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyEvaluationViewModel.swift; sourceTree = "<group>"; };
 		A0728E2527DDD4FD0046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0728E2727DDD6F90046058D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0A674232813EC6900E0223B /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
@@ -1073,6 +1077,7 @@
 				8F927A552824D52A000FFA75 /* Diary */,
 				8F22F823281D0A4E00AB4180 /* Grade */,
 				8FEEE5A5283A25B900764C43 /* Award */,
+				A06E058228491EE900183EF3 /* WeeklyEvaluation */,
 				8F22F822281D0A2C00AB4180 /* My */,
 				8FEEE5AF283A3E8600764C43 /* Setting */,
 				8F990EFF283D320D00A5D2AA /* ContactUs */,
@@ -1136,6 +1141,31 @@
 				8FEEE5A32838F87100764C43 /* StatisticsPerformRateCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		A06E058228491EE900183EF3 /* WeeklyEvaluation */ = {
+			isa = PBXGroup;
+			children = (
+				A06E058328491F3600183EF3 /* View */,
+				A06E058428491F3A00183EF3 /* ViewModel */,
+			);
+			path = WeeklyEvaluation;
+			sourceTree = "<group>";
+		};
+		A06E058328491F3600183EF3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A06E058528491F4F00183EF3 /* WeeklyEvaluationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A06E058428491F3A00183EF3 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A06E058728491F5800183EF3 /* WeeklyEvaluationViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		A0AA717128426F7A005ABAF6 /* Response */ = {
@@ -1513,6 +1543,7 @@
 				866F2C21283F0B5C004B5691 /* Networking.swift in Sources */,
 				863A556828321C5600995BC9 /* DetailTodoView.swift in Sources */,
 				A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */,
+				A06E058628491F4F00183EF3 /* WeeklyEvaluationView.swift in Sources */,
 				8F1F939F27EC89C0000F08AF /* CalendarView.swift in Sources */,
 				86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */,
 				86BBE05E283DC7BC002AA1F9 /* Alert.swift in Sources */,
@@ -1543,6 +1574,7 @@
 				8F334E362831109100E731E8 /* GradeWeekDayCell.swift in Sources */,
 				8677C736282B70F400709F99 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */,
+				A06E058828491F5800183EF3 /* WeeklyEvaluationViewModel.swift in Sources */,
 				A0AA7173284273F0005ABAF6 /* Date+Extension.swift in Sources */,
 				8F16725F283E67BB007A699B /* ScheduleRequestModel.swift in Sources */,
 				A06E057A2848867D00183EF3 /* StatisticsMonthly.swift in Sources */,

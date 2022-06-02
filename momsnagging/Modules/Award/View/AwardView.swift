@@ -31,57 +31,57 @@ class AwardView: BaseViewController, Navigatable {
     var navigator: Navigator!
     var viewModel: AwardViewModel!
     // MARK: - UI Properties
-    var awardFrame = UIView().then({
+    lazy var awardFrame = UIView().then({
         $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         $0.layer.cornerRadius = 22
         $0.layer.masksToBounds = true
     })
-    var awardTitleLbl = UILabel().then({
+    lazy var awardTitleLbl = UILabel().then({
         $0.text = "상장"
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 18)
     })
-    var closeBtn = UIButton().then({
+    lazy var closeBtn = UIButton().then({
         $0.setImage(UIImage(asset: Asset.Icon.x), for: .normal)
     })
     
-    var imgvAwardLevel1 = UIImageView().then({
+    lazy var imgvAwardLevel1 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable1)
     })
-    var lblAwardLevel1 = UILabel().then({
+    lazy var lblAwardLevel1 = UILabel().then({
         $0.text = "수x5"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
     
-    var imgvAwardLevel2 = UIImageView().then({
+    lazy var imgvAwardLevel2 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable2)
     })
-    var lblAwardLevel2 = UILabel().then({
+    lazy var lblAwardLevel2 = UILabel().then({
         $0.text = "수x10"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
     
-    var imgvAwardLevel3 = UIImageView().then({
+    lazy var imgvAwardLevel3 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable3)
     })
-    var lblAwardLevel3 = UILabel().then({
+    lazy var lblAwardLevel3 = UILabel().then({
         $0.text = "수x30"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
     
-    var imgvAwardLevel4 = UIImageView().then({
+    lazy var imgvAwardLevel4 = UIImageView().then({
         $0.image = UIImage(asset: Asset.Assets.awardDisable4)
     })
-    var lblAwardLevel4 = UILabel().then({
+    lazy var lblAwardLevel4 = UILabel().then({
         $0.text = "수x50"
         $0.textColor = UIColor(asset: Asset.Color.monoDark040)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
     })
     
-    var awardDiscriptionLbl = UILabel().then({
+    lazy var awardDiscriptionLbl = UILabel().then({
         $0.text = "“매주 월요일마다 제공되는 주간평가 성적인 ‘수, 우, 미, 양, 가’ 중 ‘수’ 달성 횟수에 따라 상장 획득이 가능하단다. “"
         $0.textAlignment = .center
         $0.numberOfLines = 0

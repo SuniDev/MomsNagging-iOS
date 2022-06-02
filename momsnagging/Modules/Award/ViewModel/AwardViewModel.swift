@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import Moya
-import SwiftyJSON
 import RxSwift
 import RxCocoa
 

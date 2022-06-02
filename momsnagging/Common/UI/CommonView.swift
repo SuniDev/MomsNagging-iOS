@@ -787,13 +787,13 @@ class CommonView {
     /**
      # naggingRadioButtonFrame
      - parameters:
-        - naggingIntensity : 잔소리 강도
+        - naggingLevel : 잔소리 강도
         - btnNaggingRadio : 잔소리 강도 버튼
      - Authors: suni
      - Returns: UIView
      - Note: 잔소리 강도 라디오 버튼 프레임
      */
-    static func naggingRadioButtonFrame(naggingIntensity: NaggingLevel, rbNagging: CommonTextRadioButton) -> UIView {
+    static func naggingRadioButtonFrame(naggingLevel: NaggingLevel, rbNagging: CommonTextRadioButton) -> UIView {
         
         lazy var view = UIView().then({
             $0.backgroundColor = Asset.Color.monoWhite.color
@@ -805,11 +805,11 @@ class CommonView {
         })
         
         lazy var imgvMom = UIImageView().then({
-            $0.image = Common.getNaggingEmoji(naggingIntensity: naggingIntensity)
+            $0.image = Common.getNaggingEmoji(naggingLevel: naggingLevel)
         })
         
         lazy var lblTitle = UILabel().then({
-            $0.text = naggingIntensity.rawValue
+            $0.text = naggingLevel.rawValue
             $0.font = FontFamily.Pretendard.regular.font(size: 12)
             $0.textColor = Asset.Color.monoDark030.color
         })

@@ -64,8 +64,8 @@ class MyView: BaseViewController, Navigatable {
     lazy var btnNicknameSetting = UIButton()
     
     /// 잔소리 강도 설정
-    lazy var viewNaggingIntensity = UIView()
-    lazy var lblNaggingIntensity = UILabel().then({
+    lazy var viewNaggingLevel = UIView()
+    lazy var lblNaggingLevel = UILabel().then({
         $0.text = "잔소리 강도 설정"
         $0.textColor = Asset.Color.monoDark010.color
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
@@ -81,7 +81,7 @@ class MyView: BaseViewController, Navigatable {
     
     lazy var angryMomRadiobuttonFrame = UIView()
     lazy var rbAngryMom = CommonTextRadioButton()
-    lazy var dividerNaggingIntensity = CommonView.divider()
+    lazy var dividerNaggingLevel = CommonView.divider()
     
     lazy var viewNaggingTip = UIView()
     lazy var imgvTipArrowFondMom = UIImageView().then({
@@ -90,7 +90,7 @@ class MyView: BaseViewController, Navigatable {
     })
     lazy var imgvTipFondMom = UIImageView().then({
         $0.isHidden = true
-        $0.image = Common.getNaggingTip(naggingIntensity: .fondMom)
+        $0.image = Common.getNaggingTip(naggingLevel: .fondMom)
     })
     
     lazy var imgvTipArrowCoolMom = UIImageView().then({
@@ -99,7 +99,7 @@ class MyView: BaseViewController, Navigatable {
     })
     lazy var imgvTipCoolMom = UIImageView().then({
         $0.isHidden = true
-        $0.image = Common.getNaggingTip(naggingIntensity: .coolMom)
+        $0.image = Common.getNaggingTip(naggingLevel: .coolMom)
     })
     
     lazy var imgvTipArrowAngryMom = UIImageView().then({
@@ -108,7 +108,7 @@ class MyView: BaseViewController, Navigatable {
     })
     lazy var imgvTipAngryMom = UIImageView().then({
         $0.isHidden = true
-        $0.image = Common.getNaggingTip(naggingIntensity: .angryMom)
+        $0.image = Common.getNaggingTip(naggingLevel: .angryMom)
     })
     
     /// PUSH 알림 설정
@@ -166,9 +166,9 @@ class MyView: BaseViewController, Navigatable {
         
         viewNickname = CommonView.goToSubviewFrame(title: "호칭 설정")
         
-        fondMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingLevel.fondMom, rbNagging: rbFondMom)
-        coolMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingLevel.coolMom, rbNagging: rbCoolMom)
-        angryMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingIntensity: NaggingLevel.angryMom, rbNagging: rbAngryMom)
+        fondMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingLevel: NaggingLevel.fondMom, rbNagging: rbFondMom)
+        coolMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingLevel: NaggingLevel.coolMom, rbNagging: rbCoolMom)
+        angryMomRadiobuttonFrame = CommonView.naggingRadioButtonFrame(naggingLevel: NaggingLevel.angryMom, rbNagging: rbAngryMom)
         
         viewPush = CommonView.goToSubviewFrame(title: "PUSH 알림 설정")
     }
@@ -191,7 +191,7 @@ class MyView: BaseViewController, Navigatable {
         /// View Contents
         viewContents.addSubview(viewProfile)
         viewContents.addSubview(viewNickname)
-        viewContents.addSubview(viewNaggingIntensity)
+        viewContents.addSubview(viewNaggingLevel)
         viewContents.addSubview(viewPush)
         viewContents.addSubview(viewLogout)
         
@@ -206,7 +206,7 @@ class MyView: BaseViewController, Navigatable {
             $0.leading.trailing.equalToSuperview()
         })
         
-        viewNaggingIntensity.snp.makeConstraints({
+        viewNaggingLevel.snp.makeConstraints({
             $0.height.equalTo(281)
             $0.top.equalTo(viewNickname.snp.bottom)
             $0.leading.trailing.equalToSuperview()
@@ -214,7 +214,7 @@ class MyView: BaseViewController, Navigatable {
         
         viewPush.snp.makeConstraints({
             $0.height.equalTo(65)
-            $0.top.equalTo(viewNaggingIntensity.snp.bottom)
+            $0.top.equalTo(viewNaggingLevel.snp.bottom)
             $0.leading.trailing.equalToSuperview()
         })
         
@@ -285,14 +285,14 @@ class MyView: BaseViewController, Navigatable {
         })
         
         /// 잔소리 강도 설정
-        viewNaggingIntensity.addSubview(lblNaggingIntensity)
-        viewNaggingIntensity.addSubview(viewRadioGroupNagging)
+        viewNaggingLevel.addSubview(lblNaggingLevel)
+        viewNaggingLevel.addSubview(viewRadioGroupNagging)
         
         viewRadioGroupNagging.addSubview(fondMomRadiobuttonFrame)
         viewRadioGroupNagging.addSubview(coolMomRadiobuttonFrame)
         viewRadioGroupNagging.addSubview(angryMomRadiobuttonFrame)
         
-        lblNaggingIntensity.snp.makeConstraints({
+        lblNaggingLevel.snp.makeConstraints({
             $0.top.equalToSuperview().offset(20)
             $0.leading.equalToSuperview().offset(18)
         })
@@ -300,7 +300,7 @@ class MyView: BaseViewController, Navigatable {
             $0.height.equalTo(192)
             $0.leading.equalToSuperview().offset(18)
             $0.trailing.equalToSuperview().offset(-18)
-            $0.top.equalTo(lblNaggingIntensity.snp.bottom).offset(24)
+            $0.top.equalTo(lblNaggingLevel.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
         })
         
@@ -359,8 +359,8 @@ class MyView: BaseViewController, Navigatable {
             $0.trailing.bottom.equalToSuperview()
         })
 
-        viewNaggingIntensity.addSubview(dividerNaggingIntensity)
-        dividerNaggingIntensity.snp.makeConstraints({
+        viewNaggingLevel.addSubview(dividerNaggingLevel)
+        dividerNaggingLevel.snp.makeConstraints({
             $0.top.equalTo(viewRadioGroupNagging.snp.bottom).offset(20)
             $0.trailing.leading.bottom.equalToSuperview()
         })
@@ -478,18 +478,18 @@ class MyView: BaseViewController, Navigatable {
         
         // 잔소리 강도 설정
         output.setNaggingLevel
-            .drive(onNext: { naggingIntensity in
-                self.rbFondMom.isSelected = naggingIntensity == .fondMom
-                self.imgvTipFondMom.isHidden = naggingIntensity != .fondMom
-                self.imgvTipArrowFondMom.isHidden = naggingIntensity != .fondMom
+            .drive(onNext: { naggingLevel in
+                self.rbFondMom.isSelected = naggingLevel == .fondMom
+                self.imgvTipFondMom.isHidden = naggingLevel != .fondMom
+                self.imgvTipArrowFondMom.isHidden = naggingLevel != .fondMom
             
-                self.rbCoolMom.isSelected = naggingIntensity == .coolMom
-                self.imgvTipCoolMom.isHidden = naggingIntensity != .coolMom
-                self.imgvTipArrowCoolMom.isHidden = naggingIntensity != .coolMom
+                self.rbCoolMom.isSelected = naggingLevel == .coolMom
+                self.imgvTipCoolMom.isHidden = naggingLevel != .coolMom
+                self.imgvTipArrowCoolMom.isHidden = naggingLevel != .coolMom
                 
-                self.rbAngryMom.isSelected = naggingIntensity == .angryMom
-                self.imgvTipAngryMom.isHidden = naggingIntensity != .angryMom
-                self.imgvTipArrowAngryMom.isHidden = naggingIntensity != .angryMom
+                self.rbAngryMom.isSelected = naggingLevel == .angryMom
+                self.imgvTipAngryMom.isHidden = naggingLevel != .angryMom
+                self.imgvTipArrowAngryMom.isHidden = naggingLevel != .angryMom
                 
             }).disposed(by: disposeBag)
         

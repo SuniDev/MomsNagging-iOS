@@ -51,6 +51,7 @@ class Navigator {
         case contactUs(viewModel: ContactUsViewModel)
         case pushSetting(viewModel: PushSettingViewModel)
         case coachMark(viewModel: CoachMarkViewModel)
+        case weeklyEvaluation(viewModel: WeeklyEvaluationViewModel)
     }
     
     enum Transition {
@@ -89,6 +90,7 @@ class Navigator {
         case .contactUs(viewModel: let viewModel): return ContactUsView(viewModel: viewModel, navigator: self)
         case .pushSetting(viewModel: let viewModel): return PushSettingView(viewModel: viewModel, navigator: self)
         case .coachMark(viewModel: let viewModel): return CoachMarkView(viewModel: viewModel, navigator: self)
+        case .weeklyEvaluation(viewModel: let viewModel): return WeeklyEvaluationView(viewModel: viewModel, navigator: self)
         }
     }
     
