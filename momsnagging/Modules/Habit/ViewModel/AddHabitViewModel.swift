@@ -8,11 +8,14 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Moya
+import SwiftyJSON
 
 class AddHabitViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
-    
+    var provider = MoyaProvider<ScheduleService>()
+
     var dateParam: String?
     var homeViewModel: HomeViewModel?
     
@@ -80,8 +83,22 @@ extension AddHabitViewModel {
     // TODO: Request Recommend Habit Title API
     func getRecommendHabitTitle() -> Observable<[RecommendHabitTitle]> {
         return Observable<[RecommendHabitTitle]>.create { observer -> Disposable in
-            var getRecommendHabitTitle = [RecommendHabitTitle]()
             
+            self.provider.request(.recommendedHabitCategoryLookUp, completion: { res in
+                switch res {
+                case .success(let result):
+                    do {
+                        let json = JSON(try result.mapJSON())
+                        Log.debug("getRecommendHabitTitle json", "\(json)")
+                    } catch let error {
+                        print("error : \(error)")
+                    }
+                case .failure(let error):
+                    print("failure error : \(error)")
+                }
+            })
+            
+            var getRecommendHabitTitle = [RecommendHabitTitle]()
             getRecommendHabitTitle.append(RecommendHabitTitle(title: "생활", normalColor: "FFECD6", highlightColor: "FDC685", image: Asset.Assets.recommendHabit1.image))
             getRecommendHabitTitle.append(RecommendHabitTitle(title: "운동", normalColor: "FFE8EA", highlightColor: "FAC0C5", image: Asset.Assets.recommendHabit2.image))
             getRecommendHabitTitle.append(RecommendHabitTitle(title: "성장", normalColor: "E4F2C6", highlightColor: "C5DE90", image: Asset.Assets.recommendHabit3.image))

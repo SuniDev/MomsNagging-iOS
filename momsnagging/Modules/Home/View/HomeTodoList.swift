@@ -77,27 +77,27 @@ extension HomeView {
 //    }
     @objc func selectTodoCheck(_ sender: UIButton) {
         if checkBtnInteractionEnable {
-            if sender.accessibilityLabel == "true" {
+            if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
-            } else if sender.accessibilityLabel == "false" {
+            } else if sender.accessibilityLabel == "0" {
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
     }
     @objc func selectRoutineCheck(_ sender: UIButton) {
         if checkBtnInteractionEnable {
-            if sender.accessibilityLabel == "true" {
+            if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
-            } else if sender.accessibilityLabel == "false" {
+            } else if sender.accessibilityLabel == "0" {
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
     }
     @objc func selectCountRoutineCheck(_ sender: UIButton) {
         if checkBtnInteractionEnable {
-            if sender.accessibilityLabel == "true" {
+            if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
-            } else if sender.accessibilityLabel == "false" {
+            } else if sender.accessibilityLabel == "0" {
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
@@ -149,7 +149,7 @@ extension HomeView {
                         cell?.timeBtn.setTitle(item.scheduleTime ?? "", for: .normal)
                         cell?.titleLbl.text = item.scheduleName ?? ""
                         
-                        if item.done == true {
+                        if item.status == 1 {
                             cell?.toggleIc.setImage(UIImage(asset: Asset.Icon.todoSelect), for: .normal)
                             cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
                             cell?.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark020), for: .normal)
@@ -157,7 +157,7 @@ extension HomeView {
                             cell?.prefixLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
                             cell?.prefixView.backgroundColor = UIColor(asset: Asset.Color.monoLight030)
                             cell?.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
-                        } else if item.done == false {
+                        } else if item.status == 0 {
                             cell?.toggleIc.setImage(UIImage(asset: Asset.Icon.todoNonSelect), for: .normal)
                             cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
                             cell?.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark010), for: .normal)
@@ -174,9 +174,7 @@ extension HomeView {
                             cell?.prefixView.backgroundColor = UIColor(asset: Asset.Color.subLight020)
                             cell?.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
                         }
-                        if item.done != nil {
-                            cell?.toggleIc.accessibilityLabel = "\(item.done ?? false)"
-                        }
+                        cell?.toggleIc.accessibilityLabel = "\(item.status ?? 0)"
                         cell?.toggleIc.tag = item.id ?? 0
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectTodoCheck), for: .touchUpInside)
                         cell?.moreIc.tag = row
@@ -197,7 +195,7 @@ extension HomeView {
                         cell?.timeBtn.setTitle(item.scheduleTime ?? "", for: .normal)
                         cell?.titleLbl.text = item.scheduleName ?? ""
                         
-                        if item.done == true {
+                        if item.status == 1 {
                             cell?.toggleIc.setImage(UIImage(asset: Asset.Icon.todoSelect), for: .normal)
                             cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
                             cell?.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark020), for: .normal)
@@ -206,7 +204,7 @@ extension HomeView {
                             cell?.prefixView.backgroundColor = UIColor(asset: Asset.Color.monoLight030)
                             cell?.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
                             
-                        } else if item.done == false {
+                        } else if item.status == 0 {
                             cell?.toggleIc.setImage(UIImage(asset: Asset.Icon.todoNonSelect), for: .normal)
                             cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
                             cell?.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark010), for: .normal)
@@ -223,10 +221,7 @@ extension HomeView {
                             cell?.prefixView.backgroundColor = UIColor(asset: Asset.Color.subLight020)
                             cell?.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
                         }
-                        
-                        if item.done != nil {
-                            cell?.toggleIc.accessibilityLabel = "\(item.done ?? false)"
-                        }
+                        cell?.toggleIc.accessibilityLabel = "\(item.status ?? 0)"
                         cell?.toggleIc.tag = item.id ?? 0
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectRoutineCheck), for: .touchUpInside)
                         cell?.moreIc.tag = row
@@ -248,7 +243,7 @@ extension HomeView {
                     cell?.titleLbl.text = item.scheduleName ?? ""
                     cell?.prefixLbl.text = "\(item.goalCount ?? 0)회"
                     
-                    if item.done == true {
+                    if item.status == 1 {
                         cell?.toggleIc.setImage(UIImage(asset: Asset.Icon.todoSelect), for: .normal)
                         cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
                         cell?.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark020), for: .normal)
@@ -256,7 +251,7 @@ extension HomeView {
                         cell?.prefixLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
                         cell?.prefixView.backgroundColor = UIColor(asset: Asset.Color.monoLight030)
                         cell?.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
-                    } else if item.done == false {
+                    } else if item.status == 0 {
                         cell?.toggleIc.setImage(UIImage(asset: Asset.Icon.todoNonSelect), for: .normal)
                         cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
                         cell?.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark010), for: .normal)
@@ -274,9 +269,7 @@ extension HomeView {
                         cell?.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
                     }
                     
-                    if item.done != nil {
-                        cell?.toggleIc.accessibilityLabel = "\(item.done ?? false)"
-                    }
+                    cell?.toggleIc.accessibilityLabel = "\(item.status ?? 0)"
                     cell?.toggleIc.tag = item.id ?? 0
                     cell?.toggleIc.addTarget(self, action: #selector(self.selectCountRoutineCheck), for: .touchUpInside)
                     cell?.moreIc.tag = row
@@ -298,13 +291,13 @@ extension HomeView {
         }).disposed(by: disposedBag)
         
         viewModel.addHabitSuccessOb.subscribe(onNext: { _ in
-            self.todoList.removeAll()
+//            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         
         viewModel.toggleIcSuccessOb.subscribe(onNext: { _ in
-            self.todoList.removeAll()
+//            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             Log.debug("잔소리레벨!", "\(CommonUser.naggingLevel)")
             switch CommonUser.naggingLevel {
@@ -318,12 +311,12 @@ extension HomeView {
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         viewModel.toggleCancelOb.subscribe(onNext: { _ in
-            self.todoList.removeAll()
+//            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         viewModel.delaySuccessOb.subscribe(onNext: { _ in
-            self.todoList.removeAll()
+//            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
@@ -343,6 +336,8 @@ extension HomeView {
         
         // 이동 처리
         todoListTableView.rx.itemMoved.bind { sIndexPath, dIndexPath in
+            Log.debug("이동처리의 todo", "\(self.todoList)")
+            
             let sRow = self.todoList[sIndexPath.row]
             let dRow = self.todoList[dIndexPath.row]
             let sIndex = sIndexPath.row

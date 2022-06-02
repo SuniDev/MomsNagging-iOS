@@ -12,7 +12,9 @@ import RxCocoa
 class MainContainerViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
+    
     var tabHandler = PublishRelay<Int>()
+    var testOb = PublishSubject<Bool>()
     
     override init() {
     }
@@ -39,14 +41,17 @@ class MainContainerViewModel: BaseViewModel, ViewModelType {
                 tabBar1.accept(Asset.Color.priMain)
                 tabBar2.accept(Asset.Color.monoDark020)
                 tabBar3.accept(Asset.Color.monoDark020)
+                self.testOb.onNext(false)
             } else if tagNum == 1 {
                 tabBar1.accept(Asset.Color.monoDark020)
                 tabBar2.accept(Asset.Color.priMain)
                 tabBar3.accept(Asset.Color.monoDark020)
+                self.testOb.onNext(false)
             } else {
                 tabBar1.accept(Asset.Color.monoDark020)
                 tabBar2.accept(Asset.Color.monoDark020)
                 tabBar3.accept(Asset.Color.priMain)
+                self.testOb.onNext(false)
             }
         }).disposed(by: disposeBag)
         

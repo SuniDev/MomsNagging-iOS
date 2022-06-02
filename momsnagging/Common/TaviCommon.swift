@@ -213,12 +213,20 @@ extension HomeView {
         deleteBtn.rx.tap.subscribe(onNext: {
             backgroundView.removeFromSuperview()
             // 삭제 API 호출
-            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "정말로 삭제할꺼니?", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
-
-            }, doneHandler: {
+//            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "정말로 삭제할꺼니?", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
+//
+//            }, doneHandler: {
+//            })
+//            self.viewModel.requestDelete(scheduleId: itemId)
+            let alert = UIAlertController(title: "", message: "정말로 삭제할꺼니?", preferredStyle: .alert)
+            let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
                 self.viewModel.requestDelete(scheduleId: itemId)
             })
-//            self.viewModel.requestDelete(scheduleId: itemId)
+            let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+            alert.addAction(cancelAction)
+            alert.addAction(doneAction)
+            self.present(alert, animated: true, completion: nil)
+            backgroundView.removeFromSuperview()
 
         }).disposed(by: disposedBag)
         
@@ -249,10 +257,17 @@ extension HomeView {
         })
         delayBtn.rx.tap.subscribe(onNext: {
             // 미룸 API 호출
-            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
-            }, doneHandler: {
+//            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
+//            }, doneHandler: {
+//            })
+            let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?", preferredStyle: .alert)
+            let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
                 self.viewModel.requestDeleay(scheduleId: itemId)
             })
+            let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+            alert.addAction(cancelAction)
+            alert.addAction(doneAction)
+            self.present(alert, animated: true, completion: nil)
             backgroundView.removeFromSuperview()
         }).disposed(by: disposedBag)
         
@@ -288,29 +303,22 @@ extension HomeView {
         
         switch type {
         case .todo:
-            view.addSubview(backgroundView)
-            backgroundView.addSubview(emptyBtn)
-            backgroundView.addSubview(stackView)
-            stackView.addArrangedSubview(delayView)
-            stackView.addArrangedSubview(modifyView)
-            stackView.addArrangedSubview(deleteView)
-            backgroundView.snp.makeConstraints({
-                $0.top.equalTo(view.snp.top)
-                $0.leading.equalTo(view.snp.leading)
-                $0.trailing.equalTo(view.snp.trailing)
-                $0.bottom.equalTo(view.snp.bottom)
-            })
-            emptyBtn.snp.makeConstraints({
-                $0.edges.equalTo(backgroundView.snp.edges)
-            })
-            if index > 4 {
-                stackView.snp.makeConstraints({
-                    $0.bottom.equalTo(senderBtn.snp.centerY)
-                    $0.width.equalTo(110)
-                    $0.height.equalTo(150)
-                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+            if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
+                vc.view.addSubview(backgroundView)
+                backgroundView.addSubview(emptyBtn)
+                backgroundView.addSubview(stackView)
+                stackView.addArrangedSubview(delayView)
+                stackView.addArrangedSubview(modifyView)
+                stackView.addArrangedSubview(deleteView)
+                backgroundView.snp.makeConstraints({
+                    $0.top.equalTo(vc.view.snp.top)
+                    $0.leading.equalTo(vc.view.snp.leading)
+                    $0.trailing.equalTo(vc.view.snp.trailing)
+                    $0.bottom.equalTo(vc.view.snp.bottom)
                 })
-            } else {
+                emptyBtn.snp.makeConstraints({
+                    $0.edges.equalTo(backgroundView.snp.edges)
+                })
                 stackView.snp.makeConstraints({
                     $0.top.equalTo(senderBtn.snp.centerY)
                     $0.width.equalTo(110)
@@ -319,29 +327,22 @@ extension HomeView {
                 })
             }
         case .countRoutine:
-            view.addSubview(backgroundView)
-            backgroundView.addSubview(emptyBtn)
-            backgroundView.addSubview(stackView)
-            stackView.addArrangedSubview(skipView)
-            stackView.addArrangedSubview(modifyView)
-            stackView.addArrangedSubview(deleteView)
-            backgroundView.snp.makeConstraints({
-                $0.top.equalTo(view.snp.top)
-                $0.leading.equalTo(view.snp.leading)
-                $0.trailing.equalTo(view.snp.trailing)
-                $0.bottom.equalTo(view.snp.bottom)
-            })
-            emptyBtn.snp.makeConstraints({
-                $0.edges.equalTo(backgroundView.snp.edges)
-            })
-            if index > 4 {
-                stackView.snp.makeConstraints({
-                    $0.bottom.equalTo(senderBtn.snp.centerY)
-                    $0.width.equalTo(110)
-                    $0.height.equalTo(150)
-                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+            if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
+                vc.view.addSubview(backgroundView)
+                backgroundView.addSubview(emptyBtn)
+                backgroundView.addSubview(stackView)
+                stackView.addArrangedSubview(skipView)
+                stackView.addArrangedSubview(modifyView)
+                stackView.addArrangedSubview(deleteView)
+                backgroundView.snp.makeConstraints({
+                    $0.top.equalTo(vc.view.snp.top)
+                    $0.leading.equalTo(vc.view.snp.leading)
+                    $0.trailing.equalTo(vc.view.snp.trailing)
+                    $0.bottom.equalTo(vc.view.snp.bottom)
                 })
-            } else {
+                emptyBtn.snp.makeConstraints({
+                    $0.edges.equalTo(backgroundView.snp.edges)
+                })
                 stackView.snp.makeConstraints({
                     $0.top.equalTo(senderBtn.snp.centerY)
                     $0.width.equalTo(110)
@@ -350,34 +351,58 @@ extension HomeView {
                 })
             }
         case .routine:
-            view.addSubview(backgroundView)
-            backgroundView.addSubview(emptyBtn)
-            backgroundView.addSubview(stackView)
-            stackView.addArrangedSubview(modifyView)
-            stackView.addArrangedSubview(deleteView)
-            backgroundView.snp.makeConstraints({
-                $0.top.equalTo(view.snp.top)
-                $0.leading.equalTo(view.snp.leading)
-                $0.trailing.equalTo(view.snp.trailing)
-                $0.bottom.equalTo(view.snp.bottom)
-            })
-            emptyBtn.snp.makeConstraints({
-                $0.edges.equalTo(backgroundView.snp.edges)
-            })
-            if index > 4 {
-                stackView.snp.makeConstraints({
-                    $0.bottom.equalTo(senderBtn.snp.centerY)
-                    $0.width.equalTo(110)
-                    $0.height.equalTo(100)
-                    $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
+            if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
+                vc.view.addSubview(backgroundView)
+                backgroundView.addSubview(emptyBtn)
+                backgroundView.addSubview(stackView)
+                stackView.addArrangedSubview(modifyView)
+                stackView.addArrangedSubview(deleteView)
+                backgroundView.snp.makeConstraints({
+                    $0.top.equalTo(vc.view.snp.top)
+                    $0.leading.equalTo(vc.view.snp.leading)
+                    $0.trailing.equalTo(vc.view.snp.trailing)
+                    $0.bottom.equalTo(vc.view.snp.bottom)
                 })
-            } else {
+                emptyBtn.snp.makeConstraints({
+                    $0.edges.equalTo(backgroundView.snp.edges)
+                })
                 stackView.snp.makeConstraints({
                     $0.top.equalTo(senderBtn.snp.centerY)
                     $0.width.equalTo(110)
                     $0.height.equalTo(100)
                     $0.trailing.equalTo(backgroundView.snp.trailing).offset(-30)
                 })
+            }
+        }
+    }
+}
+
+
+extension UIWindow {
+    
+    public var visibleViewController: UIViewController? {
+        return self.visibleViewControllerFrom(vc: self.rootViewController)
+    }
+    
+    /**
+     # visibleViewControllerFrom
+     - Author: suni
+     - Date:
+     - Parameters:
+        - vc: rootViewController 혹은 UITapViewController
+     - Returns: UIViewController?
+     - Note: vc내에서 가장 최상위에 있는 뷰컨트롤러 반환
+    */
+    public func visibleViewControllerFrom(vc: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let nc = vc as? UINavigationController {
+            return self.visibleViewControllerFrom(vc: nc.visibleViewController)
+        } else if let tc = vc as? UITabBarController {
+            return self.visibleViewControllerFrom(vc: tc.selectedViewController)
+        } else {
+            if let pvc = vc?.presentedViewController {
+                return self.visibleViewControllerFrom(vc: pvc)
+            } else {
+                return vc
             }
         }
     }

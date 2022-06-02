@@ -11,6 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
+var globalTabOb = PublishSubject<Int>()
 class MainContainerView: BaseViewController, Navigatable {
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -81,16 +82,19 @@ class MainContainerView: BaseViewController, Navigatable {
     override func bind() {
         tabbarBtn1.rx.tap.bind(onNext: { _ in
             self.tabbarButtonBind(buttonTag: 0)
+            globalTabOb.onNext(0)
             self.setHomeView()
         }).disposed(by: disposedBag)
         
         tabbarBtn2.rx.tap.bind(onNext: { _ in
             self.tabbarButtonBind(buttonTag: 1)
+            globalTabOb.onNext(1)
             self.setReportCardView()
         }).disposed(by: disposedBag)
         
         tabbarBtn3.rx.tap.bind(onNext: { _ in
             self.tabbarButtonBind(buttonTag: 2)
+            globalTabOb.onNext(2)
             self.setMyView()
         }).disposed(by: disposedBag)
     }

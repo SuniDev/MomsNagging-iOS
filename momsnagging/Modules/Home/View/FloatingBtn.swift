@@ -23,6 +23,8 @@ extension HomeView {
      - Note: HomeView에 플로팅 버튼 추가와 오토레이아웃 세팅 함수
      */
     func setFloatingBtn() {
+        if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
+        }
         let backgroundFrame = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
             $0.isHidden = true
