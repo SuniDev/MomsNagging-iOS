@@ -50,6 +50,7 @@ class Navigator {
         case deleteAccount(viewModel: DeleteAccountViewModel)
         case contactUs(viewModel: ContactUsViewModel)
         case pushSetting(viewModel: PushSettingViewModel)
+        case coachMark(viewModel: CoachMarkViewModel)
     }
     
     enum Transition {
@@ -87,6 +88,7 @@ class Navigator {
         case .deleteAccount(viewModel: let viewModel): return DeleteAccountView(viewModel: viewModel, navigator: self)
         case .contactUs(viewModel: let viewModel): return ContactUsView(viewModel: viewModel, navigator: self)
         case .pushSetting(viewModel: let viewModel): return PushSettingView(viewModel: viewModel, navigator: self)
+        case .coachMark(viewModel: let viewModel): return CoachMarkView(viewModel: viewModel, navigator: self)
         }
     }
     

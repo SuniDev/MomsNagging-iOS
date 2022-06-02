@@ -107,7 +107,6 @@ class OnboardingItemView: BaseViewController, Navigatable {
     }
     
     // MARK: - layoutSetting
-    // TODO: 디바이스 높이 667 사이즈 대응 작업 필요.
     override func layoutSetting() {
         view.addSubview(viewBackground)
         viewBackground.addSubview(lblTitle)

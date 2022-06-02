@@ -167,6 +167,8 @@
 		A0BC330C28153A5900F04B58 /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330B28153A5900F04B58 /* BasePageViewController.swift */; };
 		A0BC330E28153AB800F04B58 /* OnboardingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */; };
 		A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB9D0C282E58FA000FED33 /* Array+Extension.swift */; };
+		EA97964B2844A2D500D27F2E /* CoachMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA97964A2844A2D500D27F2E /* CoachMarkView.swift */; };
+		EA97964D2844A2E600D27F2E /* CoachMarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA97964C2844A2E600D27F2E /* CoachMarkViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -336,6 +338,8 @@
 		A0BC330B28153A5900F04B58 /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A0BC330D28153AB800F04B58 /* OnboardingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewModel.swift; sourceTree = "<group>"; };
 		A0FB9D0C282E58FA000FED33 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		EA97964A2844A2D500D27F2E /* CoachMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachMarkView.swift; sourceTree = "<group>"; };
+		EA97964C2844A2E600D27F2E /* CoachMarkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachMarkViewModel.swift; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1065,6 +1069,7 @@
 		A06BB33B27F0BA5E005727AD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				EA9796442844A1B200D27F2E /* CoachMark */,
 				8F990F09283D336500A5D2AA /* DeleteAccount */,
 				8F990EFF283D320D00A5D2AA /* ContactUs */,
 				8FEEE5BD283A4BDC00764C43 /* PrivacyPolicy */,
@@ -1254,6 +1259,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EA9796442844A1B200D27F2E /* CoachMark */ = {
+			isa = PBXGroup;
+			children = (
+				EA9796452844A1BB00D27F2E /* View */,
+				EA9796462844A1BF00D27F2E /* ViewModel */,
+			);
+			path = CoachMark;
+			sourceTree = "<group>";
+		};
+		EA9796452844A1BB00D27F2E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EA97964A2844A2D500D27F2E /* CoachMarkView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EA9796462844A1BF00D27F2E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				EA97964C2844A2E600D27F2E /* CoachMarkViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1292,6 +1322,7 @@
 				TargetAttributes = {
 					8F06EC0227D892D900A17FF2 = {
 						CreatedOnToolsVersion = 13.1;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -1478,6 +1509,7 @@
 				86523CA22824FD7F00F243A8 /* DetailHabitViewModel.swift in Sources */,
 				86BBE05E283DC7BC002AA1F9 /* Alert.swift in Sources */,
 				A0B581B62827A5780099C9BA /* UIColor+Extension.swift in Sources */,
+				EA97964B2844A2D500D27F2E /* CoachMarkView.swift in Sources */,
 				8F1F93A327EC8A3C000F08AF /* CalendarModel.swift in Sources */,
 				A024E050281EA3F600AA60D6 /* CommonButton.swift in Sources */,
 				8FEEE5B4283A3E9C00764C43 /* SettingView.swift in Sources */,
@@ -1589,6 +1621,7 @@
 				8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */,
 				A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */,
 				8F990F14283D3AE900A5D2AA /* DeleteAccountReasonCell.swift in Sources */,
+				EA97964D2844A2E600D27F2E /* CoachMarkViewModel.swift in Sources */,
 				8F1F93A927EF51B4000F08AF /* Common.swift in Sources */,
 				A06BB35827F0E55C005727AD /* UIViewController+Rx.swift in Sources */,
 				86E699FD2822724100EA6BC3 /* ModelType.swift in Sources */,
@@ -1745,6 +1778,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = momsnagging/momsnagging.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -1772,6 +1806,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1783,6 +1818,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = momsnagging/momsnagging.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
