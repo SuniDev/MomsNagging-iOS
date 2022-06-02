@@ -187,12 +187,8 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        action()
-//        todoBind()
-//        statisticsBind()
-//        statisticsLayout()
     }
-    // MARK: - Temp
+        
     // MARK: - Init
     init(viewModel: GradeViewModel, navigator: Navigator) {
         super.init(nibName: nil, bundle: nil)
@@ -466,21 +462,41 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                     $0.height.equalTo(height + 107)
                 })
             }).disposed(by: disposedBag)
-                                
-//        dayCollectionView.rx.itemSelected.subscribe(onNext: { indexPath in
-//            self.calendarSelectIndex = indexPath.row
-//            let cell = self.dayCollectionView.cellForItem(at: [0, indexPath.row]) as? ReportCardCell
-//            var day: String = cell?.number.text ?? ""
-//            var month: String = "\(self.calendarMonth ?? 0)"
-//            if Int(day)! < 10 {
-//                day = "0\(day)"
-//            }
-//            if self.calendarMonth ?? 0 < 10 {
-//                month = "0\(self.calendarMonth ?? 0)"
-//            }
-//            self.selectDate = "\(self.calendarYear ?? 0)\(month)\(day)"
-//            self.selectMonth = self.dateCheck
-//        }).disposed(by: disposedBag)
+        
+        output.todoItems
+            .bind(to: self.todoListTableView.rx.items(cellIdentifier: "GradeTodoCell", cellType: GradeTodoCell.self)) {  _, item, cell in
+                
+                cell.lblTitle.text = item.scheduleName ?? ""
+                cell.btnTime.setTitle(item.scheduleTime ?? "", for: .normal)
+                
+                var scheduleType = ScheduleType.todo
+                switch item.scheduleType {
+                case ScheduleType.todo.rawValue : scheduleType = .todo
+                case ScheduleType.routine.rawValue : scheduleType = .routine
+                default: break
+                }
+                
+                switch item.status {
+                case ScheduleSatus.unperform.rawValue:
+                    cell.unperform(scheduleType: scheduleType, goalCount: item.goalCount)
+                case ScheduleSatus.complete.rawValue:
+                    cell.complete(scheduleType: scheduleType, goalCount: item.goalCount)
+                case ScheduleSatus.skip.rawValue:
+                    cell.skip(scheduleType: scheduleType, goalCount: item.goalCount)
+                default: break
+                }
+                
+            }.disposed(by: disposedBag)
+        
+        output.countTodoItems
+            .drive(onNext: { cnt in
+                let height = cnt * 60
+                self.todoListTableView.snp.updateConstraints({
+                    $0.height.equalTo(height)
+                })
+            }).disposed(by: disposedBag)
+        
+        todoListTableView.rx.setDelegate(self).disposed(by: disposedBag)
     }
 }
     
@@ -514,38 +530,6 @@ extension GradeView {
     }
 }
 
-//    func todoBind() {
-//        guard let viewModel = viewModel else { return }
-//        let input = ReportCardViewModel.Input(tabAction: nil, statisticsPrev: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(), statisticsNext: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(), currentMonth: self.statisticsMonth!, currentYear: self.statisticsYear!, awardTap: self.awardBtn.rx.tap.asDriverOnErrorJustComplete())
-//        tableViewOutput = viewModel.transform(input: input)
-//        tableViewOutput?.todoListData?.drive { list in
-//            list.bind(to: self.todoListTableView.rx.items(cellIdentifier: "ReportCardTodoCell", cellType: ReportCardTodoCell.self)) { index, item, cell in
-//                self.todoList.append(item)
-//                cell.todoIsSelected = item.isSelected ?? false
-//                cell.timeBtn.setTitle(item.time ?? "", for: .normal)
-//                cell.titleLbl.text = item.title ?? ""
-//                cell.prefixLbl.text = item.prefix ?? ""
-//                cell.cellType = item.type ?? .normal
-//                if item.isSelected ?? false {
-//                    cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
-//                    cell.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark020)
-//                    cell.timeBtn.backgroundColor = UIColor(asset: Asset.Color.monoLight030)
-//                    cell.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark010), for: .normal)
-//                } else {
-//                    cell.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
-//                    cell.titleLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
-//                    cell.timeBtn.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
-//                    cell.timeBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark020), for: .normal)
-//                }
-//                self.todoListRemakeConstraints(count: index + 1)
-//            }
-//        }.disposed(by: disposedBag)
-//        todoListTableView.rx.setDelegate(self).disposed(by: disposedBag)
-//        tableViewOutput?.cellItemCount.subscribe(onNext: { count in
-//            print("itemCellCount!: \(count)")
-//        }).disposed(by: disposedBag)
-        
-//    }
 //    func statisticsBind() {
 //        guard let viewModel = viewModel else { return }
 //        let input = ReportCardViewModel.Input(tabAction: nil, statisticsPrev: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(), statisticsNext: self.statisticsNextBtn.rx.tap.asDriverOnErrorJustComplete(), currentMonth: self.statisticsMonth!, currentYear: self.statisticsYear!, awardTap: self.awardBtn.rx.tap.asDriverOnErrorJustComplete())
@@ -659,14 +643,14 @@ extension GradeView {
 //    }
 //}
 
-//extension GradeView: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if tableView.tag == 1 {
-//            return 48
-//        } else if tableView.tag == 2 {
-//            return 48
-//        } else {
-//            return 60
-//        }
-//    }
-//}
+extension GradeView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView.tag == 1 {
+            return 48
+        } else if tableView.tag == 2 {
+            return 48
+        } else {
+            return 60
+        }
+    }
+}

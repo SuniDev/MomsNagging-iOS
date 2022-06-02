@@ -15,12 +15,14 @@ class GradeViewModel: ViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     var scheduleService = MoyaProvider<ScheduleService>()
+    let mainTabHandler: PublishRelay<Int>
 //    var todoListData: [TodoListModel] = []
 //    var reportListData: [ReportModel] = []
 //    var cellCount: Int = -1
     
     // MARK: - init
-    init(withService provider: AppServices) {
+    init(withService provider: AppServices, mainTabHandler: PublishRelay<Int>) {
+        self.mainTabHandler = mainTabHandler
         super.init(provider: provider)
     }
     
@@ -69,6 +71,10 @@ class GradeViewModel: ViewModel, ViewModelType {
         let setNextMonth: Driver<CalendarDate>
         /// 캘린더 날짜 개수
         let countDayItems: Driver<Int>
+        /// 투두 리스트
+        let todoItems: Observable<[TodoListModel]>
+        /// 투두 리스트 갯수
+        let countTodoItems: Driver<Int>
 //        var tabAction = PublishRelay<Bool>()
 //        var todoListData: Driver<[TodoListModel]>? // 투두리스트 더미 데이터모델
 //        var cellItemCount = PublishRelay<Bool>()
@@ -86,6 +92,16 @@ class GradeViewModel: ViewModel, ViewModelType {
         let dayList = BehaviorRelay<[String]>(value: [])
         // 선택 날짜
         let selectedDate = BehaviorRelay<String>(value: "")
+        
+        self.mainTabHandler.skip(1)
+            .distinctUntilChanged()
+            .filter({ $0 == 1 })
+            .mapToVoid()
+            .subscribe(onNext: {
+                setCalendarDate.accept(setCalendarDate.value)
+                selectedDate.accept(selectedDate.value)
+                dayList.accept(dayList.value)
+            }).disposed(by: disposeBag)
         
         // 캘린더 로드
         let loadCalendar = input.loadCalendar.asObservable().share()
@@ -165,28 +181,27 @@ class GradeViewModel: ViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
         
-        let reqeustSchedule = selectedDate
+        let todoItems = selectedDate
             .flatMapLatest { date -> Observable<[TodoListModel]> in
                 return self.requestSchedule(date: date)
             }
+        
+        let countTodoItems = todoItems
+            .map { return $0.count }
         
         return Output(setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
                       dayItems: dayItems,
                       weekItems: input.loadWeekDay.asObservable(),
                       setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
                       setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
-                      countDayItems: countDayItems.asDriverOnErrorJustComplete())
+                      countDayItems: countDayItems.asDriverOnErrorJustComplete(),
+                      todoItems: todoItems,
+                      countTodoItems: countTodoItems.asDriverOnErrorJustComplete())
         
 //        let requestGetDiary = selectedDate
 //            .flatMapLatest { date -> Observable<Diary> in
 //                return self.requestGetDiary(date: date)
 //            }
-        
-//        let isEmptyDiary = requestGetDiary
-//            .map { return $0.title?.isEmpty ?? true }
-        
-        
-        
         
 //        let tabAction = PublishRelay<Bool>()
 //

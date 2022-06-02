@@ -57,7 +57,7 @@ class MainContainerView: BaseViewController, Navigatable {
 //        view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         view.backgroundColor = .clear
         let homeViewModel = HomeViewModel()
-        let gardeViewModel = GradeViewModel(withService: SceneDelegate.appService)
+        let gardeViewModel = GradeViewModel(withService: SceneDelegate.appService, mainTabHandler: viewModel.tabHandler)
         let myViewModel = MyViewModel(withService: SceneDelegate.appService)
         tab0 = navigator.get(seque: .home(viewModel: homeViewModel))
         tab1 = navigator.get(seque: .grade(viewModel: gardeViewModel))

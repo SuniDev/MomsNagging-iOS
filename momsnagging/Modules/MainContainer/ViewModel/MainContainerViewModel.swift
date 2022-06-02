@@ -12,6 +12,7 @@ import RxCocoa
 class MainContainerViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
+    var tabHandler = PublishRelay<Int>()
     
     override init() {
     }
@@ -32,6 +33,8 @@ class MainContainerViewModel: BaseViewModel, ViewModelType {
         let tabBar3 = BehaviorRelay(value: Asset.Color.priMain)
         
         input.buttonTag.bind(onNext: { tagNum in
+            self.tabHandler.accept(tagNum)
+            
             if tagNum == 0 {
                 tabBar1.accept(Asset.Color.priMain)
                 tabBar2.accept(Asset.Color.monoDark020)
