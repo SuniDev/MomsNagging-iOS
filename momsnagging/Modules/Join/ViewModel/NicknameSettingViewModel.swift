@@ -60,8 +60,8 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         let textHint: Driver<TextHintType>
         /// 사용 가능 아이디
         let isAvailableName: Driver<Bool>
-        /// 메인 이동
-        let goToMain: Driver<Void>
+        /// 코치마크 이동
+        let goToCoachMark: Driver<CoachMarkViewModel>
     }
     
     func transform(input: Input) -> Output {
@@ -171,9 +171,9 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
                 CommonUser.setUser(user)
             }).disposed(by: disposeBag)
         
-        let goToMain = setUser
-            .map { _ -> MainContainerViewModel in
-                let viewModel = MainContainerViewModel()
+        let goToCoachMark = setUser
+            .map { _ -> CoachMarkViewModel in
+                let viewModel = CoachMarkViewModel()
                 return viewModel
             }
         
@@ -184,7 +184,8 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
             isEditingName: isEditingName.asDriverOnErrorJustComplete(),
             textHint: textHint.asDriverOnErrorJustComplete(),
             isAvailableName: isAvailableName.asDriverOnErrorJustComplete(),
-            goToMain: goToMain.mapToVoid().asDriverOnErrorJustComplete())
+            goToCoachMark: goToCoachMark.asDriverOnErrorJustComplete()
+        )
     }
     
 }

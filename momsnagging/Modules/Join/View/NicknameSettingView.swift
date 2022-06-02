@@ -420,13 +420,12 @@ class NicknameSettingView: BaseViewController, Navigatable {
                 self.btnDone.isEnabled = isAvailable
             }).disposed(by: disposeBag)
         
-        output.goToMain
-            .drive(onNext: { _ in
+        output.goToCoachMark
+            .drive(onNext: { viewModel in
                 CommonView.showAlert(vc: self, type: .oneBtn, title: "", message: STR_NICKNAME_SUCCESS, doneTitle: STR_DONE, doneHandler: {
-                    let viewModel = MainContainerViewModel()
-                    self.navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
+                    self.navigator.show(seque: .coachMark(viewModel: viewModel), sender: nil, transition: .root)
                 })
-            }).disposed(by: disposeBag)
+            }).disposed(by: disposeBag)        
     }
 }
 

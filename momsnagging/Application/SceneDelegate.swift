@@ -33,15 +33,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigator = Navigator.default
         
-//        let viewModel = IntroViewModel(withService: SceneDelegate.appService)
-//        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
+        let viewModel = IntroViewModel(withService: SceneDelegate.appService)
+        navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
 //        let viewModel = MainContainerViewModel()
 //        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
 //        let viewModel = ContactUsViewModel()
 //        navigator.show(seque: .contactUs(viewModel: viewModel), sender: nil, transition: .root)
-        
-        let viewModel = CoachMarkViewModel()
-        navigator.show(seque: .coachMark(viewModel: viewModel), sender: nil, transition: .root)
         
         window?.windowScene = windowScene
         window?.rootViewController = navigator.root
