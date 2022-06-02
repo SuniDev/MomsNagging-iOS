@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import SwiftyJSON
 import RxSwift
 import RxCocoa
 
@@ -14,11 +15,15 @@ class RecommendedHabitViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     var model = RecommendedHabitModel()
+    var provider = MoyaProvider<ScheduleService>()
+    var homeViewModel: HomeViewModel?
     
     var recommendHabitTitle: RecommendHabitTitle?
     var type: HabitType?
+    var dateParam: String?
+    var categoryId: Int?
     
-    var itemList = BehaviorRelay<[String]>(value: ["Item","Item","Item","Item","Item","Item","Item","Item","Item","Item"])
+    var itemList = BehaviorRelay<[RecommendedHabitModel]>(value: [])
     
     enum HabitType {
         case life
@@ -28,7 +33,7 @@ class RecommendedHabitViewModel: BaseViewModel, ViewModelType {
         case grow
         case etc
     }
-    init(type: Int) {
+    init(type: Int, homeViewModel: HomeViewModel, dateParam: String?, categoryId: Int?) {
         switch type {
         case 0:
             recommendHabitTitle?.title = "생활"
@@ -51,6 +56,12 @@ class RecommendedHabitViewModel: BaseViewModel, ViewModelType {
         default:
             break
         }
+        self.homeViewModel = homeViewModel
+        self.dateParam = dateParam
+        if let categoryId = categoryId {
+            self.categoryId = categoryId
+        }
+        Log.debug("categoryId!", "\(self.categoryId)")
     }
     // MARK: - Input
     struct Input {
@@ -92,5 +103,31 @@ class RecommendedHabitViewModel: BaseViewModel, ViewModelType {
 }
 // MARK: - API
 extension RecommendedHabitViewModel {
+    
+    func requestRecommendedHabitItemList() {
+        provider.request(.recommnededHabitListLookUp(categoryId: self.categoryId ?? 0), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    var recommendList: [RecommendedHabitModel] = []
+                    print("requestRecommendedHabitItemList json : \(json)")
+                    if json.array != nil {
+                        for item in json.array! {
+                            var model = RecommendedHabitModel()
+                            model.id = item.dictionary?["id"]?.intValue ?? 0
+                            model.scheduleName = item.dictionary?["scheduleName"]?.stringValue ?? ""
+                            recommendList.append(model)
+                        }
+                        self.itemList.accept(recommendList)
+                    }
+                } catch let error {
+                    print("error : \(error)")
+                }
+            case .failure(let error):
+                print("failure error : \(error)")
+            }
+        })
+    }
     
 }

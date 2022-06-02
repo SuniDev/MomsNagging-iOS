@@ -41,8 +41,8 @@ extension ScheduleService: TargetType {
             return "schedules/array"
         case .recommendedHabitCategoryLookUp:
             return "schedules/categories"
-        case .recommnededHabitListLookUp:
-            return "schedules/categories"
+        case .recommnededHabitListLookUp(categoryId: let id):
+            return "schedules/categories/\(id)"
         }
     }
     
@@ -83,8 +83,8 @@ extension ScheduleService: TargetType {
             return .requestJSONEncodable(param)
         case .recommendedHabitCategoryLookUp:
             return .requestPlain
-        case .recommnededHabitListLookUp(categoryId: let categoryId):
-            return .requestParameters(parameters: ["categoryId": categoryId], encoding: URLEncoding.queryString)
+        case .recommnededHabitListLookUp:
+            return .requestPlain
         }
     }
     

@@ -7,8 +7,7 @@
 
 import Foundation
 
-
 struct RecommendedHabitModel {
-    
+    var id: Int?
+    var scheduleName: String?
 }
-

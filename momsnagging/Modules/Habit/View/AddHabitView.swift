@@ -74,6 +74,8 @@ class AddHabitView: BaseViewController, Navigatable {
         $0.text = "추천 습관 목록에 있는 습관을 추가하면\n맞춤형 잔소리 푸쉬 알림을 제공해준단다."
     })
     
+    var recommendTitleList: [RecommendHabitTitle] = []
+    
     lazy var recommendTitleCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: recommendTitleCellLayout())
         collectionView.register(RecommendHabitTitleCell.self, forCellWithReuseIdentifier: recommendTitleIdentifier)
@@ -257,10 +259,14 @@ class AddHabitView: BaseViewController, Navigatable {
                     $0.height.equalTo(height)
                 })
             }).disposed(by: disposeBag)
+        output.recommendTitleItems.subscribe(onNext: { list in
+            self.recommendTitleList = list
+            Log.debug("self.recommendTitleList", "\(self.recommendTitleList)")
+        }).disposed(by: disposeBag)
         
         output.recommendTitleItems
             .bind(to: recommendTitleCollectionView.rx.items(cellIdentifier: recommendTitleIdentifier, cellType: RecommendHabitTitleCell.self)) { _, item, cell in
-                cell.lblTitle.text = item.title
+                cell.lblTitle.text = item.categoryName
                 cell.normalBackgroundColor = UIColor(hexString: item.normalColor ?? "")
                 cell.selectedBackgroundColor = UIColor(hexString: item.highlightColor ?? "")
                 cell.image.image = item.image
@@ -268,7 +274,7 @@ class AddHabitView: BaseViewController, Navigatable {
         
         output.recommendTitleItemSelected
             .drive(onNext: { indexPath in
-                let vc = Navigator.Scene.recommendedHabit(viewModel: RecommendedHabitViewModel(type: indexPath.row))
+                let vc = Navigator.Scene.recommendedHabit(viewModel: RecommendedHabitViewModel(type: indexPath.row, homeViewModel: viewModel.homeViewModel ?? HomeViewModel(), dateParam: self.viewModel?.dateParam ?? "", categoryId: self.recommendTitleList[indexPath.row].id ?? 0 ))
                 self.navigator.show(seque: vc, sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
 
