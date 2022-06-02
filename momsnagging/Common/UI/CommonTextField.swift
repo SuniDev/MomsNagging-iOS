@@ -29,7 +29,7 @@ class CommonTextField: UITextField {
     }
     @IBInspectable var errorBorderColor: UIColor = Asset.Color.error.color
     @IBInspectable var successBorderColor: UIColor = Asset.Color.monoLight010.color
-    @IBInspectable var editBorderColor: UIColor = Asset.Color.priLight030.color
+    @IBInspectable var editBorderColor: UIColor = Asset.Color.monoDark030.color
 
     func normal() {
         self.addBorder(color: normalBorderColor, width: 1)
