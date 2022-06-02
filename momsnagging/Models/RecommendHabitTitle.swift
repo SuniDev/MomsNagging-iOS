@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import UIKit
 
 struct RecommendHabitTitle {
     var title: String?
     var normalColor: String?
     var highlightColor: String?
+    var image: UIImage?
 }

@@ -263,11 +263,11 @@ class AddHabitView: BaseViewController, Navigatable {
                 cell.lblTitle.text = item.title
                 cell.normalBackgroundColor = UIColor(hexString: item.normalColor ?? "")
                 cell.selectedBackgroundColor = UIColor(hexString: item.highlightColor ?? "")
+                cell.image.image = item.image
             }.disposed(by: disposeBag)
         
         output.recommendTitleItemSelected
             .drive(onNext: { indexPath in
-                Log.debug("TODO: 추천 습관 연결 \(indexPath)")
                 let vc = Navigator.Scene.recommendedHabit(viewModel: RecommendedHabitViewModel(type: indexPath.row))
                 self.navigator.show(seque: vc, sender: self, transition: .navigation)
             }).disposed(by: disposeBag)

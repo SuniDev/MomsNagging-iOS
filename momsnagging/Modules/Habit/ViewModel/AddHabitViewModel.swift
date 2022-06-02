@@ -82,12 +82,12 @@ extension AddHabitViewModel {
         return Observable<[RecommendHabitTitle]>.create { observer -> Disposable in
             var getRecommendHabitTitle = [RecommendHabitTitle]()
             
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생활", normalColor: "FFECD6", highlightColor: "FDC685"))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "운동", normalColor: "FFE8EA", highlightColor: "FAC0C5"))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "성장", normalColor: "E4F2C6", highlightColor: "C5DE90"))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생산성", normalColor: "CDDCFA", highlightColor: "AAC0EB"))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "식습관", normalColor: "F1E8FF", highlightColor: "D1C0EC"))
-            getRecommendHabitTitle.append(RecommendHabitTitle(title: "기타", normalColor: "CFFFF0", highlightColor: "95E0CA"))
+            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생활", normalColor: "FFECD6", highlightColor: "FDC685", image: Asset.Assets.recommendHabit1.image))
+            getRecommendHabitTitle.append(RecommendHabitTitle(title: "운동", normalColor: "FFE8EA", highlightColor: "FAC0C5", image: Asset.Assets.recommendHabit2.image))
+            getRecommendHabitTitle.append(RecommendHabitTitle(title: "성장", normalColor: "E4F2C6", highlightColor: "C5DE90", image: Asset.Assets.recommendHabit3.image))
+            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생산성", normalColor: "CDDCFA", highlightColor: "AAC0EB", image: Asset.Assets.recommendHabit4.image))
+            getRecommendHabitTitle.append(RecommendHabitTitle(title: "식습관", normalColor: "F1E8FF", highlightColor: "D1C0EC", image: Asset.Assets.recommendHabit5.image))
+            getRecommendHabitTitle.append(RecommendHabitTitle(title: "기타", normalColor: "CFFFF0", highlightColor: "95E0CA", image: Asset.Assets.recommendHabit6.image))
             
             observer.onNext(getRecommendHabitTitle)
             observer.onCompleted()
