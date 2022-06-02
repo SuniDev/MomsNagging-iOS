@@ -32,13 +32,13 @@ struct GradeCalendarRequest: RequestModelType {
 struct GradeLastWeekRequest: RequestModelType { }
 
 /**
- # (S) GradeMonthlyRequest
+ # (S) StatisticsMonthlyRequest
  - Authors: suni
  - Note: 월간 주간평가 조회 Request 모델
  */
-struct GradeMonthlyRequest: RequestModelType {
-    var retrieveYear: String   // 조회할 년도
-    var retrieveMonth: String   // 조회할 월
+struct StatisticsMonthlyRequest: RequestModelType {
+    var retrieveYear: Int   // 조회할 년도
+    var retrieveMonth: Int   // 조회할 월
 }
 
 /**

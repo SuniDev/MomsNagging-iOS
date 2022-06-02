@@ -148,7 +148,7 @@
 		A06E05742848859C00183EF3 /* Awards.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E05732848859B00183EF3 /* Awards.swift */; };
 		A06E0576284885CF00183EF3 /* GradeCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E0575284885CF00183EF3 /* GradeCalendar.swift */; };
 		A06E05782848863300183EF3 /* GradeLastWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E05772848863300183EF3 /* GradeLastWeek.swift */; };
-		A06E057A2848867D00183EF3 /* GradeMonthly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E05792848867D00183EF3 /* GradeMonthly.swift */; };
+		A06E057A2848867D00183EF3 /* StatisticsMonthly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E05792848867D00183EF3 /* StatisticsMonthly.swift */; };
 		A06E057C284886BE00183EF3 /* Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E057B284886BE00183EF3 /* Statistics.swift */; };
 		A06E057E28488F9900183EF3 /* GradeCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E057D28488F9900183EF3 /* GradeCalendarCell.swift */; };
 		A06E05812848B54100183EF3 /* GradeTodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06E05802848B54100183EF3 /* GradeTodoCell.swift */; };
@@ -324,7 +324,7 @@
 		A06E05732848859B00183EF3 /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
 		A06E0575284885CF00183EF3 /* GradeCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalendar.swift; sourceTree = "<group>"; };
 		A06E05772848863300183EF3 /* GradeLastWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeLastWeek.swift; sourceTree = "<group>"; };
-		A06E05792848867D00183EF3 /* GradeMonthly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeMonthly.swift; sourceTree = "<group>"; };
+		A06E05792848867D00183EF3 /* StatisticsMonthly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsMonthly.swift; sourceTree = "<group>"; };
 		A06E057B284886BE00183EF3 /* Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistics.swift; sourceTree = "<group>"; };
 		A06E057D28488F9900183EF3 /* GradeCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCalendarCell.swift; sourceTree = "<group>"; };
 		A06E05802848B54100183EF3 /* GradeTodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeTodoCell.swift; sourceTree = "<group>"; };
@@ -1161,7 +1161,7 @@
 				A06E05732848859B00183EF3 /* Awards.swift */,
 				A06E0575284885CF00183EF3 /* GradeCalendar.swift */,
 				A06E05772848863300183EF3 /* GradeLastWeek.swift */,
-				A06E05792848867D00183EF3 /* GradeMonthly.swift */,
+				A06E05792848867D00183EF3 /* StatisticsMonthly.swift */,
 				A06E057B284886BE00183EF3 /* Statistics.swift */,
 			);
 			path = Response;
@@ -1557,7 +1557,7 @@
 				8FEEE5C8283A500200764C43 /* PrivacyPolicyCell.swift in Sources */,
 				A0AA7173284273F0005ABAF6 /* Date+Extension.swift in Sources */,
 				8F16725F283E67BB007A699B /* ScheduleRequestModel.swift in Sources */,
-				A06E057A2848867D00183EF3 /* GradeMonthly.swift in Sources */,
+				A06E057A2848867D00183EF3 /* StatisticsMonthly.swift in Sources */,
 				A0AA716A284144EB005ABAF6 /* DiaryCalendar.swift in Sources */,
 				86BBE063283E1944002AA1F9 /* Login.swift in Sources */,
 				A0066C3828437C3800805570 /* PushSettingViewModel.swift in Sources */,

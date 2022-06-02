@@ -40,7 +40,7 @@ enum MomsNaggingAPI {
     // 직전 주의 주간평가 조회
     case gradeLastWeek(GradeLastWeekRequest)
     // 월간 주간평가 조회
-    case gradeMonthly(GradeMonthlyRequest)
+    case gradeMonthly(StatisticsMonthlyRequest)
     // 성적표 통계 조회
     case gradeStatistics(GradeStatisticsRequest)
 }

@@ -16,7 +16,6 @@ class GradeViewModel: ViewModel, ViewModelType {
     var disposeBag = DisposeBag()
     var scheduleService = MoyaProvider<ScheduleService>()
     let mainTabHandler: PublishRelay<Int>
-//    var todoListData: [TodoListModel] = []
 //    var reportListData: [ReportModel] = []
 //    var cellCount: Int = -1
     
@@ -29,8 +28,8 @@ class GradeViewModel: ViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
         // 탭
-//        let tabCalendar: Driver<Void>
-//        let tabPerformRate: Driver<Void>
+        let tabCalendar: Driver<Void>
+        let tabStatistics: Driver<Void>
         
         // 달력 - 캘린더
         /// 캘린더 데이터
@@ -47,6 +46,14 @@ class GradeViewModel: ViewModel, ViewModelType {
         let btnPrevTapped: Driver<Void>
         let btnNextTapped: Driver<Void>
         
+        // 통계 - 월간 평가
+        /// 캘린더 데이터
+        let setSttCalendarMonth: Driver<Int>
+        let setSttCalendarYear: Driver<Int>
+        /// 캘린더 이동
+        let btnSttPrevTapped: Driver<Void>
+        let btnSttNextTapped: Driver<Void>
+        
 //        var tabAction: Driver<Bool>?
 //        var statisticsPrev: Driver<Void>
 //        var statisticsNext: Driver<Void>
@@ -56,6 +63,9 @@ class GradeViewModel: ViewModel, ViewModelType {
     }
     // MARK: - Output
     struct Output {
+        // 탭
+        let tabCalendar: Driver<Void>
+        let tabStatistics: Driver<Void>
         // 달력 - 캘린더
         /// 캘린더 날짜 설정
         let setCalendarDate: Driver<CalendarDate>
@@ -63,21 +73,30 @@ class GradeViewModel: ViewModel, ViewModelType {
         let dayItems: Observable<[GradeDayItem]>
         /// 캘린더 요일 아이템
         let weekItems: Observable<[String]>
-        /// 캘린더 날짜 선택
-//        let dayItemSelected: Driver<IndexPath>
         /// 이전 달 이동
         let setLastMonth: Driver<CalendarDate>
         /// 다음 달 이동
         let setNextMonth: Driver<CalendarDate>
         /// 캘린더 날짜 개수
         let countDayItems: Driver<Int>
+        
+        // 달력 - 투두 리스트
         /// 투두 리스트
         let todoItems: Observable<[TodoListModel]>
         /// 투두 리스트 갯수
         let countTodoItems: Driver<Int>
-//        var tabAction = PublishRelay<Bool>()
-//        var todoListData: Driver<[TodoListModel]>? // 투두리스트 더미 데이터모델
-//        var cellItemCount = PublishRelay<Bool>()
+        
+        // 통계 - 월간 평가
+        /// 캘린더 날짜 설정
+        let setSttCalendarDate: Driver<CalendarDate>
+        /// 이전 달 이동
+        let setSttLastMonth: Driver<CalendarDate>
+        /// 다음 달 이동
+        let setSttNextMonth: Driver<CalendarDate>
+        /// 월간 평가 데이터
+        let sttMonthlyItems: Observable<[StatisticsMontlyItem]>
+        /// 월간 평가 개수
+        let countSttMonthly: Driver<Int>
 //        var reportListData: Driver<[ReportModel]>?
 //        var reportBottomData: Driver<[ReportBottomModel]>?
 //        var statisticsPrev: Driver<Void>
@@ -86,12 +105,17 @@ class GradeViewModel: ViewModel, ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        // 로드 캘린더 날짜
+        
+        // MARK: - 공통
+        // 달력 - 캘린더 날짜
         let setCalendarDate = BehaviorRelay<CalendarDate>(value: CalendarDate())
-        // 캘린더 날짜 목록
+        // 달력 - 캘린더 날짜 목록
         let dayList = BehaviorRelay<[String]>(value: [])
-        // 선택 날짜
+        // 달력 - 선택 날짜
         let selectedDate = BehaviorRelay<String>(value: "")
+    
+        // 달력 - 캘린더 날짜
+        let setSttCalendarDate = BehaviorRelay<CalendarDate>(value: CalendarDate())
         
         self.mainTabHandler.skip(1)
             .distinctUntilChanged()
@@ -99,18 +123,22 @@ class GradeViewModel: ViewModel, ViewModelType {
             .mapToVoid()
             .subscribe(onNext: {
                 setCalendarDate.accept(setCalendarDate.value)
-                selectedDate.accept(selectedDate.value)
                 dayList.accept(dayList.value)
+                selectedDate.accept(selectedDate.value)
             }).disposed(by: disposeBag)
         
         // 캘린더 로드
         let loadCalendar = input.loadCalendar.asObservable().share()
         loadCalendar
             .subscribe(onNext: { date in
+                // 달력
                 setCalendarDate.accept(date)
                 selectedDate.accept(self.getStrDate(date: date))
+                // 통계
+                setSttCalendarDate.accept(date)
             }).disposed(by: disposeBag)
         
+        // MARK: - 달력 탭
         input.loadDayList
             .drive(onNext: { list in
                 dayList.accept(list)
@@ -155,7 +183,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 캘린더 API Request
         let requestCalendarDate = setCalendarDate.debug()
             .flatMapLatest { date -> Observable<GradeCalendar> in
-                return self.reqeustGradeCalendar(year: date.year, month: date.month)
+                return self.requestGradeCalendar(year: date.year, month: date.month)
             }.share()
         
         // 캘린더 콜렉션뷰 Item 세팅
@@ -189,102 +217,82 @@ class GradeViewModel: ViewModel, ViewModelType {
         let countTodoItems = todoItems
             .map { return $0.count }
         
-        return Output(setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
-                      dayItems: dayItems,
-                      weekItems: input.loadWeekDay.asObservable(),
-                      setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
-                      setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
-                      countDayItems: countDayItems.asDriverOnErrorJustComplete(),
-                      todoItems: todoItems,
-                      countTodoItems: countTodoItems.asDriverOnErrorJustComplete())
+        // MARK: - 통계 탭
+        // 다음 달
+        let setSttLastMonth = input.btnSttPrevTapped.asObservable()
+            .map { _ -> CalendarDate in
+                return setSttCalendarDate.value
+            }
         
-//        let requestGetDiary = selectedDate
-//            .flatMapLatest { date -> Observable<Diary> in
-//                return self.requestGetDiary(date: date)
-//            }
+        // 이전 달
+        let setSttNextMonth = input.btnSttNextTapped.asObservable()
+            .map { _ -> CalendarDate in
+                return setSttCalendarDate.value
+            }
         
-//        let tabAction = PublishRelay<Bool>()
-//
-//        input.tabAction?.drive { bool in
-//            if bool {
-//                tabAction.accept(true)
-//            } else {
-//                tabAction.accept(false)
-//            }
-//        }.disposed(by: disposeBag)
-//
-//        let todoListData = todoList()
-//
-//        let cellItemCount = PublishRelay<Bool>()
-//        cellItemCount.accept((self.cellCount != 0))
-//
-//        let ratingData = ratingList()
-//        let reportBottomData = statisticsList()
-//
-//        return Output(tabAction: tabAction, todoListData: todoListData.asDriver(), cellItemCount: cellItemCount, reportListData: ratingData.asDriver(), reportBottomData: reportBottomData, statisticsPrev: input.statisticsPrev, statisticsNext: input.statisticsNext, awardTap: input.awardTap)
-    }
-//    // 통계페이지 등급 더미
-//    func ratingList() -> Driver<[ReportModel]> {
-//        let returnList = BehaviorRelay<[ReportModel]>(value: [])
-//        var list: [ReportModel] = []
-//        for _ in 0...3 {
-//            var model = ReportModel()
-//            model.rating = "수"
-//            list.append(model)
-//        }
-//        returnList.accept(list)
-//        self.cellCount = list.count
-//        return returnList.asDriver()
-//    }
-//    // 통계페이지 통계 더미
-//    func statisticsList() -> Driver<[ReportBottomModel]> {
-//        let returnList = BehaviorRelay<[ReportBottomModel]>(value: [])
-//        var list: [ReportBottomModel] = []
-//        for i in 0...5 {
-//            var model = ReportBottomModel()
-//            if i == 0 {
-//                model.days = 40
-//            } else if i == 1 {
-//                model.days = 12
-//            } else if i == 2 {
-//                model.days = 23
-//            } else if i == 3 {
-//                model.days = 14
-//            } else if i == 4 {
-//                model.count = 9
-//            } else {
-//                model.percent = 36
-//            }
-//            list.append(model)
-//        }
-//        returnList.accept(list)
-//        return returnList.asDriver()
-//    }
-//    func statisticsPrevMonth(month: Int, year: Int) -> [String] {
-//        var st = ""
-//        var month = month
-//        var year = year
-//        month -= 1
-//        if month == 0 {
-//            month = 12
-//            year -= 1
-//        }
-//        st = "\(year)년 \(month)월"
-//        return [st,"\(month)","\(year)"]
-//    }
-//    func statisticsNextMonth(month: Int, year: Int) -> [String] {
-//        var st = ""
-//        var month = month
-//        var year = year
-//        month += 1
-//        if month == 13 {
-//            month = 1
-//            year += 1
-//        }
-//        st = "\(year)년 \(month)월"
-//        return [st, "\(month)", "\(year)"]
-//    }
-    
+        // 캘린더 달 적용
+        let setSttCalendarMonth = input.setSttCalendarMonth.asObservable().share()
+        setSttCalendarMonth.skip(1)
+            .map { month -> CalendarDate in
+                var date = setSttCalendarDate.value
+                date.month = month
+                return date
+            }
+            .subscribe(onNext: { date in
+                setSttCalendarDate.accept(date)
+            }).disposed(by: disposeBag)
+        
+        // 캘린더 년 적용
+        let setSttCalendarYear = input.setSttCalendarYear.asObservable().share()
+        setSttCalendarYear.skip(1)
+            .map { year -> CalendarDate in
+                var date = setSttCalendarDate.value
+                date.year = year
+                return date
+            }
+            .subscribe(onNext: { date in
+                setSttCalendarDate.accept(date)
+            }).disposed(by: disposeBag)
+        
+        // 월간 평가 API Request
+        let requestStatisticsMonthly = setSttCalendarDate
+            .flatMapLatest { date -> Observable<StatisticsMonthly> in
+                return self.requestStatisticsMonthly(year: date.year, month: date.month)
+            }.share()
+        
+        let arrStatisticsMonthly = requestStatisticsMonthly
+            .map { return $0.arrData ?? [] }
+            .filter { $0.count > 0 }
+            .flatMapLatest { arrData -> Observable<[StatisticsMonthlyData]> in
+                return Observable.just(arrData)
+            }.share()
+        
+        let sttMonthlyItems = arrStatisticsMonthly
+            .flatMapLatest { arrData -> Observable<[StatisticsMontlyItem]> in
+                return self.getStatisticsMonthlyItems(arrData: arrData)
+            }.share()
+        
+        let countSttMonthly = sttMonthlyItems
+            .map { return $0.count }
+        
+        return Output(
+                    tabCalendar: input.tabCalendar,
+                    tabStatistics: input.tabStatistics,
+                    setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
+                    dayItems: dayItems,
+                    weekItems: input.loadWeekDay.asObservable(),
+                    setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
+                    setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
+                    countDayItems: countDayItems.asDriverOnErrorJustComplete(),
+                    todoItems: todoItems,
+                    countTodoItems: countTodoItems.asDriverOnErrorJustComplete(),
+                    setSttCalendarDate: setSttCalendarDate.asDriverOnErrorJustComplete(),
+                    setSttLastMonth: setSttLastMonth.asDriverOnErrorJustComplete(),
+                    setSttNextMonth: setSttNextMonth.asDriverOnErrorJustComplete(),
+                    sttMonthlyItems: sttMonthlyItems,
+                    countSttMonthly: countSttMonthly.asDriverOnErrorJustComplete()
+        )
+    }    
 }
 
 extension GradeViewModel {
@@ -331,14 +339,56 @@ extension GradeViewModel {
         
         return "\(strYear)-\(strMonth)-\(strDay)"
     }
+    
+    func getStatisticsMonthlyItems(arrData: [StatisticsMonthlyData]) -> Observable<[StatisticsMontlyItem]> {
+        return Observable<[StatisticsMontlyItem]>.create { observer -> Disposable in
+            var items = [StatisticsMontlyItem]()
+            
+            for data in arrData {
+                                
+                var week = ""
+                switch data.weekOfMonth {
+                case 1: week = "첫째주"
+                case 2: week = "둘째주"
+                case 3: week = "셋째주"
+                case 4: week = "넷째주"
+                case 5: week = "다섯째주"
+                case 6: week = "여섯째주"
+                default: week = ""
+                }
+                
+                var grade = ""
+                switch data.gradeOfWeek {
+                case 1: grade = "수"
+                case 2: grade = "우"
+                case 3: grade = "미"
+                case 4: grade = "양"
+                case 5: grade = "가"
+                default: grade = ""
+                }
+                
+                let item = StatisticsMontlyItem(week: week, grade: grade)
+                items.append(item)
+            }
+            
+            observer.onNext(items)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+    }
 }
 
 // MARK: - API
 extension GradeViewModel {
     
-    private func reqeustGradeCalendar(year: Int, month: Int) -> Observable<GradeCalendar> {
+    private func requestGradeCalendar(year: Int, month: Int) -> Observable<GradeCalendar> {
         let request = GradeCalendarRequest(retrieveYear: year, retrieveMonth: month)
         return self.provider.gradeService.calendar(request: request)
+    }
+    
+    private func requestStatisticsMonthly(year: Int, month: Int) -> Observable<StatisticsMonthly> {
+        let request = StatisticsMonthlyRequest(retrieveYear: year, retrieveMonth: month)
+        return self.provider.gradeService.monthly(request: request)
     }
     
     private func requestSchedule(date: String) -> Observable<[TodoListModel]> {
@@ -389,4 +439,9 @@ struct GradeDayItem {
     var day: GradeDay?
     var isToday: Bool
     var isThisMonth: Bool
+}
+
+struct StatisticsMontlyItem {
+    let week: String
+    let grade: String
 }

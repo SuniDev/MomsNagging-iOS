@@ -45,9 +45,9 @@ class GradeService {
             .asObservable()
     }
     
-    func monthly(request: GradeMonthlyRequest) -> Observable<GradeMonthly> {
+    func monthly(request: StatisticsMonthlyRequest) -> Observable<StatisticsMonthly> {
         return networking.request(.gradeMonthly(request))
-            .map(to: GradeMonthly.self)
+            .map(to: StatisticsMonthly.self)
             .asObservable()
     }
     
