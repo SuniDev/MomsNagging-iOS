@@ -83,6 +83,7 @@ internal enum Asset {
     internal static let loginKakaoHighlight = ImageAsset(name: "login_kakao_highlight")
     internal static let logo = ImageAsset(name: "logo")
     internal static let logoLight = ImageAsset(name: "logo_light")
+    internal static let mainEmptyImage = ImageAsset(name: "mainEmptyImage")
     internal static let myTipAngryMom = ImageAsset(name: "my_tip_angryMom")
     internal static let myTipArrow = ImageAsset(name: "my_tip_arrow")
     internal static let myTipCoolMom = ImageAsset(name: "my_tip_coolMom")

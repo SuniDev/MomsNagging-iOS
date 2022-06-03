@@ -9,12 +9,18 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+var globalCoachMarkStatusCheck: Bool?
 class MainContainerViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     
     var tabHandler = PublishRelay<Int>()
     var testOb = PublishSubject<Bool>()
+    
+    init(coachMarkStatus: Bool?=false) {
+        globalCoachMarkStatusCheck = coachMarkStatus
+        Log.debug("globalCoachMarkStatusCheck", "\(globalCoachMarkStatusCheck)")
+    }
         
     // MARK: - Input
     struct Input {

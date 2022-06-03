@@ -24,7 +24,7 @@ class HomeViewModel: BaseViewModel, ViewModelType {
     var toggleCancelOb = PublishSubject<Void>()
     var delaySuccessOb = PublishSubject<Void>()
     var arraySuccessOb = PublishSubject<Void>()
-    
+    var emptyViewStatusOb = PublishSubject<Bool>()
     override init() {
     }
     
@@ -183,6 +183,11 @@ extension HomeViewModel {
                             model.originalId = item.dictionary?["originalId"]?.intValue ?? 0
                             self.todoListData.append(model)
                         }
+                    }
+                    if self.todoListData.count == 0 {
+                        self.emptyViewStatusOb.onNext(false)
+                    } else {
+                        self.emptyViewStatusOb.onNext(true)
                     }
                     
                     self.todoListDataOB.accept(self.todoListData)

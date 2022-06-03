@@ -57,7 +57,7 @@ class CoachMarkViewModel: BaseViewModel, ViewModelType {
             coachMarkIndex.filter({ $0 == 7 }).asObservable().mapToVoid())
             .map { _ -> MainContainerViewModel in
                 Log.debug("goToMain")
-                let viewModel = MainContainerViewModel()
+                let viewModel = MainContainerViewModel(coachMarkStatus:true)
                 return viewModel
             }
         
