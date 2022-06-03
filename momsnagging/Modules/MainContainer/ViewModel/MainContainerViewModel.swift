@@ -99,7 +99,7 @@ extension MainContainerViewModel {
                 observer.onCompleted()
             }
             
-            if CommonUser.isNewEvaluation == false {
+            if CommonUser.isNewEvaluation != true {
                 observer.onNext(false)
                 observer.onCompleted()
             }
