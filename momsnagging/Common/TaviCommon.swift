@@ -407,3 +407,53 @@ extension UIWindow {
         }
     }
 }
+
+class LoadingHUD {
+    private static let sharedInstance = LoadingHUD()
+    
+    private var backgroundView: UIView?
+    private var popupView: UIImageView?
+    private var loadingLabel: UILabel?
+    
+    class func show() {
+        let backgroundView = UIView(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
+        
+        let popupView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
+        popupView.animationImages = LoadingHUD.getAnimationImageArray()
+        popupView.animationDuration = 0.8
+        popupView.animationRepeatCount = 0
+        
+        if let window = UIApplication.shared.keyWindow {
+            window.addSubview(backgroundView)
+            window.addSubview(popupView)
+            
+            backgroundView.frame = CGRect(x: 0, y: 0, width: window.frame.maxX, height: window.frame.maxY)
+            backgroundView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)
+            
+            popupView.center = window.center
+            popupView.startAnimating()
+            
+            sharedInstance.backgroundView?.removeFromSuperview()
+            sharedInstance.popupView?.removeFromSuperview()
+            sharedInstance.backgroundView = backgroundView
+            sharedInstance.popupView = popupView
+        }
+    }
+    
+    class func hide() {
+        if let popupView = sharedInstance.popupView,
+        let backgroundView = sharedInstance.backgroundView {
+            popupView.stopAnimating()
+            backgroundView.removeFromSuperview()
+            popupView.removeFromSuperview()
+        }
+    }
+
+    private class func getAnimationImageArray() -> [UIImage] {
+        var animationArray: [UIImage] = []
+        animationArray.append(UIImage(named: "loading1")!)
+        animationArray.append(UIImage(named: "loading2")!)
+        animationArray.append(UIImage(named: "loading3")!)
+        return animationArray
+    }
+}
