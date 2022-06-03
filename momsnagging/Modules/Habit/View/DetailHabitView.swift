@@ -44,6 +44,8 @@ class DetailHabitView: BaseViewController, Navigatable {
     
     lazy var bottomSheet = CommonBottomSheet()
     
+    var tempName: String = ""
+    
     /// 습관 이름
     lazy var detailNameFrame = UIView()
     lazy var viewNameTitle = UIView()
@@ -375,8 +377,14 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.btnMore.isHidden = isWriting
                 self.btnDone.isHidden = !isWriting
                 
+                if viewModel.isRecommendHabitBool {
+                    self.tfName.isEnabled = false
+                    self.tfName.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+                } else {
+                    self.tfName.isEnabled = true
+                }
+                
                 // 컨텐츠 변경
-                self.tfName.isEnabled = isWriting
                 self.btnPerformTime.isEnabled = isWriting
                 self.btnCycleWeek.isEnabled = isWriting
                 self.btnCycleNumber.isEnabled = isWriting
@@ -391,6 +399,15 @@ class DetailHabitView: BaseViewController, Navigatable {
                     self.hideModifyEmptyView.isHidden = false
                 }
             }).disposed(by: disposeBag)
+        
+        // 텍스트 필드 수정 가능 여부
+        viewModel.isRecommendHabit.subscribe(onNext: { bool in
+            if bool {
+                self.tfName.isEnabled = !bool
+            } else {
+                self.tfName.isEnabled = bool
+            }
+        }).disposed(by: self.disposeBag)
         
         /// 뒤로 가기
         output.showBackAlert
@@ -424,7 +441,7 @@ class DetailHabitView: BaseViewController, Navigatable {
                     self.tfName.normal()
                 }
             }).disposed(by: disposeBag)
-        
+    
         output.textHint
             .drive(onNext: { type in
                 switch type {
@@ -589,6 +606,16 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         viewModel.modifySuccessOb.subscribe(onNext: { _ in
             self.navigator.pop(sender: self)
+        }).disposed(by: disposeBag)
+        
+        output.recommendedName.drive(onNext: { st in
+            self.tfName.text = st
+            self.tfName.normal()
+        }).disposed(by: disposeBag)
+        
+        viewModel.recommendHabitNameOb.subscribe(onNext: { st in
+            Log.debug("recommendHabitNameObrecommendHabitNameOb", "\(st)")
+            self.tfName.text = st
         }).disposed(by: disposeBag)
         
     }

@@ -33,9 +33,11 @@ class DiaryDay: ModelType {
     
     var diaryExists: Bool?
     var diaryDate: String?
+    var holiday: Bool?
 
     required init(jsonData: JSON) {
         diaryExists = jsonData["diaryExists"].bool
         diaryDate = jsonData["diaryDate"].string
+        holiday = jsonData["holiday"].bool
     }
 }

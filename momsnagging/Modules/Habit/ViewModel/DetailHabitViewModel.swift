@@ -28,7 +28,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     var provider = MoyaProvider<ScheduleService>()
     var homeViewModel: HomeViewModel!
     private let isNew: BehaviorRelay<Bool>
-    private let isRecommendHabit: BehaviorRelay<Bool>
+    let isRecommendHabit: BehaviorRelay<Bool>
     private var cycleWeek = BehaviorRelay<[String]>(value: ["월", "화", "수", "목", "금", "토", "일"])
     private var cycleNumber = BehaviorRelay<[String]>(value: ["1", "2", "3", "4", "5", "6"])
     private var dateParam: String?
@@ -36,16 +36,27 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     var routineInfoOb = PublishSubject<TodoInfoResponseModel>()
     var todoModel: TodoListModel?
     var modifySuccessOb = PublishSubject<Void>()
+    var recommendHabitNameOb = PublishSubject<String>()
+    var recommendHabitName: String?
+    var isRecommendHabitBool: Bool!
     
-    init(isNew: Bool, isRecommendHabit: Bool, dateParam: String, homeViewModel: HomeViewModel, todoModel: TodoListModel?=nil) {
+    init(isNew: Bool, isRecommendHabit: Bool, dateParam: String, homeViewModel: HomeViewModel, todoModel: TodoListModel?=nil, recommendHabitName: String?=nil) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
         self.isRecommendHabit = BehaviorRelay<Bool>(value: isRecommendHabit)
+        self.isRecommendHabitBool = isRecommendHabit
         self.dateParam = dateParam
         self.homeViewModel = homeViewModel
         if let todoModel = todoModel {
             self.todoModel = todoModel
+//            self.modifyTime = todoModel.scheduleTime
+//            self.modifyNumber = todoModel.goalCount
+//            self.modifyName = todoModel.scheduleName
         }
-        Log.debug("todoModel Id", "\(todoModel?.id ?? 0)")
+        if let recommendHabitName = recommendHabitName {
+            self.recommendHabitName = recommendHabitName
+            self.modifyName = recommendHabitName
+        }
+        Log.debug("todoModel Id", "\(todoModel?.id ?? 0), 습관이름 : \(recommendHabitName ?? "")")
     }
     
     private var param = CreateTodoRequestModel()
@@ -175,6 +186,8 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let successDoneAddHabit: Driver<Void>
         /// 습관 수정 완료
         let successDoneModifyHabit: Driver<Void>
+        /// 추천습관 이름
+        let recommendedName: Driver<String>
     }
     
     func transform(input: Input) -> Output {
@@ -184,6 +197,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let isNew = self.isNew
         isNew
             .bind(onNext: {
+                Log.debug("isNew~~", "\($0)")
                 isWriting.accept($0)
                 self.isModify = $0
             }).disposed(by: disposeBag)
@@ -234,12 +248,18 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let textName = BehaviorRelay<String>(value: "")
         let isEditingName = BehaviorRelay<Bool>(value: false)
         let textHint = BehaviorRelay<TextHintType>(value: .none)
+        let recommendedName = BehaviorRelay<String>(value: self.recommendHabitName ?? "")
         
         input.textName
             .drive(onNext: { text in
-                textName.accept(text)
+                if self.recommendHabitName != nil {
+                    textName.accept(self.recommendHabitName ?? "")
+                } else {
+                    textName.accept(text)
+                }
                 self.param.scheduleName = text
                 self.modifyName = text
+                Log.debug("modifyName", "\(text)")
             }).disposed(by: disposeBag)
         
         input.editingDidBeginName
@@ -253,7 +273,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 isEditingName.accept(false)
                 textName.accept(textName.value)
                 self.param.scheduleName = textName.value
-                self.modifyName = textName.value
             }).disposed(by: disposeBag)
         
         let isEmptyName = input.editingDidEndName
@@ -291,6 +310,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 textPerformTime.accept(text ?? "")
                 self.param.scheduleTime = text ?? ""
                 self.modifyTime = text ?? ""
+                Log.debug("modifyTime", "\(text ?? "")")
             }).disposed(by: disposeBag)
         
         /// 이행 주기
@@ -384,19 +404,37 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 self.modifyAlarm = "\(TaviCommon.alarmTimeDateToStringFormatHHMM(date: date)):00"
             }).disposed(by: disposeBag)
         
-        let canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
-            .map({ isValidName, textPerformTime, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
-                if isValidName && !textPerformTime.isEmpty && !selectedCycleItems.isEmpty {
-                    if !isNaggingPush {
-                        return true
-                    } else {
-                        if timeNaggingPush != nil {
+        var canBeDone: Observable<Bool>?
+        
+        if isRecommendHabitBool {
+            canBeDone = Observable.combineLatest(textPerformTime.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
+                .map({ textPerformTime, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
+                    if !textPerformTime.isEmpty && !selectedCycleItems.isEmpty {
+                        if !isNaggingPush {
                             return true
+                        } else {
+                            if timeNaggingPush != nil {
+                                return true
+                            }
                         }
                     }
-                }
-                return false
-            })
+                    return false
+                })
+        } else {
+            canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
+                .map({ isValidName, textPerformTime, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
+                    if isValidName && !textPerformTime.isEmpty && !selectedCycleItems.isEmpty {
+                        if !isNaggingPush {
+                            return true
+                        } else {
+                            if timeNaggingPush != nil {
+                                return true
+                            }
+                        }
+                    }
+                    return false
+                })
+        }
         
         // TODO: Request 습관 추가 API
         let done = input.btnDoneTapped.asObservable().share()
@@ -406,7 +444,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let successDoneAddHabit = done
             .flatMapLatest { () -> Observable<Bool> in
                 if !(self.isModify) {
-                    Log.debug("[Log~~~~~]", "수정 완료 클릭")
                     self.requestModifyRoutine(scheduleId: self.todoModel?.id ?? 0)
                 } else {
                     self.requestRegistHabit()
@@ -424,7 +461,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
             .subscribe(onNext: {
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
-
+        
         return Output(showBottomSheet: input.btnMoreTapped,
                       hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
@@ -438,9 +475,10 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                       cycleItems: cycleItems,
                       isNaggingPush: isNaggingPush.asDriverOnErrorJustComplete(),
                       setTimeNaggingPush: timeNaggingPush.skip(1).distinctUntilChanged().asDriverOnErrorJustComplete(),
-                      canBeDone: canBeDone.asDriverOnErrorJustComplete(),
+                      canBeDone: canBeDone!.asDriverOnErrorJustComplete(),
                       successDoneAddHabit: successDoneAddHabit.asDriverOnErrorJustComplete(),
-                      successDoneModifyHabit: successDoneModifyHabit.asDriverOnErrorJustComplete()
+                      successDoneModifyHabit: successDoneModifyHabit.asDriverOnErrorJustComplete(),
+                      recommendedName: recommendedName.asDriverOnErrorJustComplete()
         )
     }
 }
@@ -449,6 +487,10 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
 extension DetailHabitViewModel {
     func requestRegistHabit() {
         param.scheduleDate = self.dateParam ?? ""
+        if self.recommendHabitName != nil || self.recommendHabitName != "" {
+            self.param.scheduleName = self.recommendHabitName
+        }
+        Log.debug("param.scheduleName", ":  \(self.param.scheduleName)")
         provider.request(.createTodo(param: param), completion: { res in
             switch res {
             case .success(let result):
@@ -492,6 +534,7 @@ extension DetailHabitViewModel {
                     
                     self.routineInfoOb.onNext(model)
                     Log.debug("todoDetailLookUp json:", "\(json)")
+                    self.recommendHabitNameOb.onNext(self.recommendHabitName ?? "")
                 } catch let error {
                     Log.error("todoDetailLookUp error", "\(error)")
                 }
@@ -509,6 +552,7 @@ extension DetailHabitViewModel {
             model.op = "replace"
             model.path = "/scheduleName"
             model.value = "\(modifyName!)"
+//            model.value = "가나다라마자사아아아!!!"
             param.append(model)
         }
         if modifyTime != nil {

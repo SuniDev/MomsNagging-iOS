@@ -13,4 +13,7 @@ struct RecommendHabitTitle {
     var normalColor: String?
     var highlightColor: String?
     var image: UIImage?
+    //API의 키값 추가를 위해 id, categoryName 를 추가합니당
+    var id: Int?
+    var categoryName: String?
 }
