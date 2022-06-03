@@ -403,9 +403,9 @@ class DetailHabitView: BaseViewController, Navigatable {
         // 텍스트 필드 수정 가능 여부
         viewModel.isRecommendHabit.subscribe(onNext: { bool in
             if bool {
-                self.tfName.isEnabled = !bool
-            } else {
                 self.tfName.isEnabled = bool
+            } else {
+                self.tfName.isEnabled = !bool
             }
         }).disposed(by: self.disposeBag)
         
@@ -617,6 +617,12 @@ class DetailHabitView: BaseViewController, Navigatable {
             Log.debug("recommendHabitNameObrecommendHabitNameOb", "\(st)")
             self.tfName.text = st
         }).disposed(by: disposeBag)
+        
+        if self.tfName.backgroundColor == UIColor(asset: Asset.Color.monoLight010) {
+            self.tfName.isEnabled = false
+        } else {
+            self.tfName.isEnabled = true
+        }
         
     }
     

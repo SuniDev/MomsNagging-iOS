@@ -48,9 +48,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         self.homeViewModel = homeViewModel
         if let todoModel = todoModel {
             self.todoModel = todoModel
-//            self.modifyTime = todoModel.scheduleTime
-//            self.modifyNumber = todoModel.goalCount
-//            self.modifyName = todoModel.scheduleName
         }
         if let recommendHabitName = recommendHabitName {
             self.recommendHabitName = recommendHabitName

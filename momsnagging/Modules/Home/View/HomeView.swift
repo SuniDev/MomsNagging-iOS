@@ -30,7 +30,6 @@ class HomeView: BaseViewController, Navigatable {
         }
         self.todoListType.removeAll()
         viewModel.requestTodoListLookUp(date: todoListParam())
-        print("test!!!! : \(CoachMarkStatus.bool)")
 //        Log.debug("CommonUser.authorization", "Bearer \(CommonUser.authorization)")
 //        CommonView.showAlert(vc: self, type: .oneBtn, message: "키키")
         
