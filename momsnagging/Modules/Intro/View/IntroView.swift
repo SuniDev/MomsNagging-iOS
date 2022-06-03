@@ -24,7 +24,7 @@ class IntroView: BaseViewController, Navigatable {
     })
     
     lazy var imgvLogo = UIImageView().then({
-        $0.image = Asset.Assets.logoLight.image
+        $0.image = Asset.Assets.introLogo.image
     })
     
     // MARK: - init
@@ -59,7 +59,7 @@ class IntroView: BaseViewController, Navigatable {
         })
         
         imgvLogo.snp.makeConstraints({
-            $0.center.equalTo(viewBackground)
+            $0.center.equalTo(self.view.safeAreaLayoutGuide)
         })
     }
     

@@ -60,6 +60,7 @@ internal enum Asset {
     internal static let recommendHabit4 = ImageAsset(name: "recommend_habit_4")
     internal static let recommendHabit5 = ImageAsset(name: "recommend_habit_5")
     internal static let recommendHabit6 = ImageAsset(name: "recommend_habit_6")
+    internal static let introLogo = ImageAsset(name: "intro_logo")
     internal static let idsettingConfirm = ImageAsset(name: "idsetting_Confirm")
     internal static let idsettingAnswer = ImageAsset(name: "idsetting_answer")
     internal static let idsettingConfirmDis = ImageAsset(name: "idsetting_confirm_dis")

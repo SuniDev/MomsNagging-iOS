@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_light" translatesAutoresizingMaskIntoConstraints="NO" id="BvD-hj-SzS">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="intro_logo" translatesAutoresizingMaskIntoConstraints="NO" id="BvD-hj-SzS">
                                 <rect key="frame" x="107" y="353" width="200" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BvD-hj-SzS" secondAttribute="height" multiplier="1:1" id="K6f-nT-knE"/>
@@ -38,7 +38,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo_light" width="200" height="200"/>
+        <image name="intro_logo" width="200" height="200"/>
         <namedColor name="pri_main">
             <color red="0.95686274509803926" green="0.24313725490196078" blue="0.31764705882352939" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
