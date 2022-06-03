@@ -83,6 +83,7 @@ internal enum Asset {
     internal static let loginKakaoHighlight = ImageAsset(name: "login_kakao_highlight")
     internal static let logo = ImageAsset(name: "logo")
     internal static let logoLight = ImageAsset(name: "logo_light")
+    internal static let mainEmptyImage = ImageAsset(name: "mainEmptyImage")
     internal static let myTipAngryMom = ImageAsset(name: "my_tip_angryMom")
     internal static let myTipArrow = ImageAsset(name: "my_tip_arrow")
     internal static let myTipCoolMom = ImageAsset(name: "my_tip_coolMom")
@@ -108,7 +109,6 @@ internal enum Asset {
     internal static let gradeLevel3 = ImageAsset(name: "grade_level_3")
     internal static let gradeLevel4 = ImageAsset(name: "grade_level_4")
     internal static let gradeLevel5 = ImageAsset(name: "grade_level_5")
-      internal static let mainEmptyImage = ImageAsset(name: "mainEmptyImage")
   }
   internal enum Color {
     internal static let black = ColorAsset(name: "black")

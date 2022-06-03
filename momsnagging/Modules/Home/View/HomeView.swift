@@ -196,12 +196,15 @@ class HomeView: BaseViewController, Navigatable {
         $0.register(TodoCell.self, forCellReuseIdentifier: "TodoCell")
         $0.register(RoutineCountCell.self, forCellReuseIdentifier: "RoutineCountCell")
     })
+    var listEmptyFrame = UIView()
     
     // MARK: - InitUI
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         headTitleLbl.text = calendarViewModel.todayFormatteryyMMdd()
         headFrame = CommonView.dropDownHeadFrame(leftIcBtn: listBtn, headTitle: headTitleLbl, dropDownImageView: headDropDownIc, dropDownBtn: headDropDownBtn, rightIcBtn: diaryBtn)
+        listEmptyFrame = listEmptyView()
+        listEmptyFrame.isHidden = true
         
         calendarYear = calendarViewModel.getYear()
         calendarMonth = calendarViewModel.getMonth()
@@ -589,6 +592,22 @@ class HomeView: BaseViewController, Navigatable {
         }
         todoListLookUpParam = "\(calendarYear!)-\(month)-\(day)"
         return "\(calendarYear!)-\(month)-\(day)"
+    }
+    
+    func listEmptyView() -> UIView {
+        let view = UIView().then({
+            $0.backgroundColor = .clear
+        })
+        let image = UIImageView().then({
+            $0.image = UIImage(asset: Asset.Assets.mainEmptyImage)
+        })
+        view.addSubview(image)
+        image.snp.makeConstraints({
+            $0.width.equalTo(216)
+            $0.height.equalTo(228)
+            $0.center.equalTo(view.snp.center)
+        })
+        return view
     }
     
 }

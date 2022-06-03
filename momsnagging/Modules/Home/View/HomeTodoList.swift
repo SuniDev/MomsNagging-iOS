@@ -26,6 +26,7 @@ extension HomeView {
         })
         view.addSubview(tableViewTopDivider)
         view.addSubview(todoListTableView)
+        view.addSubview(listEmptyFrame)
         todoListTableView.addSubview(bottomEmptyImge)
         todoListTableView.contentInset.bottom = 100
         tableViewTopDivider.snp.makeConstraints({
@@ -39,6 +40,9 @@ extension HomeView {
             $0.leading.equalTo(view.snp.leading)
             $0.trailing.equalTo(view.snp.trailing)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        })
+        listEmptyFrame.snp.makeConstraints({
+            $0.edges.equalTo(todoListTableView.snp.edges)
         })
         bottomEmptyImge.snp.makeConstraints({
             $0.top.equalTo(todoListTableView.snp.bottom).offset(-100)
@@ -365,6 +369,14 @@ extension HomeView {
 //            self.moveList[dIndexPath.row] = sRow
 //            print("moveRowAt ! \(sIndexPath),\(dIndexPath),\n \(self.todoList),\n\n \(self.moveList)")
         }.disposed(by: disposedBag)
+        
+        viewModel.emptyViewStatusOb.subscribe(onNext: { bool in
+            if globalCoachMarkStatusCheck ?? false {
+                self.listEmptyFrame.isHidden = bool
+            } else {
+                self.listEmptyFrame.isHidden = true
+            }
+        }).disposed(by: disposedBag)
         
         todoListTableView.rx.setDelegate(self).disposed(by: disposedBag)
         todoListTableView.dragDelegate = self
