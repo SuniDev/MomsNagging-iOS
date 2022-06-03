@@ -231,6 +231,7 @@ class AddHabitView: BaseViewController, Navigatable {
         
         output.goToBack
             .drive(onNext: {
+                
                 self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
         

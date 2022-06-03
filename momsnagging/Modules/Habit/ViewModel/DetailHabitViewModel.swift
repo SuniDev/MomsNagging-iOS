@@ -486,6 +486,9 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
 // MARK: - Service
 extension DetailHabitViewModel {
     func requestRegistHabit() {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         param.scheduleDate = self.dateParam ?? ""
         if self.recommendHabitName != nil || self.recommendHabitName != "" {
             self.param.scheduleName = self.recommendHabitName
@@ -498,17 +501,23 @@ extension DetailHabitViewModel {
                     let json = JSON(try result.mapJSON())
                     Log.debug("createHabit json:", "\(json)")
                     self.homeViewModel.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("createHabit error", "\(error)")
+                    LoadingHUD.hide()
                     return
                 }
             case .failure(let error):
                 Log.error("createHabit failure error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }
     
     func requestRoutineInfo(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         provider.request(.todoDetailLookUp(scheduleId: scheduleId), completion: { res in
             switch res {
             case .success(let result):
@@ -535,16 +544,22 @@ extension DetailHabitViewModel {
                     self.routineInfoOb.onNext(model)
                     Log.debug("todoDetailLookUp json:", "\(json)")
                     self.recommendHabitNameOb.onNext(self.recommendHabitName ?? "")
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("todoDetailLookUp error", "\(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 Log.error("todoDetailLookUp error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }
     
     func requestModifyRoutine(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         param.removeAll()
@@ -624,16 +639,22 @@ extension DetailHabitViewModel {
                     self.modifySuccessOb.onNext(())
                     self.homeViewModel.isEndProgress.onNext(())
                     self.homeViewModel.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("modifyTodo error", "\(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 Log.error("modifyTodo failure error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }
     
     func requestDeleteRoutine(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         provider.request(.deleteTodo(scheduleId: scheduleId), completion: { res in
             switch res {
             case .success(let result):
@@ -642,12 +663,15 @@ extension DetailHabitViewModel {
                     print("deleteTodo json : \(json)")
                     self.modifySuccessOb.onNext(())
                     self.homeViewModel.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("deleteTodo error", "\(error)")
                     self.modifySuccessOb.onNext(())
                     self.homeViewModel.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
+                LoadingHUD.hide()
                 Log.error("deleteTodo failure error", "\(error)")
             }
         })

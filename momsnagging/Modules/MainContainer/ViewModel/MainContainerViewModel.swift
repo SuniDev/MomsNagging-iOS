@@ -11,15 +11,18 @@ import RxCocoa
 
 class MainContainerViewModel: BaseViewModel, ViewModelType {
     
-    var coachMarkStatusCheck: Bool?
+    static var coachMarkStatusCheck: Bool?
     var disposeBag = DisposeBag()
     
     var tabHandler = PublishRelay<Int>()
     var testOb = PublishSubject<Bool>()
     
+    
+    
     init(coachMarkStatus: Bool? = false) {
-        self.coachMarkStatusCheck = coachMarkStatus
+        MainContainerViewModel.coachMarkStatusCheck = coachMarkStatus
     }
+    
         
     // MARK: - Input
     struct Input {
@@ -86,7 +89,7 @@ extension MainContainerViewModel {
     
     func isShowEvaluation() -> Observable<Bool> {
         return Observable<Bool>.create { observer -> Disposable in
-            if self.coachMarkStatusCheck == true {
+            if MainContainerViewModel.coachMarkStatusCheck == true {
                 observer.onNext(false)
                 observer.onCompleted()
             }
@@ -123,4 +126,9 @@ extension MainContainerViewModel {
             return Disposables.create()
         }
     }
+}
+
+
+struct CoachMarkStatus {
+    static var bool = MainContainerViewModel.coachMarkStatusCheck
 }

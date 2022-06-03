@@ -294,6 +294,9 @@ class DetailTodoViewModel: BaseViewModel {
 
 extension DetailTodoViewModel {
     func requestRegistTodo() {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         provider.request(.createTodo(param: param), completion: { res in
             switch res {
             case .success(let result):
@@ -301,18 +304,24 @@ extension DetailTodoViewModel {
                     let json = JSON(try result.mapJSON())
                     Log.debug("createTodo json:", "\(json)")
                     self.homeViewModel?.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("createTodo error", "\(error)")
+                    LoadingHUD.hide()
                     return
                 }
             case .failure(let error):
                 Log.error("createTodo failure error", "\(error)")
+                LoadingHUD.hide()
             }
         })
         Log.debug("requestParamData:", "\(self.param)")
     }
     
     func requestTodoInfo(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         provider.request(.todoDetailLookUp(scheduleId: scheduleId), completion: { res in
             switch res {
             case .success(let result):
@@ -338,11 +347,14 @@ extension DetailTodoViewModel {
                     
                     self.todoInfoOb.onNext(model)
                     Log.debug("todoDetailLookUp json:", "\(json)")
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("todoDetailLookUp error", "\(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 Log.error("todoDetailLookUp error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }
