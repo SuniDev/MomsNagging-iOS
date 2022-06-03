@@ -25,7 +25,10 @@ class HomeViewModel: BaseViewModel, ViewModelType {
     var delaySuccessOb = PublishSubject<Void>()
     var arraySuccessOb = PublishSubject<Void>()
     var emptyViewStatusOb = PublishSubject<Bool>()
-    override init() {
+    var coachMarkStatusCheck: Bool?
+    
+    init(coachMarkStatusCheck: Bool? = false) {
+        self.coachMarkStatusCheck = coachMarkStatusCheck
     }
     
     // MARK: - Input

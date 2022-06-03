@@ -266,7 +266,7 @@ class AddHabitView: BaseViewController, Navigatable {
         
         output.recommendTitleItems
             .bind(to: recommendTitleCollectionView.rx.items(cellIdentifier: recommendTitleIdentifier, cellType: RecommendHabitTitleCell.self)) { _, item, cell in
-                cell.lblTitle.text = item.categoryName
+                cell.lblTitle.text = item.categoryName ?? item.title
                 cell.normalBackgroundColor = UIColor(hexString: item.normalColor ?? "")
                 cell.selectedBackgroundColor = UIColor(hexString: item.highlightColor ?? "")
                 cell.image.image = item.image

@@ -56,8 +56,7 @@ class CoachMarkViewModel: BaseViewModel, ViewModelType {
             input.btnCloseTapped.asObservable(),
             coachMarkIndex.filter({ $0 == 7 }).asObservable().mapToVoid())
             .map { _ -> MainContainerViewModel in
-                Log.debug("goToMain")
-                let viewModel = MainContainerViewModel(coachMarkStatus:true)
+                let viewModel = MainContainerViewModel()
                 return viewModel
             }
         
@@ -70,11 +69,11 @@ class CoachMarkViewModel: BaseViewModel, ViewModelType {
 extension CoachMarkViewModel {
     // TODO: 코치마크용 뷰모델
     private func getMainViewModel() -> MainContainerViewModel {
-        return MainContainerViewModel()
+        return MainContainerViewModel(coachMarkStatus: true)
     }
     
     private func getAddHabitViewModel() -> AddHabitViewModel {
-        return AddHabitViewModel(dateParam: "", homeViewModel: HomeViewModel())
+        return AddHabitViewModel(dateParam: "", homeViewModel: HomeViewModel(), coachMarkStatus: true)
     }
     
     private func getDetailHabitViewModel() -> DetailHabitViewModel {

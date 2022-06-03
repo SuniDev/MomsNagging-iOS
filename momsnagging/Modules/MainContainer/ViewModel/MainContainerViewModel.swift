@@ -9,17 +9,17 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-var globalCoachMarkStatusCheck: Bool?
+
 class MainContainerViewModel: BaseViewModel, ViewModelType {
     
+    var coachMarkStatusCheck: Bool?
     var disposeBag = DisposeBag()
     
     var tabHandler = PublishRelay<Int>()
     var testOb = PublishSubject<Bool>()
     
-    init(coachMarkStatus: Bool?=false) {
-        globalCoachMarkStatusCheck = coachMarkStatus
-        Log.debug("globalCoachMarkStatusCheck", "\(globalCoachMarkStatusCheck)")
+    init(coachMarkStatus: Bool? = false) {
+        self.coachMarkStatusCheck = coachMarkStatus
     }
         
     // MARK: - Input
@@ -87,6 +87,10 @@ extension MainContainerViewModel {
     
     func isShowEvaluation() -> Observable<Bool> {
         return Observable<Bool>.create { observer -> Disposable in
+            if self.coachMarkStatusCheck == true {
+                observer.onNext(false)
+                observer.onCompleted()
+            }
             if let lastCheckDate = Common.getUserDefaultsObject(forKey: .dateLastCheckEvaluation) as? Date {
                 
                 // ======= Test Data Start ============

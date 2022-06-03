@@ -371,7 +371,7 @@ extension HomeView {
         }.disposed(by: disposedBag)
         
         viewModel.emptyViewStatusOb.subscribe(onNext: { bool in
-            if globalCoachMarkStatusCheck ?? false {
+            if self.viewModel.coachMarkStatusCheck == false {
                 self.listEmptyFrame.isHidden = bool
             } else {
                 self.listEmptyFrame.isHidden = true

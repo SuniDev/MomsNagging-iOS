@@ -16,7 +16,8 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
     
     var disposeBag = DisposeBag()
     var provider = MoyaProvider<ScheduleService>()
-
+    
+    var coachMarkStatusCheck: Bool?
     var dateParam: String?
     var homeViewModel: HomeViewModel?
     
@@ -24,9 +25,10 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
     private var hightlightColor: [String] = ["FDC685", "FAC0C5", "C5DE90", "AAC0EB", "D1C0EC", "95E0CA"]
     private var image: [UIImage] = [UIImage(asset: Asset.Assets.recommendHabit1)!, UIImage(asset: Asset.Assets.recommendHabit2)!, UIImage(asset: Asset.Assets.recommendHabit3)!, UIImage(asset: Asset.Assets.recommendHabit4)!, UIImage(asset: Asset.Assets.recommendHabit5)!, UIImage(asset: Asset.Assets.recommendHabit6)!]
     
-    init(dateParam: String, homeViewModel:HomeViewModel) {
+    init(dateParam: String, homeViewModel: HomeViewModel, coachMarkStatus: Bool? = false) {
         self.dateParam = dateParam
         self.homeViewModel = homeViewModel
+        self.coachMarkStatusCheck = coachMarkStatus
     }
     
     // MARK: - Input
@@ -91,30 +93,36 @@ extension AddHabitViewModel {
             
             var getRecommendHabitTitle = [RecommendHabitTitle]()
             
-            self.provider.request(.recommendedHabitCategoryLookUp, completion: { res in
-                switch res {
-                case .success(let result):
-                    do {
-                        let json = JSON(try result.mapJSON())
-                        for (index, item) in json.array!.enumerated() {
-                            getRecommendHabitTitle.append(RecommendHabitTitle.init(title: nil, normalColor: self.normalColor[index], highlightColor: self.hightlightColor[index], image: self.image[index], id: item.dictionary?["id"]?.intValue ?? 0, categoryName: item.dictionary?["categoryName"]?.stringValue ?? ""))
+            if self.coachMarkStatusCheck == true {
+                getRecommendHabitTitle.append(RecommendHabitTitle(title: "생활", normalColor: "FFECD6", highlightColor: "FDC685", image: Asset.Assets.recommendHabit1.image, id: 1, categoryName: "생활"))
+                getRecommendHabitTitle.append(RecommendHabitTitle(title: "운동", normalColor: "FFE8EA", highlightColor: "FAC0C5", image: Asset.Assets.recommendHabit2.image, id: 2, categoryName: "운동"))
+                getRecommendHabitTitle.append(RecommendHabitTitle(title: "성장", normalColor: "E4F2C6", highlightColor: "C5DE90", image: Asset.Assets.recommendHabit3.image, id: 3, categoryName: "성장"))
+                getRecommendHabitTitle.append(RecommendHabitTitle(title: "생산성", normalColor: "CDDCFA", highlightColor: "AAC0EB", image: Asset.Assets.recommendHabit4.image, id: 4, categoryName: "생산성"))
+                getRecommendHabitTitle.append(RecommendHabitTitle(title: "식습관", normalColor: "F1E8FF", highlightColor: "D1C0EC", image: Asset.Assets.recommendHabit5.image, id: 5, categoryName: "식습관"))
+                getRecommendHabitTitle.append(RecommendHabitTitle(title: "기타", normalColor: "CFFFF0", highlightColor: "95E0CA", image: Asset.Assets.recommendHabit6.image, id: 6, categoryName: "기타"))
+                
+                observer.onNext(getRecommendHabitTitle)
+                observer.onCompleted()
+            } else {            
+                self.provider.request(.recommendedHabitCategoryLookUp, completion: { res in
+                    switch res {
+                    case .success(let result):
+                        do {
+                            let json = JSON(try result.mapJSON())
+                            for (index, item) in json.array!.enumerated() {
+                                getRecommendHabitTitle.append(RecommendHabitTitle.init(title: nil, normalColor: self.normalColor[index], highlightColor: self.hightlightColor[index], image: self.image[index], id: item.dictionary?["id"]?.intValue ?? 0, categoryName: item.dictionary?["categoryName"]?.stringValue ?? ""))
+                            }
+                            observer.onNext(getRecommendHabitTitle)
+                            observer.onCompleted()
+                        } catch let error {
+                            print("error : \(error)")
                         }
-                        observer.onNext(getRecommendHabitTitle)
-                        observer.onCompleted()
-                    } catch let error {
-                        print("error : \(error)")
+                    case .failure(let error):
+                        print("failure error : \(error)")
                     }
-                case .failure(let error):
-                    print("failure error : \(error)")
-                }
-            })
+                })
+            }
             return Disposables.create()
-//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생활", normalColor: "FFECD6", highlightColor: "FDC685", image: Asset.Assets.recommendHabit1.image))
-//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "운동", normalColor: "FFE8EA", highlightColor: "FAC0C5", image: Asset.Assets.recommendHabit2.image))
-//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "성장", normalColor: "E4F2C6", highlightColor: "C5DE90", image: Asset.Assets.recommendHabit3.image))
-//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "생산성", normalColor: "CDDCFA", highlightColor: "AAC0EB", image: Asset.Assets.recommendHabit4.image))
-//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "식습관", normalColor: "F1E8FF", highlightColor: "D1C0EC", image: Asset.Assets.recommendHabit5.image))
-//            getRecommendHabitTitle.append(RecommendHabitTitle(title: "기타", normalColor: "CFFFF0", highlightColor: "95E0CA", image: Asset.Assets.recommendHabit6.image))
             
         }
     }
