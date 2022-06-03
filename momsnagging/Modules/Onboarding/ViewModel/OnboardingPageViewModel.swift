@@ -29,6 +29,7 @@ class OnboardingPageViewModel: ViewModel, ViewModelType {
     // MARK: - Output
     struct Output {
         let setPageItemViewModel: Driver<OnboardingItemViewModel>
+        let setData: Driver<Onboarding>
         let appendFirstPage: Driver<Void>
         let isLastPage: Driver<Bool>
         let goToLogin: Driver<LoginViewModel>
@@ -40,7 +41,16 @@ class OnboardingPageViewModel: ViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         let cntPage = BehaviorRelay<Int>(value: 0)
         
-        let getDatas = self.getOnboardDatas()
+        let datas = BehaviorRelay<[Onboarding]>(value: [])
+        
+        let getDatas = self.getOnboardDatas().share()
+        
+        getDatas
+            .subscribe(onNext: { data in
+                var arrData = datas.value
+                arrData.append(data)
+                datas.accept(arrData)
+            }).disposed(by: disposeBag)
                         
         let onboardingPageItemViewModel = getDatas
             .flatMapLatest { data -> Observable<OnboardingItemViewModel> in
@@ -54,14 +64,17 @@ class OnboardingPageViewModel: ViewModel, ViewModelType {
         
         let appendFirstPage = onboardingPageItemViewModel.take(1).mapToVoid()
         
-        let isLastPage = input.currentPageIndex
-            .asObservable()
+        let currentPageIndex = input.currentPageIndex.asObservable().share()
+        let isLastPage = currentPageIndex
             .flatMapLatest { index -> Observable<Bool> in
-                Log.debug(cntPage.value, index)
                 if cntPage.value - 1 == index {
                     return Observable.just(true)
                 }
                 return Observable.just(false)
+            }
+        let setData = currentPageIndex
+            .flatMapLatest { index -> Observable<Onboarding> in
+                return Observable.just(datas.value[index])
             }
         
         let goToLogin = Observable.of(input.btnLoginTapped, input.btnStartTapped).merge()
@@ -71,6 +84,7 @@ class OnboardingPageViewModel: ViewModel, ViewModelType {
             }
                 
         return Output(setPageItemViewModel: onboardingPageItemViewModel.asDriverOnErrorJustComplete(),
+                      setData: setData.asDriverOnErrorJustComplete(),
                       appendFirstPage: appendFirstPage.asDriverOnErrorJustComplete(),
                       isLastPage: isLastPage.asDriverOnErrorJustComplete(),
                       goToLogin: goToLogin.asDriverOnErrorJustComplete(),

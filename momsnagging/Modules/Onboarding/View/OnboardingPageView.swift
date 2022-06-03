@@ -20,7 +20,22 @@ class OnboardingPageView: BasePageViewController, Navigatable {
 
     var pages: [OnboardingItemView] = [OnboardingItemView]()
     var currentPageIndex = BehaviorRelay<Int>(value: 0)
-        
+    
+    lazy var lblTitle = UILabel().then({
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
+        $0.numberOfLines = 1
+        $0.textAlignment = .center
+    })
+    
+    lazy var viewMessage = UIView().then({
+        $0.backgroundColor = Asset.Color.monoWhite.color
+    })
+    
+    lazy var imgvEmoji = UIImageView().then({
+        $0.image = Asset.Assets.emojiDefault.image
+    })
+
     lazy var btnLogin = CommonButton().then({
         $0.normalBackgroundColor = Asset.Color.monoWhite.color
         $0.highlightedBackgroundColor = Asset.Color.monoLight020.color
@@ -44,6 +59,10 @@ class OnboardingPageView: BasePageViewController, Navigatable {
         $0.setTitle("시작해볼래요!", for: .normal)
         $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
         $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
+    })
+    
+    lazy var imgvPagecontrol = UIImageView().then({
+        $0.image = Asset.Assets.emojiDefault.image
     })
     
     // MARK: - init
@@ -84,9 +103,38 @@ class OnboardingPageView: BasePageViewController, Navigatable {
     
     // MARK: - layoutSetting
     override func layoutSetting() {
-        self.view.addSubview(btnLogin)
-        self.view.addSubview(btnNext)
-        self.view.addSubview(btnStart)
+        view.addSubview(lblTitle)
+        view.addSubview(viewMessage)
+        viewMessage.addSubview(imgvEmoji)
+        view.addSubview(imgvPagecontrol)
+        view.addSubview(btnLogin)
+        view.addSubview(btnNext)
+        view.addSubview(btnStart)
+        
+        lblTitle.snp.makeConstraints({
+            $0.height.equalTo(30)
+            $0.top.equalToSuperview().offset(15)
+            $0.centerX.equalToSuperview()
+        })
+
+        viewMessage.snp.makeConstraints({
+            $0.height.equalTo(100)
+            $0.top.equalTo(lblTitle.snp.bottom).offset(40)
+            $0.leading.equalToSuperview().offset(30)
+            $0.trailing.equalToSuperview().offset(-30)
+        })
+        
+        imgvEmoji.snp.makeConstraints({
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.bottom.greaterThanOrEqualToSuperview()
+        })
+        
+        imgvPagecontrol.snp.makeConstraints({
+            $0.height.equalTo(8)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(btnStart.snp.top).offset(-32)
+        })
         
         btnLogin.snp.makeConstraints({
             $0.width.equalTo(100)
@@ -121,6 +169,14 @@ class OnboardingPageView: BasePageViewController, Navigatable {
                                                   btnStartTapped: btnStart.rx.tap.asDriverOnErrorJustComplete()
         )
         let output = viewModel.transform(input: input)
+        
+        output.setData
+            .drive(onNext: { data in
+                
+                self.imgvEmoji.image = data.getEmoji()
+                self.lblTitle.text = data.getTitle()
+                
+            }).disposed(by: disposeBag)
         
         output.setPageItemViewModel
             .drive(onNext: { viewModel in
@@ -160,6 +216,21 @@ class OnboardingPageView: BasePageViewController, Navigatable {
             self.setViewControllers([self.pages[nextPage]], direction: .forward, animated: true)
         }).disposed(by: disposeBag)
         
+        self.currentPageIndex
+            .subscribe(onNext: { index in
+                self.setPageControl(index)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func setPageControl(_ index: Int) {
+        switch index {
+        case 0: self.imgvPagecontrol.image = Asset.Assets.pagecontrol1.image
+        case 1: self.imgvPagecontrol.image = Asset.Assets.pagecontrol2.image
+        case 2: self.imgvPagecontrol.image = Asset.Assets.pagecontrol3.image
+        case 3: self.imgvPagecontrol.image = Asset.Assets.pagecontrol4.image
+        case 4: self.imgvPagecontrol.image = Asset.Assets.pagecontrol5.image
+        default: self.imgvPagecontrol.image = Asset.Assets.emojiDefault.image
+        }
     }
 }
 

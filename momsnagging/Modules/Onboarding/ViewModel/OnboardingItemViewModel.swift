@@ -28,35 +28,16 @@ class OnboardingItemViewModel: ViewModel, ViewModelType {
     
     // MARK: - Output
     struct Output {
-        let setTile: Driver<String>
-        let setEmoji: Driver<UIImage>
         let setImage: Driver<UIImage>
-        let setPageControl: Driver<Int>
     }
     
     // MARK: - transform
     func transform(input: Input) -> Output {
-        
-        let currentTitle = data.map { data -> String in
-            return data.getTitle()
-        }
-        
-        let currentEmoji = data.map { data -> UIImage in
-            return data.getEmoji()
-        }
-        
+                
         let currentImage = data.map { data -> UIImage in
             return data.getImage()
         }
-                
-        let setPageControl = data.map { data -> Int in
-            return data.getCurrentPage()
-        }
         
-        return Output(setTile: currentTitle.asDriverOnErrorJustComplete(),
-                      setEmoji: currentEmoji.asDriverOnErrorJustComplete(),
-                      setImage: currentImage.asDriverOnErrorJustComplete(),
-                      setPageControl: setPageControl.asDriverOnErrorJustComplete()
-        )
+        return Output(setImage: currentImage.asDriverOnErrorJustComplete())
     }
 }
