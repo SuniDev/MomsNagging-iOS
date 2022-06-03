@@ -292,6 +292,7 @@ extension HomeView {
         }
         viewModel.isEndProgress.subscribe(onNext: { _ in
             self.todoListTableView.reloadData()
+            LoadingHUD.hide()
         }).disposed(by: disposedBag)
         
         viewModel.addHabitSuccessOb.subscribe(onNext: { _ in
