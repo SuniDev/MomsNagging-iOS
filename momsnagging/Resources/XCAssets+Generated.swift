@@ -108,6 +108,7 @@ internal enum Asset {
     internal static let gradeLevel3 = ImageAsset(name: "grade_level_3")
     internal static let gradeLevel4 = ImageAsset(name: "grade_level_4")
     internal static let gradeLevel5 = ImageAsset(name: "grade_level_5")
+      internal static let mainEmptyImage = ImageAsset(name: "mainEmptyImage")
   }
   internal enum Color {
     internal static let black = ColorAsset(name: "black")
