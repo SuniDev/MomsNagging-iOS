@@ -26,6 +26,7 @@ class HomeView: BaseViewController, Navigatable {
 //        Log.debug("CommonUser.authorization", "Bearer \(CommonUser.authorization)")
 //        CommonView.showAlert(vc: self, type: .oneBtn, message: "키키")
         
+//        LoadingHUD.show()
     }
     // MARK: - Temp
     // MARK: - Init
