@@ -23,8 +23,6 @@ extension HomeView {
      - Note: HomeView에 플로팅 버튼 추가와 오토레이아웃 세팅 함수
      */
     func setFloatingBtn() {
-        if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
-        }
         let backgroundFrame = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
             $0.isHidden = true
@@ -39,7 +37,7 @@ extension HomeView {
         self.view.addSubview(floatingBtnView)
         floatingBackgroundView.snp.makeConstraints({
             $0.edges.equalTo(self.view.snp.edges)
-            $0.top.equalTo(self.view.snp.top).offset(-60)
+            $0.top.equalTo(self.view.snp.top)
             $0.bottom.equalTo(self.view.snp.bottom)
         })
         floatingBtnView.snp.makeConstraints({
@@ -69,6 +67,7 @@ extension HomeView {
                     self.todoItem.frame = self.todoItem.frame.offsetBy(dx: 0, dy: 80)
                     self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: 160)
                 }
+                self.dimView.isHidden = true
             } else { // + 버튼 클릭시
                 self.floatingBackgroundView.isHidden = false
                 self.floatingBtn.isSelected = true
@@ -79,6 +78,7 @@ extension HomeView {
                 UIView.animate(withDuration: 0.2) {
                     self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: -160)
                 }
+                self.dimView.isHidden = false
             }
         }.disposed(by: disposedBag)
     }
