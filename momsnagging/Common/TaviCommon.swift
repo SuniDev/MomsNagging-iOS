@@ -418,7 +418,7 @@ class LoadingHUD {
     class func show() {
         let backgroundView = UIView(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
         
-        let popupView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 50, height: 50))
+        let popupView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
         popupView.animationImages = LoadingHUD.getAnimationImageArray()
         popupView.animationDuration = 0.8
         popupView.animationRepeatCount = 0
