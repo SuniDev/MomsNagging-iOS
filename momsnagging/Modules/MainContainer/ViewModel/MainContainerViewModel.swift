@@ -99,6 +99,11 @@ extension MainContainerViewModel {
                 observer.onCompleted()
             }
             
+            if CommonUser.isNewEvaluation == false {
+                observer.onNext(false)
+                observer.onCompleted()
+            }
+            
             if let lastCheckDate = Common.getUserDefaultsObject(forKey: .dateLastCheckEvaluation) as? Date {
                 // 기준 날짜의 월요일
                 let weekday = lastCheckDate.getWeekDay() // (월 : 0 ~ 일 :6)

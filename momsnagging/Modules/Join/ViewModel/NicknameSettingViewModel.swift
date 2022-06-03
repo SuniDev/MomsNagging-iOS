@@ -178,6 +178,14 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
             .share()
         
         setUser
+            .flatMapLatest { _ -> Observable<GradeLastWeek> in
+                return self.requestLastWeek()
+            }.map { $0.new ?? false }
+            .subscribe(onNext: { new in
+                CommonUser.isNewEvaluation = new
+            }).disposed(by: disposeBag)
+        
+        setUser
             .subscribe(onNext: { user in
                 CommonUser.setUser(user)
             }).disposed(by: disposeBag)
@@ -237,5 +245,10 @@ extension NicknameSettingViewModel {
     private func requestGetUser() -> Observable<User> {
         let request = GetUserRequest()
         return self.provider.userService.getUser(request: request)
+    }
+    
+    private func requestLastWeek() -> Observable<GradeLastWeek> {
+        let request = GradeLastWeekRequest()
+        return self.provider.gradeService.lastWeek(request: request)
     }
 }

@@ -41,6 +41,8 @@ class CommonUser: NSObject {
     static var allowRoutineNotice: Bool?
     static var allowWeeklyNotice: Bool?
     static var allowOtherNotice: Bool?
+    
+    static var isNewEvaluation: Bool?
         
     static func setUser(_ user: User, _ completion:(() -> Void)? = nil) {
         self.id = user.id

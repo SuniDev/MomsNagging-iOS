@@ -20,11 +20,13 @@ class GradeLastWeek: ModelType {
     var createdYear: Int?
     var createdWeek: Int?
     var awardLevel: Int?
+    var new: Bool?
 
     required init(jsonData: JSON) {
         gradeLevel = jsonData["gradeLevel"].int
         createdYear = jsonData["createdYear"].int
         createdWeek = jsonData["createdWeek"].int
         awardLevel = jsonData["awardLevel"].int
+        new = jsonData["new"].bool
     }
 }
