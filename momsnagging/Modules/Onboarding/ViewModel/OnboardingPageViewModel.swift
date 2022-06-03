@@ -20,13 +20,20 @@ class OnboardingPageViewModel: ViewModel, ViewModelType {
     
     // MARK: - Input
     struct Input {
-        let appendPage: Observable<Void>
+        let currentPageIndex: Driver<Int>
+        let btnLoginTapped: Driver<Void>
+        let btnNextTapped: Driver<Void>
+        let btnStartTapped: Driver<Void>
     }
     
     // MARK: - Output
     struct Output {
         let setPageItemViewModel: Driver<OnboardingItemViewModel>
         let appendFirstPage: Driver<Void>
+        let isLastPage: Driver<Bool>
+        let goToLogin: Driver<LoginViewModel>
+        let goToNextPage: Driver<Void>
+        let goToMain: Driver<Void>
     }
     
     // MARK: - transform
@@ -38,18 +45,37 @@ class OnboardingPageViewModel: ViewModel, ViewModelType {
         let onboardingPageItemViewModel = getDatas
             .flatMapLatest { data -> Observable<OnboardingItemViewModel> in
                 return self.onboardingPageItemViewModel(data: data)
-            }
-        
-        input.appendPage
-            .take(1)
+            }.share()
+                
+        onboardingPageItemViewModel.debug()
             .bind(onNext: { _ in
                 cntPage.accept(cntPage.value + 1)
             }).disposed(by: disposeBag)
         
-        let appendFirstPage = cntPage.filter { cnt in cnt == 1 }.mapToVoid()
+        let appendFirstPage = onboardingPageItemViewModel.take(1).mapToVoid()
+        
+        let isLastPage = input.currentPageIndex
+            .asObservable()
+            .flatMapLatest { index -> Observable<Bool> in
+                Log.debug(cntPage.value, index)
+                if cntPage.value - 1 == index {
+                    return Observable.just(true)
+                }
+                return Observable.just(false)
+            }
+        
+        let goToLogin = Observable.of(input.btnLoginTapped, input.btnStartTapped).merge()
+            .map { _ -> LoginViewModel in
+                let viewModel = LoginViewModel(withService: self.provider)
+                return viewModel
+            }
                 
         return Output(setPageItemViewModel: onboardingPageItemViewModel.asDriverOnErrorJustComplete(),
-                      appendFirstPage: appendFirstPage.asDriverOnErrorJustComplete())
+                      appendFirstPage: appendFirstPage.asDriverOnErrorJustComplete(),
+                      isLastPage: isLastPage.asDriverOnErrorJustComplete(),
+                      goToLogin: goToLogin.asDriverOnErrorJustComplete(),
+                      goToNextPage: input.btnNextTapped,
+                      goToMain: input.btnStartTapped)
     }
 }
 

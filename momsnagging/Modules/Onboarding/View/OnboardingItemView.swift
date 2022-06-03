@@ -17,7 +17,6 @@ class OnboardingItemView: BaseViewController, Navigatable {
     private var disposeBag = DisposeBag()
     var viewModel: OnboardingItemViewModel?
     var navigator: Navigator!
-    var delegate: OnboardingPageDelegate?
     
     // MARK: - UI Properties
     lazy var viewBackground = UIView().then({
@@ -47,35 +46,10 @@ class OnboardingItemView: BaseViewController, Navigatable {
         $0.image = Asset.Assets.emojiDefault.image
     })
     
-    lazy var btnLogin = CommonButton().then({
-        $0.normalBackgroundColor = Asset.Color.monoWhite.color
-        $0.highlightedBackgroundColor = Asset.Color.monoLight020.color
-        $0.layer.cornerRadius = 26.0
-    })
-    
-    lazy var btnNext = CommonButton().then({
-        $0.normalBackgroundColor = Asset.Color.priMain.color
-        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
-        $0.layer.cornerRadius = 26.0
-        $0.setTitle("다음", for: .normal)
-        $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
-        $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
-    })
-    
-    lazy var btnStart = CommonButton().then({
-        $0.normalBackgroundColor = Asset.Color.priMain.color
-        $0.highlightedBackgroundColor = Asset.Color.priDark010.color
-        $0.layer.cornerRadius = 26.0
-        $0.setTitle("시작해볼래요!", for: .normal)
-        $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
-        $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
-    })
-    
     // MARK: - init
-    init(viewModel: OnboardingItemViewModel, navigator: Navigator, delegate: OnboardingPageDelegate) {
+    init(viewModel: OnboardingItemViewModel, navigator: Navigator) {
         self.viewModel = viewModel
         self.navigator = navigator
-        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -92,18 +66,6 @@ class OnboardingItemView: BaseViewController, Navigatable {
     // MARK: - initUI
     override func initUI() {
         view.backgroundColor = Asset.Color.monoWhite.color
-        
-        let loginAttributes: [NSAttributedString.Key: Any] = [
-            .font: FontFamily.Pretendard.semiBold.font(size: 20),
-            .foregroundColor: Asset.Color.monoDark020.color,
-            .underlineStyle: NSUnderlineStyle.single.rawValue
-        ]
-        let loginAttributedString = NSMutableAttributedString(
-                string: "로그인",
-                attributes: loginAttributes
-         )
-        
-        btnLogin.setAttributedTitle(loginAttributedString, for: .normal)
     }
     
     // MARK: - layoutSetting
@@ -114,9 +76,6 @@ class OnboardingItemView: BaseViewController, Navigatable {
         viewMessage.addSubview(imgvEmoji)
         viewBackground.addSubview(imgvImage)
         viewBackground.addSubview(imgvPagecontrol)
-        viewBackground.addSubview(btnLogin)
-        viewBackground.addSubview(btnNext)
-        viewBackground.addSubview(btnStart)
                 
         viewBackground.snp.makeConstraints({
             $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -153,37 +112,13 @@ class OnboardingItemView: BaseViewController, Navigatable {
             $0.top.equalTo(imgvImage.snp.bottom).offset(32)
             $0.centerX.equalToSuperview()
         })
-        
-        btnLogin.snp.makeConstraints({
-            $0.width.equalTo(100)
-            $0.height.equalTo(56)
-            $0.bottom.equalToSuperview().offset(-32)
-            $0.leading.equalToSuperview().offset(20)
-            $0.top.greaterThanOrEqualTo(imgvPagecontrol.snp.bottom).offset(12)
-        })
-        
-        btnNext.snp.makeConstraints({
-            $0.width.equalTo(100)
-            $0.height.equalTo(56)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.centerY.equalTo(btnLogin)
-        })
-        
-        btnStart.snp.makeConstraints({
-            $0.height.equalTo(56)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.bottom.equalToSuperview().offset(-32)
-            $0.top.greaterThanOrEqualTo(imgvPagecontrol.snp.bottom).offset(12)
-        })
-        
     }
     
     // MARK: - Bind
     override func bind() {
         guard let viewModel = viewModel else { return }
+        let input = OnboardingItemViewModel.Input()
         
-        let input = OnboardingItemViewModel.Input(btnLoginTapped: btnLogin.rx.tap.asDriverOnErrorJustComplete(), btnNextTapped: btnNext.rx.tap.asDriverOnErrorJustComplete(), btnStartTapped: btnStart.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.setTile.drive(onNext: { pageTitle in
@@ -202,20 +137,6 @@ class OnboardingItemView: BaseViewController, Navigatable {
             self.setPageControl(index)
         }).disposed(by: disposeBag)
         
-        output.isLastPage.drive(onNext: { isLast in
-            self.btnLogin.isHidden = !isLast
-            self.btnNext.isHidden = !isLast
-            self.btnStart.isHidden = isLast
-        }).disposed(by: disposeBag)
-        
-        output.goToLogin.drive(onNext: { viewModel in
-            self.navigator.show(seque: .login(viewModel: viewModel), sender: nil, transition: .root)
-        }).disposed(by: disposeBag)
-        
-        output.goToNextPage.drive(onNext: { page in
-            self.delegate?.goToNextPage(currentPage: page)
-        }).disposed(by: disposeBag)
-    
     }
 }
 extension OnboardingItemView {
