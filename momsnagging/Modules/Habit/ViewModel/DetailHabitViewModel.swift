@@ -28,7 +28,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     var provider = MoyaProvider<ScheduleService>()
     var homeViewModel: HomeViewModel!
     private let isNew: BehaviorRelay<Bool>
-    private let isRecommendHabit: BehaviorRelay<Bool>
+    let isRecommendHabit: BehaviorRelay<Bool>
     private var cycleWeek = BehaviorRelay<[String]>(value: ["월", "화", "수", "목", "금", "토", "일"])
     private var cycleNumber = BehaviorRelay<[String]>(value: ["1", "2", "3", "4", "5", "6"])
     private var dateParam: String?
@@ -48,9 +48,13 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         self.homeViewModel = homeViewModel
         if let todoModel = todoModel {
             self.todoModel = todoModel
+//            self.modifyTime = todoModel.scheduleTime
+//            self.modifyNumber = todoModel.goalCount
+//            self.modifyName = todoModel.scheduleName
         }
         if let recommendHabitName = recommendHabitName {
             self.recommendHabitName = recommendHabitName
+            self.modifyName = recommendHabitName
         }
         Log.debug("todoModel Id", "\(todoModel?.id ?? 0), 습관이름 : \(recommendHabitName ?? "")")
     }
@@ -193,6 +197,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let isNew = self.isNew
         isNew
             .bind(onNext: {
+                Log.debug("isNew~~", "\($0)")
                 isWriting.accept($0)
                 self.isModify = $0
             }).disposed(by: disposeBag)
@@ -254,6 +259,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 }
                 self.param.scheduleName = text
                 self.modifyName = text
+                Log.debug("modifyName", "\(text)")
             }).disposed(by: disposeBag)
         
         input.editingDidBeginName
@@ -267,7 +273,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 isEditingName.accept(false)
                 textName.accept(textName.value)
                 self.param.scheduleName = textName.value
-                self.modifyName = textName.value
             }).disposed(by: disposeBag)
         
         let isEmptyName = input.editingDidEndName
@@ -305,6 +310,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 textPerformTime.accept(text ?? "")
                 self.param.scheduleTime = text ?? ""
                 self.modifyTime = text ?? ""
+                Log.debug("modifyTime", "\(text ?? "")")
             }).disposed(by: disposeBag)
         
         /// 이행 주기
@@ -438,7 +444,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let successDoneAddHabit = done
             .flatMapLatest { () -> Observable<Bool> in
                 if !(self.isModify) {
-                    Log.debug("[Log~~~~~]", "수정 완료 클릭")
                     self.requestModifyRoutine(scheduleId: self.todoModel?.id ?? 0)
                 } else {
                     self.requestRegistHabit()
@@ -547,6 +552,7 @@ extension DetailHabitViewModel {
             model.op = "replace"
             model.path = "/scheduleName"
             model.value = "\(modifyName!)"
+//            model.value = "가나다라마자사아아아!!!"
             param.append(model)
         }
         if modifyTime != nil {

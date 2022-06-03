@@ -175,9 +175,9 @@ extension HomeView {
             if type == .todo {
                 let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: self.todoList[index])
                 let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
-                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: vc, transition: .navigation)
+                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
             } else {
-                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: self.todoList[index])
+                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: self.todoList[index], recommendHabitName: self.todoList[index].scheduleName)
                 self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self, transition: .navigation)
             }
             backgroundView.removeFromSuperview()

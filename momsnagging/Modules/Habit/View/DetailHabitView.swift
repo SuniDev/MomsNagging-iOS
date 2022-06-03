@@ -384,14 +384,6 @@ class DetailHabitView: BaseViewController, Navigatable {
                     self.tfName.isEnabled = true
                 }
                 
-//                viewModel.isRecommendHabit.subscribe(onNext: { bool in
-//                    if bool {
-//                        self.tfName.isEnabled = !bool
-//                    } else {
-//                        self.tfName.isEnabled = bool
-//                    }
-//                }).disposed(by: self.disposeBag)
-                
                 // 컨텐츠 변경
                 self.btnPerformTime.isEnabled = isWriting
                 self.btnCycleWeek.isEnabled = isWriting
@@ -407,6 +399,15 @@ class DetailHabitView: BaseViewController, Navigatable {
                     self.hideModifyEmptyView.isHidden = false
                 }
             }).disposed(by: disposeBag)
+        
+        // 텍스트 필드 수정 가능 여부
+        viewModel.isRecommendHabit.subscribe(onNext: { bool in
+            if bool {
+                self.tfName.isEnabled = !bool
+            } else {
+                self.tfName.isEnabled = bool
+            }
+        }).disposed(by: self.disposeBag)
         
         /// 뒤로 가기
         output.showBackAlert
