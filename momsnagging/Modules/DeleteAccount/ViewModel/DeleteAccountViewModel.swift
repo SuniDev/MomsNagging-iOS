@@ -149,7 +149,7 @@ extension DeleteAccountViewModel {
 extension DeleteAccountViewModel {
     // TODO: API 탈퇴 사유 추가
     private func requestDeleteUser(_ reason: String) -> Observable<UserResult> {
-        let request = DeleteUserRequest()
+        let request = DeleteUserRequest(title: reason, context: "")
         return self.provider.userService.deleteUser(request: request)
     }
     

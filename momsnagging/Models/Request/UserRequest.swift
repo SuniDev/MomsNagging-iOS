@@ -34,4 +34,7 @@ struct PutUserRequest: RequestModelType, Encodable {
  - Authors: suni
  - Note: 회원 탈퇴  Request 모델
  */
-struct DeleteUserRequest: RequestModelType { }
+struct DeleteUserRequest: RequestModelType {
+    let title: String?
+    let context: String?
+}

@@ -110,8 +110,8 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .putUser(let request):
           return .requestJSONEncodable(request)
-      case .deleteUser:
-          return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
+      case .deleteUser(let request):
+          return .requestJSONEncodable(request)
       case .diaryCalendar:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .getDiary:
