@@ -1,4 +1,4 @@
-//
+// swiftlint:disable all
 //  Array+Extension.swift
 //  momsnagging
 //

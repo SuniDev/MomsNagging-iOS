@@ -40,7 +40,9 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     var recommendHabitName: String?
     var isRecommendHabitBool: Bool!
     
-    init(isNew: Bool, isRecommendHabit: Bool, dateParam: String, homeViewModel: HomeViewModel, todoModel: TodoListModel?=nil, recommendHabitName: String?=nil) {
+    var coachMarkStatusCheck: Bool?
+    
+    init(isNew: Bool, isRecommendHabit: Bool, dateParam: String, homeViewModel: HomeViewModel, todoModel: TodoListModel?=nil, recommendHabitName: String?=nil, coachMarkStatus: Bool? = false) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
         self.isRecommendHabit = BehaviorRelay<Bool>(value: isRecommendHabit)
         self.isRecommendHabitBool = isRecommendHabit
@@ -57,6 +59,8 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
             self.modifyName = recommendHabitName
         }
         Log.debug("todoModel Id", "\(todoModel?.id ?? 0), 습관이름 : \(recommendHabitName ?? "")")
+        
+        self.coachMarkStatusCheck = coachMarkStatus
     }
     
     private var param = CreateTodoRequestModel()
@@ -486,7 +490,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
 // MARK: - Service
 extension DetailHabitViewModel {
     func requestRegistHabit() {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         param.scheduleDate = self.dateParam ?? ""
@@ -515,7 +519,7 @@ extension DetailHabitViewModel {
     }
     
     func requestRoutineInfo(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         provider.request(.todoDetailLookUp(scheduleId: scheduleId), completion: { res in
@@ -557,7 +561,7 @@ extension DetailHabitViewModel {
     }
     
     func requestModifyRoutine(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         var param: [ModifyTodoRequestModel] = []
@@ -652,7 +656,7 @@ extension DetailHabitViewModel {
     }
     
     func requestDeleteRoutine(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         provider.request(.deleteTodo(scheduleId: scheduleId), completion: { res in

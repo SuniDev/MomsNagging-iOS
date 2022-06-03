@@ -164,7 +164,7 @@ class HomeViewModel: BaseViewModel, ViewModelType {
 
 extension HomeViewModel {
     func requestTodoListLookUp(date: String) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         provider.request(.todoListLookUp(retrieveDate: date), completion: { res in
@@ -212,7 +212,7 @@ extension HomeViewModel {
     }
     
     func requestRoutineDone(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         var param: [ModifyTodoRequestModel] = []
@@ -240,7 +240,7 @@ extension HomeViewModel {
         })
     }
     func requestRoutineCancel(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         var param: [ModifyTodoRequestModel] = []
@@ -269,7 +269,7 @@ extension HomeViewModel {
     }
     
     func requestDelete(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         provider.request(.deleteTodo(scheduleId: scheduleId), completion: { res in
@@ -293,7 +293,7 @@ extension HomeViewModel {
     }
     
     func requestDeleay(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         var param: [ModifyTodoRequestModel] = []
@@ -322,7 +322,7 @@ extension HomeViewModel {
     }
     
     func requestArray(param: [ScheduleArrayModel]) {
-        if !CoachMarkStatus.bool! {
+        if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
         let param: [ScheduleArrayModel] = param

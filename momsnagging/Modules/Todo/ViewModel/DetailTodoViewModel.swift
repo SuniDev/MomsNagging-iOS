@@ -294,9 +294,7 @@ class DetailTodoViewModel: BaseViewModel {
 
 extension DetailTodoViewModel {
     func requestRegistTodo() {
-        if !CoachMarkStatus.bool! {
-            LoadingHUD.show()
-        }
+        LoadingHUD.show()
         provider.request(.createTodo(param: param), completion: { res in
             switch res {
             case .success(let result):
@@ -319,9 +317,7 @@ extension DetailTodoViewModel {
     }
     
     func requestTodoInfo(scheduleId: Int) {
-        if !CoachMarkStatus.bool! {
-            LoadingHUD.show()
-        }
+        LoadingHUD.show()
         provider.request(.todoDetailLookUp(scheduleId: scheduleId), completion: { res in
             switch res {
             case .success(let result):

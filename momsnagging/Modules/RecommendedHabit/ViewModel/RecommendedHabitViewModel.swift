@@ -105,9 +105,8 @@ class RecommendedHabitViewModel: BaseViewModel, ViewModelType {
 extension RecommendedHabitViewModel {
     
     func requestRecommendedHabitItemList() {
-        if !CoachMarkStatus.bool! {
-            LoadingHUD.show()
-        }
+        LoadingHUD.show()
+        
         provider.request(.recommnededHabitListLookUp(categoryId: self.categoryId ?? 0), completion: { res in
             switch res {
             case .success(let result):

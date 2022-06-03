@@ -127,8 +127,3 @@ extension MainContainerViewModel {
         }
     }
 }
-
-
-struct CoachMarkStatus {
-    static var bool = MainContainerViewModel.coachMarkStatusCheck
-}

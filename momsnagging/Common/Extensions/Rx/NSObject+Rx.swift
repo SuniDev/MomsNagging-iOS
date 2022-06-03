@@ -1,3 +1,4 @@
+// swiftlint:disable all
 import Foundation
 import RxSwift
 import ObjectiveC

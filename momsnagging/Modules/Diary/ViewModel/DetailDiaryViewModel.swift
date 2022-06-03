@@ -211,6 +211,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         let requestGetDiary = selectedDate.debug()
             .asObservable()
             .flatMapLatest { date -> Observable<Diary> in
+                self.isLoading.accept(true)
                 return self.requestGetDiary(date: date)
             }.share()
         
@@ -225,6 +226,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         
         requestGetDiary
             .subscribe(onNext: { diary in
+                self.isLoading.accept(false)
                 textTitle.accept(diary.title ?? "")
                 textContents.accept(diary.context ?? "")
                 setTitleDate.accept(self.getTitleDateString(dateString: diary.diaryDate ?? ""))
@@ -303,11 +305,16 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         let requestDeleteDiary = input.deleteAlertDoneHandler
             .asObservable()
             .flatMapLatest { _ -> Observable<Diary> in
+                self.isLoading.accept(true)
                 let title = ""
                 let context = ""
                 let date = selectedDate.value
                 return self.requestPutDiary(title: title, context: context, diaryDate: date)
             }.share()
+        requestDeleteDiary
+            .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
         
         /// 일기작 작성
         input.textTitle
@@ -373,6 +380,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         let requestSaveDiary = input.doneAlertDoneHandler.debug()
             .asObservable()
             .flatMapLatest { _ -> Observable<Diary> in
+                self.isLoading.accept(true)
                 let title = textTitle.value
                 let context = textContents.value
                 let date = selectedDate.value
@@ -381,6 +389,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         
         requestSaveDiary
             .subscribe(onNext: { _ in
+                self.isLoading.accept(false)
                 isWriting.accept(false)
             }).disposed(by: disposeBag)
         

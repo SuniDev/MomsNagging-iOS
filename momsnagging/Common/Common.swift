@@ -13,7 +13,7 @@ import SwiftKeychainWrapper
 
 class Common {
     
-    static let TEST: Bool = false
+    static let TEST: Bool = true
     
     private static let configKey = "DeployPhase"
     

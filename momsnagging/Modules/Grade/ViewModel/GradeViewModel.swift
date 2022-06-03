@@ -196,13 +196,16 @@ class GradeViewModel: ViewModel, ViewModelType {
                 self.isLoading.accept(true)
                 return self.requestGradeCalendar(year: date.year, month: date.month)
             }.share()
+        requestCalendarDate
+            .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
         
         // 캘린더 콜렉션뷰 Item 세팅
         let arrDay = requestCalendarDate
             .map { return $0.arrDay ?? [] }
             .filter { $0.count > 0 }
             .flatMapLatest { arrDay -> Observable<[GradeDay]> in
-                self.isLoading.accept(false)
                 return Observable.just(arrDay)
             }.share()
         
@@ -277,12 +280,15 @@ class GradeViewModel: ViewModel, ViewModelType {
                 self.isLoading.accept(true)
                 return self.requestStatisticsMonthly(year: date.year, month: date.month)
             }.share()
+        requestStatisticsMonthly
+            .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
         
         let arrStatisticsMonthly = requestStatisticsMonthly
             .map { return $0.arrData ?? [] }
             .filter { $0.count > 0 }
             .flatMapLatest { arrData -> Observable<[StatisticsMonthlyData]> in
-                self.isLoading.accept(false)
                 return Observable.just(arrData)
             }.share()
         
@@ -305,7 +311,7 @@ class GradeViewModel: ViewModel, ViewModelType {
                 return self.requestStatistics()
             }.share()
         
-        let sttItems = requestStatistics.debug()
+        let sttItems = requestStatistics
             .flatMapLatest { data -> Observable<[StatisticsItem]> in
                 self.isLoading.accept(false)
                 return self.getStatisticsItems(data: data)
@@ -509,7 +515,7 @@ extension GradeViewModel {
                     observer.onNext(todoList)
                     observer.onCompleted()
                     
-                } catch(let error) {
+                } catch {
                     Log.error("requestTodoListLookUp error", "\(error)")
                     observer.onError(error)
                 }

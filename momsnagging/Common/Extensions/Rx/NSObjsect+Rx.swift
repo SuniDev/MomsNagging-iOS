@@ -1,4 +1,4 @@
-//
+// swiftlint:disable all
 //  NSObjsect+Rx.swift
 //  momsnagging
 //

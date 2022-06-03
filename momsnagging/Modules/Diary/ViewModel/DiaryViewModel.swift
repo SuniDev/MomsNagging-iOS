@@ -132,8 +132,13 @@ class DiaryViewModel: ViewModel, ViewModelType {
         // 캘린더 API Request
         let requestCalendarDate = setCalendarDate.debug()
             .flatMapLatest { date -> Observable<DiaryCalendar> in
+                self.isLoading.accept(true)
                 return self.requestDiaryCalendar(year: date.year, month: date.month)
             }.share()
+        requestCalendarDate
+            .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
         
         // 캘린더 콜렉션뷰 Item 세팅
         let arrDay = requestCalendarDate
@@ -157,8 +162,14 @@ class DiaryViewModel: ViewModel, ViewModelType {
         
         let requestGetDiary = selectedDate
             .flatMapLatest { date -> Observable<Diary> in
+                self.isLoading.accept(true)
                 return self.requestGetDiary(date: date)
-            }
+            }.share()
+        
+        requestGetDiary
+            .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
         
         let isEmptyDiary = requestGetDiary
             .map { return $0.title?.isEmpty ?? true }
