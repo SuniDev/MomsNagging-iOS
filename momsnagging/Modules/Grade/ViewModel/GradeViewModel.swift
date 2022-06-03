@@ -274,7 +274,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 월간 평가 API Request
         let requestStatisticsMonthly = setSttCalendarDate
             .flatMapLatest { date -> Observable<StatisticsMonthly> in
-                self.isLoading.accept(false)
+                self.isLoading.accept(true)
                 return self.requestStatisticsMonthly(year: date.year, month: date.month)
             }.share()
         
@@ -282,7 +282,7 @@ class GradeViewModel: ViewModel, ViewModelType {
             .map { return $0.arrData ?? [] }
             .filter { $0.count > 0 }
             .flatMapLatest { arrData -> Observable<[StatisticsMonthlyData]> in
-                self.isLoading.accept(true)
+                self.isLoading.accept(false)
                 return Observable.just(arrData)
             }.share()
         
