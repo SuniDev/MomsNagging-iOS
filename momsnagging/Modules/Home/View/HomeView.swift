@@ -21,6 +21,13 @@ class HomeView: BaseViewController, Navigatable {
         setTodoTableView()
         setHomeCalendarView()
         setFloatingBtn()
+        if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
+            vc.view.addSubview(self.dimView)
+            self.dimView.snp.makeConstraints({
+                $0.edges.equalTo(vc.view.snp.edges)
+                $0.top.equalTo(vc.view.safeAreaLayoutGuide.snp.top)
+            })
+        }
         self.todoListType.removeAll()
         viewModel.requestTodoListLookUp(date: todoListParam())
 //        Log.debug("CommonUser.authorization", "Bearer \(CommonUser.authorization)")
@@ -198,6 +205,11 @@ class HomeView: BaseViewController, Navigatable {
         $0.register(RoutineCountCell.self, forCellReuseIdentifier: "RoutineCountCell")
     })
     var listEmptyFrame = UIView()
+    
+    let dimView = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
+        $0.isHidden = true
+    })
     
     // MARK: - InitUI
     override func initUI() {

@@ -164,6 +164,7 @@ class HomeViewModel: BaseViewModel, ViewModelType {
 
 extension HomeViewModel {
     func requestTodoListLookUp(date: String) {
+        LoadingHUD.show()
         provider.request(.todoListLookUp(retrieveDate: date), completion: { res in
             switch res {
             case .success(let result):
