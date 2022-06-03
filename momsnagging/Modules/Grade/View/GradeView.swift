@@ -128,8 +128,8 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 20)
     })
-    lazy var dayCoundLbl = UILabel().then({
-        $0.text = "D+123"
+    lazy var dayCountLbl = UILabel().then({
+        $0.text = "D+0"
         $0.textColor = UIColor(asset: Asset.Color.priMain)
         $0.font = FontFamily.Pretendard.bold.font(size: 20)
     })
@@ -309,7 +309,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         
         statisticsViewContents.addSubview(statisticsHeadFrame)
         statisticsHeadFrame.addSubview(dayCountLblPre)
-        statisticsHeadFrame.addSubview(dayCoundLbl)
+        statisticsHeadFrame.addSubview(dayCountLbl)
         statisticsHeadFrame.addSubview(dayCountLblSuf)
         statisticsHeadFrame.snp.makeConstraints({
             $0.top.equalToSuperview().offset(24)
@@ -320,13 +320,13 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.top.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(22)
         })
-        dayCoundLbl.snp.makeConstraints({
+        dayCountLbl.snp.makeConstraints({
             $0.top.centerY.equalToSuperview()
             $0.leading.equalTo(dayCountLblPre.snp.trailing).offset(8)
         })
         dayCountLblSuf.snp.makeConstraints({
             $0.top.centerY.equalToSuperview()
-            $0.leading.equalTo(dayCoundLbl.snp.trailing).offset(8)
+            $0.leading.equalTo(dayCountLbl.snp.trailing).offset(8)
         })
         
         statisticsViewContents.addSubview(statisticsCalendarFrame)
@@ -545,7 +545,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         
         output.countTogether
             .drive(onNext: { cnt in
-                self.statisticsDateLbl.text = "D+\(cnt)"
+                self.dayCountLbl.text = "D+\(cnt)"
             }).disposed(by: disposedBag)
         
         statisticsRatingTableView.rx.setDelegate(self).disposed(by: disposedBag)
