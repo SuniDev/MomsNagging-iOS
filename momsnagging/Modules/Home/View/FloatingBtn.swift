@@ -228,8 +228,10 @@ extension HomeView {
         output.floatingBtnIc?.drive(onNext: { ic in
             if ic {
                 img.image = UIImage(asset: Asset.Icon.xFloating)
+                self.dimView.isHidden = false
             } else {
                 img.image = UIImage(asset: Asset.Icon.floatingPlus)
+                self.dimView.isHidden = true
             }
         }).disposed(by: disposedBag)
     }

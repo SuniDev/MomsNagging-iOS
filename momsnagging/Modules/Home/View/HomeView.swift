@@ -60,6 +60,7 @@ class HomeView: BaseViewController, Navigatable {
     var moveListModel:[ScheduleArrayModel] = []
     var checkBtnInteractionEnable = true
     var coachMarkStatus: Bool = false
+    var popOb = PublishSubject<Void>()
     /*
      prefix : head
      Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일
@@ -464,6 +465,7 @@ class HomeView: BaseViewController, Navigatable {
 //            self.todoList.removeAll()
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
+        popOb
     }
     
     // MARK: - Action Bind _ Input
