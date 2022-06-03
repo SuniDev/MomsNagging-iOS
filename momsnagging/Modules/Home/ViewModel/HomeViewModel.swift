@@ -164,7 +164,7 @@ class HomeViewModel: BaseViewModel, ViewModelType {
 
 extension HomeViewModel {
     func requestTodoListLookUp(date: String) {
-        if coachMarkStatusCheck != true {
+        if !CoachMarkStatus.bool! {
             LoadingHUD.show()
         }
         provider.request(.todoListLookUp(retrieveDate: date), completion: { res in
@@ -199,16 +199,22 @@ extension HomeViewModel {
                     self.todoListDataOB.accept(self.todoListData)
                     self.todoListDataObserver.onNext(self.todoListData)
                     self.isEndProgress.onNext(())
+                    LoadingHUD.hide()
                 } catch(let error) {
                     Log.error("requestTodoListLookUp error", "\(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 Log.error("requestTodoListLookUp failure error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }
     
     func requestRoutineDone(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         model.op = "replace"
@@ -222,15 +228,21 @@ extension HomeViewModel {
                     let json = JSON(try result.mapJSON())
                     print("requestRoutineDone json : \(json)")
                     self.toggleIcSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     print("requestRoutineDone error : \(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 print("requestRoutineDone failure error : \(error)")
+                LoadingHUD.hide()
             }
         })
     }
     func requestRoutineCancel(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         model.op = "replace"
@@ -244,16 +256,22 @@ extension HomeViewModel {
                     let json = JSON(try result.mapJSON())
                     print("requestRoutineCancel json : \(json)")
                     self.toggleCancelOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     print("requestRoutineCancel error : \(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 print("requestRoutineCancel failure error : \(error)")
+                LoadingHUD.hide()
             }
         })
     }
     
     func requestDelete(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         provider.request(.deleteTodo(scheduleId: scheduleId), completion: { res in
             switch res {
             case .success(let result):
@@ -261,17 +279,23 @@ extension HomeViewModel {
                     let json = JSON(try result.mapJSON())
                     print("deleteTodo json : \(json)")
                     self.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("deleteTodo error", "\(error)")
                     self.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 Log.error("deleteTodo failure error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }
     
     func requestDeleay(scheduleId: Int) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         model.op = "replace"
@@ -285,16 +309,22 @@ extension HomeViewModel {
                     let json = JSON(try result.mapJSON())
                     print("requestDeleay : \(json)")
                     self.delaySuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("requestDeleay error", "\(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 Log.error("requestDeleay failure error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }
     
     func requestArray(param: [ScheduleArrayModel]) {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         let param: [ScheduleArrayModel] = param
         print("request param : \(param)")
         provider.request(.sortingTodoList(param: param), completion: { res in
@@ -304,12 +334,15 @@ extension HomeViewModel {
                     let json = JSON(try result.mapJSON())
                     print("requestArray Json : \(json)")
                     self.arraySuccessOb.onNext(())
+                    LoadingHUD.hide()
                 } catch let error {
                     Log.error("requestArray failure error", "\(error) 빈값이 와요 근데 성공")
                     self.arraySuccessOb.onNext(())
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 Log.error("requestArray failure error", "\(error)")
+                LoadingHUD.hide()
             }
         })
     }

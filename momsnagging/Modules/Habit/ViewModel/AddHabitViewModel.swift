@@ -66,6 +66,7 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
                 return self.getRecommendHabitTitle()
             }.subscribe(onNext: { items in
                 recommendTitleItems.accept(items)
+                LoadingHUD.hide()
             }).disposed(by: disposeBag)
         
         let cntRecommendTitle = recommendTitleItems
@@ -90,7 +91,9 @@ extension AddHabitViewModel {
     // TODO: Request Recommend Habit Title API
     func getRecommendHabitTitle() -> Observable<[RecommendHabitTitle]> {
         return Observable<[RecommendHabitTitle]>.create { observer -> Disposable in
-            
+            if !CoachMarkStatus.bool! {
+                LoadingHUD.show()
+            }
             var getRecommendHabitTitle = [RecommendHabitTitle]()
             
             if self.coachMarkStatusCheck == true {

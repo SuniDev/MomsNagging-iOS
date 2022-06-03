@@ -105,6 +105,9 @@ class RecommendedHabitViewModel: BaseViewModel, ViewModelType {
 extension RecommendedHabitViewModel {
     
     func requestRecommendedHabitItemList() {
+        if !CoachMarkStatus.bool! {
+            LoadingHUD.show()
+        }
         provider.request(.recommnededHabitListLookUp(categoryId: self.categoryId ?? 0), completion: { res in
             switch res {
             case .success(let result):
@@ -121,11 +124,14 @@ extension RecommendedHabitViewModel {
                         }
                         self.itemList.accept(recommendList)
                     }
+                    LoadingHUD.hide()
                 } catch let error {
                     print("error : \(error)")
+                    LoadingHUD.hide()
                 }
             case .failure(let error):
                 print("failure error : \(error)")
+                LoadingHUD.hide()
             }
         })
     }
