@@ -371,10 +371,14 @@ extension HomeView {
         }.disposed(by: disposedBag)
         
         viewModel.emptyViewStatusOb.subscribe(onNext: { bool in
-            if self.viewModel.coachMarkStatusCheck == false {
-                self.listEmptyFrame.isHidden = bool
-            } else {
+            if self.viewModel.coachMarkStatusCheck == true {
                 self.listEmptyFrame.isHidden = true
+            } else {
+                if bool == true {
+                    self.listEmptyFrame.fadeOut(0.5)
+                } else {
+                    self.listEmptyFrame.fadeIn(0.5)
+                }
             }
         }).disposed(by: disposedBag)
         

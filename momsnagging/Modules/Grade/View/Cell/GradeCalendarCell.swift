@@ -84,7 +84,6 @@ class GradeCalendarCell: UICollectionViewCell {
     }
     
     func configure() {
-        
         if let avg = avg {
             self.emoji.image = self.getEmoji(avg: avg, isEnabled: isEnabled)
         }

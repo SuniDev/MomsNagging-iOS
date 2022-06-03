@@ -436,7 +436,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                 cell.number.text = item.strDay
                 cell.isToday = item.isToday
                 cell.isSunday = (index % 7) == 6
-                cell.avg = item.day?.avg
+                cell.avg = Common.TEST ? Test.getGradeAvg() : item.day?.avg
                 cell.isEnabled = item.isThisMonth
                 cell.isFuture = item.isFuture
                 cell.configure()
@@ -532,7 +532,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         output.sttMonthlyItems
             .bind(to: self.statisticsRatingTableView.rx.items(cellIdentifier: "StatisticsCalendarCell", cellType: StatisticsCalendarCell.self)) { _, item, cell in
                 cell.weekLbl.text = item.week
-                cell.reportLbl.text = item.grade
+                cell.reportLbl.text = Common.TEST ? Test.getStatisticsMonthlyGrade() : item.grade
             }.disposed(by: disposedBag)
         
         output.countSttMonthly

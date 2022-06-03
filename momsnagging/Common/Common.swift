@@ -12,6 +12,9 @@ import StoreKit
 import SwiftKeychainWrapper
 
 class Common {
+    
+    static let TEST: Bool = true
+    
     private static let configKey = "DeployPhase"
     
     enum DeployType: String {

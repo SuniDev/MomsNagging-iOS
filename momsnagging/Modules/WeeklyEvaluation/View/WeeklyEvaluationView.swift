@@ -19,8 +19,13 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
     var navigator: Navigator!
     
     // MARK: - UI Properties
+    lazy var dimView = UIView().then({
+        $0.backgroundColor = Asset.Color.monoDark010.color
+        $0.isHidden = true
+    })
     lazy var backgroundView = UIView().then({
         $0.backgroundColor = .clear
+        $0.isHidden = true
     })
     lazy var evaluationFrame = UIView().then({
         $0.backgroundColor = Asset.Color.monoWhite.color
@@ -71,11 +76,15 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
     
     // MARK: - initUI
     override func initUI() {
-        self.view.backgroundColor = Asset.Color.monoDark010.color.withAlphaComponent(0.34)
+        self.view.backgroundColor = .clear
     }
     
     // MARK: - layoutSetting
     override func layoutSetting() {
+        view.addSubview(dimView)
+        dimView.snp.makeConstraints({
+            $0.top.bottom.leading.trailing.equalToSuperview()
+        })
         view.addSubview(backgroundView)
         backgroundView.snp.makeConstraints({
             $0.center.equalToSuperview()
@@ -152,6 +161,8 @@ class WeeklyEvaluationView: BaseViewController, Navigatable {
                 default:
                     break
                 }
+                self.dimView.fadeIn(1.0, alpha: 0.34)
+                self.backgroundView.fadeIn(1.0, alpha: 1.0)
             }).disposed(by: disposeBag)
         
         output.dismiss

@@ -20,6 +20,7 @@ class MainContainerView: BaseViewController, Navigatable {
         
         viewModel.checkEvaluation()
             .filter({ $0 != nil })
+            .delay(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { viewModel in
                 guard let viewModel = viewModel else { return }
                 self.navigator.show(seque: .weeklyEvaluation(viewModel: viewModel), sender: self, transition: .modal)

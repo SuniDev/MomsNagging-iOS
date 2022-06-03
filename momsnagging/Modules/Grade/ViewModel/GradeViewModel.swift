@@ -278,7 +278,7 @@ class GradeViewModel: ViewModel, ViewModelType {
             }.share()
         
         let countTogether = requestStatisticsMonthly
-            .map { return $0.togetherCount ?? 0 }
+            .map { return Common.TEST ? Test.togetherCount : $0.togetherCount ?? 0 }
             .filter({ $0 > 0 })
         
         let sttMonthlyItems = arrStatisticsMonthly
@@ -425,6 +425,11 @@ extension GradeViewModel {
     
     func getStatisticsItems(data: Statistics) -> Observable<[StatisticsItem]> {
         return Observable<[StatisticsItem]>.create { observer -> Disposable in
+            if Common.TEST {
+                observer.onNext(Test.getStatisticsItems(date: data))
+                observer.onCompleted()
+            }
+            
             var items = [StatisticsItem]()
             
             items.append(StatisticsItem(title: "전체 수행", data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
@@ -433,6 +438,7 @@ extension GradeViewModel {
             items.append(StatisticsItem(title: "할일 수행", data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
             items.append(StatisticsItem(title: "회고 작성", data: "\(data.diaryCount ?? 0)", suffix: "번"))
             items.append(StatisticsItem(title: "평균 수행률", data: "\(data.performanceAvg ?? 0)", suffix: "%"))
+            
             observer.onNext(items)
             observer.onCompleted()
             return Disposables.create()
@@ -460,6 +466,11 @@ extension GradeViewModel {
     
     private func requestSchedule(date: String) -> Observable<[TodoListModel]> {
         return Observable<[TodoListModel]>.create { observer -> Disposable in
+            if Common.TEST {
+                observer.onNext(Test.getRandomTodoList())
+                observer.onCompleted()
+            }
+            
             self.scheduleService.request(.todoListLookUp(retrieveDate: date), completion: { res in
             switch res {
             case .success(let result):

@@ -9,7 +9,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-
 class MainContainerViewModel: BaseViewModel, ViewModelType {
     
     var coachMarkStatusCheck: Bool?
@@ -91,12 +90,13 @@ extension MainContainerViewModel {
                 observer.onNext(false)
                 observer.onCompleted()
             }
+            
+            if Common.TEST {
+                observer.onNext(Test.isShowEvaluation)
+                observer.onCompleted()
+            }
+            
             if let lastCheckDate = Common.getUserDefaultsObject(forKey: .dateLastCheckEvaluation) as? Date {
-                
-                // ======= Test Data Start ============
-//            if let lastCheckDate = "2022-05-30".toDate(for: "yyyy-MM-dd", locale: Locale(identifier: "ko_KR")) {
-                // ======= Test Data End ============
-                
                 // 기준 날짜의 월요일
                 let weekday = lastCheckDate.getWeekDay() // (월 : 0 ~ 일 :6)
                 let date = Calendar.current.date(byAdding: .day, value: -weekday, to: lastCheckDate) ?? lastCheckDate

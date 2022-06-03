@@ -141,7 +141,7 @@ class AwardView: BaseViewController, Navigatable {
             $0.centerX.equalTo(imgvAwardLevel2.snp.centerX)
         })
         imgvAwardLevel3.snp.makeConstraints({
-            $0.top.equalTo(imgvAwardLevel1.snp.bottom).offset(40)
+            $0.top.equalTo(lblAwardLevel1.snp.bottom).offset(16)
             $0.width.height.equalTo(120)
             $0.trailing.equalTo(awardFrame.snp.centerX).offset(-16)
         })
@@ -150,7 +150,7 @@ class AwardView: BaseViewController, Navigatable {
             $0.centerX.equalTo(imgvAwardLevel3.snp.centerX)
         })
         imgvAwardLevel4.snp.makeConstraints({
-            $0.top.equalTo(lblAwardLevel2.snp.bottom).offset(40)
+            $0.top.equalTo(lblAwardLevel2.snp.bottom).offset(16)
             $0.width.height.equalTo(120)
             $0.leading.equalTo(awardFrame.snp.centerX).offset(16)
         })
@@ -175,7 +175,9 @@ class AwardView: BaseViewController, Navigatable {
         let output = viewModel.transform(input: input)
         
         output.setAwardLevel
-            .drive(onNext: { level in
+            .drive(onNext: { awardLevel in
+                
+                let level = Common.TEST ? Test.awardLevel : awardLevel
                 
                 self.imgvAwardLevel1.image = level > 0 ? Asset.Assets.awardEnable1.image : Asset.Assets.awardDisable1.image
                 self.lblAwardLevel1.textColor = level > 0 ? Asset.Color.monoDark010.color : Asset.Color.monoDark040.color

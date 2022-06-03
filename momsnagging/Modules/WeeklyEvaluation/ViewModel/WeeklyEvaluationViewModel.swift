@@ -42,6 +42,8 @@ class WeeklyEvaluationViewModel: ViewModel, ViewModelType {
             .filter { $0.gradeLevel != nil }
             .map { $0.gradeLevel ?? -1 }
             .flatMapLatest { level -> Observable<WeeklyEvaluationGrade> in
+                let level = Common.TEST ? Test.gradeLevel : level
+                
                 let grade = WeeklyEvaluationGrade(message: self.getNaggingMessage(gradeLevel: level), naggingLevel: CommonUser.naggingLevel, level: level)
                 return Observable.just(grade)
             }

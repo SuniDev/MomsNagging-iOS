@@ -130,6 +130,7 @@
 		A03D13D4284124A10012C406 /* DiaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03D13D3284124A10012C406 /* DiaryService.swift */; };
 		A061F0F02823AF1B00F9CC18 /* DetailDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */; };
 		A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */; };
+		A06316D62849D81500EC108B /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06316D52849D81500EC108B /* Test.swift */; };
 		A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E590281D93F70017EF53 /* NicknameSettingView.swift */; };
 		A06AB661282644A4006AAD73 /* NicknameSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */; };
 		A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33827F0BA37005727AD /* BaseViewController.swift */; };
@@ -306,6 +307,7 @@
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryView.swift; sourceTree = "<group>"; };
 		A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryViewModel.swift; sourceTree = "<group>"; };
+		A06316D52849D81500EC108B /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		A067E590281D93F70017EF53 /* NicknameSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingView.swift; sourceTree = "<group>"; };
 		A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewModel.swift; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 		8F06EC0527D892D900A17FF2 /* momsnagging */ = {
 			isa = PBXGroup;
 			children = (
+				A06316D42849D7FD00EC108B /* Test */,
 				86BD71BD280EAF840038200E /* Application */,
 				8F8DAE9727D8944F00F2E78F /* Common */,
 				8F16725B283E678A007A699B /* ScheduleService */,
@@ -1038,6 +1041,14 @@
 				8FF8DB1C2843C28400F745BE /* QuestionRequestModel.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		A06316D42849D7FD00EC108B /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				A06316D52849D81500EC108B /* Test.swift */,
+			);
+			path = Test;
 			sourceTree = "<group>";
 		};
 		A067E589281D92360017EF53 /* Recovered References */ = {
@@ -1616,6 +1627,7 @@
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				A0066C3A284381AD00805570 /* UserService.swift in Sources */,
 				8F1F93A727EEF2DA000F08AF /* CalendarWeekDayCell.swift in Sources */,
+				A06316D62849D81500EC108B /* Test.swift in Sources */,
 				A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */,
 				86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
