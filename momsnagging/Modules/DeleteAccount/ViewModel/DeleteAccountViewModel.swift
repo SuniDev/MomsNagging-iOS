@@ -93,7 +93,8 @@ class DeleteAccountViewModel: ViewModel, ViewModelType {
         let requestDeleteUser = input.confirmDeleteAlertHandler
             .asObservable()
             .filter({ $0 == true })
-            .flatMapLatest { _ in
+            .flatMapLatest { _ -> Observable<UserResult> in
+                self.isLoading.accept(true)
                 return self.requestDeleteUser(textReason.value)
             }.share()
         
@@ -103,6 +104,11 @@ class DeleteAccountViewModel: ViewModel, ViewModelType {
                 let alert = Alert(title: "", message: STR_SUCCESS_ACCOUNT, doneTitle: STR_CLOSE)
                 return Observable.just(alert)
             }
+        
+        requestDeleteUser
+            .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
         
         let goToLogin = input.successDeleteAlertHandler
             .asObservable()

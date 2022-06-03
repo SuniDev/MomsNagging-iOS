@@ -70,13 +70,19 @@ class PushSettingViewModel: ViewModel, ViewModelType {
             .disposed(by: disposeBag)
         
         let requestPutUser = requestPutUserTrigger
-            .flatMapLatest { request in
+            .flatMapLatest { request -> Observable<UserResult> in
+                self.isLoading.accept(true)
                 return self.requestPutUser(request)
             }.share()
         
+        requestPutUser
+            .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
+        
         let requestGetUser = requestPutUser
             .filter({ $0.id != nil })
-            .flatMapLatest { _ in
+            .flatMapLatest { _ -> Observable<User> in
                 return self.requestGetUser()
             }.share()
         

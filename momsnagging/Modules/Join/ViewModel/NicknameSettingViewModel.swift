@@ -152,6 +152,7 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         let requestJoin = input.btnDoneTapped
             .asObservable()
             .flatMapLatest { _ -> Observable<Login> in
+                self.isLoading.accept(true)
                 let nickName = confirmName.value.replacingOccurrences(of: "!", with: "", options: NSString.CompareOptions.literal, range: nil)
                 return self.requestJoin(nickName: nickName)
             }.map { $0.token }
@@ -161,6 +162,7 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         requestJoin
             .filter { $0 == nil }
             .bind(onNext: { _ in
+                self.isLoading.accept(false)
                 self.networkError.accept(STR_NETWORK_ERROR_MESSAGE)
             }).disposed(by: disposeBag)
         
@@ -182,6 +184,7 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         
         let goToCoachMark = setUser
             .map { _ -> CoachMarkViewModel in
+                self.isLoading.accept(false)
                 let viewModel = CoachMarkViewModel()
                 return viewModel
             }

@@ -106,6 +106,7 @@ class IDSettingViewModel: ViewModel, ViewModelType {
         let requestValidateID = isValidID
             .filter({ $0 == true })
             .flatMapLatest { _ -> Observable<Validate> in
+                self.isLoading.accept(true)
                 let id = textID.value
                 return self.requestValidateID(id: id)
             }.share()
@@ -114,6 +115,7 @@ class IDSettingViewModel: ViewModel, ViewModelType {
             .filter { $0.isExist != nil }
             .map { $0.isExist ?? false }
             .bind(onNext: { isExist in
+                self.isLoading.accept(false)
                 if isExist {
                     textHint.accept(.duplicate)
                 } else {
@@ -126,6 +128,7 @@ class IDSettingViewModel: ViewModel, ViewModelType {
         requestValidateID
             .filter { $0.isExist == nil }
             .bind(onNext: { _ in
+                self.isLoading.accept(false)
                 self.networkError.accept(STR_NETWORK_ERROR_MESSAGE)
             }).disposed(by: disposeBag)
         

@@ -92,7 +92,6 @@
 		8F990F08283D324D00A5D2AA /* ContactUsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F07283D324D00A5D2AA /* ContactUsModel.swift */; };
 		8F990F0B283D340F00A5D2AA /* DeleteAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F0A283D340F00A5D2AA /* DeleteAccountViewModel.swift */; };
 		8F990F0D283D341600A5D2AA /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F0C283D341600A5D2AA /* DeleteAccountView.swift */; };
-		8F990F0F283D341C00A5D2AA /* DeleteAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F0E283D341C00A5D2AA /* DeleteAccountModel.swift */; };
 		8F990F14283D3AE900A5D2AA /* DeleteAccountReasonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F990F13283D3AE900A5D2AA /* DeleteAccountReasonCell.swift */; };
 		8FA68740281CF39400F91EB8 /* MainContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA6873F281CF39400F91EB8 /* MainContainerView.swift */; };
 		8FBA8529281D56CB0013C91C /* WeekDayCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */; };
@@ -131,6 +130,7 @@
 		A061F0F02823AF1B00F9CC18 /* DetailDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */; };
 		A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */; };
 		A06316D62849D81500EC108B /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06316D52849D81500EC108B /* Test.swift */; };
+		A06316DA2849FF3C00EC108B /* NSObject+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06316D92849FF3C00EC108B /* NSObject+Rx.swift */; };
 		A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E590281D93F70017EF53 /* NicknameSettingView.swift */; };
 		A06AB661282644A4006AAD73 /* NicknameSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */; };
 		A06BB33927F0BA37005727AD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06BB33827F0BA37005727AD /* BaseViewController.swift */; };
@@ -268,7 +268,6 @@
 		8F990F07283D324D00A5D2AA /* ContactUsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsModel.swift; sourceTree = "<group>"; };
 		8F990F0A283D340F00A5D2AA /* DeleteAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewModel.swift; sourceTree = "<group>"; };
 		8F990F0C283D341600A5D2AA /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
-		8F990F0E283D341C00A5D2AA /* DeleteAccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountModel.swift; sourceTree = "<group>"; };
 		8F990F13283D3AE900A5D2AA /* DeleteAccountReasonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountReasonCell.swift; sourceTree = "<group>"; };
 		8FA6873F281CF39400F91EB8 /* MainContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerView.swift; sourceTree = "<group>"; };
 		8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarCell.swift; sourceTree = "<group>"; };
@@ -308,6 +307,7 @@
 		A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryView.swift; sourceTree = "<group>"; };
 		A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryViewModel.swift; sourceTree = "<group>"; };
 		A06316D52849D81500EC108B /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		A06316D92849FF3C00EC108B /* NSObject+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Rx.swift"; sourceTree = "<group>"; };
 		A067E590281D93F70017EF53 /* NicknameSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingView.swift; sourceTree = "<group>"; };
 		A067E591281D93F70017EF53 /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewModel.swift; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -386,6 +386,7 @@
 			children = (
 				A06BB35727F0E55C005727AD /* UIViewController+Rx.swift */,
 				8617642D28111AB400F7B254 /* Observable+Operators.swift */,
+				A06316D92849FF3C00EC108B /* NSObject+Rx.swift */,
 			);
 			path = Rx;
 			sourceTree = "<group>";
@@ -889,7 +890,6 @@
 		8F990F09283D336500A5D2AA /* DeleteAccount */ = {
 			isa = PBXGroup;
 			children = (
-				8F990F12283D342400A5D2AA /* Model */,
 				8F990F11283D342100A5D2AA /* View */,
 				8F990F10283D341D00A5D2AA /* ViewModel */,
 			);
@@ -911,14 +911,6 @@
 				8F990F13283D3AE900A5D2AA /* DeleteAccountReasonCell.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		8F990F12283D342400A5D2AA /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				8F990F0E283D341C00A5D2AA /* DeleteAccountModel.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		8FA6873E281CEDA900F91EB8 /* MainContainer */ = {
@@ -1576,7 +1568,6 @@
 				866F2C30283F4B5D004B5691 /* SNSLogin.swift in Sources */,
 				8FEEE5AC283A25E600764C43 /* AwardViewModel.swift in Sources */,
 				A0FB9D0D282E58FA000FED33 /* Array+Extension.swift in Sources */,
-				8F990F0F283D341C00A5D2AA /* DeleteAccountModel.swift in Sources */,
 				8F927A632824FF83000FFA75 /* DiaryCalendarCell.swift in Sources */,
 				A0066C3C2843829000805570 /* UserRequest.swift in Sources */,
 				8662F760282A5892007998CE /* PerformTimeSettingView.swift in Sources */,
@@ -1663,6 +1654,7 @@
 				866F2C25283F17EE004B5691 /* RequestModelType.swift in Sources */,
 				8F927A5E2824D5B9000FFA75 /* DiaryViewModel.swift in Sources */,
 				86D4BE2E27F6BE2000E9EE8B /* CommonUser.swift in Sources */,
+				A06316DA2849FF3C00EC108B /* NSObject+Rx.swift in Sources */,
 				8F990F08283D324D00A5D2AA /* ContactUsModel.swift in Sources */,
 				8F990F06283D324800A5D2AA /* ContactUsView.swift in Sources */,
 				8F927A5B2824D5AC000FFA75 /* DiaryView.swift in Sources */,

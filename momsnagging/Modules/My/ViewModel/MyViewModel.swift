@@ -79,7 +79,8 @@ class MyViewModel: ViewModel, ViewModelType {
         let requestPutUserTrigger = PublishRelay<PutUserRequest>()
         
         let requestPutUser = requestPutUserTrigger
-            .flatMapLatest { request in
+            .flatMapLatest { request -> Observable<UserResult> in
+                self.isLoading.accept(true)
                 return self.requestPutUser(request)
             }.share()
         
@@ -93,6 +94,7 @@ class MyViewModel: ViewModel, ViewModelType {
         
         failPutUser
             .subscribe(onNext: { _ in
+                self.isLoading.accept(false)
                 // TODO: 네트워크 실패
                 statusMsg.accept(CommonUser.statusMsg.isEmpty == true ? STR_STATUSMSG_DEFAULT : CommonUser.statusMsg)
                 nickName.accept(CommonUser.nickName ?? "자식")
@@ -100,7 +102,8 @@ class MyViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         let requestGetUser = successPutUser
-            .flatMapLatest { _ in
+            .flatMapLatest { _ -> Observable<User> in
+                self.isLoading.accept(false)
                 return self.requestGetUser()
             }.share()
                 

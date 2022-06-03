@@ -153,6 +153,7 @@ class LoginViewModel: ViewModel, ViewModelType {
         let requestLogin = snsLoginInfo
             .skip(1)
             .flatMapLatest { info -> Observable<Login> in
+                self.isLoading.accept(true)
                 return self.requestLogin(snsType: info.snsType, code: info.id)
             }.share()
         
@@ -166,6 +167,7 @@ class LoginViewModel: ViewModel, ViewModelType {
                                        id: "",
                                        nickname: "",
                                        firebaseToken: CommonUser.getFCMToken())
+                self.isLoading.accept(false)
                 let viewModel = IDSettingViewModel(withService: self.provider, joinRequest: join)
                 return viewModel
             }
@@ -188,6 +190,7 @@ class LoginViewModel: ViewModel, ViewModelType {
         
         let goToMain = setUser
             .map { _ -> MainContainerViewModel in
+                self.isLoading.accept(false)
                 let viewModel = MainContainerViewModel()
                 return viewModel
             }

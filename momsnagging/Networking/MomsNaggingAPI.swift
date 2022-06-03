@@ -118,15 +118,15 @@ extension MomsNaggingAPI: TargetType, AccessTokenAuthorizable {
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       case .putDiary(let request):
           return .requestJSONEncodable(request)
-      case .gradeAwards(_):
+      case .gradeAwards:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
-      case .gradeCalendar(_):
+      case .gradeCalendar:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
-      case .gradeLastWeek(_):
+      case .gradeLastWeek:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
-      case .gradeMonthly(_):
+      case .gradeMonthly:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
-      case .gradeStatistics(_):
+      case .gradeStatistics:
           return .requestParameters(parameters: parameters ?? [:], encoding: parameterEncoding)
       }
     }

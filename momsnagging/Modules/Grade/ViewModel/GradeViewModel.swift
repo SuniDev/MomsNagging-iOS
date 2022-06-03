@@ -193,6 +193,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 캘린더 API Request
         let requestCalendarDate = setCalendarDate.debug()
             .flatMapLatest { date -> Observable<GradeCalendar> in
+                self.isLoading.accept(true)
                 return self.requestGradeCalendar(year: date.year, month: date.month)
             }.share()
         
@@ -201,6 +202,7 @@ class GradeViewModel: ViewModel, ViewModelType {
             .map { return $0.arrDay ?? [] }
             .filter { $0.count > 0 }
             .flatMapLatest { arrDay -> Observable<[GradeDay]> in
+                self.isLoading.accept(false)
                 return Observable.just(arrDay)
             }.share()
         
@@ -219,13 +221,18 @@ class GradeViewModel: ViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
         
-        let todoItems = selectedDate.debug()
+        let todoItems = selectedDate
             .flatMapLatest { date -> Observable<[TodoListModel]> in
+                self.isLoading.accept(true)
                 return self.requestSchedule(date: date)
-            }
+            }.share()
         
         let countTodoItems = todoItems
             .map { return $0.count }
+        
+        todoItems
+            .bind(onNext: { _ in self.isLoading.accept(false) })
+            .disposed(by: disposeBag)
         
         // MARK: - 통계 탭
         // 다음 달
@@ -267,6 +274,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 월간 평가 API Request
         let requestStatisticsMonthly = setSttCalendarDate
             .flatMapLatest { date -> Observable<StatisticsMonthly> in
+                self.isLoading.accept(false)
                 return self.requestStatisticsMonthly(year: date.year, month: date.month)
             }.share()
         
@@ -274,6 +282,7 @@ class GradeViewModel: ViewModel, ViewModelType {
             .map { return $0.arrData ?? [] }
             .filter { $0.count > 0 }
             .flatMapLatest { arrData -> Observable<[StatisticsMonthlyData]> in
+                self.isLoading.accept(true)
                 return Observable.just(arrData)
             }.share()
         
@@ -292,11 +301,13 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 성적표 통계 API Request
         let requestStatistics = requestStatisticsTrigger
             .flatMapLatest { _ -> Observable<Statistics> in
+                self.isLoading.accept(true)
                 return self.requestStatistics()
             }.share()
         
         let sttItems = requestStatistics.debug()
             .flatMapLatest { data -> Observable<[StatisticsItem]> in
+                self.isLoading.accept(false)
                 return self.getStatisticsItems(data: data)
             }.share()
         

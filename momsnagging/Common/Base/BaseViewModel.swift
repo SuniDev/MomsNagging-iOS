@@ -25,9 +25,19 @@ class BaseViewModel: NSObject {
 class ViewModel: NSObject {
     let provider: AppServices
     let networkError = PublishRelay<String>()
+    let isLoading = PublishRelay<Bool>()
     
     init(provider: AppServices) {
         self.provider = provider
         super.init()
+        
+        self.isLoading
+            .subscribe(onNext: { isShow in
+                if isShow {
+                    LoadingHUD.show()
+                } else {
+                    LoadingHUD.hide()
+                }
+            }).disposed(by: rx.disposeBag)
     }
 }
