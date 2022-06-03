@@ -51,6 +51,7 @@ class HomeView: BaseViewController, Navigatable {
     var moveList: [TodoListModel] = []
     var moveListModel:[ScheduleArrayModel] = []
     var checkBtnInteractionEnable = true
+    var coachMarkStatus: Bool = false
     /*
      prefix : head
      Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일
