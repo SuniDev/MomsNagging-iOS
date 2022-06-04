@@ -84,8 +84,6 @@ class GradeViewModel: ViewModel, ViewModelType {
         let countTodoItems: Driver<Int>
         
         // 통계 - 월간 평가
-        /// 함께 한지
-        let countTogether: Driver<Int>
         /// 캘린더 날짜 설정
         let setSttCalendarDate: Driver<CalendarDate>
         /// 이전 달 이동
@@ -98,6 +96,8 @@ class GradeViewModel: ViewModel, ViewModelType {
         let countSttMonthly: Driver<Int>
         /// 성적표 통계
         let sttItems: Observable<[StatisticsItem]>
+        /// 함께 한지
+        let countTogether: Driver<Int>
         /// 성적표 통게 개수
         let countStt: Driver<Int>
         
@@ -292,10 +292,6 @@ class GradeViewModel: ViewModel, ViewModelType {
                 return Observable.just(arrData)
             }.share()
         
-        let countTogether = requestStatisticsMonthly
-            .map { return Common.TEST ? Test.togetherCount : $0.togetherCount ?? 0 }
-            .filter({ $0 > 0 })
-        
         let sttMonthlyItems = arrStatisticsMonthly
             .flatMapLatest { arrData -> Observable<[StatisticsMontlyItem]> in
                 return self.getStatisticsMonthlyItems(arrData: arrData)
@@ -320,6 +316,10 @@ class GradeViewModel: ViewModel, ViewModelType {
         let countStt = sttItems
             .map { return $0.count }
         
+        let countTogether = requestStatistics
+            .map { return Common.TEST ? Test.togetherCount : $0.togetherCount ?? 0 }
+            .filter({ $0 > 0 })
+        
         // 상장
         let showAward = input.btnAwardTapped
             .map { _ -> AwardViewModel in
@@ -338,13 +338,13 @@ class GradeViewModel: ViewModel, ViewModelType {
                     countDayItems: countDayItems.asDriverOnErrorJustComplete(),
                     todoItems: todoItems,
                     countTodoItems: countTodoItems.asDriverOnErrorJustComplete(),
-                    countTogether: countTogether.asDriverOnErrorJustComplete(),
                     setSttCalendarDate: setSttCalendarDate.asDriverOnErrorJustComplete(),
                     setSttLastMonth: setSttLastMonth.asDriverOnErrorJustComplete(),
                     setSttNextMonth: setSttNextMonth.asDriverOnErrorJustComplete(),
                     sttMonthlyItems: sttMonthlyItems,
                     countSttMonthly: countSttMonthly.asDriverOnErrorJustComplete(),
                     sttItems: sttItems,
+                    countTogether: countTogether.asDriverOnErrorJustComplete(),
                     countStt: countStt.asDriverOnErrorJustComplete(),
                     showAward: showAward.asDriver()
         )

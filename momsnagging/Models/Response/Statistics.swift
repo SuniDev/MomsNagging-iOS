@@ -22,6 +22,7 @@ class Statistics: ModelType {
     var todoDoneCount: Int?
     var routineDoneCount: Int?
     var diaryCount: Int?
+    var togetherCount: Int?
 
     required init(jsonData: JSON) {
         fullDoneCount = jsonData["fullDoneCount"].int
@@ -30,5 +31,6 @@ class Statistics: ModelType {
         todoDoneCount = jsonData["todoDoneCount"].int
         routineDoneCount = jsonData["routineDoneCount"].int
         diaryCount = jsonData["diaryCount"].int
+        togetherCount = jsonData["togetherCount"].int
     }
 }

@@ -17,11 +17,9 @@ class StatisticsMonthly: ModelType {
     enum Event { }
     
     var arrData: [StatisticsMonthlyData]?
-    var togetherCount: Int?
 
     required init(jsonData: JSON) {
         arrData = jsonData.to(type: StatisticsMonthlyData.self) as? [StatisticsMonthlyData] ?? []
-        togetherCount = jsonData["togetherCount"].int
     }
 }
 /**
