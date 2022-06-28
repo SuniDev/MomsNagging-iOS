@@ -46,6 +46,8 @@ class GradeViewModel: ViewModel, ViewModelType {
         /// 캘린더 이동
         let btnPrevTapped: Driver<Void>
         let btnNextTapped: Driver<Void>
+        /// 달력 팁
+        let btnTipTapped: Driver<Void>
         
         // 통계 - 월간 평가
         /// 캘린더 데이터
@@ -76,6 +78,8 @@ class GradeViewModel: ViewModel, ViewModelType {
         let setNextMonth: Driver<CalendarDate>
         /// 캘린더 날짜 개수
         let countDayItems: Driver<Int>
+        /// 팁 보이기
+        let isHiddenTip: Driver<Bool>
         
         // 달력 - 투두 리스트
         /// 투두 리스트
@@ -327,6 +331,14 @@ class GradeViewModel: ViewModel, ViewModelType {
                 return viewModel
             }
         
+        // 달력 Tip
+        let isHiddenTip = BehaviorRelay<Bool>(value: true)
+        
+        input.btnTipTapped
+            .drive(onNext: {
+                isHiddenTip.accept(!isHiddenTip.value)
+            }).disposed(by: disposeBag)
+        
         return Output(
                     tabCalendar: input.tabCalendar,
                     tabStatistics: input.tabStatistics,
@@ -336,6 +348,7 @@ class GradeViewModel: ViewModel, ViewModelType {
                     setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
                     setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
                     countDayItems: countDayItems.asDriverOnErrorJustComplete(),
+                    isHiddenTip: isHiddenTip.asDriver(onErrorJustReturn: true),
                     todoItems: todoItems,
                     countTodoItems: countTodoItems.asDriverOnErrorJustComplete(),
                     setSttCalendarDate: setSttCalendarDate.asDriverOnErrorJustComplete(),

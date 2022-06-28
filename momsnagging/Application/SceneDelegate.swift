@@ -34,15 +34,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         
         let navigator = Navigator.default
-//        let viewModel = OnboardingViewModel(withService: SceneDelegate.appService)
-//        navigator.show(seque: .onboarding(viewModel: viewModel), sender: nil, transition: .root)
         let viewModel = IntroViewModel(withService: SceneDelegate.appService)
         navigator.show(seque: .intro(viewModel: viewModel), sender: nil, transition: .root)
-//        let viewModel = MainContainerViewModel()
-//        navigator.show(seque: .mainContainer(viewModel: viewModel), sender: nil, transition: .root)
-//        let viewModel = ContactUsViewModel()
-//        navigator.show(seque: .contactUs(viewModel: viewModel), sender: nil, transition: .root)
-        
         window?.windowScene = windowScene
         window?.rootViewController = navigator.root
         window?.makeKeyAndVisible()

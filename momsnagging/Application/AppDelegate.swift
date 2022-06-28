@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
     }
     
@@ -94,30 +95,3 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler([.banner, .list, .sound]) // Display notification Banner
     }
 }
- 
-// MARK: - 220530 추가
-//extension AppDelegate {
-//
-//    // [START receive_message]
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-//        Messaging.messaging().appDidReceiveMessage(userInfo)
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//            Log.debug("FCM Message ID: \(messageID)")
-//        }
-//    }
-//    // 앱 켜진상태에서 푸시 알림을 받았을 때.
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-//                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        Messaging.messaging().appDidReceiveMessage(userInfo)
-//
-//        // 구글 message ID 정보
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//            Log.debug("FCM Message ID: \(messageID)")
-//        }
-//
-//        // Print full message.
-//        Log.debug("FCM userInfo : \(userInfo)")
-//
-//        completionHandler(UIBackgroundFetchResult.newData)
-//    }
-//}
