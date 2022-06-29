@@ -23,27 +23,28 @@ target 'momsnagging' do
 	pod 'RxCocoa', '~> 6'
 
 	#RX Extensions
-  pod 'RxGesture', '~> 4.0' # https://github.com/RxSwiftCommunity/RxGesture
-  pod 'RxDataSources', '~> 5.0' # https://github.com/RxSwiftCommunity/RxDataSources
-  pod 'RxViewController', '~> 2.0' # https://github.com/devxoul/RxViewController
-  pod 'RxOptional', '~> 5.0'  # https://github.com/RxSwiftCommunity/RxOptional
-  pod 'RxSwiftExt', '~> 6.0'  # https://github.com/RxSwiftCommunity/RxSwiftExt
-  pod 'RxKeyboard'
+	pod 'RxGesture', '~> 4.0' # https://github.com/RxSwiftCommunity/RxGesture
+	pod 'RxDataSources', '~> 5.0' # https://github.com/RxSwiftCommunity/RxDataSources
+	pod 'RxViewController', '~> 2.0' # https://github.com/devxoul/RxViewController
+	pod 'RxOptional', '~> 5.0'  # https://github.com/RxSwiftCommunity/RxOptional
+	pod 'RxSwiftExt', '~> 6.0'  # https://github.com/RxSwiftCommunity/RxSwiftExt
+	pod 'RxKeyboard'
 
 	#firebase
 	pod 'Firebase/Analytics'
 	pod 'Firebase/Crashlytics'
 	pod 'Firebase/Messaging'
 	pod 'Firebase/AppDistribution'
+	pod 'Firebase/RemoteConfig'
   
-  #Google
-  pod 'GoogleSignIn'
+	#Google
+	pod 'GoogleSignIn'
   
-  #Kakao
-  pod 'RxKakaoSDKAuth'
-  pod 'RxKakaoSDKUser'
+	#Kakao
+	pod 'RxKakaoSDKAuth'
+	pod 'RxKakaoSDKUser'
   
-  #Keychain
-  pod 'SwiftKeychainWrapper'
+	#Keychain
+	pod 'SwiftKeychainWrapper'
 
 end
