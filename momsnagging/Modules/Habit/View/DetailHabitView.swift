@@ -391,7 +391,6 @@ class DetailHabitView: BaseViewController, Navigatable {
                 
                 
                 // 22.07.02 추가
-                Log.debug("isWriting", "isWriting___\(isWriting)")
                 self.setTextColor(isWriting: isWriting)
                 self.tfName.isEnabled = isWriting
                 if viewModel.isRecommendHabitBool {
