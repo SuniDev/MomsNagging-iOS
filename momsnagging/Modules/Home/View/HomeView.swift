@@ -35,6 +35,11 @@ class HomeView: BaseViewController, Navigatable {
         
 //        LoadingHUD.show()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        hiddenAlignment()
+    }
+    
     // MARK: - Temp
     // MARK: - Init
     init(viewModel: HomeViewModel, navigator: Navigator) {
@@ -680,6 +685,14 @@ class HomeView: BaseViewController, Navigatable {
         return view
     }
     
+    func hiddenAlignment() {
+        self.checkBtnInteractionEnable = true
+        lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
+        self.headBtnBind(input: input)
+        self.collectionViewOutput = viewModel.transform(input: input)
+        self.todoListTableView.dragInteractionEnabled = false
+        self.todoListTableView.reloadData()
+    }
 }
 
 extension HomeView {
