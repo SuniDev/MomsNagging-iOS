@@ -25,7 +25,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     let todolistRowHeight: CGFloat = 60
     let statisticsMonthlyRowHeight: CGFloat = 48
     let statisticsRowHeight: CGFloat = 48
-    
+     
     // MARK: - UI Properties
     // 헤더
     lazy var noneBtn = UIButton()
@@ -39,6 +39,65 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     })
     lazy var calendarUnderLine = UIView()
     lazy var calendarTab = UIView()
+    
+    // 달력 Tip
+    lazy var btnTip = UIButton().then({
+        $0.setImage(Asset.Icon.tipGray.image, for: .normal)
+    })
+    lazy var imgvTipArrow = UIImageView().then({
+        $0.isHidden = true
+        $0.image = Asset.Assets.gradeTipArrow.image
+    })
+    lazy var vTipBackground = UIView().then({
+        $0.isHidden = true
+        $0.backgroundColor = Asset.Color.subLight010.color
+        $0.addShadow(color: Asset.Color.monoDark030.color, alpha: 30, x: 0, y: 4, blur: 24, spread: 0)
+    })
+    lazy var lblTipTitle = UILabel().then({
+        $0.text = "달성률에 따라 엄마 기분이 달라진단다."
+        $0.font = FontFamily.Pretendard.bold.font(size: 16)
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.textAlignment = .center
+    })
+    lazy var vTip1 = UIView().then({
+        $0.backgroundColor = .clear
+    })
+    lazy var imgvTip1 = UIImageView().then({
+        $0.image = Asset.Assets.emojiHappy.image
+    })
+    lazy var lblTip1 = UILabel().then({
+        $0.numberOfLines = 0
+        $0.text = "전체 수행\n(100%)"
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
+        $0.textAlignment = .center
+    })
+    lazy var vTip2 = UIView().then({
+        $0.backgroundColor = .clear
+    })
+    lazy var imgvTip2 = UIImageView().then({
+        $0.image = Asset.Assets.emojiDefault.image
+    })
+    lazy var lblTip2 = UILabel().then({
+        $0.numberOfLines = 0
+        $0.text = "일부 수행\n(1-99%)"
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
+        $0.textAlignment = .center
+    })
+    lazy var vTip3 = UIView().then({
+        $0.backgroundColor = .clear
+    })
+    lazy var imgvTip3 = UIImageView().then({
+        $0.image = Asset.Assets.emojiAngry.image
+    })
+    lazy var lblTip3 = UILabel().then({
+        $0.numberOfLines = 0
+        $0.text = "미수행\n(0%)"
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
+        $0.textAlignment = .center
+    })
     
     // 통게
     lazy var statisticsBtn = UIButton().then({
@@ -370,6 +429,94 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.bottom.equalTo(statisticsScrollView.snp.bottom).offset(-28)
         })
         
+        // 달력 Tip
+        calendarHeadFrame.addSubview(btnTip)
+        btnTip.snp.makeConstraints({
+            $0.height.width.equalTo(24)
+            $0.centerY.equalTo(calendarDateLbl.snp.centerY)
+            $0.leading.equalToSuperview().offset(20)
+        })
+        view.addSubview(vTipBackground)
+        view.addSubview(imgvTipArrow)
+        imgvTipArrow.snp.makeConstraints({
+            $0.top.equalTo(btnTip.snp.bottom).offset(4)
+            $0.centerX.equalTo(btnTip)
+            $0.width.equalTo(8)
+            $0.height.equalTo(4)
+        })
+        
+        vTipBackground.snp.makeConstraints({
+            $0.height.equalTo(172)
+            $0.top.equalTo(imgvTipArrow.snp.bottom)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        })
+        
+        vTipBackground.addSubview(lblTipTitle)
+        lblTipTitle.snp.makeConstraints({
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(22)
+            $0.leading.trailing.equalToSuperview()
+        })
+        
+        vTipBackground.addSubview(vTip1)
+        vTip1.addSubview(imgvTip1)
+        vTip1.addSubview(lblTip1)
+        imgvTip1.snp.makeConstraints({
+            $0.width.height.equalTo(48)
+            $0.top.centerX.equalToSuperview()
+        })
+        lblTip1.snp.makeConstraints({
+            $0.top.equalTo(imgvTip1.snp.bottom).offset(4)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-4)
+        })
+        vTip1.snp.makeConstraints({
+            $0.height.equalTo(98)
+            $0.leading.equalToSuperview().offset(12)
+            $0.top.equalTo(lblTipTitle.snp.bottom).offset(16)
+            $0.bottom.equalToSuperview().offset(-12)
+        })
+        
+        vTipBackground.addSubview(vTip2)
+        vTip2.addSubview(imgvTip2)
+        vTip2.addSubview(lblTip2)
+        imgvTip2.snp.makeConstraints({
+            $0.width.height.equalTo(48)
+            $0.top.centerX.equalToSuperview()
+        })
+        lblTip2.snp.makeConstraints({
+            $0.top.equalTo(imgvTip2.snp.bottom).offset(4)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-4)
+        })
+        vTip2.snp.makeConstraints({
+            $0.height.equalTo(98)
+            $0.width.equalTo(vTip1)
+            $0.leading.equalTo(vTip1.snp.trailing).offset(12)
+            $0.centerX.equalToSuperview()
+            $0.top.bottom.equalTo(vTip1)
+        })
+        
+        vTipBackground.addSubview(vTip3)
+        vTip3.addSubview(imgvTip3)
+        vTip3.addSubview(lblTip3)
+        imgvTip3.snp.makeConstraints({
+            $0.width.height.equalTo(48)
+            $0.top.centerX.equalToSuperview()
+        })
+        lblTip3.snp.makeConstraints({
+            $0.top.equalTo(imgvTip2.snp.bottom).offset(4)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-4)
+        })
+        vTip3.snp.makeConstraints({
+            $0.height.equalTo(98)
+            $0.width.equalTo(vTip1)
+            $0.leading.equalTo(vTip1.snp.trailing).offset(12)
+            $0.top.bottom.equalTo(vTip2)
+            $0.trailing.equalToSuperview().offset(-12)
+        })
         self.view.layoutIfNeeded()
     }
     
@@ -391,6 +538,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             dayModelSelected: self.dayCollectionView.rx.modelSelected(GradeDayItem.self).asDriverOnErrorJustComplete(),
             btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
+            btnTipTapped: self.btnTip.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             setSttCalendarMonth: self.sttCalendarViewModel.monthObservable.asDriverOnErrorJustComplete(),
             setSttCalendarYear: self.sttCalendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
             btnSttPrevTapped: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(),
@@ -512,6 +660,18 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             }).disposed(by: disposedBag)
         
         todoListTableView.rx.setDelegate(self).disposed(by: disposedBag)
+        
+        // 달력 Tip
+        output.isHiddenTip
+            .drive(onNext: { isHidden in
+                if isHidden {
+                    self.imgvTipArrow.fadeOut()
+                    self.vTipBackground.fadeOut()
+                } else {
+                    self.imgvTipArrow.fadeIn()
+                    self.vTipBackground.fadeIn()
+                }
+            }).disposed(by: disposedBag)
         
         // MARK: - 통계 탭 Bind
         output.setSttCalendarDate
