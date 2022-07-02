@@ -35,6 +35,7 @@ class DetailTodoViewModel: BaseViewModel {
         if let todoModel = todoModel {
             self.todoModel = todoModel
         }
+        Log.debug("isNew!!", "\(isNew)")
     }
     
     // MARK: - Input

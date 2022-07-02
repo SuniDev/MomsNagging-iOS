@@ -377,13 +377,14 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.btnMore.isHidden = isWriting
                 self.btnDone.isHidden = !isWriting
                 
+                
+                // 22.07.02 추가
+                Log.debug("isWriting", "isWriting___\(isWriting)")
+                self.tfName.isEnabled = isWriting
                 if viewModel.isRecommendHabitBool {
                     self.tfName.isEnabled = false
                     self.tfName.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
-                } else {
-                    self.tfName.isEnabled = true
                 }
-                
                 // 컨텐츠 변경
                 self.btnPerformTime.isEnabled = isWriting
                 self.btnCycleWeek.isEnabled = isWriting
@@ -401,13 +402,13 @@ class DetailHabitView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         // 텍스트 필드 수정 가능 여부
-        viewModel.isRecommendHabit.subscribe(onNext: { bool in
-            if bool {
-                self.tfName.isEnabled = bool
-            } else {
-                self.tfName.isEnabled = !bool
-            }
-        }).disposed(by: self.disposeBag)
+//        viewModel.isRecommendHabit.subscribe(onNext: { bool in
+//            if bool {
+//                self.tfName.isEnabled = bool
+//            } else {
+//                self.tfName.isEnabled = !bool
+//            }
+//        }).disposed(by: self.disposeBag)
         
         /// 뒤로 가기
         output.showBackAlert
@@ -618,11 +619,11 @@ class DetailHabitView: BaseViewController, Navigatable {
             self.tfName.text = st
         }).disposed(by: disposeBag)
         
-        if self.tfName.backgroundColor == UIColor(asset: Asset.Color.monoLight010) {
-            self.tfName.isEnabled = false
-        } else {
-            self.tfName.isEnabled = true
-        }
+//        if self.tfName.backgroundColor == UIColor(asset: Asset.Color.monoLight010) {
+//            self.tfName.isEnabled = false
+//        } else {
+//            self.tfName.isEnabled = true
+//        }
         
     }
     
