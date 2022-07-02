@@ -69,6 +69,7 @@ class HomeView: BaseViewController, Navigatable {
     var headMonth: Int = 0
     var headDay: Int = 0
     var selectDayIndex: Int?// 주간달력 달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
+    var selectDayMonth: Int = 0// 선택한 달의 숫자 현재 월 0 이전으로갈수록 -1 다음달로갈때 +1
     /*
      prefix : calendar
      Year, Month, Day 월간달력의 Lbl에 표시하기 위한 날짜 연, 월, 일
@@ -86,6 +87,16 @@ class HomeView: BaseViewController, Navigatable {
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
     var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
     var selectDate: String = ""
+    var dayList: [String] = [] //Observable하고있는 dayList의 데이터를 담기위함 (선택한 날짜의 index값을 찾기위함)
+    
+    enum MonthlyConfirmation { //주간 달력에서 선택한 일자가 이번달,이전달,다음달 중 속하는곳을 확인
+        case previousMonth
+        case thisMonth
+        case nextMonth
+    }
+    var monthlyConfirmation: MonthlyConfirmation?
+    
+    
     // MARK: - UI Properties
     // 헤드프레임 UI Properties
     var listBtn = UIButton()
@@ -226,9 +237,7 @@ class HomeView: BaseViewController, Navigatable {
         weekCalendarYear = calendarViewModel.getYear()
         weekCalendarMonth = calendarViewModel.getMonth()
         weekCalendarDay = calendarViewModel.getToday()
-        
-        
-        
+
         calendarDateLbl.text = "\(calendarYear ?? 0)년 \(calendarMonth ?? 0)월"
         calendarFrame = homeCalendarView()
     }
@@ -318,6 +327,20 @@ class HomeView: BaseViewController, Navigatable {
                 }
             }
             Log.debug("day!", "\(day), \(month)")
+            
+            if month < self.calendarViewModel.getMonth() {
+                self.monthlyConfirmation = .previousMonth
+            } else if month > self.calendarViewModel.getMonth() {
+                self.monthlyConfirmation = .nextMonth
+            } else {
+                self.monthlyConfirmation = .thisMonth
+            }
+            
+            Log.debug("monthlyConfirmation Test", "\(self.monthlyConfirmation)")
+            
+            for (index, item) in self.dayList.enumerated() where item == "\(day)" {
+                self.calendarSelectIndex = index
+            }
 
             if day < 10 {
                 if month < 10 {
@@ -365,6 +388,7 @@ class HomeView: BaseViewController, Navigatable {
 //                    }
 //                }
 //            }
+            self.calendarSelectClear()
             Log.debug("selectDate _ DayCollectionView : ", "\(self.selectDate)")
         }).disposed(by: disposedBag)
         
@@ -382,6 +406,8 @@ class HomeView: BaseViewController, Navigatable {
         
         calendarViewModel.daylist.subscribe(onNext: { list in
             Log.debug("dayList", "\(list)")
+            self.dayList.removeAll()
+            self.dayList = list
         }).disposed(by: disposedBag)
         calendarViewModel.daylist // 월 달력 데이터 [String]
             .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "HomeCalendarCell", cellType: HomeCalendarCell.self)) { index, item, cell in
@@ -405,6 +431,22 @@ class HomeView: BaseViewController, Navigatable {
                         cell.number.textColor = UIColor(asset: Asset.Color.monoDark010)
                     }
                 }
+            
+                // 새로 추가한 부분
+                if self.calendarSelectIndex != nil {
+                    if self.dateCheck != self.selectDayMonth {
+                        cell.selectDayRoundFrame.isHidden = true
+                    } else {
+                        for i in 0..<37 {
+                            let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
+                            if i == self.calendarSelectIndex {
+                                cell?.selectDayRoundFrame.isHidden = false
+                            } else {
+                                cell?.selectDayRoundFrame.isHidden = true
+                            }
+                        }
+                    }
+                }
                 
 //                if self.calendarSelectIndex != nil {
 //                    if self.dateCheck == self.selectMonth && self.calendarSelectIndex == index {
@@ -422,6 +464,7 @@ class HomeView: BaseViewController, Navigatable {
             self.calendarFrame.isHidden = true
             self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
             self.headDropDownBtn.isSelected = false
+            self.selectDayMonth = self.dateCheck
             
             self.calendarSelectIndex = indexPath.row
             for i in 0..<37 {
@@ -442,18 +485,29 @@ class HomeView: BaseViewController, Navigatable {
                 month = "0\(self.calendarMonth ?? 0)"
             }
             self.selectDate = "\(self.calendarYear ?? 0)\(month)\(day)"
-            if self.calendarViewModel.todayFormatteryyyyMM() == "\(self.calendarYear ?? 0)\(month)" {
-                for i in 0..<7 {
-                    let cell = self.weekCalendarCollectionView.cellForItem(at: [0, i]) as? WeekDayCalendarCell
-                    if cell?.numberLbl.text == day {
-                        cell?.selectDayRoundFrame.isHidden = false
-                    } else {
-                        cell?.selectDayRoundFrame.isHidden = true
-                    }
-                }
-            } else {
-                self.weekDaySelectClear()
-            }
+//            Log.debug("Test:", "\(self.calendarViewModel.todayFormatteryyyyMM()) , \(self.calendarYear ?? 0)\(month)")
+//            if self.calendarViewModel.todayFormatteryyyyMM() == "\(self.calendarYear ?? 0)\(month)" {
+//                for i in 0..<7 {
+//                    let cell = self.weekCalendarCollectionView.cellForItem(at: [0, i]) as? WeekDayCalendarCell
+//                    let intText = Int(((cell?.numberLbl.text!)!))!
+//                    var stText = ""
+//                    if intText < 10 {
+//                        stText = "0\(intText)"
+//                    } else {
+//                        stText = "\(intText)"
+//                    }
+//                    Log.debug("Test:", "\(stText), \(day)")
+//                    if stText == day {
+//                        cell?.selectDayRoundFrame.isHidden = false
+//                    } else {
+//                        cell?.selectDayRoundFrame.isHidden = true
+//                    }
+//                }
+//            } else {
+//                self.weekDaySelectClear()
+//            }
+            self.weekDaySelectClear() // 주간 달력 선택 표시 삭제
+            
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             self.selectMonth = self.dateCheck
             self.todoListLookUpParam = "20\(self.headTitleLbl.text ?? "")"
