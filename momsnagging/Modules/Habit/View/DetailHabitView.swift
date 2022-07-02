@@ -389,7 +389,6 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.btnMore.isHidden = isWriting
                 self.btnDone.isHidden = !isWriting
                 
-                
                 // 22.07.02 추가
                 self.setTextColor(isWriting: isWriting)
                 self.tfName.isEnabled = isWriting
