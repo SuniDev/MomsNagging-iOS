@@ -27,9 +27,11 @@ class DetailTodoViewModel: BaseViewModel {
     private var param = CreateTodoRequestModel()
     var todoInfoOb = PublishSubject<TodoInfoResponseModel>()
     private var isModify: Bool = false
+    var modifyPage: Bool?
     
     init(isNew: Bool, homeVM: HomeViewModel, dateParam: String, todoModel: TodoListModel?=nil) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
+        self.modifyPage = !isNew
         self.homeViewModel = homeVM
         self.param.scheduleDate = dateParam
         if let todoModel = todoModel {

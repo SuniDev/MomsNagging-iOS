@@ -27,6 +27,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     var disposeBag = DisposeBag()
     var provider = MoyaProvider<ScheduleService>()
     var homeViewModel: HomeViewModel!
+    var modifyPage: Bool?
     private let isNew: BehaviorRelay<Bool>
     let isRecommendHabit: BehaviorRelay<Bool>
     private var cycleWeek = BehaviorRelay<[String]>(value: ["월", "화", "수", "목", "금", "토", "일"])
@@ -44,6 +45,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     
     init(isNew: Bool, isRecommendHabit: Bool, dateParam: String, homeViewModel: HomeViewModel, todoModel: TodoListModel?=nil, recommendHabitName: String?=nil, coachMarkStatus: Bool? = false) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
+        self.modifyPage = !isNew
         self.isRecommendHabit = BehaviorRelay<Bool>(value: isRecommendHabit)
         self.isRecommendHabitBool = isRecommendHabit
         self.dateParam = dateParam

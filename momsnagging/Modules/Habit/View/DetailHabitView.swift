@@ -193,15 +193,27 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         /// 습관 이름
         viewHintTextField = CommonView.hintTextFieldFrame(tf: tfName, lblHint: lblHint)
-        viewNameTitle = CommonView.requiredTitleFrame("습관 이름")
+        if viewModel?.modifyPage ?? false {
+            viewNameTitle = CommonView.requiredTitleFrame("습관 이름", true)
+        } else {
+            viewNameTitle = CommonView.requiredTitleFrame("습관 이름", false)
+        }
         detailNameFrame = CommonView.detailNameFrame(viewNameTitle: viewNameTitle, viewHintTextField: viewHintTextField)
         
         /// 수행 시간
-        viewTimeTitle = CommonView.requiredTitleFrame("수행 시간")
+        if viewModel?.modifyPage ?? false {
+            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", true)
+        } else {
+            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", false)
+        }
         detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, tfTime: tfPerformTime)
         
         /// 이행 주기
-        viewCycleTitle = CommonView.requiredTitleFrame("이행 주기")
+        if viewModel?.modifyPage ?? false {
+            viewCycleTitle = CommonView.requiredTitleFrame("이행 주기", true)
+        } else {
+            viewCycleTitle = CommonView.requiredTitleFrame("이행 주기", false)
+        }
         divider = CommonView.divider()
         
         /// 잔소리 알림
@@ -380,6 +392,7 @@ class DetailHabitView: BaseViewController, Navigatable {
                 
                 // 22.07.02 추가
                 Log.debug("isWriting", "isWriting___\(isWriting)")
+                self.setTextColor(isWriting: isWriting)
                 self.tfName.isEnabled = isWriting
                 if viewModel.isRecommendHabitBool {
                     self.tfName.isEnabled = false
@@ -634,5 +647,24 @@ class DetailHabitView: BaseViewController, Navigatable {
             .subscribe(onNext: { text in
                 self.tfPerformTime.text = text
             }).disposed(by: disposeBag)
+    }
+    
+    // MARK: - Func
+    func setTextColor(isWriting: Bool) {
+        if isWriting {
+            tfName.textColor = UIColor(asset: Asset.Color.black)
+            tfPerformTime.textColor = UIColor(asset: Asset.Color.black)
+            tfPicker.textColor = UIColor(asset: Asset.Color.black)
+            
+            lblTime.textColor = UIColor(asset: Asset.Color.black)
+            lblPushTitle.textColor = UIColor(asset: Asset.Color.black)
+            
+        } else {
+            tfName.textColor = UIColor(asset: Asset.Color.monoDark020)
+            tfPerformTime.textColor = UIColor(asset: Asset.Color.monoDark020)
+            tfPicker.textColor = UIColor(asset: Asset.Color.monoDark020)
+            lblTime.textColor = UIColor(asset: Asset.Color.monoDark020)
+            lblPushTitle.textColor = UIColor(asset: Asset.Color.monoDark020)
+        }
     }
 }

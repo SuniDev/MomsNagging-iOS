@@ -133,11 +133,19 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         viewHintTextField = CommonView.hintTextFieldFrame(tf: tfName, lblHint: lblHint)
-        viewNameTitle = CommonView.requiredTitleFrame("할일 이름")
+        if viewModel?.modifyPage ?? false {
+            viewNameTitle = CommonView.requiredTitleFrame("할일 이름", true)
+        } else {
+            viewNameTitle = CommonView.requiredTitleFrame("할일 이름", false)
+        }
         detailNameFrame = CommonView.detailNameFrame(viewNameTitle: viewNameTitle, viewHintTextField: viewHintTextField)
         
         /// 수행 시간
-        viewTimeTitle = CommonView.requiredTitleFrame("수행 시간")
+        if viewModel?.modifyPage ?? false {
+            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", true)
+        } else {
+            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", false)
+        }
         detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, tfTime: tfPerformTime)
         
         /// 잔소리 알림
@@ -252,6 +260,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         output.isWriting
             .drive(onNext: { isWriting in
+                self.setTextColor(isWriting: isWriting)
                 // 헤더 변경
                 self.btnMore.isHidden = isWriting
                 self.btnDone.isHidden = !isWriting
@@ -418,5 +427,23 @@ class DetailTodoView: BaseViewController, Navigatable {
             .subscribe(onNext: { text in
                 self.tfPerformTime.text = text
             }).disposed(by: disposeBag)
+    }
+    
+    func setTextColor(isWriting: Bool) {
+        if isWriting {
+            tfName.textColor = UIColor(asset: Asset.Color.black)
+            tfPerformTime.textColor = UIColor(asset: Asset.Color.black)
+            tfPicker.textColor = UIColor(asset: Asset.Color.black)
+            
+            lblTime.textColor = UIColor(asset: Asset.Color.black)
+            lblPushTitle.textColor = UIColor(asset: Asset.Color.black)
+            
+        } else {
+            tfName.textColor = UIColor(asset: Asset.Color.monoDark020)
+            tfPerformTime.textColor = UIColor(asset: Asset.Color.monoDark020)
+            tfPicker.textColor = UIColor(asset: Asset.Color.monoDark020)
+            lblTime.textColor = UIColor(asset: Asset.Color.monoDark020)
+            lblPushTitle.textColor = UIColor(asset: Asset.Color.monoDark020)
+        }
     }
 }

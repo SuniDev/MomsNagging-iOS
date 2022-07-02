@@ -349,20 +349,28 @@ class CommonView {
      - Returns: UIView
      - Note: '*' 표시가 포함된 타이틀
      */
-    static func requiredTitleFrame(_ text: String) -> UIView {
+    static func requiredTitleFrame(_ text: String, _ modify: Bool) -> UIView {
         lazy var viewTitle = UIView().then({
             $0.backgroundColor = Asset.Color.monoWhite.color
         })
         
         lazy var lblTitle = UILabel().then({
             $0.text = text
-            $0.textColor = Asset.Color.monoDark010.color
+            if modify {
+                $0.textColor = Asset.Color.monoDark020.color
+            } else {
+                $0.textColor = Asset.Color.monoDark010.color
+            }
             $0.font = FontFamily.Pretendard.bold.font(size: 16)
         })
         
         lazy var lblRequired = UILabel().then({
             $0.text = "*"
-            $0.textColor = Asset.Color.priMain.color
+            if modify {
+                $0.textColor = Asset.Color.priLight030.color
+            } else {
+                $0.textColor = Asset.Color.priMain.color
+            }
             $0.font = FontFamily.Pretendard.bold.font(size: 18)
         })
         
