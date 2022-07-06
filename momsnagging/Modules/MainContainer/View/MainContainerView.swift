@@ -91,6 +91,7 @@ class MainContainerView: BaseViewController, Navigatable {
         tabbarBtn1.rx.tap.bind(onNext: { _ in
             self.tabbarButtonBind(buttonTag: 0)
             globalTabOb.onNext(0)
+            self.tab0.viewWillAppear(true)
             self.setHomeView()
         }).disposed(by: disposedBag)
         

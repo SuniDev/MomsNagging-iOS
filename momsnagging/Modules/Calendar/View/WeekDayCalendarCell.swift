@@ -17,7 +17,7 @@ class WeekDayCalendarCell: UICollectionViewCell {
     }
     
     // MARK: - Variable
-    var isToday : Bool = false
+    var isToday: Bool = false
     // MARK: - UI Properties
     lazy var weekDayLbl = UILabel().then({
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
