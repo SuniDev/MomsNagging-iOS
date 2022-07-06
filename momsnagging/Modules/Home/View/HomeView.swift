@@ -35,6 +35,11 @@ class HomeView: BaseViewController, Navigatable {
         
 //        LoadingHUD.show()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        hiddenAlignment()
+    }
+    
     // MARK: - Temp
     // MARK: - Init
     init(viewModel: HomeViewModel, navigator: Navigator) {
@@ -69,6 +74,7 @@ class HomeView: BaseViewController, Navigatable {
     var headMonth: Int = 0
     var headDay: Int = 0
     var selectDayIndex: Int?// 주간달력 달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
+    var selectDayMonth: Int = 0// 선택한 달의 숫자 현재 월 0 이전으로갈수록 -1 다음달로갈때 +1
     /*
      prefix : calendar
      Year, Month, Day 월간달력의 Lbl에 표시하기 위한 날짜 연, 월, 일
@@ -86,6 +92,16 @@ class HomeView: BaseViewController, Navigatable {
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
     var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
     var selectDate: String = ""
+    var dayList: [String] = [] //Observable하고있는 dayList의 데이터를 담기위함 (선택한 날짜의 index값을 찾기위함)
+    
+    enum MonthlyConfirmation { //주간 달력에서 선택한 일자가 이번달,이전달,다음달 중 속하는곳을 확인
+        case previousMonth
+        case thisMonth
+        case nextMonth
+    }
+    var monthlyConfirmation: MonthlyConfirmation?
+    
+    
     // MARK: - UI Properties
     // 헤드프레임 UI Properties
     var listBtn = UIButton()
@@ -226,9 +242,7 @@ class HomeView: BaseViewController, Navigatable {
         weekCalendarYear = calendarViewModel.getYear()
         weekCalendarMonth = calendarViewModel.getMonth()
         weekCalendarDay = calendarViewModel.getToday()
-        
-        
-        
+
         calendarDateLbl.text = "\(calendarYear ?? 0)년 \(calendarMonth ?? 0)월"
         calendarFrame = homeCalendarView()
     }
@@ -281,7 +295,15 @@ class HomeView: BaseViewController, Navigatable {
                 } else {
                     cell.isToday = false
                     cell.numberLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
+                    if index == 6 {
+                        cell.weekDayLbl.textColor = UIColor(asset: Asset.Color.error)
+                        cell.numberLbl.textColor = UIColor(asset: Asset.Color.error)
+                    } else {
+                        cell.weekDayLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
+                        cell.numberLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
+                    }
                 }
+                
             }.disposed(by: disposedBag)
         calendarViewModel.monthObservable.subscribe { self.headMonth = $0 }.disposed(by: disposedBag)
         calendarViewModel.yearObservable.subscribe { self.headYear = $0 }.disposed(by: disposedBag)
@@ -310,10 +332,21 @@ class HomeView: BaseViewController, Navigatable {
                 }
             }
             Log.debug("day!", "\(day), \(month)")
-//            self.weekCalendarYear = year
-//            self.weekCalendarMonth = month
-//            self.weekCalendarMonth = day
-//            var calendarMonth: Int = Int(exactly: self.calendarMonth ?? 0)!
+            
+            if month < self.calendarViewModel.getMonth() {
+                self.monthlyConfirmation = .previousMonth
+            } else if month > self.calendarViewModel.getMonth() {
+                self.monthlyConfirmation = .nextMonth
+            } else {
+                self.monthlyConfirmation = .thisMonth
+            }
+            
+            Log.debug("monthlyConfirmation Test", "\(self.monthlyConfirmation)")
+            
+            for (index, item) in self.dayList.enumerated() where item == "\(day)" {
+                self.calendarSelectIndex = index
+            }
+
             if day < 10 {
                 if month < 10 {
                     self.selectDate = "\(year)0\(month)0\(day)"
@@ -333,34 +366,35 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListType.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             
-            let currentYearMonth = self.calendarViewModel.todayFormatteryyyyMM()
-            var calendarYearMonth = ""
-            if month < 10 {
-                calendarYearMonth = "\(self.calendarYear ?? 0)0\(month)"
-            } else {
-                calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
-            }
-            print("__\(calendarYearMonth)__\(currentYearMonth)")
-            if calendarYearMonth == "\(currentYearMonth)" {
-                print("이번달!")
-                for i in 0..<37 {
-                    let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
-                    if day < 10 {
-                        if cell?.number.text == "\(day)" {
-                            cell?.selectDayRoundFrame.isHidden = false
-                        } else {
-                            cell?.selectDayRoundFrame.isHidden = true
-                        }
-                    } else {
-                        if cell?.number.text == "\(day)" {
-                            cell?.selectDayRoundFrame.isHidden = false
-                        } else {
-                            cell?.selectDayRoundFrame.isHidden = true
-                        }
-                    }
-                }
-            }
-            
+//            let currentYearMonth = self.calendarViewModel.todayFormatteryyyyMM()
+//            var calendarYearMonth = ""
+//            if month < 10 {
+//                calendarYearMonth = "\(self.calendarYear ?? 0)0\(month)"
+//            } else {
+//                calendarYearMonth = "\(self.calendarYear ?? 0)\(month)"
+//            }
+//            print("__\(calendarYearMonth)__\(currentYearMonth)")
+//            if calendarYearMonth == "\(currentYearMonth)" {
+//                print("이번달!")
+//                for i in 0..<37 {
+//                    let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
+//                    if day < 10 {
+//                        if cell?.number.text == "\(day)" {
+//                            cell?.selectDayRoundFrame.isHidden = false
+//                        } else {
+//                            cell?.selectDayRoundFrame.isHidden = true
+//                        }
+//                    } else {
+//                        if cell?.number.text == "\(day)" {
+//                            cell?.selectDayRoundFrame.isHidden = false
+//                        } else {
+//                            cell?.selectDayRoundFrame.isHidden = true
+//                        }
+//                    }
+//                }
+//            }
+            self.calendarSelectClear()
+            Log.debug("selectDate _ DayCollectionView : ", "\(self.selectDate)")
         }).disposed(by: disposedBag)
         
         calendarViewModel.weekDay // 월 ~ 일
@@ -377,6 +411,8 @@ class HomeView: BaseViewController, Navigatable {
         
         calendarViewModel.daylist.subscribe(onNext: { list in
             Log.debug("dayList", "\(list)")
+            self.dayList.removeAll()
+            self.dayList = list
         }).disposed(by: disposedBag)
         calendarViewModel.daylist // 월 달력 데이터 [String]
             .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "HomeCalendarCell", cellType: HomeCalendarCell.self)) { index, item, cell in
@@ -400,15 +436,32 @@ class HomeView: BaseViewController, Navigatable {
                         cell.number.textColor = UIColor(asset: Asset.Color.monoDark010)
                     }
                 }
-                
+            
+                // 새로 추가한 부분
                 if self.calendarSelectIndex != nil {
-                    if self.dateCheck == self.selectMonth && self.calendarSelectIndex == index {
-                        cell.selectDayRoundFrame.isHidden = false
-                    } else {
+                    if self.dateCheck != self.selectDayMonth {
                         cell.selectDayRoundFrame.isHidden = true
+                    } else {
+                        for i in 0..<37 {
+                            let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
+                            if i == self.calendarSelectIndex {
+                                cell?.selectDayRoundFrame.isHidden = false
+                            } else {
+                                cell?.selectDayRoundFrame.isHidden = true
+                            }
+                        }
                     }
                 }
                 
+//                if self.calendarSelectIndex != nil {
+//                    if self.dateCheck == self.selectMonth && self.calendarSelectIndex == index {
+//                        cell.selectDayRoundFrame.isHidden = false
+//                    } else {
+//                        cell.selectDayRoundFrame.isHidden = true
+//                    }
+//                }
+//
+//                cell.layoutIfNeeded()
             }.disposed(by: disposedBag)
         
         dayCollectionView.rx.itemSelected.subscribe(onNext: { indexPath in
@@ -416,6 +469,7 @@ class HomeView: BaseViewController, Navigatable {
             self.calendarFrame.isHidden = true
             self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
             self.headDropDownBtn.isSelected = false
+            self.selectDayMonth = self.dateCheck
             
             self.calendarSelectIndex = indexPath.row
             for i in 0..<37 {
@@ -436,24 +490,36 @@ class HomeView: BaseViewController, Navigatable {
                 month = "0\(self.calendarMonth ?? 0)"
             }
             self.selectDate = "\(self.calendarYear ?? 0)\(month)\(day)"
-            if self.calendarViewModel.todayFormatteryyyyMM() == "\(self.calendarYear ?? 0)\(month)" {
-                for i in 0..<7 {
-                    let cell = self.weekCalendarCollectionView.cellForItem(at: [0, i]) as? WeekDayCalendarCell
-                    if cell?.numberLbl.text == day {
-                        cell?.selectDayRoundFrame.isHidden = false
-                    } else {
-                        cell?.selectDayRoundFrame.isHidden = true
-                    }
-                }
-            } else {
-                self.weekDaySelectClear()
-            }
+//            Log.debug("Test:", "\(self.calendarViewModel.todayFormatteryyyyMM()) , \(self.calendarYear ?? 0)\(month)")
+//            if self.calendarViewModel.todayFormatteryyyyMM() == "\(self.calendarYear ?? 0)\(month)" {
+//                for i in 0..<7 {
+//                    let cell = self.weekCalendarCollectionView.cellForItem(at: [0, i]) as? WeekDayCalendarCell
+//                    let intText = Int(((cell?.numberLbl.text!)!))!
+//                    var stText = ""
+//                    if intText < 10 {
+//                        stText = "0\(intText)"
+//                    } else {
+//                        stText = "\(intText)"
+//                    }
+//                    Log.debug("Test:", "\(stText), \(day)")
+//                    if stText == day {
+//                        cell?.selectDayRoundFrame.isHidden = false
+//                    } else {
+//                        cell?.selectDayRoundFrame.isHidden = true
+//                    }
+//                }
+//            } else {
+//                self.weekDaySelectClear()
+//            }
+            self.weekDaySelectClear() // 주간 달력 선택 표시 삭제
+            
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             self.selectMonth = self.dateCheck
             self.todoListLookUpParam = "20\(self.headTitleLbl.text ?? "")"
             self.todoListLookUpParam = self.todoListLookUpParam.replacingOccurrences(of: ".", with: "-")
             self.todoListType.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
+            Log.debug("selectDate _ DayCollectionView : ", "\(self.selectDate)")
         }).disposed(by: disposedBag)
         
         viewModel.arraySuccessOb.subscribe(onNext: { _ in
@@ -465,7 +531,6 @@ class HomeView: BaseViewController, Navigatable {
 //            self.todoList.removeAll()
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
-        popOb
     }
     
     // MARK: - Action Bind _ Input
@@ -488,7 +553,6 @@ class HomeView: BaseViewController, Navigatable {
                 self.headBtnBind(input: input)
                 self.collectionViewOutput = viewModel.transform(input: input)
                 self.todoListTableView.dragInteractionEnabled = false
-//                self.todoList.removeAll()
                 self.todoListTableView.reloadData()
             }
         }).disposed(by: disposedBag)
@@ -521,17 +585,15 @@ class HomeView: BaseViewController, Navigatable {
         // 정렬 ClickEvent
         self.listBtn.rx.tap.bind {
             self.checkBtnInteractionEnable = false
-            //리스트 정렬 클릭시 캘린더 숨김
+            // 리스트 정렬 클릭시 캘린더 숨김
             self.calendarFrame.isHidden = true
             self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
             self.headDropDownBtn.isSelected = false
             
             lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: true)
-//            lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: true, sourceIndex: nil, destinationIndex: nil, scheduleType: nil)
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = true
-//            self.todoList.removeAll()
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headCancel.rx.tap.bind {
@@ -540,7 +602,6 @@ class HomeView: BaseViewController, Navigatable {
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = false
-//            self.todoList.removeAll()
             self.todoListTableView.reloadData()
         }.disposed(by: disposedBag)
         self.headSave.rx.tap.bind {
@@ -552,7 +613,6 @@ class HomeView: BaseViewController, Navigatable {
                 self.headBtnBind(input: input)
                 self.collectionViewOutput = viewModel.transform(input: input)
                 self.todoListTableView.dragInteractionEnabled = false
-//                self.todoList.removeAll()
                 self.todoListTableView.reloadData()
             }
         }.disposed(by: disposedBag)
@@ -625,6 +685,14 @@ class HomeView: BaseViewController, Navigatable {
         return view
     }
     
+    func hiddenAlignment() {
+        self.checkBtnInteractionEnable = true
+        lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
+        self.headBtnBind(input: input)
+        self.collectionViewOutput = viewModel.transform(input: input)
+        self.todoListTableView.dragInteractionEnabled = false
+        self.todoListTableView.reloadData()
+    }
 }
 
 extension HomeView {
@@ -698,16 +766,5 @@ extension HomeView {
         
         return view
     }
-    
-    // MARK: - Other
-    /// 일(1 ~ 28,29,30,31)표시 컬렉션뷰를 주(4주~6주)수에 따라 컬렉션뷰 레이아웃 재설정 함수
-//    func dayCollectionViewRemakeConstraint(count: Int) {
-//        dayCollectionView.snp.remakeConstraints({
-//            $0.top.equalTo(weekDayCollectionView.snp.bottom).offset(16)
-//            $0.leading.equalTo(calendarView.snp.leading).offset(20)
-//            $0.trailing.equalTo(calendarView.snp.trailing).offset(-20)
-//            $0.height.equalTo(38 * count)
-//        })
-//    }
     
 }

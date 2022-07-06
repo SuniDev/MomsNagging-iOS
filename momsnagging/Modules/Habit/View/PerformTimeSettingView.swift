@@ -214,7 +214,11 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         
         output.textConunt
             .drive(onNext: { count in
-                self.lblTextCount.text = "\(count)/11"
+                if count > 11 {
+                    self.lblTextCount.text = "11/11"
+                } else {
+                    self.lblTextCount.text = "\(count)/11"
+                }
             }).disposed(by: disposeBag)
         
         output.cntTimeGuide
@@ -244,7 +248,13 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         output.canBeSave
             .drive(onNext: { isCanBeSave in
                 self.btnSave.isEnabled = isCanBeSave
-            }).disposed(by: disposeBag)        
+            }).disposed(by: disposeBag)
+        
+        tfPerformTime.rx.text.subscribe(onNext: { text in
+            if text!.count > 11 {
+                self.tfPerformTime.text?.removeLast()
+            }
+        }).disposed(by: disposeBag)
     }
 }
 extension PerformTimeSettingView: UICollectionViewDelegateFlowLayout {

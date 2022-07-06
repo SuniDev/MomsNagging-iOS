@@ -46,6 +46,9 @@ class CalendarViewModel {
         daylist.onNext(model.getOtherMonthDayList(currentMonth: model.getNextMonth(currentMonth: currentMonth), currentYear: currentYear))
         collectionViewHeight.onNext(rowCount(currentMonth: model.getLastMonth(currentMonth: currentMonth), currentYear: currentYear))
     }
+    
+    /// 이번달 데이터 가져오기
+    ///
     /// 주수 카운트 (이번 달의 행(row)수)
     func rowCount(currentMonth: Int, currentYear: Int) -> Int {
         return model.getMonthRow(currentMonth: currentMonth, currentYear: currentYear)
