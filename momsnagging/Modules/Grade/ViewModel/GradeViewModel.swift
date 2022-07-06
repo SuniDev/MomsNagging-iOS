@@ -28,6 +28,8 @@ class GradeViewModel: ViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
         let willApearView: Driver<Void>
+        let viewTapped: Driver<Void>
+        
         // 탭
         let tabCalendar: Driver<Void>
         let tabStatistics: Driver<Void>
@@ -242,6 +244,9 @@ class GradeViewModel: ViewModel, ViewModelType {
             .disposed(by: disposeBag)
         
         // MARK: - 통계 탭
+        // 통계 탭
+        let tabStatistics = input.tabStatistics.asObservable().share()
+        
         // 다음 달
         let setSttLastMonth = input.btnSttPrevTapped.asObservable()
             .map { _ -> CalendarDate in
@@ -334,6 +339,13 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 달력 Tip
         let isHiddenTip = BehaviorRelay<Bool>(value: true)
         
+        tabStatistics
+            .subscribe(onNext: {
+                if !isHiddenTip.value {
+                    isHiddenTip.accept(true)
+                }
+            }).disposed(by: disposeBag)
+        
         input.btnTipTapped
             .drive(onNext: {
                 isHiddenTip.accept(!isHiddenTip.value)
@@ -341,7 +353,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         
         return Output(
                     tabCalendar: input.tabCalendar,
-                    tabStatistics: input.tabStatistics,
+                    tabStatistics: tabStatistics.asDriverOnErrorJustComplete(),
                     setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
                     dayItems: dayItems,
                     weekItems: input.loadWeekDay.asObservable(),
