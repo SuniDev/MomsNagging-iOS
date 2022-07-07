@@ -10,10 +10,19 @@ import Photos
 import UIKit
 import StoreKit
 import SwiftKeychainWrapper
+import FirebaseRemoteConfig
+
+enum AppUpdateStatus {
+    case forceUpdate
+    case selectUpdate
+    case latestVersion
+    case error
+}
 
 class Common {
     
     static let TEST: Bool = false
+    static var appUpdateStatus: AppUpdateStatus?
     
     private static let configKey = "DeployPhase"
     
