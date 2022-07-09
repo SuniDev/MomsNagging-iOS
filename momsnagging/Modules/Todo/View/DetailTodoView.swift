@@ -49,6 +49,12 @@ class DetailTodoView: BaseViewController, Navigatable {
     })
     lazy var lblHint = CommonHintLabel()
     
+    var textCountLbl = UILabel().then({
+        $0.textColor = UIColor(asset: Asset.Color.monoDark020)
+        $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.text = "0/30"
+    })
+    
     /// 수행 시간
     lazy var detailPerformTimeFrame = UIView()
     lazy var btnPerformTime = UIButton()
@@ -164,6 +170,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         view.addSubview(scrollView)
         
         viewContents.addSubview(detailNameFrame)
+        viewContents.addSubview(textCountLbl)
         viewContents.addSubview(detailPerformTimeFrame)
         viewContents.addSubview(btnPerformTime)
         viewContents.addSubview(detailNaggingPushFrame)
@@ -190,6 +197,12 @@ class DetailTodoView: BaseViewController, Navigatable {
             $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
+        })
+        
+        textCountLbl.snp.makeConstraints({
+            $0.top.equalTo(tfName.snp.bottom).offset(8)
+            $0.trailing.equalTo(tfName.snp.trailing)
+            $0.height.equalTo(20)
         })
         
         /// 수행 시간
@@ -417,6 +430,14 @@ class DetailTodoView: BaseViewController, Navigatable {
             }
             
             self.lblTime.text = TaviCommon.alarmTimeStringToDateToString(stringData: data.alarmTime ?? "")
+        }).disposed(by: disposeBag)
+        
+        tfName.rx.text.subscribe(onNext: { text in
+            if text?.count ?? 0 > 30 {
+                self.tfName.text?.removeLast()
+            } else {
+                self.textCountLbl.text = "\(text?.count ?? 0)/30"
+            }
         }).disposed(by: disposeBag)
     }
     
