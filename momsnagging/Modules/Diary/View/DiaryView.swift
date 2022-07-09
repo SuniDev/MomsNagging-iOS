@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxGesture
 import Then
 import SnapKit
 
@@ -240,7 +241,9 @@ class DiaryView: BaseViewController, Navigatable {
             dayModelSelected: self.dayCollectionView.rx.modelSelected(DiaryDayItem.self).asDriverOnErrorJustComplete(),
             btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
-            btnDetailTappd: self.btnDetail.rx.tap.mapToVoid().asDriverOnErrorJustComplete())
+            btnDetailTappd: self.btnDetail.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
+            diaryViewTapped: self.diaryFrame.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
+            emptyDiaryViewTapped: self.emptyDiaryFrame.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.setCalendarDate

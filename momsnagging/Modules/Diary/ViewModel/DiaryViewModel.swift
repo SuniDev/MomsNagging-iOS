@@ -37,6 +37,9 @@ class DiaryViewModel: ViewModel, ViewModelType {
         let btnNextTapped: Driver<Void>
         /// 일기장 상세 이동
         let btnDetailTappd: Driver<Void>
+        /// 일기장 프레임 탭
+        let diaryViewTapped: Driver<Void>
+        let emptyDiaryViewTapped: Driver<Void>
         
     }
     // MARK: - Output
@@ -174,8 +177,9 @@ class DiaryViewModel: ViewModel, ViewModelType {
         let isEmptyDiary = requestGetDiary
             .map { return $0.title?.isEmpty ?? true }
         
-        let goToDetail = input.btnDetailTappd
-            .asObservable()
+        let goToDetail = Observable.merge(input.btnDetailTappd.asObservable(),
+                                          input.diaryViewTapped.asObservable(),
+                                          input.emptyDiaryViewTapped.asObservable())
             .map { _ -> DetailDiaryViewModel? in
                 let viewModel = DetailDiaryViewModel(withService: self.provider, selectedDate: selectedDate.value)
                 return viewModel
