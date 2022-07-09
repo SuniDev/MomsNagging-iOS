@@ -102,6 +102,9 @@ class RecommendedHabitView: BaseViewController, Navigatable {
                 }
             })
             let viewModel = DetailHabitViewModel(isNew: true, isRecommendHabit: true, dateParam: self.viewModel.dateParam ?? "", homeViewModel: self.viewModel.homeViewModel ?? HomeViewModel(), recommendHabitName: self.itemList[indexPath.row].scheduleName ?? "")
+            let cell = self.habitTableView.cellForRow(at: [0, indexPath.row]) as? RecommendedHabitCell
+            cell?.itemFrame.backgroundColor = UIColor(hexString: self.cellColor)
+            cell?.title.textColor = UIColor(asset: Asset.Color.monoDark010)
             self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self)
         }).disposed(by: disposedBag)
         
