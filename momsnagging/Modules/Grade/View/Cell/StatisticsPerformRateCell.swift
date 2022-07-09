@@ -26,6 +26,7 @@ class StatisticsPerformRateCell: UITableViewCell {
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
     })
     lazy var suffixLbl = UILabel().then({
+        $0.textAlignment = .right
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
     })
@@ -40,13 +41,14 @@ extension StatisticsPerformRateCell {
         titleLbl.snp.makeConstraints({
             $0.leading.centerY.equalToSuperview()
         })
-        suffixLbl.snp.makeConstraints({
-            $0.centerY.equalTo(titleLbl.snp.centerY)
-            $0.trailing.equalToSuperview()
-        })
         dataLbl.snp.makeConstraints({
             $0.centerY.equalTo(titleLbl.snp.centerY)
             $0.trailing.equalTo(suffixLbl.snp.leading).offset(-10)
+        })
+        suffixLbl.snp.makeConstraints({
+            $0.width.equalTo(16)
+            $0.centerY.equalTo(titleLbl.snp.centerY)
+            $0.trailing.equalToSuperview()
         })
     }
 }
