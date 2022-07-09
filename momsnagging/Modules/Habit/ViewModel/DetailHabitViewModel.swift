@@ -196,12 +196,12 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         self.requestRoutineInfo(scheduleId: todoModel?.id ?? 0)
         /// 작성 모드
-        let isWriting = BehaviorRelay<Bool>(value: false)
+        let isWriting = BehaviorRelay<Bool>(value: true)
         let isNew = self.isNew
         isNew
             .bind(onNext: {
                 Log.debug("isNew~~", "\($0)")
-                isWriting.accept($0)
+//                isWriting.accept($0)
                 self.isModify = $0
             }).disposed(by: disposeBag)
         
@@ -237,14 +237,14 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
             }.share()
         
         let goToBack = Observable.merge(
-            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
-            btnBackTapped.filter { $0 == false }.mapToVoid(), input.deleteAlertDoneHandler.asObservable())
+            backAlertDoneHandler.filter { $0 == false }.mapToVoid(),
+            input.deleteAlertDoneHandler.asObservable())
         
         backAlertDoneHandler
-            .filter { $0 == false }
+            .filter { $0 == true }
             .mapToVoid()
             .subscribe(onNext: {
-                isWriting.accept(false)
+                isWriting.accept(true)
             }).disposed(by: disposeBag)
         
         /// 습관 이름
@@ -462,7 +462,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         
         successDoneModifyHabit
             .subscribe(onNext: {
-                isWriting.accept(false)
+                isWriting.accept(true)
             }).disposed(by: disposeBag)
         
         return Output(showBottomSheet: input.btnMoreTapped,

@@ -144,19 +144,11 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         viewHintTextField = CommonView.hintTextFieldFrame(tf: tfName, lblHint: lblHint)
-        if viewModel?.modifyPage ?? false {
-            viewNameTitle = CommonView.requiredTitleFrame("할일 이름", true)
-        } else {
-            viewNameTitle = CommonView.requiredTitleFrame("할일 이름", false)
-        }
+        viewNameTitle = CommonView.requiredTitleFrame("할일 이름", false)
         detailNameFrame = CommonView.detailNameFrame(viewNameTitle: viewNameTitle, viewHintTextField: viewHintTextField)
         
         /// 수행 시간
-        if viewModel?.modifyPage ?? false {
-            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", true)
-        } else {
-            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", false)
-        }
+        viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", false)
         detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, tfTime: tfPerformTime)
         
         /// 잔소리 알림
@@ -280,7 +272,6 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         output.isWriting
             .drive(onNext: { isWriting in
-                self.setTextColor(isWriting: isWriting)
                 // 헤더 변경
                 self.btnMore.isHidden = isWriting
                 self.btnDone.isHidden = !isWriting
@@ -308,6 +299,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         output.goToBack
             .drive(onNext: {
+                Log.debug("goToBack", "k")
                 self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
         
@@ -363,6 +355,14 @@ class DetailTodoView: BaseViewController, Navigatable {
                 }
                 
             }).disposed(by: disposeBag)
+        self.viewModel?.alarmOb.subscribe(onNext: {
+            self.switchPush.isOn = $0
+            if $0 {
+                self.viewAddPushTime.fadeIn()
+            } else {
+                self.viewAddPushTime.fadeOut()
+            }
+        }).disposed(by: disposeBag)
         
         output.goToPerformTimeSetting
             .drive(onNext: {
@@ -446,6 +446,11 @@ class DetailTodoView: BaseViewController, Navigatable {
                 self.textCountLbl.text = "\(text?.count ?? 0)/30"
             }
         }).disposed(by: disposeBag)
+        
+        viewModel.modifySuccessOb.subscribe(onNext: { _ in
+            self.navigator.pop(sender: self)
+        }).disposed(by: disposeBag)
+        
     }
     
     // MARK: - performTimeViewModel bind
@@ -462,7 +467,6 @@ class DetailTodoView: BaseViewController, Navigatable {
             tfName.textColor = UIColor(asset: Asset.Color.black)
             tfPerformTime.textColor = UIColor(asset: Asset.Color.black)
             tfPicker.textColor = UIColor(asset: Asset.Color.black)
-            
             lblTime.textColor = UIColor(asset: Asset.Color.black)
             lblPushTitle.textColor = UIColor(asset: Asset.Color.black)
             
