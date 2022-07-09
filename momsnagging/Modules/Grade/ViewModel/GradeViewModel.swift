@@ -478,7 +478,7 @@ extension GradeViewModel {
             items.append(StatisticsItem(title: "일부 수행", data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
             items.append(StatisticsItem(title: "습관 수행", data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
             items.append(StatisticsItem(title: "할일 수행", data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "회고 작성", data: "\(data.diaryCount ?? 0)", suffix: "번"))
+            items.append(StatisticsItem(title: "일기 작성", data: "\(data.diaryCount ?? 0)", suffix: "번"))
             items.append(StatisticsItem(title: "평균 수행률", data: "\(data.performanceAvg ?? 0)", suffix: "%"))
             
             observer.onNext(items)
