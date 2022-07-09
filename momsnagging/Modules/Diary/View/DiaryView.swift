@@ -33,13 +33,6 @@ class DiaryView: BaseViewController, Navigatable {
     var viewModel: DiaryViewModel!
     var calendarViewModel = CalendarViewModel()
     var disposedBag = DisposeBag()
-    /*
-     prefix : calendar
-     Year, Month, Day 월간달력의 Lbl에 표시하기 위한 날짜 연, 월, 일
-     */
-//    var calendarYear: Int?
-//    var calendarMonth: Int?
-//    var calendarDay: Int?
     
     var monthCollectionViewHeight: Int? // 월별로 주(4주~6주)수를 카운팅하여 CollectionView의 높이를 remake하기 위함.
     var dateCheck: Int = 0 // 현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
@@ -105,22 +98,23 @@ class DiaryView: BaseViewController, Navigatable {
     }
     
     // 하단의 오늘의 일기 부분
-    var todayDiaryTitleLbl = UILabel().then({
+    lazy var todayDiaryTitleLbl = UILabel().then({
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
         $0.text = "오늘의 일기"
     })
-    var diaryDeleteBtn = UIButton().then({
+    lazy var diaryDeleteBtn = UIButton().then({
+        $0.isHidden = true
         $0.setImage(UIImage(asset: Asset.Icon.delete), for: .normal)
     })
-    var emptyDiaryFrame = UIView()
-    var diaryFrame = UIView()
-    var diaryTitleLbl = UILabel().then({
+    lazy var emptyDiaryFrame = UIView()
+    lazy var diaryFrame = UIView()
+    lazy var diaryTitleLbl = UILabel().then({
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
         $0.text = ""
     })
-    var diaryContentsLbl = UILabel().then({
+    lazy var diaryContentsLbl = UILabel().then({
         $0.textColor = UIColor(asset: Asset.Color.monoDark030)
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.text = ""
@@ -196,9 +190,9 @@ class DiaryView: BaseViewController, Navigatable {
             $0.height.equalTo(63 * monthCollectionViewHeight!)
         })
         backgroundFrame.addSubview(todayDiaryTitleLbl)
-        backgroundFrame.addSubview(diaryDeleteBtn)
         backgroundFrame.addSubview(diaryFrame)
         backgroundFrame.addSubview(emptyDiaryFrame)
+        backgroundFrame.addSubview(diaryDeleteBtn)
         todayDiaryTitleLbl.snp.makeConstraints({
             $0.top.equalTo(dayCollectionView.snp.bottom).offset(48)
             $0.leading.equalTo(backgroundFrame.snp.leading).offset(20)
@@ -206,8 +200,8 @@ class DiaryView: BaseViewController, Navigatable {
         })
         diaryDeleteBtn.snp.makeConstraints({
             $0.width.height.equalTo(20)
-            $0.trailing.equalTo(backgroundFrame.snp.trailing).offset(24)
-            $0.centerY.equalTo(todayDiaryTitleLbl.snp.centerY).offset(1)
+            $0.trailing.equalTo(backgroundFrame).offset(-24)
+            $0.centerY.equalTo(todayDiaryTitleLbl)
         })
         diaryFrame.snp.makeConstraints({
             $0.top.equalTo(todayDiaryTitleLbl.snp.bottom).offset(14)
@@ -227,6 +221,7 @@ class DiaryView: BaseViewController, Navigatable {
     // MARK: - Bind
     override func bind() {
         guard let viewModel = viewModel else { return }
+        let deleteAlertDoneHandler = PublishRelay<Void>()
                 
         let input = DiaryViewModel.Input(
             willAppearDiary: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
@@ -243,7 +238,9 @@ class DiaryView: BaseViewController, Navigatable {
             btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             btnDetailTappd: self.btnDetail.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             diaryViewTapped: self.diaryFrame.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
-            emptyDiaryViewTapped: self.emptyDiaryFrame.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete())
+            emptyDiaryViewTapped: self.emptyDiaryFrame.rx.tapGesture().when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
+            btnDiaryDeleteTapped: self.diaryDeleteBtn.rx.tap.asDriverOnErrorJustComplete(),
+            deleteAlertDoneHandler: deleteAlertDoneHandler.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.setCalendarDate
@@ -297,6 +294,7 @@ class DiaryView: BaseViewController, Navigatable {
         output.isEmptyDiary
             .drive(onNext: { isEmpty in
                 self.emptyDiaryFrame.isHidden = !isEmpty
+                self.diaryDeleteBtn.isHidden = isEmpty
             }).disposed(by: disposedBag)
         
         output.goToDetail
@@ -304,6 +302,14 @@ class DiaryView: BaseViewController, Navigatable {
                 if let viewModel = viewModel {
                     self.navigator.show(seque: .detailDiary(viewModel: viewModel), sender: self, transition: .navigation)
                 }
+            }).disposed(by: disposedBag)
+        
+        /// 삭제 하기
+        output.showDiaryDeleteAlert
+            .drive(onNext: { message in
+                CommonView.showAlert(vc: self, title: "", message: message, cancelTitle: STR_NO, destructiveTitle: STR_DELETE, destructiveHandler: {
+                    deleteAlertDoneHandler.accept(())
+                })
             }).disposed(by: disposedBag)
     }
     
