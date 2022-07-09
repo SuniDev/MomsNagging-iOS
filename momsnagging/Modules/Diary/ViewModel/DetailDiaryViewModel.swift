@@ -390,13 +390,13 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         requestSaveDiary
             .subscribe(onNext: { _ in
                 self.isLoading.accept(false)
-                isWriting.accept(false)
             }).disposed(by: disposeBag)
         
         let goToBack = Observable.merge(
             backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
             btnBackTapped.filter { $0 == false }.mapToVoid(),
-            requestDeleteDiary.mapToVoid().asObservable())
+            requestDeleteDiary.mapToVoid().asObservable(),
+            requestSaveDiary.mapToVoid())
         
         return Output(setTitleDate: setTitleDate.asDriverOnErrorJustComplete(),
                       setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
