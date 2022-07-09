@@ -154,6 +154,10 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.preferredDatePickerStyle = .wheels
         }
     })
+    var toolBarDoneBtn = UIBarButtonItem()
+    var toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)).then({
+        $0.barStyle = .default
+    })
     
     /// Common 수정을 하지 않고 진행하기 위해 임의로 수정버튼 숨김을 위한 emptyView
     lazy var hideModifyEmptyView = UIView().then({
@@ -352,7 +356,7 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.bottom.equalTo(viewAddPushTime.snp.bottom)
             $0.width.equalTo(UIScreen.main.bounds.width / 3)
         })
-        
+        toolbarSet()
         view.layoutIfNeeded()
     }
     
@@ -682,5 +686,20 @@ class DetailHabitView: BaseViewController, Navigatable {
             lblTime.textColor = UIColor(asset: Asset.Color.monoDark020)
             lblPushTitle.textColor = UIColor(asset: Asset.Color.monoDark020)
         }
+    }
+    
+    func toolbarSet() {
+        toolBarDoneBtn = UIBarButtonItem()
+        toolBarDoneBtn.target = self
+        toolBarDoneBtn.title = "완료"
+        toolBarDoneBtn.action = #selector(toolBarDoneAction)
+        let spaceFrmaeItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([spaceFrmaeItem, toolBarDoneBtn], animated: true)
+        tfPicker.inputAccessoryView = toolbar
+    }
+    
+    @objc
+    func toolBarDoneAction() {
+        self.view.endEditing(true)
     }
 }

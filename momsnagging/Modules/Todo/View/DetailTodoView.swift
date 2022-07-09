@@ -101,6 +101,11 @@ class DetailTodoView: BaseViewController, Navigatable {
         $0.isHidden = true
     })
     
+    var toolBarDoneBtn = UIBarButtonItem()
+    var toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)).then({
+        $0.barStyle = .default
+    })
+    
     // MARK: - init
     init(viewModel: DetailTodoViewModel, navigator: Navigator) {
         self.viewModel = viewModel
@@ -232,6 +237,8 @@ class DetailTodoView: BaseViewController, Navigatable {
             $0.bottom.equalTo(viewAddPushTime.snp.bottom)
             $0.width.equalTo(UIScreen.main.bounds.width / 3)
         })
+        
+        toolbarSet()
         
         view.layoutIfNeeded()
     }
@@ -466,5 +473,20 @@ class DetailTodoView: BaseViewController, Navigatable {
             lblTime.textColor = UIColor(asset: Asset.Color.monoDark020)
             lblPushTitle.textColor = UIColor(asset: Asset.Color.monoDark020)
         }
+    }
+    
+    func toolbarSet() {
+        toolBarDoneBtn = UIBarButtonItem()
+        toolBarDoneBtn.target = self
+        toolBarDoneBtn.title = "완료"
+        toolBarDoneBtn.action = #selector(toolBarDoneAction)
+        let spaceFrmaeItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([spaceFrmaeItem, toolBarDoneBtn], animated: true)
+        tfPicker.inputAccessoryView = toolbar
+    }
+    
+    @objc
+    func toolBarDoneAction() {
+        self.view.endEditing(true)
     }
 }
