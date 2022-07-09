@@ -17,15 +17,18 @@ import Foundation
 // MARK: 알럿 문구
 public let STR_CANCEL               = "취소"
 public let STR_DONE                 = "확인"
-public let STR_DONE_UPDATE          = "업데이트 하러가기"
-public let STR_CANCEL_UPDATE        = "나중에"
 public let STR_YES                  = "네"
 public let STR_NO                   = "아니요"
 public let STR_CLOSE                = "닫기"
 public let STR_DELETE               = "네, 삭제할게요"
 
+/// 업데이트 안내
+public let STR_UPDATE_TITLE         = "새로운 버전이 업데이트 되었단다!"
+public let STR_UPDATE_MESSAGE       = "우리 아들, 딸들의 의견을 반영해서\n사용성을 개선했는데\n지금 바로 업데이트 해보겠니~?"
+public let STR_UPDATE_DONE          = "업데이트"
+public let STR_UPDATE_CANCEL        = "다음에 할게요"
+
 /// 인트로 & 로그인
-public let STR_UPDATE               = "업데이트가 필요합니다."
 public let STR_LOGIN_ERROR_TITLE    = "로그인 실패"
 public let STR_LOGIN_ERROR_MESSAGE  = "로그인에 실패 했습니다.\n다시 시도해주세요."
 

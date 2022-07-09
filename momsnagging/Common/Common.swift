@@ -22,6 +22,7 @@ enum AppUpdateStatus {
 class Common {
     
     static let TEST: Bool = false
+    static let appStoreUrl: String = "itms-apps://itunes.apple.com/app/id363590051"
     static var appUpdateStatus: AppUpdateStatus?
     
     private static let configKey = "DeployPhase"
@@ -168,7 +169,20 @@ class Common {
         setBadgeNumber(count: 0)
     }
     
-    // MARK: - Store Review
+    // MARK: - Store
+    static func moveAppStore(completion:(() -> Void)? = nil) {
+        if let appStoreUrl = URL(string: self.appStoreUrl) {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(appStoreUrl, options: [:]) { _ in
+                    completion?()
+                }
+            } else {
+                UIApplication.shared.openURL(appStoreUrl)
+                completion?()
+            }
+        }
+    }
+    
     /**
      # requestStoreReview
      - Authors: suni

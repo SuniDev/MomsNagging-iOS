@@ -24,6 +24,9 @@ class IntroViewModel: ViewModel, ViewModelType {
     struct Input {
         /// IntroView 진입
         let willAppearIntro: Driver<Void>
+        /// 업데이트 핸들러
+        let foreceUpdatePopupHandler: Driver<Void>
+        let selectUpdatePopupHandler: Driver<Bool>
     }
     
     // MARK: - Output
@@ -37,6 +40,10 @@ class IntroViewModel: ViewModel, ViewModelType {
         let goToLogin: Driver<LoginViewModel>
         /// 메인 이동
         let goToMain: Driver<MainContainerViewModel>
+        /// 강제 업데이트
+        let goToForceUpdate: Driver<Void>
+        /// 선택 업데이트
+        let goToSelectUpdate: Driver<Void>
     }
     
     // MARK: - transform
@@ -59,9 +66,15 @@ class IntroViewModel: ViewModel, ViewModelType {
             .mapToVoid()
             .asDriverOnErrorJustComplete()
         
+        let selectUpdatePopupHandler = input.selectUpdatePopupHandler.asObservable().share()
+        
+        let selectUpdate = selectUpdatePopupHandler.filter({ $0 == true }).mapToVoid()
+                
         // MARK: - First Entry App
-        let isFirstEntryApp = appUpdateStatus
-            .filter { status in status == .latestVersion }
+        let entryApp = Observable.merge(selectUpdatePopupHandler.mapToVoid(),
+                                        appUpdateStatus.filter { status in status == .latestVersion }.mapToVoid())
+        
+        let isFirstEntryApp = entryApp
             .flatMapLatest { _ -> Observable<Bool> in
                 return self.isFirstEntryApp()
             }.share()
@@ -134,7 +147,9 @@ class IntroViewModel: ViewModel, ViewModelType {
                       selectUpdateStatus: selectUpdateStatus,
                       goToOnboarding: goToOnboarding.asDriverOnErrorJustComplete(),
                       goToLogin: goToLogin.asDriverOnErrorJustComplete(),
-                      goToMain: goToMain.asDriverOnErrorJustComplete())
+                      goToMain: goToMain.asDriverOnErrorJustComplete(),
+                      goToForceUpdate: input.foreceUpdatePopupHandler,
+                      goToSelectUpdate: selectUpdate.asDriverOnErrorJustComplete())
     }
 }
 

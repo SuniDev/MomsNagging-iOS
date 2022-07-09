@@ -128,6 +128,7 @@
 		A035B0762812A0A100747389 /* StringDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035B0752812A0A100747389 /* StringDefinition.swift */; };
 		A03D13D4284124A10012C406 /* DiaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03D13D3284124A10012C406 /* DiaryService.swift */; };
 		A0568DD92876C3F300AE9A9C /* AppUpdateVersion.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0568DD82876C3F300AE9A9C /* AppUpdateVersion.plist */; };
+		A0568DDB2876F1AB00AE9A9C /* CommonPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0568DDA2876F1AB00AE9A9C /* CommonPopup.swift */; };
 		A061F0F02823AF1B00F9CC18 /* DetailDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */; };
 		A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */; };
 		A06316D62849D81500EC108B /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06316D52849D81500EC108B /* Test.swift */; };
@@ -306,6 +307,7 @@
 		A03D13D3284124A10012C406 /* DiaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryService.swift; sourceTree = "<group>"; };
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A0568DD82876C3F300AE9A9C /* AppUpdateVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppUpdateVersion.plist; sourceTree = "<group>"; };
+		A0568DDA2876F1AB00AE9A9C /* CommonPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonPopup.swift; sourceTree = "<group>"; };
 		A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryView.swift; sourceTree = "<group>"; };
 		A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryViewModel.swift; sourceTree = "<group>"; };
 		A06316D52849D81500EC108B /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 				A0269004283148E0009A40A0 /* CommonSwitch.swift */,
 				A0A992C1282ECB81009049CF /* CommonBottomSheet.swift */,
 				86E44B2D283C7B7700E5DB68 /* CommonTextRadioButton.swift */,
+				A0568DDA2876F1AB00AE9A9C /* CommonPopup.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1625,6 +1628,7 @@
 				A06316D62849D81500EC108B /* Test.swift in Sources */,
 				A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */,
 				86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */,
+				A0568DDB2876F1AB00AE9A9C /* CommonPopup.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				866F2C32283F516A004B5691 /* NetworkLoggerPlugin.swift in Sources */,
