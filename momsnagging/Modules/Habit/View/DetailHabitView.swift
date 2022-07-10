@@ -504,6 +504,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         output.isNaggingPush
             .drive(onNext: { isNaggingPush in
+                Log.debug("isNaggingPush::", "\(isNaggingPush)")
                 if isNaggingPush {
                     self.viewAddPushTime.fadeIn()
                 } else {

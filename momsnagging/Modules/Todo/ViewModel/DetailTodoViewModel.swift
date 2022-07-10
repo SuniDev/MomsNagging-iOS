@@ -150,7 +150,7 @@ class DetailTodoViewModel: BaseViewModel {
         
         let goToBack = Observable.merge(
             backAlertDoneHandler.filter { $0 == false }.mapToVoid(),
-            input.deleteAlertDoneHandler.asObservable())
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid())
         
         backAlertDoneHandler
             .filter { $0 == true }

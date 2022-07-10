@@ -74,7 +74,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     private var modifySun: Bool?
     private var modifyNumber: Int?
     private var modifyAlarm: String?
-    private var isModify: Bool = false
+    private var isModify: Bool = true
     
     private var weekAndNumberType = 0
 
@@ -202,7 +202,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
             .bind(onNext: {
                 Log.debug("isNew~~", "\($0)")
 //                isWriting.accept($0)
-                self.isModify = $0
+//                self.isModify = $0
             }).disposed(by: disposeBag)
         
         let btnModifyTapped = input.btnModifyTapped.asObservable().share()
@@ -238,7 +238,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         
         let goToBack = Observable.merge(
             backAlertDoneHandler.filter { $0 == false }.mapToVoid(),
-            input.deleteAlertDoneHandler.asObservable())
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid())
         
         backAlertDoneHandler
             .filter { $0 == true }
@@ -319,8 +319,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let selectCycleType = BehaviorRelay<CycleType>(value: .week)
         let cycleItems = BehaviorRelay<[String]>(value: [])
         let selectedCycleItems = BehaviorRelay<[String]>(value: [])
-        
-        Log.debug("todoModel?.goalCount", "\(todoModel?.goalCount)")
+
         /// 상세 페이지로 진입시 서버 데이터 세팅 ========================= START
         if todoModel?.goalCount == 0 || todoModel?.goalCount == nil {
             selectCycleType.accept(.week)
@@ -445,7 +444,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         // 추가
         let successDoneAddHabit = done
             .flatMapLatest { () -> Observable<Bool> in
-                if !(self.isModify) {
+                if self.isModify {
                     self.requestModifyRoutine(scheduleId: self.todoModel?.id ?? 0)
                 } else {
                     self.requestRegistHabit()
@@ -544,6 +543,15 @@ extension DetailHabitViewModel {
                     
                     self.routineInfoOb.onNext(model)
                     Log.debug("todoDetailLookUp json:", "\(json)")
+                    if model.scheduleName == "" {
+                        self.param.scheduleName = nil
+                        self.isModify = false
+                    } else {
+                        self.param.scheduleName = model.scheduleName
+                        self.isModify = true
+                    }
+                    
+                    
                     self.recommendHabitNameOb.onNext(self.recommendHabitName ?? "")
                     LoadingHUD.hide()
                 } catch let error {
