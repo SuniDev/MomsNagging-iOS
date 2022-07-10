@@ -262,7 +262,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 }
                 self.param.scheduleName = text
                 self.modifyName = text
-                Log.debug("modifyName", "\(text)")
             }).disposed(by: disposeBag)
         
         input.editingDidBeginName
@@ -493,10 +492,9 @@ extension DetailHabitViewModel {
             LoadingHUD.show()
         }
         param.scheduleDate = self.dateParam ?? ""
-        if self.recommendHabitName != nil || self.recommendHabitName != "" {
+        if self.recommendHabitName != nil {
             self.param.scheduleName = self.recommendHabitName
         }
-        Log.debug("param.scheduleName", ":  \(self.param.scheduleName)")
         provider.request(.createTodo(param: param), completion: { res in
             switch res {
             case .success(let result):
