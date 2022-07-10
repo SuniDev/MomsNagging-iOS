@@ -74,7 +74,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     private var modifySun: Bool?
     private var modifyNumber: Int?
     private var modifyAlarm: String?
-    private var isModify: Bool = false
+    private var isModify: Bool = true
     
     private var weekAndNumberType = 0
 
@@ -196,13 +196,13 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     func transform(input: Input) -> Output {
         self.requestRoutineInfo(scheduleId: todoModel?.id ?? 0)
         /// 작성 모드
-        let isWriting = BehaviorRelay<Bool>(value: false)
+        let isWriting = BehaviorRelay<Bool>(value: true)
         let isNew = self.isNew
         isNew
             .bind(onNext: {
                 Log.debug("isNew~~", "\($0)")
-                isWriting.accept($0)
-                self.isModify = $0
+//                isWriting.accept($0)
+//                self.isModify = $0
             }).disposed(by: disposeBag)
         
         let btnModifyTapped = input.btnModifyTapped.asObservable().share()
@@ -237,14 +237,14 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
             }.share()
         
         let goToBack = Observable.merge(
-            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
-            btnBackTapped.filter { $0 == false }.mapToVoid(), input.deleteAlertDoneHandler.asObservable())
+            backAlertDoneHandler.filter { $0 == false }.mapToVoid(),
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid())
         
         backAlertDoneHandler
-            .filter { $0 == false }
+            .filter { $0 == true }
             .mapToVoid()
             .subscribe(onNext: {
-                isWriting.accept(false)
+                isWriting.accept(true)
             }).disposed(by: disposeBag)
         
         /// 습관 이름
@@ -262,7 +262,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 }
                 self.param.scheduleName = text
                 self.modifyName = text
-                Log.debug("modifyName", "\(text)")
             }).disposed(by: disposeBag)
         
         input.editingDidBeginName
@@ -320,8 +319,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let selectCycleType = BehaviorRelay<CycleType>(value: .week)
         let cycleItems = BehaviorRelay<[String]>(value: [])
         let selectedCycleItems = BehaviorRelay<[String]>(value: [])
-        
-        Log.debug("todoModel?.goalCount", "\(todoModel?.goalCount)")
+
         /// 상세 페이지로 진입시 서버 데이터 세팅 ========================= START
         if todoModel?.goalCount == 0 || todoModel?.goalCount == nil {
             selectCycleType.accept(.week)
@@ -446,7 +444,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         // 추가
         let successDoneAddHabit = done
             .flatMapLatest { () -> Observable<Bool> in
-                if !(self.isModify) {
+                if self.isModify {
                     self.requestModifyRoutine(scheduleId: self.todoModel?.id ?? 0)
                 } else {
                     self.requestRegistHabit()
@@ -462,7 +460,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         
         successDoneModifyHabit
             .subscribe(onNext: {
-                isWriting.accept(false)
+                isWriting.accept(true)
             }).disposed(by: disposeBag)
         
         return Output(showBottomSheet: input.btnMoreTapped,
@@ -493,10 +491,9 @@ extension DetailHabitViewModel {
             LoadingHUD.show()
         }
         param.scheduleDate = self.dateParam ?? ""
-        if self.recommendHabitName != nil || self.recommendHabitName != "" {
+        if self.recommendHabitName != nil {
             self.param.scheduleName = self.recommendHabitName
         }
-        Log.debug("param.scheduleName", ":  \(self.param.scheduleName)")
         provider.request(.createTodo(param: param), completion: { res in
             switch res {
             case .success(let result):
@@ -527,25 +524,34 @@ extension DetailHabitViewModel {
                 do {
                     let json = JSON(try result.mapJSON())
                     var model = TodoInfoResponseModel()
-                    model.id = json.dictionary?["id"]?.intValue ?? nil
-                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? nil
-                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? nil
-                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? nil
-                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? nil
-                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? nil
-                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? nil
-                    model.done = json.dictionary?["done"]?.boolValue ?? nil
-                    model.mon = json.dictionary?["mon"]?.boolValue ?? nil
-                    model.tue = json.dictionary?["tue"]?.boolValue ?? nil
-                    model.wed = json.dictionary?["wed"]?.boolValue ?? nil
-                    model.thu = json.dictionary?["thu"]?.boolValue ?? nil
-                    model.fri = json.dictionary?["fri"]?.boolValue ?? nil
-                    model.sat = json.dictionary?["sat"]?.boolValue ?? nil
-                    model.sun = json.dictionary?["sun"]?.boolValue ?? nil
-                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? nil
+                    model.id = json.dictionary?["id"]?.intValue ?? 0
+                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? 0
+                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? 0
+                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? ""
+                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? ""
+                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? ""
+                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? ""
+                    model.done = json.dictionary?["done"]?.boolValue ?? false
+                    model.mon = json.dictionary?["mon"]?.boolValue ?? false
+                    model.tue = json.dictionary?["tue"]?.boolValue ?? false
+                    model.wed = json.dictionary?["wed"]?.boolValue ?? false
+                    model.thu = json.dictionary?["thu"]?.boolValue ?? false
+                    model.fri = json.dictionary?["fri"]?.boolValue ?? false
+                    model.sat = json.dictionary?["sat"]?.boolValue ?? false
+                    model.sun = json.dictionary?["sun"]?.boolValue ?? false
+                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? ""
                     
                     self.routineInfoOb.onNext(model)
                     Log.debug("todoDetailLookUp json:", "\(json)")
+                    if model.scheduleName == "" {
+                        self.param.scheduleName = nil
+                        self.isModify = false
+                    } else {
+                        self.param.scheduleName = model.scheduleName
+                        self.isModify = true
+                    }
+                    
+                    
                     self.recommendHabitNameOb.onNext(self.recommendHabitName ?? "")
                     LoadingHUD.hide()
                 } catch let error {

@@ -34,6 +34,7 @@ class HomeView: BaseViewController, Navigatable {
 //        CommonView.showAlert(vc: self, type: .oneBtn, message: "키키")
         
 //        LoadingHUD.show()
+        Log.debug("CommonUser.authorization", "\(CommonUser.authorization ?? "")")
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -123,6 +123,13 @@ extension RecommendedHabitViewModel {
                         }
                         self.itemList.accept(recommendList)
                     }
+                    //TEST Code -- START
+                    var model = RecommendedHabitModel()
+                    model.id = 0
+                    model.scheduleName = "test"
+                    recommendList.append(model)
+                    self.itemList.accept(recommendList)
+                    //TEST Code -- END
                     LoadingHUD.hide()
                 } catch let error {
                     print("error : \(error)")

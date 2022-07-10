@@ -147,7 +147,7 @@ extension HomeView {
         
         let modifyView = UIView()
         let modifyLbl = UILabel().then({
-            $0.text = "상세"
+            $0.text = "수정"
             $0.textColor = UIColor(asset: Asset.Color.monoDark010)
             $0.font = FontFamily.Pretendard.regular.font(size: 16)
         })

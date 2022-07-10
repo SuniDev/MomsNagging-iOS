@@ -56,6 +56,12 @@ class DetailHabitView: BaseViewController, Navigatable {
     })
     lazy var lblHint = CommonHintLabel()
     
+    var textCountLbl = UILabel().then({
+        $0.textColor = UIColor(asset: Asset.Color.monoDark020)
+        $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.text = "0/30"
+    })
+    
     /// 수행 시간
     lazy var detailPerformTimeFrame = UIView()
     lazy var btnPerformTime = UIButton()
@@ -148,6 +154,10 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.preferredDatePickerStyle = .wheels
         }
     })
+    var toolBarDoneBtn = UIBarButtonItem()
+    var toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)).then({
+        $0.barStyle = .default
+    })
     
     /// Common 수정을 하지 않고 진행하기 위해 임의로 수정버튼 숨김을 위한 emptyView
     lazy var hideModifyEmptyView = UIView().then({
@@ -232,6 +242,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         view.addSubview(scrollView)
         
         viewContents.addSubview(detailNameFrame)
+        viewContents.addSubview(textCountLbl)
         viewContents.addSubview(detailPerformTimeFrame)
         viewContents.addSubview(btnPerformTime)
         viewContents.addSubview(cycleFrame)
@@ -268,6 +279,11 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
+        })
+        textCountLbl.snp.makeConstraints({
+            $0.top.equalTo(tfName.snp.bottom).offset(8)
+            $0.trailing.equalTo(tfName.snp.trailing)
+            $0.height.equalTo(20)
         })
         
         /// 수행 시간
@@ -340,7 +356,7 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.bottom.equalTo(viewAddPushTime.snp.bottom)
             $0.width.equalTo(UIScreen.main.bounds.width / 3)
         })
-        
+        toolbarSet()
         view.layoutIfNeeded()
     }
     
@@ -488,6 +504,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         
         output.isNaggingPush
             .drive(onNext: { isNaggingPush in
+                Log.debug("isNaggingPush::", "\(isNaggingPush)")
                 if isNaggingPush {
                     self.viewAddPushTime.fadeIn()
                 } else {
@@ -635,7 +652,13 @@ class DetailHabitView: BaseViewController, Navigatable {
 //        } else {
 //            self.tfName.isEnabled = true
 //        }
-        
+//        tfName.rx.text.subscribe(onNext: { text in
+//            if text?.count ?? 0 > 30 {
+//                self.tfName.text?.removeLast()
+//            } else {
+//                self.textCountLbl.text = "\(text?.count ?? 0)/30"
+//            }
+//        }).disposed(by: disposeBag)
     }
     
     // MARK: - performTimeViewModel bind
@@ -664,5 +687,20 @@ class DetailHabitView: BaseViewController, Navigatable {
             lblTime.textColor = UIColor(asset: Asset.Color.monoDark020)
             lblPushTitle.textColor = UIColor(asset: Asset.Color.monoDark020)
         }
+    }
+    
+    func toolbarSet() {
+        toolBarDoneBtn = UIBarButtonItem()
+        toolBarDoneBtn.target = self
+        toolBarDoneBtn.title = "완료"
+        toolBarDoneBtn.action = #selector(toolBarDoneAction)
+        let spaceFrmaeItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([spaceFrmaeItem, toolBarDoneBtn], animated: true)
+        tfPicker.inputAccessoryView = toolbar
+    }
+    
+    @objc
+    func toolBarDoneAction() {
+        self.view.endEditing(true)
     }
 }

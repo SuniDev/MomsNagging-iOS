@@ -49,6 +49,12 @@ class DetailTodoView: BaseViewController, Navigatable {
     })
     lazy var lblHint = CommonHintLabel()
     
+    var textCountLbl = UILabel().then({
+        $0.textColor = UIColor(asset: Asset.Color.monoDark020)
+        $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.text = "0/30"
+    })
+    
     /// 수행 시간
     lazy var detailPerformTimeFrame = UIView()
     lazy var btnPerformTime = UIButton()
@@ -95,6 +101,11 @@ class DetailTodoView: BaseViewController, Navigatable {
         $0.isHidden = true
     })
     
+    var toolBarDoneBtn = UIBarButtonItem()
+    var toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)).then({
+        $0.barStyle = .default
+    })
+    
     // MARK: - init
     init(viewModel: DetailTodoViewModel, navigator: Navigator) {
         self.viewModel = viewModel
@@ -133,19 +144,11 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         /// 잔소리 알림
         viewHintTextField = CommonView.hintTextFieldFrame(tf: tfName, lblHint: lblHint)
-        if viewModel?.modifyPage ?? false {
-            viewNameTitle = CommonView.requiredTitleFrame("할일 이름", true)
-        } else {
-            viewNameTitle = CommonView.requiredTitleFrame("할일 이름", false)
-        }
+        viewNameTitle = CommonView.requiredTitleFrame("할일 이름", false)
         detailNameFrame = CommonView.detailNameFrame(viewNameTitle: viewNameTitle, viewHintTextField: viewHintTextField)
         
         /// 수행 시간
-        if viewModel?.modifyPage ?? false {
-            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", true)
-        } else {
-            viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", false)
-        }
+        viewTimeTitle = CommonView.requiredTitleFrame("수행 시간", false)
         detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, tfTime: tfPerformTime)
         
         /// 잔소리 알림
@@ -164,6 +167,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         view.addSubview(scrollView)
         
         viewContents.addSubview(detailNameFrame)
+        viewContents.addSubview(textCountLbl)
         viewContents.addSubview(detailPerformTimeFrame)
         viewContents.addSubview(btnPerformTime)
         viewContents.addSubview(detailNaggingPushFrame)
@@ -190,6 +194,12 @@ class DetailTodoView: BaseViewController, Navigatable {
             $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
+        })
+        
+        textCountLbl.snp.makeConstraints({
+            $0.top.equalTo(tfName.snp.bottom).offset(8)
+            $0.trailing.equalTo(tfName.snp.trailing)
+            $0.height.equalTo(20)
         })
         
         /// 수행 시간
@@ -219,6 +229,8 @@ class DetailTodoView: BaseViewController, Navigatable {
             $0.bottom.equalTo(viewAddPushTime.snp.bottom)
             $0.width.equalTo(UIScreen.main.bounds.width / 3)
         })
+        
+        toolbarSet()
         
         view.layoutIfNeeded()
     }
@@ -260,7 +272,6 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         output.isWriting
             .drive(onNext: { isWriting in
-                self.setTextColor(isWriting: isWriting)
                 // 헤더 변경
                 self.btnMore.isHidden = isWriting
                 self.btnDone.isHidden = !isWriting
@@ -288,6 +299,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         output.goToBack
             .drive(onNext: {
+                Log.debug("goToBack", "k")
                 self.navigator.pop(sender: self)
             }).disposed(by: disposeBag)
         
@@ -324,6 +336,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         
         output.isNaggingPush
             .drive(onNext: { isNaggingPush in
+                Log.debug("isNaggingPush::", "\(isNaggingPush)")
                 if isNaggingPush {
                     self.viewAddPushTime.fadeIn()
                 } else {
@@ -343,6 +356,14 @@ class DetailTodoView: BaseViewController, Navigatable {
                 }
                 
             }).disposed(by: disposeBag)
+        self.viewModel?.alarmOb.subscribe(onNext: {
+            self.switchPush.isOn = $0
+            if $0 {
+                self.viewAddPushTime.fadeIn()
+            } else {
+                self.viewAddPushTime.fadeOut()
+            }
+        }).disposed(by: disposeBag)
         
         output.goToPerformTimeSetting
             .drive(onNext: {
@@ -418,6 +439,19 @@ class DetailTodoView: BaseViewController, Navigatable {
             
             self.lblTime.text = TaviCommon.alarmTimeStringToDateToString(stringData: data.alarmTime ?? "")
         }).disposed(by: disposeBag)
+        
+        tfName.rx.text.subscribe(onNext: { text in
+            if text?.count ?? 0 > 30 {
+                self.tfName.text?.removeLast()
+            } else {
+                self.textCountLbl.text = "\(text?.count ?? 0)/30"
+            }
+        }).disposed(by: disposeBag)
+        
+        viewModel.modifySuccessOb.subscribe(onNext: { _ in
+            self.navigator.pop(sender: self)
+        }).disposed(by: disposeBag)
+        
     }
     
     // MARK: - performTimeViewModel bind
@@ -434,7 +468,6 @@ class DetailTodoView: BaseViewController, Navigatable {
             tfName.textColor = UIColor(asset: Asset.Color.black)
             tfPerformTime.textColor = UIColor(asset: Asset.Color.black)
             tfPicker.textColor = UIColor(asset: Asset.Color.black)
-            
             lblTime.textColor = UIColor(asset: Asset.Color.black)
             lblPushTitle.textColor = UIColor(asset: Asset.Color.black)
             
@@ -445,5 +478,20 @@ class DetailTodoView: BaseViewController, Navigatable {
             lblTime.textColor = UIColor(asset: Asset.Color.monoDark020)
             lblPushTitle.textColor = UIColor(asset: Asset.Color.monoDark020)
         }
+    }
+    
+    func toolbarSet() {
+        toolBarDoneBtn = UIBarButtonItem()
+        toolBarDoneBtn.target = self
+        toolBarDoneBtn.title = "완료"
+        toolBarDoneBtn.action = #selector(toolBarDoneAction)
+        let spaceFrmaeItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([spaceFrmaeItem, toolBarDoneBtn], animated: true)
+        tfPicker.inputAccessoryView = toolbar
+    }
+    
+    @objc
+    func toolBarDoneAction() {
+        self.view.endEditing(true)
     }
 }

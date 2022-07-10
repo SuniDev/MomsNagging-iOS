@@ -29,6 +29,12 @@ class DetailTodoViewModel: BaseViewModel {
     private var isModify: Bool = false
     var modifyPage: Bool?
     
+    var modifySuccessOb = PublishSubject<Void>()
+    var alarmOb = PublishSubject<Bool>()
+    private var modifyName: String?
+    private var modifyTime: String?
+    private var modifyAlarm: String?
+    
     init(isNew: Bool, homeVM: HomeViewModel, dateParam: String, todoModel: TodoListModel?=nil) {
         self.isNew = BehaviorRelay<Bool>(value: isNew)
         self.modifyPage = !isNew
@@ -101,11 +107,11 @@ class DetailTodoViewModel: BaseViewModel {
         self.requestTodoInfo(scheduleId: todoModel?.id ?? 0)
         
         /// 작성 모드
-        let isWriting = BehaviorRelay<Bool>(value: false)
+        let isWriting = BehaviorRelay<Bool>(value: true)
         let isNew = self.isNew
         isNew
             .bind(onNext: {
-                isWriting.accept($0)
+//                isWriting.accept($0)
                 self.isModify = $0
             }).disposed(by: disposeBag)
         
@@ -143,14 +149,14 @@ class DetailTodoViewModel: BaseViewModel {
             }.share()
         
         let goToBack = Observable.merge(
-            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
-            btnBackTapped.filter { $0 == false }.mapToVoid(), input.deleteAlertDoneHandler.asObservable())
+            backAlertDoneHandler.filter { $0 == false }.mapToVoid(),
+            backAlertDoneHandler.filter { $0 == true }.mapToVoid())
         
         backAlertDoneHandler
-            .filter { $0 == false }
+            .filter { $0 == true }
             .mapToVoid()
             .subscribe(onNext: {
-                isWriting.accept(false)
+                isWriting.accept(true)
             }).disposed(by: disposeBag)
         
         /// 할일 이름
@@ -162,6 +168,7 @@ class DetailTodoViewModel: BaseViewModel {
             .drive(onNext: { text in
                 textName.accept(text)
                 self.param.scheduleName = text
+                self.modifyName = text
             }).disposed(by: disposeBag)
         
         input.editingDidBeginName
@@ -211,6 +218,7 @@ class DetailTodoViewModel: BaseViewModel {
             .drive(onNext: { text in
                 textPerformTime.accept(text ?? "")
                 self.param.scheduleTime = text ?? ""
+                self.modifyTime = text ?? ""
             }).disposed(by: disposeBag)
         
         /// 잔소리 알림 설정
@@ -227,6 +235,7 @@ class DetailTodoViewModel: BaseViewModel {
                 if !isOn {
                     timeNaggingPush.accept(nil)
                     self.param.alarmTime = nil
+                    self.modifyAlarm = ""
                 }
             }).disposed(by: disposeBag)
         
@@ -234,6 +243,7 @@ class DetailTodoViewModel: BaseViewModel {
             .drive(onNext: { date in
                 timeNaggingPush.accept(date)
                 self.param.alarmTime = "\(TaviCommon.alarmTimeDateToStringFormatHHMM(date: date)):00"
+                self.modifyAlarm = "\(TaviCommon.alarmTimeDateToStringFormatHHMM(date: date)):00"
             }).disposed(by: disposeBag)
         
         let canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
@@ -258,7 +268,7 @@ class DetailTodoViewModel: BaseViewModel {
             .flatMapLatest { () -> Observable<Bool> in
                 if !(self.isModify) {
                     Log.debug("[Log~~~~~]", "할일 수정 완료 클릭")
-//                    self.requestModifyRoutine(scheduleId: self.todoModel?.id ?? 0)
+                    self.requestModifyTodo(scheduleId: self.todoModel?.id ?? 0)
                 } else {
                     self.requestRegistTodo()
                 }
@@ -274,7 +284,7 @@ class DetailTodoViewModel: BaseViewModel {
         
         successDoneModifyTodo
             .subscribe(onNext: {
-                isWriting.accept(false)
+                isWriting.accept(true)
             }).disposed(by: disposeBag)
      
         return Output(showBottomSheet: input.btnMoreTapped,
@@ -327,25 +337,30 @@ extension DetailTodoViewModel {
                 do {
                     let json = JSON(try result.mapJSON())
                     var model = TodoInfoResponseModel()
-                    model.id = json.dictionary?["id"]?.intValue ?? nil
-                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? nil
-                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? nil
-                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? nil
-                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? nil
-                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? nil
-                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? nil
-                    model.done = json.dictionary?["done"]?.boolValue ?? nil
-                    model.mon = json.dictionary?["mon"]?.boolValue ?? nil
-                    model.tue = json.dictionary?["tue"]?.boolValue ?? nil
-                    model.wed = json.dictionary?["wed"]?.boolValue ?? nil
-                    model.thu = json.dictionary?["thu"]?.boolValue ?? nil
-                    model.fri = json.dictionary?["fri"]?.boolValue ?? nil
-                    model.sat = json.dictionary?["sat"]?.boolValue ?? nil
-                    model.sun = json.dictionary?["sun"]?.boolValue ?? nil
-                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? nil
+                    model.id = json.dictionary?["id"]?.intValue ?? 0
+                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? 0
+                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? 0
+                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? ""
+                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? ""
+                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? ""
+                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? ""
+                    model.done = json.dictionary?["done"]?.boolValue ?? false
+                    model.mon = json.dictionary?["mon"]?.boolValue ?? false
+                    model.tue = json.dictionary?["tue"]?.boolValue ?? false
+                    model.wed = json.dictionary?["wed"]?.boolValue ?? false
+                    model.thu = json.dictionary?["thu"]?.boolValue ?? false
+                    model.fri = json.dictionary?["fri"]?.boolValue ?? false
+                    model.sat = json.dictionary?["sat"]?.boolValue ?? false
+                    model.sun = json.dictionary?["sun"]?.boolValue ?? false
+                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? ""
                     
                     self.todoInfoOb.onNext(model)
                     Log.debug("todoDetailLookUp json:", "\(json)")
+                    if json.dictionary?["alarmTime"]?.stringValue == "" {
+                        self.alarmOb.onNext(false)
+                    } else {
+                        self.alarmOb.onNext(true)
+                    }
                     LoadingHUD.hide()
                 } catch let error {
                     Log.error("todoDetailLookUp error", "\(error)")
@@ -353,6 +368,49 @@ extension DetailTodoViewModel {
                 }
             case .failure(let error):
                 Log.error("todoDetailLookUp error", "\(error)")
+                LoadingHUD.hide()
+            }
+        })
+    }
+    
+    func requestModifyTodo(scheduleId: Int) {
+        var param: [ModifyTodoRequestModel] = []
+        var model = ModifyTodoRequestModel()
+        param.removeAll()
+        if modifyName != nil {
+            model.op = "replace"
+            model.path = "/scheduleName"
+            model.value = "\(modifyName!)"
+            param.append(model)
+        }
+        if modifyTime != nil {
+            model.op = "replace"
+            model.path = "/scheduleTime"
+            model.value = "\(modifyTime!)"
+            param.append(model)
+        }
+        if modifyAlarm != nil {
+            model.op = "replace"
+            model.path = "/alarmTime"
+            model.value = "\(modifyAlarm!)"
+            param.append(model)
+        }
+        provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("modifyTodo json : \(json)")
+                    self.modifySuccessOb.onNext(())
+                    self.homeViewModel?.isEndProgress.onNext(())
+                    self.homeViewModel?.addHabitSuccessOb.onNext(())
+                    LoadingHUD.hide()
+                } catch let error {
+                    Log.error("modifyTodo error", "\(error)")
+                    LoadingHUD.hide()
+                }
+            case .failure(let error):
+                Log.error("modifyTodo failure error", "\(error)")
                 LoadingHUD.hide()
             }
         })
