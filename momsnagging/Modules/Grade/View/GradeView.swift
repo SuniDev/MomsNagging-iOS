@@ -526,6 +526,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         
         let input = GradeViewModel.Input(
             willApearView: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
+            viewTapped: self.view.rx.tapGesture().mapToVoid().asDriverOnErrorJustComplete(),
             tabCalendar: self.calendarBtn.rx.tap.asDriverOnErrorJustComplete(),
             tabStatistics: self.statisticsBtn.rx.tap.asDriverOnErrorJustComplete(),
             loadCalendar: Observable.just(CalendarDate(year: self.calendarViewModel.getYear(),

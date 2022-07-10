@@ -127,6 +127,8 @@
 		A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0269004283148E0009A40A0 /* CommonSwitch.swift */; };
 		A035B0762812A0A100747389 /* StringDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A035B0752812A0A100747389 /* StringDefinition.swift */; };
 		A03D13D4284124A10012C406 /* DiaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03D13D3284124A10012C406 /* DiaryService.swift */; };
+		A0568DD92876C3F300AE9A9C /* AppUpdateVersion.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0568DD82876C3F300AE9A9C /* AppUpdateVersion.plist */; };
+		A0568DDB2876F1AB00AE9A9C /* CommonPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0568DDA2876F1AB00AE9A9C /* CommonPopup.swift */; };
 		A061F0F02823AF1B00F9CC18 /* DetailDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */; };
 		A061F0F22823AF3700F9CC18 /* DetailDiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */; };
 		A06316D62849D81500EC108B /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06316D52849D81500EC108B /* Test.swift */; };
@@ -304,6 +306,8 @@
 		A035B0752812A0A100747389 /* StringDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDefinition.swift; sourceTree = "<group>"; };
 		A03D13D3284124A10012C406 /* DiaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryService.swift; sourceTree = "<group>"; };
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
+		A0568DD82876C3F300AE9A9C /* AppUpdateVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppUpdateVersion.plist; sourceTree = "<group>"; };
+		A0568DDA2876F1AB00AE9A9C /* CommonPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonPopup.swift; sourceTree = "<group>"; };
 		A061F0EF2823AF1B00F9CC18 /* DetailDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryView.swift; sourceTree = "<group>"; };
 		A061F0F12823AF3700F9CC18 /* DetailDiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDiaryViewModel.swift; sourceTree = "<group>"; };
 		A06316D52849D81500EC108B /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -492,6 +496,7 @@
 				A0269004283148E0009A40A0 /* CommonSwitch.swift */,
 				A0A992C1282ECB81009049CF /* CommonBottomSheet.swift */,
 				86E44B2D283C7B7700E5DB68 /* CommonTextRadioButton.swift */,
+				A0568DDA2876F1AB00AE9A9C /* CommonPopup.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -819,6 +824,7 @@
 			children = (
 				8F6BCB2627D89E840038B020 /* Release */,
 				8F6BCB2727D89E8A0038B020 /* Debug */,
+				A0568DD82876C3F300AE9A9C /* AppUpdateVersion.plist */,
 			);
 			path = FBConfig;
 			sourceTree = "<group>";
@@ -1393,6 +1399,7 @@
 				86E3920C280FC923007D3C04 /* Pretendard-Bold.otf in Resources */,
 				8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */,
 				86E39210280FC931007D3C04 /* Pretendard-SemiBold.otf in Resources */,
+				A0568DD92876C3F300AE9A9C /* AppUpdateVersion.plist in Resources */,
 				A0728E2627DDD4FD0046058D /* GoogleService-Info.plist in Resources */,
 				86E3920E280FC92B007D3C04 /* Pretendard-Regular.otf in Resources */,
 				8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */,
@@ -1621,6 +1628,7 @@
 				A06316D62849D81500EC108B /* Test.swift in Sources */,
 				A067E592281D93F70017EF53 /* NicknameSettingView.swift in Sources */,
 				86E699EC2822628400EA6BC3 /* MomsNaggingAPI.swift in Sources */,
+				A0568DDB2876F1AB00AE9A9C /* CommonPopup.swift in Sources */,
 				A0B5C37F27F890BF001EB062 /* BaseViewModel.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				866F2C32283F516A004B5691 /* NetworkLoggerPlugin.swift in Sources */,
@@ -1830,7 +1838,7 @@
 				CODE_SIGN_ENTITLEMENTS = momsnagging/momsnagging.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEPLOY_PHASE = debug;
 				DEVELOPMENT_TEAM = 3T5QFYSPG5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1870,7 +1878,7 @@
 				CODE_SIGN_ENTITLEMENTS = momsnagging/momsnagging.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEPLOY_PHASE = release;
 				DEVELOPMENT_TEAM = 3T5QFYSPG5;
 				GENERATE_INFOPLIST_FILE = YES;

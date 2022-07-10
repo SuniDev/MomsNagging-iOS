@@ -137,7 +137,6 @@ class Navigator {
                 sender.present(target, animated: true)
             }
         case .popup:
-            // TODO: - popup 처리
             return
         case .alert:
             DispatchQueue.main.async {

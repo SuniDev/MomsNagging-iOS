@@ -306,10 +306,8 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             .asObservable()
             .flatMapLatest { _ -> Observable<Diary> in
                 self.isLoading.accept(true)
-                let title = ""
-                let context = ""
                 let date = selectedDate.value
-                return self.requestPutDiary(title: title, context: context, diaryDate: date)
+                return self.requestPutDiary(diaryDate: date)
             }.share()
         requestDeleteDiary
             .bind(onNext: { _ in
@@ -390,13 +388,13 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         requestSaveDiary
             .subscribe(onNext: { _ in
                 self.isLoading.accept(false)
-                isWriting.accept(false)
             }).disposed(by: disposeBag)
         
         let goToBack = Observable.merge(
             backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
             btnBackTapped.filter { $0 == false }.mapToVoid(),
-            requestDeleteDiary.mapToVoid().asObservable())
+            requestDeleteDiary.mapToVoid().asObservable(),
+            requestSaveDiary.mapToVoid())
         
         return Output(setTitleDate: setTitleDate.asDriverOnErrorJustComplete(),
                       setCalendarDate: setCalendarDate.asDriverOnErrorJustComplete(),
@@ -515,7 +513,7 @@ extension DetailDiaryViewModel {
         let request = GetDiaryRequest(retrieveDate: date)
         return self.provider.diaryService.getDiary(request: request)
     }
-    private func requestPutDiary(title: String, context: String, diaryDate: String) -> Observable<Diary> {
+    private func requestPutDiary(title: String? = nil, context: String? = nil, diaryDate: String) -> Observable<Diary> {
         let request = PutDiaryRequest(title: title, context: context, diaryDate: diaryDate)
         return self.provider.diaryService.putDiary(request: request)
     }

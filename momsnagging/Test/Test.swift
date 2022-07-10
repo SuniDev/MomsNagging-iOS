@@ -215,7 +215,7 @@ class Test {
         items.append(StatisticsItem(title: "일부 수행", data: "\(partical)", suffix: "일"))
         items.append(StatisticsItem(title: "습관 수행", data: "\(Int.random(in: 400...800))", suffix: "일"))
         items.append(StatisticsItem(title: "할일 수행", data: "\(Int.random(in: 500...800))", suffix: "일"))
-        items.append(StatisticsItem(title: "회고 작성", data: "\(Int.random(in: 500...1000))", suffix: "번"))
+        items.append(StatisticsItem(title: "일기 작성", data: "\(Int.random(in: 500...1000))", suffix: "번"))
         items.append(StatisticsItem(title: "평균 수행률", data: "\(Int.random(in: 80...100))", suffix: "%"))
         
         return items

@@ -9,15 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxSwiftExt
-import CoreMIDI
-import CoreMedia
-
-enum AppUpdateStatus {
-    case forceUpdate
-    case selectUpdate
-    case latestVersion
-    case error
-}
+import FirebaseRemoteConfig
 
 class IntroViewModel: ViewModel, ViewModelType {
     
@@ -32,6 +24,9 @@ class IntroViewModel: ViewModel, ViewModelType {
     struct Input {
         /// IntroView 진입
         let willAppearIntro: Driver<Void>
+        /// 업데이트 핸들러
+        let foreceUpdatePopupHandler: Driver<Void>
+        let selectUpdatePopupHandler: Driver<Bool>
     }
     
     // MARK: - Output
@@ -45,17 +40,20 @@ class IntroViewModel: ViewModel, ViewModelType {
         let goToLogin: Driver<LoginViewModel>
         /// 메인 이동
         let goToMain: Driver<MainContainerViewModel>
+        /// 강제 업데이트
+        let goToForceUpdate: Driver<Void>
+        /// 선택 업데이트
+        let goToSelectUpdate: Driver<Void>
     }
     
     // MARK: - transform
     func transform(input: Input) -> Output {
         
         // MARK: - App Update Status
-        // TODO: Request App Version API
         let appUpdateStatus = input.willAppearIntro
             .asObservable()
             .flatMapLatest { () -> Observable<AppUpdateStatus> in
-                return self.getAppUpdateStatus("1.0.0")
+                return self.getAppUpdateStatus()
             }.share()
         
         let forceUpdateStatus = appUpdateStatus
@@ -68,12 +66,23 @@ class IntroViewModel: ViewModel, ViewModelType {
             .mapToVoid()
             .asDriverOnErrorJustComplete()
         
+        let selectUpdatePopupHandler = input.selectUpdatePopupHandler.asObservable().share()
+        
+        let selectUpdate = selectUpdatePopupHandler.filter({ $0 == true }).mapToVoid()
+                
         // MARK: - First Entry App
-        let isFirstEntryApp = appUpdateStatus
-            .filter { status in status == .latestVersion }
+        let entryApp = Observable.merge(selectUpdatePopupHandler.mapToVoid(),
+                                        appUpdateStatus.filter { status in status == .latestVersion }.mapToVoid())
+        
+        let isFirstEntryApp = entryApp
             .flatMapLatest { _ -> Observable<Bool> in
                 return self.isFirstEntryApp()
             }.share()
+        
+        appUpdateStatus
+            .subscribe(onNext: { status in
+                Common.appUpdateStatus = status
+            }).disposed(by: disposeBag)
         
         let goToOnboarding = isFirstEntryApp
             .filter { isFirst in isFirst == true }
@@ -138,21 +147,83 @@ class IntroViewModel: ViewModel, ViewModelType {
                       selectUpdateStatus: selectUpdateStatus,
                       goToOnboarding: goToOnboarding.asDriverOnErrorJustComplete(),
                       goToLogin: goToLogin.asDriverOnErrorJustComplete(),
-                      goToMain: goToMain.asDriverOnErrorJustComplete())
+                      goToMain: goToMain.asDriverOnErrorJustComplete(),
+                      goToForceUpdate: input.foreceUpdatePopupHandler,
+                      goToSelectUpdate: selectUpdate.asDriverOnErrorJustComplete())
     }
 }
 
 extension IntroViewModel {
     
-    // TODO: Request App Version
-    
-    // TODO: App Update Status Logic
-    func getAppUpdateStatus(_ version: String) -> Observable<AppUpdateStatus> {
+    func getAppUpdateStatus() -> Observable<AppUpdateStatus> {
         return Observable<AppUpdateStatus>.create { observer -> Disposable in
-            observer.onNext(AppUpdateStatus.latestVersion)
-            observer.onCompleted()
+            let remoteConfig = RemoteConfig.remoteConfig()
+            let setting = RemoteConfigSettings()
+            setting.minimumFetchInterval = 0
+            remoteConfig.configSettings = setting
+            remoteConfig.setDefaults(fromPlist: "AppUpdateVersion")
+            
+             remoteConfig.fetch { status, _ in
+                 if status == .success {
+                     remoteConfig.activate(completion: nil)
+                 } else {
+                     Log.error("AppUpdateVersion Remote Config Error")
+                     observer.onNext(.error)
+                     observer.onCompleted()
+                 }
+                 
+                 let forceVresion = remoteConfig["forceUpdateVersion"].stringValue ?? "0.0.0"
+                 let lastVersion = remoteConfig["latestUpdateVersion"].stringValue ?? "0.0.0"
+                 let currentVersion = TaviCommon.getVersion()
+                 
+                 Log.debug(lastVersion, forceVresion)
+                 
+                 if lastVersion == "0.0.0" {
+                     observer.onNext(.error)
+                     observer.onCompleted()
+                 }
+                 
+                 let forceSplit = forceVresion.split(separator: ".")
+                 let latestSplit = lastVersion.split(separator: ".")
+                 
+                 if forceSplit.count != 3 || latestSplit.count != 3 {
+                     observer.onNext(.error)
+                     observer.onCompleted()
+                 }
+                 
+                 // 버전 체크
+                 if self.isOldVersion(latest: forceVresion, current: currentVersion) {
+                     observer.onNext(.forceUpdate)
+                     observer.onCompleted()
+                 } else {
+                     if self.isOldVersion(latest: lastVersion, current: currentVersion) {
+                         observer.onNext(.selectUpdate)
+                         observer.onCompleted()
+                     } else {
+                         // 최신 버전
+                         observer.onNext(.latestVersion)
+                         observer.onCompleted()
+                     }
+                 }
+             }
+            
             return Disposables.create()
         }
+    }
+    
+    fileprivate func isOldVersion(latest: String, current: String) -> Bool {
+        let latestSplit = latest.components(separatedBy: ".")
+        let currentSplit = current.components(separatedBy: ".")
+        for (latest, current) in zip(latestSplit, currentSplit) {
+            if let lastInt = Int(latest), let currentInt = Int(current) {
+                if currentInt < lastInt {
+                    return true
+                } else if currentInt > lastInt {
+                    return false
+                }
+            }
+        }
+        return false
     }
     
     func isFirstEntryApp() -> Observable<Bool> {

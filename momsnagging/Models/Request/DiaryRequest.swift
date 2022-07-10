@@ -32,7 +32,7 @@ struct GetDiaryRequest: RequestModelType, Encodable {
  - Note: 일기장 수정 Request 모델
  */
 struct PutDiaryRequest: RequestModelType {
-    var title: String       // 타이틀
-    var context: String     // 내용
+    var title: String?       // 타이틀
+    var context: String?     // 내용
     var diaryDate: String   // 일기장 날짜
 }

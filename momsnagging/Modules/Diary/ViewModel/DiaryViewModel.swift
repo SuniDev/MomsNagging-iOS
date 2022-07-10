@@ -37,7 +37,12 @@ class DiaryViewModel: ViewModel, ViewModelType {
         let btnNextTapped: Driver<Void>
         /// 일기장 상세 이동
         let btnDetailTappd: Driver<Void>
-        
+        /// 일기장 프레임 탭
+        let diaryViewTapped: Driver<Void>
+        let emptyDiaryViewTapped: Driver<Void>
+        /// 일기장 삭제 하기
+        let btnDiaryDeleteTapped: Driver<Void>
+        let deleteAlertDoneHandler: Driver<Void>
     }
     // MARK: - Output
     struct Output {
@@ -60,6 +65,8 @@ class DiaryViewModel: ViewModel, ViewModelType {
         let isEmptyDiary: Driver<Bool>
         /// 작성하기 이동
         let goToDetail: Driver<DetailDiaryViewModel?>
+        /// 삭제하기 알럿
+        let showDiaryDeleteAlert: Driver<String>
     }
     
     func transform(input: Input) -> Output {
@@ -72,12 +79,19 @@ class DiaryViewModel: ViewModel, ViewModelType {
         // 현재 선택 일기
 //        let selectedDiary = BehaviorRelay<Diary?>(value: nil)
     
-        let reloadData = input.willAppearDiary.skip(1)
-        reloadData
+        let reloadData = PublishRelay<Void>()
+        
+        input.willAppearDiary
+            .skip(1)
             .drive(onNext: {
+                reloadData.accept(())
+            }).disposed(by: disposeBag)
+        
+        reloadData
+            .subscribe(onNext: {
                 setCalendarDate.accept(setCalendarDate.value)
-                selectedDate.accept(selectedDate.value)
                 dayList.accept(dayList.value)
+                selectedDate.accept(selectedDate.value)
             }).disposed(by: disposeBag)
         
         // 캘린더 로드
@@ -130,13 +144,33 @@ class DiaryViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         // 캘린더 API Request
-        let requestCalendarDate = setCalendarDate.debug()
+        let requestCalendarDate = setCalendarDate
             .flatMapLatest { date -> Observable<DiaryCalendar> in
                 self.isLoading.accept(true)
                 return self.requestDiaryCalendar(year: date.year, month: date.month)
             }.share()
         requestCalendarDate
             .bind(onNext: { _ in
+                self.isLoading.accept(false)
+            }).disposed(by: disposeBag)
+        
+        /// 일기장 삭제하기
+        let showDiaryDeleteAlert = input.btnDiaryDeleteTapped
+            .asObservable()
+            .flatMapLatest { _ -> Observable<String> in
+                return Observable.just(STR_DIARY_DELETE)
+            }
+        let requestDeleteDiary = input.deleteAlertDoneHandler
+            .asObservable()
+            .flatMapLatest { _ -> Observable<Diary> in
+                self.isLoading.accept(true)
+                let date = selectedDate.value
+                return self.requestPutDiary(diaryDate: date)
+            }.share()
+        
+        requestDeleteDiary
+            .bind(onNext: { _ in
+                reloadData.accept(())
                 self.isLoading.accept(false)
             }).disposed(by: disposeBag)
         
@@ -174,8 +208,9 @@ class DiaryViewModel: ViewModel, ViewModelType {
         let isEmptyDiary = requestGetDiary
             .map { return $0.title?.isEmpty ?? true }
         
-        let goToDetail = input.btnDetailTappd
-            .asObservable()
+        let goToDetail = Observable.merge(input.btnDetailTappd.asObservable(),
+                                          input.diaryViewTapped.asObservable(),
+                                          input.emptyDiaryViewTapped.asObservable())
             .map { _ -> DetailDiaryViewModel? in
                 let viewModel = DetailDiaryViewModel(withService: self.provider, selectedDate: selectedDate.value)
                 return viewModel
@@ -189,7 +224,8 @@ class DiaryViewModel: ViewModel, ViewModelType {
                       setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
                       setDiaryData: requestGetDiary.asDriverOnErrorJustComplete(),
                       isEmptyDiary: isEmptyDiary.asDriverOnErrorJustComplete(),
-                      goToDetail: goToDetail.asDriverOnErrorJustComplete()
+                      goToDetail: goToDetail.asDriverOnErrorJustComplete(),
+                      showDiaryDeleteAlert: showDiaryDeleteAlert.asDriverOnErrorJustComplete()
         )
     }
 }
@@ -248,6 +284,11 @@ extension DiaryViewModel {
     private func requestGetDiary(date: String) -> Observable<Diary> {
         let request = GetDiaryRequest(retrieveDate: date)
         return self.provider.diaryService.getDiary(request: request)
+    }
+    
+    private func requestPutDiary(title: String? = nil, context: String? = nil, diaryDate: String) -> Observable<Diary> {
+        let request = PutDiaryRequest(title: title, context: context, diaryDate: diaryDate)
+        return self.provider.diaryService.putDiary(request: request)
     }
 }
 
