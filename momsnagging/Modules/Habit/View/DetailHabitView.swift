@@ -652,13 +652,13 @@ class DetailHabitView: BaseViewController, Navigatable {
 //        } else {
 //            self.tfName.isEnabled = true
 //        }
-//        tfName.rx.text.subscribe(onNext: { text in
-//            if text?.count ?? 0 > 30 {
-//                self.tfName.text?.removeLast()
-//            } else {
-//                self.textCountLbl.text = "\(text?.count ?? 0)/30"
-//            }
-//        }).disposed(by: disposeBag)
+        tfName.rx.text.subscribe(onNext: { text in
+            if text?.count ?? 0 > 30 {
+                self.tfName.text?.removeLast()
+            } else {
+                self.textCountLbl.text = "\(text?.count ?? 0)/30"
+            }
+        }).disposed(by: disposeBag)
     }
     
     // MARK: - performTimeViewModel bind
