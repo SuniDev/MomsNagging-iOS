@@ -297,6 +297,14 @@ extension HomeView {
         })
         skipBtn.rx.tap.subscribe(onNext: {
             //건너뜀 API 호출
+            let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?", preferredStyle: .alert)
+            let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
+                self.viewModel.requestDeleay(scheduleId: itemId)
+            })
+            let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+            alert.addAction(cancelAction)
+            alert.addAction(doneAction)
+            self.present(alert, animated: true, completion: nil)
             backgroundView.removeFromSuperview()
         }).disposed(by: disposedBag)
         
