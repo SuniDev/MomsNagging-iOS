@@ -525,22 +525,22 @@ extension DetailHabitViewModel {
                 do {
                     let json = JSON(try result.mapJSON())
                     var model = TodoInfoResponseModel()
-                    model.id = json.dictionary?["id"]?.intValue ?? nil
-                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? nil
-                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? nil
-                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? nil
-                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? nil
-                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? nil
-                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? nil
-                    model.done = json.dictionary?["done"]?.boolValue ?? nil
-                    model.mon = json.dictionary?["mon"]?.boolValue ?? nil
-                    model.tue = json.dictionary?["tue"]?.boolValue ?? nil
-                    model.wed = json.dictionary?["wed"]?.boolValue ?? nil
-                    model.thu = json.dictionary?["thu"]?.boolValue ?? nil
-                    model.fri = json.dictionary?["fri"]?.boolValue ?? nil
-                    model.sat = json.dictionary?["sat"]?.boolValue ?? nil
-                    model.sun = json.dictionary?["sun"]?.boolValue ?? nil
-                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? nil
+                    model.id = json.dictionary?["id"]?.intValue ?? 0
+                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? 0
+                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? 0
+                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? ""
+                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? ""
+                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? ""
+                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? ""
+                    model.done = json.dictionary?["done"]?.boolValue ?? false
+                    model.mon = json.dictionary?["mon"]?.boolValue ?? false
+                    model.tue = json.dictionary?["tue"]?.boolValue ?? false
+                    model.wed = json.dictionary?["wed"]?.boolValue ?? false
+                    model.thu = json.dictionary?["thu"]?.boolValue ?? false
+                    model.fri = json.dictionary?["fri"]?.boolValue ?? false
+                    model.sat = json.dictionary?["sat"]?.boolValue ?? false
+                    model.sun = json.dictionary?["sun"]?.boolValue ?? false
+                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? ""
                     
                     self.routineInfoOb.onNext(model)
                     Log.debug("todoDetailLookUp json:", "\(json)")
