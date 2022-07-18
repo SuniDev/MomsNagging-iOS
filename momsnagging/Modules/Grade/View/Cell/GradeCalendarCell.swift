@@ -84,12 +84,11 @@ class GradeCalendarCell: UICollectionViewCell {
     }
     
     func configure() {
-        if let avg = avg {
-            self.emoji.image = self.getEmoji(avg: avg, isEnabled: isEnabled)
-        }
+        
+        self.emoji.image = self.getEmoji(avg: avg, isEnabled: isEnabled)
         
         if isEnabled {
-            if self.isFuture || self.avg == nil {
+            if self.isFuture {
                 self.emoji.isHidden = true
                 self.isUserInteractionEnabled = false
             } else {
@@ -122,15 +121,19 @@ class GradeCalendarCell: UICollectionViewCell {
 
 }
 extension GradeCalendarCell {
-    private func getEmoji(avg: Int, isEnabled: Bool) -> UIImage {
-        if avg == 0 {
-            return isEnabled ? Asset.Assets.emojiAngry.image : Asset.Assets.emojiAngryDis.image
-        } else if avg > 0 && avg < 100 {
-            return isEnabled ? Asset.Assets.emojiDefault.image : Asset.Assets.emojiDefaultDis.image
-        } else if avg == 100 {
+    private func getEmoji(avg: Int?, isEnabled: Bool) -> UIImage {
+        if let avg = avg {
+            if avg == 0 {
+                return isEnabled ? Asset.Assets.emojiAngry.image : Asset.Assets.emojiAngryDis.image
+            } else if avg > 0 && avg < 100 {
+                return isEnabled ? Asset.Assets.emojiDefault.image : Asset.Assets.emojiDefaultDis.image
+            } else if avg == 100 {
+                return isEnabled ? Asset.Assets.emojiHappy.image : Asset.Assets.emojiHappyDis.image
+            }
             return isEnabled ? Asset.Assets.emojiHappy.image : Asset.Assets.emojiHappyDis.image
+        } else {
+            return Asset.Assets.emojiEmpty.image
         }
-        return isEnabled ? Asset.Assets.emojiHappy.image : Asset.Assets.emojiHappyDis.image
     }
     
     private func initUI() {

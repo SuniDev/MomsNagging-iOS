@@ -445,14 +445,14 @@ extension GradeViewModel {
                 default: week = ""
                 }
                 
-                var grade = ""
+                var grade = "?"
                 switch data.gradeOfWeek {
                 case 1: grade = "수"
                 case 2: grade = "우"
                 case 3: grade = "미"
                 case 4: grade = "양"
                 case 5: grade = "가"
-                default: grade = ""
+                default: grade = "?"
                 }
                 
                 let item = StatisticsMontlyItem(week: week, grade: grade)
@@ -466,20 +466,15 @@ extension GradeViewModel {
     }
     
     func getStatisticsItems(data: Statistics) -> Observable<[StatisticsItem]> {
-        return Observable<[StatisticsItem]>.create { observer -> Disposable in
-            if Common.TEST {
-                observer.onNext(Test.getStatisticsItems(date: data))
-                observer.onCompleted()
-            }
-            
+        return Observable<[StatisticsItem]>.create { observer -> Disposable in            
             var items = [StatisticsItem]()
             
-            items.append(StatisticsItem(title: "전체 수행", data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "일부 수행", data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "습관 수행", data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "할일 수행", data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "일기 작성", data: "\(data.diaryCount ?? 0)", suffix: "번"))
-            items.append(StatisticsItem(title: "평균 수행률", data: "\(data.performanceAvg ?? 0)", suffix: "%"))
+            items.append(StatisticsItem(title: "전체 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "일부 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "습관 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "할일 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "일기 작성", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.diaryCount ?? 0)", suffix: "번"))
+            items.append(StatisticsItem(title: "평균 수행률", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.performanceAvg ?? 0)", suffix: "%"))
             
             observer.onNext(items)
             observer.onCompleted()
@@ -569,6 +564,7 @@ struct StatisticsMontlyItem {
 
 struct StatisticsItem {
     let title: String
+    let description: String
     let data: String
     let suffix: String
 }
