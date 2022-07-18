@@ -445,14 +445,14 @@ extension GradeViewModel {
                 default: week = ""
                 }
                 
-                var grade = ""
+                var grade = "?"
                 switch data.gradeOfWeek {
                 case 1: grade = "수"
                 case 2: grade = "우"
                 case 3: grade = "미"
                 case 4: grade = "양"
                 case 5: grade = "가"
-                default: grade = ""
+                default: grade = "?"
                 }
                 
                 let item = StatisticsMontlyItem(week: week, grade: grade)

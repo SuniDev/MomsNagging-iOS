@@ -25,6 +25,7 @@ class StatisticsCalendarCell: UITableViewCell {
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
     })
     lazy var reportLbl = UILabel().then({
+        $0.textAlignment = .center
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
     })
@@ -46,6 +47,7 @@ extension StatisticsCalendarCell {
             $0.top.bottom.equalToSuperview()
         })
         reportLbl.snp.makeConstraints({
+            $0.width.equalTo(16)
             $0.trailing.equalToSuperview()
             $0.top.bottom.equalToSuperview()
         })
