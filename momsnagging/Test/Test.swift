@@ -206,19 +206,4 @@ class Test {
         return count
     }
     
-    static func getStatisticsItems(date: Statistics) -> [StatisticsItem] {
-        var items = [StatisticsItem]()
-        
-        let all = Int.random(in: 700...1000)
-        let partical = Test.togetherCount - all
-        items.append(StatisticsItem(title: "전체 수행", data: "\(all)", suffix: "일"))
-        items.append(StatisticsItem(title: "일부 수행", data: "\(partical)", suffix: "일"))
-        items.append(StatisticsItem(title: "습관 수행", data: "\(Int.random(in: 400...800))", suffix: "일"))
-        items.append(StatisticsItem(title: "할일 수행", data: "\(Int.random(in: 500...800))", suffix: "일"))
-        items.append(StatisticsItem(title: "일기 작성", data: "\(Int.random(in: 500...1000))", suffix: "번"))
-        items.append(StatisticsItem(title: "평균 수행률", data: "\(Int.random(in: 80...100))", suffix: "%"))
-        
-        return items
-    }
-    
 }

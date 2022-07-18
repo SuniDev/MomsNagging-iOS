@@ -24,7 +24,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     let calendarLineSpacing: CGFloat = 10
     let todolistRowHeight: CGFloat = 60
     let statisticsMonthlyRowHeight: CGFloat = 48
-    let statisticsRowHeight: CGFloat = 48
+    let statisticsRowHeight: CGFloat = 50
      
     // MARK: - UI Properties
     // 헤더
@@ -715,6 +715,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             .bind(to: self.statisticsPerformTableView.rx.items(cellIdentifier: "StatisticsPerformRateCell", cellType: StatisticsPerformRateCell.self)) { _, item, cell in
                 
                 cell.titleLbl.text = item.title
+                cell.descriptionLbl.text = item.description
                 cell.dataLbl.text = item.data
                 cell.suffixLbl.text = item.suffix
                 
