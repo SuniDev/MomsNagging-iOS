@@ -49,6 +49,7 @@ internal enum Asset {
     internal static let emojiDaughter = ImageAsset(name: "emoji_daughter")
     internal static let emojiDefault = ImageAsset(name: "emoji_default")
     internal static let emojiDefaultDis = ImageAsset(name: "emoji_default_dis")
+    internal static let emojiEmpty = ImageAsset(name: "emoji_empty")
     internal static let emojiEtc = ImageAsset(name: "emoji_etc")
     internal static let emojiHappy = ImageAsset(name: "emoji_happy")
     internal static let emojiHappyDis = ImageAsset(name: "emoji_happy_dis")
