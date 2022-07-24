@@ -607,7 +607,8 @@ class DetailHabitView: BaseViewController, Navigatable {
                 let cell = self.cycleCollectionView.cellForItem(at: [0, indexRow]) as? CycleCell
                 cell?.isSelected = true
             }
-            if data.alarmTime != nil {
+            
+            if data.alarmTime != "" {
                 self.switchPush.isOn = true
                 self.viewAddPushTime.fadeIn()
                 let dateFormatter = DateFormatter()
@@ -619,7 +620,7 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.switchPush.isOn = false
                 self.viewAddPushTime.fadeOut()
             }
-            let height = data.alarmTime != nil ? self.viewAddPushTimeHeight : 0
+            let height = data.alarmTime != "" ? self.viewAddPushTimeHeight : 0
             self.viewAddPushTime.snp.updateConstraints({
                 $0.height.equalTo(height)
             })

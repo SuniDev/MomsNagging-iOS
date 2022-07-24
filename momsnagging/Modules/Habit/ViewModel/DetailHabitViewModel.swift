@@ -386,6 +386,7 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         
         input.valueChangedPush
             .drive(onNext: { isOn in
+                Log.debug("isOnTest", "\(isOn)")
                 isNaggingPush.accept(isOn)
             }).disposed(by: disposeBag)
         
