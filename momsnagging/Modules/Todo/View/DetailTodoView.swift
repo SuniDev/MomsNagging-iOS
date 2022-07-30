@@ -356,14 +356,14 @@ class DetailTodoView: BaseViewController, Navigatable {
                 }
                 
             }).disposed(by: disposeBag)
-        self.viewModel?.alarmOb.subscribe(onNext: {
-            self.switchPush.isOn = $0
-            if $0 {
-                self.viewAddPushTime.fadeIn()
-            } else {
-                self.viewAddPushTime.fadeOut()
-            }
-        }).disposed(by: disposeBag)
+//        self.viewModel?.alarmOb.subscribe(onNext: {
+//            self.switchPush.isOn = $0
+//            if $0 {
+//                self.viewAddPushTime.fadeIn()
+//            } else {
+//                self.viewAddPushTime.fadeOut()
+//            }
+//        }).disposed(by: disposeBag)
         
         output.goToPerformTimeSetting
             .drive(onNext: {
@@ -412,7 +412,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         viewModel.todoInfoOb.subscribe(onNext: { data in
             self.tfName.text = data.scheduleName
             self.tfPerformTime.text = data.scheduleTime
-            if data.alarmTime != nil {
+            if data.alarmTime != "" {
                 self.switchPush.isOn = true
                 self.viewAddPushTime.fadeIn()
                 let dateFormatter = DateFormatter()
@@ -425,7 +425,7 @@ class DetailTodoView: BaseViewController, Navigatable {
                 self.viewAddPushTime.fadeOut()
             }
             
-            let height = data.alarmTime != nil ? self.viewAddPushTimeHeight : 0
+            let height = data.alarmTime != "" ? self.viewAddPushTimeHeight : 0
             self.viewAddPushTime.snp.updateConstraints({
                 $0.height.equalTo(height)
             })
