@@ -14,8 +14,8 @@ import SwiftyJSON
 class DetailHabitViewModel: BaseViewModel, ViewModelType {
     
     enum CycleType: String {
-        case week = "요일"
-        case number = "N회"
+        case week = "어떤 요일?"
+        case number = "일주일에 몇 번 이상?"
     }
     
     enum TextHintType: String {

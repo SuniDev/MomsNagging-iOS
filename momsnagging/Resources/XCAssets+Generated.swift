@@ -155,6 +155,7 @@ internal enum Asset {
   }
   internal enum Icon {
     internal static let book = ImageAsset(name: "book")
+    internal static let cancel = ImageAsset(name: "cancel")
     internal static let chevronDown = ImageAsset(name: "chevron_down")
     internal static let chevronLeft = ImageAsset(name: "chevron_left")
     internal static let chevronRight = ImageAsset(name: "chevron_right")
@@ -180,6 +181,7 @@ internal enum Asset {
     internal static let my = ImageAsset(name: "my")
     internal static let plus = ImageAsset(name: "plus")
     internal static let plusFill = ImageAsset(name: "plus_fill")
+    internal static let postpone = ImageAsset(name: "postpone")
     internal static let radioDefault = ImageAsset(name: "radio_default")
     internal static let radioSelected = ImageAsset(name: "radio_selected")
     internal static let reportCard = ImageAsset(name: "reportCard")

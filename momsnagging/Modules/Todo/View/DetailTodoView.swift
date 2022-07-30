@@ -63,7 +63,7 @@ class DetailTodoView: BaseViewController, Navigatable {
         $0.isEnabled = false
         $0.normalBorderColor = .clear
         $0.textColor = Asset.Color.monoDark010.color
-        $0.placeholder = "아직 정해지지 않았단다"
+        $0.placeholder = "어떤 시간 혹은 상황에서 할래?"
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.addLeftPadding(width: 2)
     })
@@ -75,7 +75,7 @@ class DetailTodoView: BaseViewController, Navigatable {
     lazy var lblTime = UILabel()
     
     lazy var lblPushTitle = UILabel().then({
-        $0.text = "잔소리 알림"
+        $0.text = "잔소리 PUSH 알림"
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
         $0.textColor = Asset.Color.monoDark010.color
     })

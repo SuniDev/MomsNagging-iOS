@@ -129,7 +129,7 @@ extension HomeView {
         case countRoutine
         case routine
     }
-    func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController, senderBtn: UIButton) {
+    func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController, senderBtn: UIButton, postpone: Bool?=nil) {
         let emptyBtn = UIButton()
         let backgroundView = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
@@ -236,8 +236,9 @@ extension HomeView {
             $0.font = FontFamily.Pretendard.regular.font(size: 16)
         })
         let delayImg = UIImageView().then({
-            $0.image = UIImage(asset: Asset.Icon.curveRight)
+            $0.image = UIImage(asset: Asset.Icon.postpone)
         })
+        
         let delayBtn = UIButton()
         delayView.addSubview(delayLbl)
         delayView.addSubview(delayImg)
@@ -259,15 +260,21 @@ extension HomeView {
 //            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
 //            }, doneHandler: {
 //            })
-            let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?", preferredStyle: .alert)
-            let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
-                self.viewModel.requestDeleay(scheduleId: itemId)
-            })
-            let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
-            alert.addAction(cancelAction)
-            alert.addAction(doneAction)
-            self.present(alert, animated: true, completion: nil)
-            backgroundView.removeFromSuperview()
+            if postpone ?? false {
+                Log.debug("미룸취소", "미룸취소 클릭!")
+                self.viewModel.requestDeleayCancel(scheduleId: itemId)
+                backgroundView.removeFromSuperview()
+            } else {
+                let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?", preferredStyle: .alert)
+                let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
+                    self.viewModel.requestDeleay(scheduleId: itemId)
+                })
+                let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+                alert.addAction(cancelAction)
+                alert.addAction(doneAction)
+                self.present(alert, animated: true, completion: nil)
+                backgroundView.removeFromSuperview()
+            }
         }).disposed(by: disposedBag)
         
         let skipView = UIView()
@@ -297,19 +304,29 @@ extension HomeView {
         })
         skipBtn.rx.tap.subscribe(onNext: {
             //건너뜀 API 호출
-            let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?", preferredStyle: .alert)
-            let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
-                self.viewModel.requestDeleay(scheduleId: itemId)
-            })
-            let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
-            alert.addAction(cancelAction)
-            alert.addAction(doneAction)
-            self.present(alert, animated: true, completion: nil)
-            backgroundView.removeFromSuperview()
+            if postpone ?? false {
+                Log.debug("건너뜀 취소", "건너뜀취소 클릭!")
+                self.viewModel.requestDeleayCancel(scheduleId: itemId)
+                backgroundView.removeFromSuperview()
+            } else {
+                let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?", preferredStyle: .alert)
+                let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
+                    self.viewModel.requestDeleay(scheduleId: itemId)
+                })
+                let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+                alert.addAction(cancelAction)
+                alert.addAction(doneAction)
+                self.present(alert, animated: true, completion: nil)
+                backgroundView.removeFromSuperview()
+            }
         }).disposed(by: disposedBag)
         
         switch type {
         case .todo:
+            if postpone ?? false {
+                delayLbl.text = "취소"
+                delayImg.image = UIImage(asset: Asset.Icon.cancel)
+            }
             if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
                 vc.view.addSubview(backgroundView)
                 backgroundView.addSubview(emptyBtn)
@@ -334,6 +351,10 @@ extension HomeView {
                 })
             }
         case .countRoutine:
+            if postpone ?? false {
+                delayLbl.text = "취소"
+                delayImg.image = UIImage(asset: Asset.Icon.cancel)
+            }
             if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
                 vc.view.addSubview(backgroundView)
                 backgroundView.addSubview(emptyBtn)
