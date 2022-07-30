@@ -21,6 +21,7 @@ class CommonPopup: BaseViewController {
     enum PopupType {
         case forceUpdate
         case selectUpdate
+        case sortList
         case etc
     }
     
@@ -233,6 +234,16 @@ class CommonPopup: BaseViewController {
                 self.lblMessage.text = STR_UPDATE_MESSAGE
                 self.lblLeft.text = STR_UPDATE_CANCEL
                 self.lblRight.text = STR_UPDATE_DONE
+                
+                self.viewBtnCenter.isHidden = true
+                self.viewBtnTwo.isHidden = false
+                
+            case .sortList:
+                self.lblTitle.text = ""
+                self.lblMessage.text = "습관/할일 목록의 오른쪽에 있는 버튼을\n꾹 누른 상태로 위, 아래로 움직이면\n순서를 바꿀 수 있단다."
+                self.lblLeft.text = "다시 보지 않기"
+                self.lblRight.text = "닫기"
+                self.lblRight.textColor = Asset.Color.monoDark010.color
                 
                 self.viewBtnCenter.isHidden = true
                 self.viewBtnTwo.isHidden = false
