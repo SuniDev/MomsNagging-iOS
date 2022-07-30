@@ -340,7 +340,7 @@ extension DiaryView {
             $0.image = UIImage(asset: Asset.Assets.emojiDefaultDis)
         })
         let lbl = UILabel().then({
-            $0.text = "해당 날짜에 일기가 없단다"
+            $0.text = "해당 날짜에 일기가 없단다."
             $0.font = FontFamily.Pretendard.regular.font(size: 16)
             $0.textColor = Asset.Color.monoDark030.color
         })
