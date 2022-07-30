@@ -71,36 +71,6 @@ extension StatisticsPerformRateCell {
             $0.width.equalTo(16)
             $0.centerY.equalTo(titleLbl)
             $0.trailing.equalToSuperview()
-        })
-        
-        self.bind()
-    }
-    
-    private func bind() {
-        
-//        self.btnTip.rx.tap
-//            .asObservable()
-//            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-//            .bind(onNext : { _, _ in
-//                Log.debug("throttlethrottlethrottle")
-////                if self.imgvTip.isHidden {
-////                    self.imgvTip.fadeIn()
-////                } else {
-////                    self.imgvTip.fadeOut()
-////                }
-//            }).disposed(by: disposedBag)
-//
-//        if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
-//            vc.view.rx.tapGesture()
-//                .mapToVoid()
-//                .subscribe(onNext: { [weak self] in
-//                    guard let self = self else { return }
-//
-//                    if !self.imgvTip.isHidden {
-//                        self.imgvTip.fadeOut()
-//                    }
-//                }).disposed(by: self.disposedBag)
-//        }
-        
+        })        
     }
 }

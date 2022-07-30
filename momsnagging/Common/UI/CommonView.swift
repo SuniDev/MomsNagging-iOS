@@ -423,9 +423,9 @@ class CommonView {
      - Returns: UIView
      - Note: 공통 divider 뷰 함수
      */
-    static func divider() -> UIView {
+    static func divider(color: UIColor = Asset.Color.monoLight010.color) -> UIView {
         lazy var divider = UIView().then({
-            $0.backgroundColor = Asset.Color.monoLight010.color
+            $0.backgroundColor = color
         })
         
         divider.snp.makeConstraints({
