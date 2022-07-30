@@ -58,7 +58,7 @@ class AddHabitView: BaseViewController, Navigatable {
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
     })
     lazy var imgvTipIcon = UIImageView().then({
-        $0.image = Asset.Icon.tip.image
+        $0.image = Asset.Icon.tipGray.image
     })
     lazy var btnTip = UIButton().then({
         $0.backgroundColor = .clear
@@ -182,7 +182,7 @@ class AddHabitView: BaseViewController, Navigatable {
         })
         
         imgvTipIcon.snp.makeConstraints({
-            $0.width.height.equalTo(18)
+            $0.width.height.equalTo(20)
             $0.centerY.equalTo(lblTitleRecommend)
             $0.leading.equalTo(lblTitleRecommend.snp.trailing).offset(4)
         })

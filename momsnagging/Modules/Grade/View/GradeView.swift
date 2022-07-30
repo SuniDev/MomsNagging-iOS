@@ -24,7 +24,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     let calendarLineSpacing: CGFloat = 10
     let todolistRowHeight: CGFloat = 60
     let statisticsMonthlyRowHeight: CGFloat = 48
-    let statisticsRowHeight: CGFloat = 50
+    let statisticsRowHeight: CGFloat = 48
      
     // MARK: - UI Properties
     // 헤더
@@ -422,7 +422,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         
         statisticsViewContents.addSubview(statisticsPerformTableView)
         statisticsPerformTableView.snp.makeConstraints({
-            $0.height.equalTo(self.statisticsRowHeight * 6)
+            $0.height.equalTo((self.statisticsRowHeight * 6) + 64)
             $0.top.equalTo(statisticsCalendarFrame.snp.bottom).offset(28)
             $0.leading.equalTo(statisticsScrollView.snp.leading).offset(48)
             $0.trailing.equalTo(statisticsScrollView.snp.trailing).offset(-48)
@@ -432,7 +432,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         // 달력 Tip
         calendarHeadFrame.addSubview(btnTip)
         btnTip.snp.makeConstraints({
-            $0.height.width.equalTo(24)
+            $0.height.width.equalTo(20)
             $0.centerY.equalTo(calendarDateLbl.snp.centerY)
             $0.leading.equalToSuperview().offset(20)
         })
@@ -713,12 +713,29 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                        
         output.sttItems
             .bind(to: self.statisticsPerformTableView.rx.items(cellIdentifier: "StatisticsPerformRateCell", cellType: StatisticsPerformRateCell.self)) { _, item, cell in
-                
                 cell.titleLbl.text = item.title
-                cell.descriptionLbl.text = item.description
                 cell.dataLbl.text = item.data
                 cell.suffixLbl.text = item.suffix
+                cell.imgvTip.image = item.tip
                 
+                cell.btnTip.rx.tap
+                    .asObservable()
+                    .throttle(.microseconds(500), scheduler: MainScheduler.instance)
+                    .bind(onNext: {
+                        if cell.imgvTip.isHidden {
+                            cell.imgvTip.fadeIn()
+                        } else {
+                            cell.imgvTip.fadeOut()
+                        }
+                    }).disposed(by: cell.disposedBag)
+                
+                self.view.rx.tapGesture()
+                    .subscribe(onNext: { _ in
+                        if !cell.imgvTip.isHidden {
+                            cell.imgvTip.fadeOut()
+                        }
+                    }).disposed(by: cell.disposedBag)
+
             }.disposed(by: disposedBag)
                 
         statisticsPerformTableView.rx.setDelegate(self).disposed(by: disposedBag)
@@ -771,5 +788,9 @@ extension GradeView: UITableViewDelegate {
         } else {
             return self.todolistRowHeight
         }
+    }
+    func tableView(_: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt _: IndexPath) {
+        guard let cell = cell as? StatisticsPerformRateCell else { return }
+        cell.disposedBag = DisposeBag()
     }
 }
