@@ -27,6 +27,11 @@ class HomeView: BaseViewController, Navigatable {
                 $0.edges.equalTo(vc.view.snp.edges)
                 $0.top.equalTo(vc.view.safeAreaLayoutGuide.snp.top)
             })
+            vc.view.addSubview(self.sortDimView)
+            self.sortDimView.snp.makeConstraints({
+                $0.edges.equalTo(vc.view.snp.edges)
+                $0.top.equalTo(vc.view.safeAreaLayoutGuide.snp.top)
+            })
         }
         self.todoListType.removeAll()
         viewModel.requestTodoListLookUp(date: todoListParam())
@@ -127,6 +132,9 @@ class HomeView: BaseViewController, Navigatable {
         $0.isHidden = true
     })
     
+    // popUp
+    var sortPopUp = CommonPopup()
+    
     // 캘린더 UI Properties
     var calendarFrame = UIView()
     var calendarView = UIView().then({
@@ -226,6 +234,10 @@ class HomeView: BaseViewController, Navigatable {
     
     let dimView = UIView().then({
         $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
+        $0.isHidden = true
+    })
+    let sortDimView = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.30)
         $0.isHidden = true
     })
     
@@ -531,6 +543,7 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListTableView.dragInteractionEnabled = false
 //            self.todoList.removeAll()
             self.todoListTableView.reloadData()
+            self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
         }).disposed(by: disposedBag)
     }
     
@@ -590,12 +603,17 @@ class HomeView: BaseViewController, Navigatable {
             self.calendarFrame.isHidden = true
             self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
             self.headDropDownBtn.isSelected = false
-            
+
             lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: true)
             self.headBtnBind(input: input)
             self.collectionViewOutput = viewModel.transform(input: input)
             self.todoListTableView.dragInteractionEnabled = true
             self.todoListTableView.reloadData()
+            Log.debug("클릭", "정렬버튼")
+            if UserDefaults.standard.string(forKey: "sortListPopUp") == nil {
+                self.sortListPopUp()
+                self.sortDimView.isHidden = false
+            }
         }.disposed(by: disposedBag)
         self.headCancel.rx.tap.bind {
             self.checkBtnInteractionEnable = true
@@ -694,6 +712,23 @@ class HomeView: BaseViewController, Navigatable {
         self.todoListTableView.dragInteractionEnabled = false
         self.todoListTableView.reloadData()
     }
+    
+    func sortListPopUp() {
+        self.sortPopUp.setUI(popupType: .sortList)
+        self.sortPopUp.showAnim(vc: self, parentAddView: self.view)
+        self.sortPopUp.btnLeft.rx.tap.bind {
+            print("왼쪽버튼")
+            UserDefaults.standard.set("", forKey: "sortListPopUp")
+            self.sortPopUp.hideAnim()
+            self.sortDimView.isHidden = true
+        }.disposed(by: disposedBag)
+        self.sortPopUp.btnRight.rx.tap.bind {
+            print("오른쪽버튼")
+            self.sortPopUp.hideAnim()
+            self.sortDimView.isHidden = true
+        }
+    }
+    
 }
 
 extension HomeView {
