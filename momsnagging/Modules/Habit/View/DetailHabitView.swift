@@ -70,7 +70,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.isEnabled = false
         $0.normalBorderColor = .clear
         $0.textColor = Asset.Color.monoDark010.color
-        $0.placeholder = "아직 정해지지 않았단다"
+        $0.placeholder = "어떤 시간 혹은 상황에서 할래?"
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.addLeftPadding(width: 2)
     })
@@ -87,7 +87,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.layer.cornerRadius = 5
         $0.normalBackgroundColor = Asset.Color.monoWhite.color
         $0.selectedBackgroundColor = Asset.Color.priLight010.color
-        $0.setTitle("요일", for: .normal)
+        $0.setTitle("어떤 요일?", for: .normal)
         $0.setTitleColor(Asset.Color.monoDark030.color, for: .normal)
         $0.setTitleColor(Asset.Color.monoDark010.color, for: .selected)
         $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
@@ -99,7 +99,7 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.layer.cornerRadius = 5
         $0.normalBackgroundColor = Asset.Color.monoWhite.color
         $0.selectedBackgroundColor = Asset.Color.priLight010.color
-        $0.setTitle("N회", for: .normal)
+        $0.setTitle("일주일에 몇 번 이상?", for: .normal)
         $0.setTitleColor(Asset.Color.monoDark030.color, for: .normal)
         $0.setTitleColor(Asset.Color.monoDark010.color, for: .selected)
         $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
@@ -134,7 +134,7 @@ class DetailHabitView: BaseViewController, Navigatable {
     lazy var lblTime = UILabel()
     
     lazy var lblPushTitle = UILabel().then({
-        $0.text = "잔소리 알림"
+        $0.text = "잔소리 PUSH 알림"
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
         $0.textColor = Asset.Color.monoDark010.color
     })

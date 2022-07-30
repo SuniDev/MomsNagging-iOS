@@ -323,6 +323,35 @@ extension HomeViewModel {
         })
     }
     
+    func requestDeleayCancel(scheduleId: Int) {
+        if coachMarkStatusCheck != true {
+            LoadingHUD.show()
+        }
+        var param: [ModifyTodoRequestModel] = []
+        var model = ModifyTodoRequestModel()
+        model.op = "replace"
+        model.path = "/status"
+        model.value = "0"
+        param.append(model)
+        provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("requestDeleay : \(json)")
+                    self.delaySuccessOb.onNext(())
+                    LoadingHUD.hide()
+                } catch let error {
+                    Log.error("requestDeleay error", "\(error)")
+                    LoadingHUD.hide()
+                }
+            case .failure(let error):
+                Log.error("requestDeleay failure error", "\(error)")
+                LoadingHUD.hide()
+            }
+        })
+    }
+    
     func requestArray(param: [ScheduleArrayModel]) {
         if coachMarkStatusCheck != true {
             LoadingHUD.show()

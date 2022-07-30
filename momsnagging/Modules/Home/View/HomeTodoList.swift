@@ -112,19 +112,31 @@ extension HomeView {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 투두", "\(sender.tag)")
         let itemId = todoList[sender.tag]
-        showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender)
+        if sender.accessibilityLabel == "2" {
+            showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
+        } else {
+            showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
+        }
     }
     @objc func selectRoutineMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관요일", "\(sender.tag)")
         let itemId = todoList[sender.tag]
-        showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender)
+        if sender.accessibilityLabel == "2" {
+            showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
+        } else {
+            showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
+        }
     }
     @objc func selectCountRoutineMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관횟수", "\(sender.tag)")
         let itemId = todoList[sender.tag]
-        showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender)
+        if sender.accessibilityLabel == "2" {
+            showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
+        } else {
+            showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
+        }
     }
     
     func todoBind() {
@@ -181,6 +193,7 @@ extension HomeView {
                         cell?.toggleIc.accessibilityLabel = "\(item.status ?? 0)"
                         cell?.toggleIc.tag = item.id ?? 0
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectTodoCheck), for: .touchUpInside)
+                        cell?.moreIc.accessibilityLabel = "\(item.status ?? 0)"
                         cell?.moreIc.tag = row
                         cell?.moreIc.addTarget(self, action: #selector(self.selectTodoMoreAction), for: .touchUpInside)
                         if self.checkBtnInteractionEnable {
@@ -228,6 +241,7 @@ extension HomeView {
                         cell?.toggleIc.accessibilityLabel = "\(item.status ?? 0)"
                         cell?.toggleIc.tag = item.id ?? 0
                         cell?.toggleIc.addTarget(self, action: #selector(self.selectRoutineCheck), for: .touchUpInside)
+                        cell?.moreIc.accessibilityLabel = "\(item.status ?? 0)"
                         cell?.moreIc.tag = row
                         cell?.moreIc.addTarget(self, action: #selector(self.selectRoutineMoreAction), for: .touchUpInside)
                         if self.checkBtnInteractionEnable {
@@ -276,6 +290,7 @@ extension HomeView {
                     cell?.toggleIc.accessibilityLabel = "\(item.status ?? 0)"
                     cell?.toggleIc.tag = item.id ?? 0
                     cell?.toggleIc.addTarget(self, action: #selector(self.selectCountRoutineCheck), for: .touchUpInside)
+                    cell?.moreIc.accessibilityLabel = "\(item.status ?? 0)"
                     cell?.moreIc.tag = row
                     cell?.moreIc.addTarget(self, action: #selector(self.selectCountRoutineMoreAction), for: .touchUpInside)
                     if self.checkBtnInteractionEnable {
