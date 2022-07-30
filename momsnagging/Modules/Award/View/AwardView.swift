@@ -82,7 +82,7 @@ class AwardView: BaseViewController, Navigatable {
     })
     
     lazy var awardDiscriptionLbl = UILabel().then({
-        $0.text = "“매주 월요일마다 제공되는 주간평가 성적인 ‘수, 우, 미, 양, 가’ 중 ‘수’ 달성 횟수에 따라 상장 획득이 가능하단다. “"
+        $0.text = "“매주 월요일마다 받는 주간 평가 성적 ‘수, 우, 미, 양, 가' 중 ‘수' 횟수에 따라 상장 획득이 가능하단다.“"
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = FontFamily.Pretendard.regular.font(size: 12)

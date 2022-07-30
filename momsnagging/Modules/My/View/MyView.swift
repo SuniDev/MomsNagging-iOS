@@ -63,10 +63,10 @@ class MyView: BaseViewController, Navigatable {
     lazy var viewNickname = UIView()
     lazy var btnNicknameSetting = UIButton()
     
-    /// 잔소리 강도 설정
+    /// 잔소리 성격 설정
     lazy var viewNaggingLevel = UIView()
     lazy var lblNaggingLevel = UILabel().then({
-        $0.text = "잔소리 강도 설정"
+        $0.text = "잔소리 성격 설정"
         $0.textColor = Asset.Color.monoDark010.color
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
     })
@@ -284,7 +284,7 @@ class MyView: BaseViewController, Navigatable {
             $0.bottom.equalToSuperview().offset(-1)
         })
         
-        /// 잔소리 강도 설정
+        /// 잔소리 성격 설정
         viewNaggingLevel.addSubview(lblNaggingLevel)
         viewNaggingLevel.addSubview(viewRadioGroupNagging)
         
@@ -476,7 +476,7 @@ class MyView: BaseViewController, Navigatable {
                 self.present(alert, animated: true)
             }).disposed(by: disposeBag)
         
-        // 잔소리 강도 설정
+        // 잔소리 성격 설정
         output.setNaggingLevel
             .drive(onNext: { naggingLevel in
                 self.rbFondMom.isSelected = naggingLevel == .fondMom
