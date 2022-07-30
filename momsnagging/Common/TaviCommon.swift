@@ -236,7 +236,7 @@ extension HomeView {
             $0.font = FontFamily.Pretendard.regular.font(size: 16)
         })
         let delayImg = UIImageView().then({
-            $0.image = UIImage(asset: Asset.Icon.curveRight)
+            $0.image = UIImage(asset: Asset.Icon.postpone)
         })
         let delayBtn = UIButton()
         delayView.addSubview(delayLbl)
