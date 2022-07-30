@@ -795,11 +795,11 @@ class CommonView {
     /**
      # naggingRadioButtonFrame
      - parameters:
-        - naggingLevel : 잔소리 강도
-        - btnNaggingRadio : 잔소리 강도 버튼
+        - naggingLevel : 잔소리 성격
+        - btnNaggingRadio : 잔소리 성격 버튼
      - Authors: suni
      - Returns: UIView
-     - Note: 잔소리 강도 라디오 버튼 프레임
+     - Note: 잔소리 성격 라디오 버튼 프레임
      */
     static func naggingRadioButtonFrame(naggingLevel: NaggingLevel, rbNagging: CommonTextRadioButton) -> UIView {
         

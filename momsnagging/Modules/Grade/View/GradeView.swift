@@ -54,7 +54,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         $0.addShadow(color: Asset.Color.monoDark030.color, alpha: 30, x: 0, y: 4, blur: 24, spread: 0)
     })
     lazy var lblTipTitle = UILabel().then({
-        $0.text = "달성률에 따라 엄마 기분이 달라진단다."
+        $0.text = "수행률에 따라 엄마의 표정이 달라진단다."
         $0.font = FontFamily.Pretendard.bold.font(size: 16)
         $0.textColor = Asset.Color.monoDark010.color
         $0.textAlignment = .center
@@ -183,7 +183,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     lazy var statisticsHeadFrame = UIView()
     
     lazy var dayCountLblPre = UILabel().then({
-        $0.text = "엄마와 함께한지"
+        $0.text = "엄마와 함께한 지"
         $0.textColor = UIColor(asset: Asset.Color.monoDark010)
         $0.font = FontFamily.Pretendard.bold.font(size: 20)
     })

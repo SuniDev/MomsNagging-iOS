@@ -28,7 +28,7 @@ class MyViewModel: ViewModel, ViewModelType {
         /// 호칭 설정
         let btnNicknameSetting: Driver<Void>
         let nicknameSettingAlertDoneHandler: Driver<String?>
-        /// 잔소리 강도 설정
+        /// 잔소리 성격 설정
         let rbFondMomTapped: Driver<Void>
         let rbCoolMomTapped: Driver<Void>
         let rbAngryMomTapped: Driver<Void>
@@ -50,7 +50,7 @@ class MyViewModel: ViewModel, ViewModelType {
         /// 호칭 설정
         let nickName: Driver<String>
         let showNicknameSettingAlert: Driver<Alert>
-        /// 잔소리 강도 설정
+        /// 잔소리 성격 설정
         let setNaggingLevel: Driver<NaggingLevel>
         /// PUSH 알림 설정
         let goToPushSetting: Driver<PushSettingViewModel>
@@ -72,7 +72,7 @@ class MyViewModel: ViewModel, ViewModelType {
         let nickName = BehaviorRelay<String>(value: CommonUser.nickName ?? "자식")
         let nicknameModifyText = BehaviorRelay<String>(value: "")
         
-        // 잔소리 강도
+        // 잔소리 성격
         let setNaggingLevel = BehaviorRelay<NaggingLevel>(value: CommonUser.naggingLevel)
         
         // 수정 business logic
@@ -187,7 +187,7 @@ class MyViewModel: ViewModel, ViewModelType {
                 showNicknameSettingAlert.accept(alert)
             }).disposed(by: disposeBag)
         
-        // 잔소리 강도 business logic
+        // 잔소리 성격 business logic
         let requestNaggingLevel = PublishRelay<Int>()
         input.rbFondMomTapped
             .drive(onNext: {
