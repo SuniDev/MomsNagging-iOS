@@ -26,6 +26,9 @@ class DetailHabitView: BaseViewController, Navigatable {
     private let viewAddPushTimeHeight: CGFloat = 40.0
     
     private var weekData: [String] = []
+    private var cycleCollectionViewItem: [String] = []
+    
+    private var collectionViewOb = PublishSubject<Int>()
     
     // MARK: - UI Properties
     lazy var viewHeader = UIView()
@@ -74,6 +77,50 @@ class DetailHabitView: BaseViewController, Navigatable {
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.addLeftPadding(width: 2)
     })
+    
+    var startDateDivider = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+    })
+    
+    /// 시작 날짜
+    lazy var detailStartDateFrame = UIView()
+    lazy var btnStartDate = UIButton()
+    lazy var viewStartDateTitle = UIView()
+    lazy var tfStartDate = CommonTextField().then({
+        $0.isEnabled = false
+        $0.normalBorderColor = .clear
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.placeholder = "언제부터 시작할래?"
+        $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.addLeftPadding(width: 2)
+    })
+    lazy var tfStartDateParam = CommonTextField()
+    var startDateWeek = ""
+    
+    var datePickerView = UIDatePicker().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+        $0.layer.cornerRadius = 6
+        $0.isHidden = true
+        $0.datePickerMode = .date
+        $0.locale = Locale(identifier: "ko-KR")
+        $0.addTarget(self, action: #selector(selectDayAction), for: .valueChanged)
+        if #available(iOS 13.4, *) {
+            $0.preferredDatePickerStyle = .wheels
+        }
+    })
+    var datePickerControlBar = UIView().then({
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+        $0.isHidden = true
+    })
+    var datePickerSelectBtn = UIButton().then({
+        $0.setTitle("완료", for: .normal)
+        $0.setTitleColor(.blue, for: .normal)
+        $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.backgroundColor = UIColor(asset: Asset.Color.monoLight010)
+        $0.addTarget(self, action: #selector(selectDateAction), for: .touchUpInside)
+    })
+    
+    var week: Int = -1
     
     /// 이행 주기
     lazy var cycleFrame = UIView()
@@ -218,6 +265,10 @@ class DetailHabitView: BaseViewController, Navigatable {
         }
         detailPerformTimeFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewTimeTitle, tfTime: tfPerformTime)
         
+        /// 시작 날짜
+        viewStartDateTitle = CommonView.requiredTitleFrame("시작 날짜", false)
+        detailStartDateFrame = CommonView.detailPerformTimeFrame(viewTimeTitle: viewStartDateTitle, tfTime: tfStartDate)
+        
         /// 이행 주기
         if viewModel?.modifyPage ?? false {
             viewCycleTitle = CommonView.requiredTitleFrame("이행 주기", true)
@@ -244,7 +295,9 @@ class DetailHabitView: BaseViewController, Navigatable {
         viewContents.addSubview(detailNameFrame)
         viewContents.addSubview(textCountLbl)
         viewContents.addSubview(detailPerformTimeFrame)
+        viewContents.addSubview(detailStartDateFrame)
         viewContents.addSubview(btnPerformTime)
+        viewContents.addSubview(btnStartDate)
         viewContents.addSubview(cycleFrame)
         
         /// 이행 주기
@@ -256,6 +309,10 @@ class DetailHabitView: BaseViewController, Navigatable {
         cycleFrame.addSubview(divider)
         
         viewContents.addSubview(detailNaggingPushFrame)
+        view.addSubview(datePickerView)
+        view.addSubview(datePickerControlBar)
+        datePickerControlBar.addSubview(datePickerSelectBtn)
+        datePickerView.backgroundColor = .white
         
         viewHeader.snp.makeConstraints({
             $0.height.equalTo(60)
@@ -297,10 +354,21 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.top.leading.trailing.bottom.equalTo(detailPerformTimeFrame)
         })
         
+        /// 시작 날짜
+        detailStartDateFrame.snp.makeConstraints({
+            $0.height.equalTo(101)
+            $0.top.equalTo(detailPerformTimeFrame.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+        })
+        btnStartDate.snp.makeConstraints({
+            $0.edges.equalTo(detailStartDateFrame.snp.edges)
+        })
+        
         /// 이행 주기
         cycleFrame.snp.makeConstraints({
             $0.height.equalTo(143 + self.cycleCellHeight)
-            $0.top.equalTo(detailPerformTimeFrame.snp.bottom).offset(20)
+            $0.top.equalTo(detailStartDateFrame.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
         })
@@ -357,6 +425,23 @@ class DetailHabitView: BaseViewController, Navigatable {
             $0.width.equalTo(UIScreen.main.bounds.width / 3)
         })
         toolbarSet()
+        datePickerSelectBtn.snp.makeConstraints({
+            $0.centerY.equalTo(datePickerControlBar.snp.centerY)
+            $0.trailing.equalTo(datePickerControlBar.snp.trailing).offset(-20)
+            $0.height.equalTo(30)
+        })
+        datePickerControlBar.snp.makeConstraints({
+            $0.bottom.equalTo(datePickerView.snp.top)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.height.equalTo(36)
+        })
+        datePickerView.snp.makeConstraints({
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-180)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        })
         view.layoutIfNeeded()
     }
     
@@ -379,6 +464,9 @@ class DetailHabitView: BaseViewController, Navigatable {
             editingDidEndName: self.tfName.rx.controlEvent(.editingDidEnd).asDriverOnErrorJustComplete(),
             btnPerformTimeTapped: self.btnPerformTime.rx.tap.asDriverOnErrorJustComplete(),
             textPerformTime: self.tfPerformTime.rx.observe(String.self, "text").asDriver(onErrorJustReturn: ""),
+            btnStartDateTapped: self.btnStartDate.rx.tap.asDriverOnErrorJustComplete(),
+            textStartDate: self.tfStartDate.rx.observe(String.self, "text").asDriver(onErrorJustReturn: ""),
+            startDateParam: self.tfStartDateParam.rx.observe(String.self, "text").asDriver(onErrorJustReturn: ""),
             btnCycleWeekTapped: self.btnCycleWeek.rx.tap.asDriverOnErrorJustComplete(),
             btnCycleNumber: self.btnCycleNumber.rx.tap.asDriverOnErrorJustComplete(),
             cycleModelSelected: self.cycleCollectionView.rx.modelSelected(String.self).asDriverOnErrorJustComplete(),
@@ -484,11 +572,12 @@ class DetailHabitView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         output.cycleItems
-            .bind(to: cycleCollectionView.rx.items(cellIdentifier: cycleIdentifier, cellType: CycleCell.self)) { _, item, cell in
+            .bind(to: cycleCollectionView.rx.items(cellIdentifier: cycleIdentifier, cellType: CycleCell.self)) { index, item, cell in
                 if item == "일" {
                     cell.normalTitleColor = Asset.Color.error.color
                 }
                 cell.lblTitle.text = item
+                self.collectionViewOb.onNext(index)
             }.disposed(by: disposeBag)
         
         output.selectCycleType
@@ -500,11 +589,18 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.cycleCollectionView.snp.updateConstraints({
                     $0.leading.trailing.equalToSuperview().inset(inset)
                 })
+                
+                if type == .week {
+                    if self.week != -1 {
+                        self.disableCycleClick(index: self.week)
+                    }
+                } else {
+                    self.initCycle()
+                }
             }).disposed(by: disposeBag)
         
         output.isNaggingPush
             .drive(onNext: { isNaggingPush in
-                Log.debug("isNaggingPush::", "\(isNaggingPush)")
                 if isNaggingPush {
                     self.viewAddPushTime.fadeIn()
                 } else {
@@ -573,6 +669,37 @@ class DetailHabitView: BaseViewController, Navigatable {
             self.tfName.text = data.scheduleName
             self.tfPerformTime.text = data.scheduleTime
             
+            let date = data.scheduleDate?.toDate()
+            self.tfStartDate.text = date?.toString()
+//            let formatter = DateFormatter()
+            let dayOfWeek = date?.toStringE()
+            
+            if dayOfWeek != "" {
+                if dayOfWeek == "월" {
+                    self.disableCycleClick(index: 0)
+                    self.week = 0
+                } else if dayOfWeek == "화" {
+                    self.disableCycleClick(index: 1)
+                    self.week = 1
+                } else if dayOfWeek == "수" {
+                    self.disableCycleClick(index: 2)
+                    self.week = 2
+                } else if dayOfWeek == "목" {
+                    self.disableCycleClick(index: 3)
+                    self.week = 3
+                } else if dayOfWeek == "금" {
+                    self.disableCycleClick(index: 4)
+                    self.week = 4
+                } else if dayOfWeek == "토" {
+                    self.disableCycleClick(index: 5)
+                    self.week = 5
+                } else if dayOfWeek == "일" {
+                    self.disableCycleClick(index: 6)
+                    self.week = 6
+                }
+            }
+            
+            
             if data.mon ?? false {
                 let cell = self.cycleCollectionView.cellForItem(at: [0, 0]) as? CycleCell
                 cell?.select()
@@ -634,6 +761,14 @@ class DetailHabitView: BaseViewController, Navigatable {
             self.lblTime.text = TaviCommon.alarmTimeStringToDateToString(stringData: data.alarmTime ?? "")
         }).disposed(by: disposeBag)
         
+        collectionViewOb.subscribe(onNext: { i in
+            if i == 6 {
+                self.disableCycleClick(index: self.week)
+            } else {
+                self.initCycle()
+            }
+        }).disposed(by: disposeBag)
+        
         viewModel.modifySuccessOb.subscribe(onNext: { _ in
             self.navigator.pop(sender: self)
         }).disposed(by: disposeBag)
@@ -644,7 +779,6 @@ class DetailHabitView: BaseViewController, Navigatable {
         }).disposed(by: disposeBag)
         
         viewModel.recommendHabitNameOb.subscribe(onNext: { st in
-            Log.debug("recommendHabitNameObrecommendHabitNameOb", "\(st)")
             self.tfName.text = st
         }).disposed(by: disposeBag)
         
@@ -660,6 +794,11 @@ class DetailHabitView: BaseViewController, Navigatable {
                 self.textCountLbl.text = "\(text?.count ?? 0)/30"
             }
         }).disposed(by: disposeBag)
+        
+        btnStartDate.rx.tap.bind {
+            self.datePickerView.isHidden = false
+            self.datePickerControlBar.isHidden = false
+        }.disposed(by: disposeBag)
     }
     
     // MARK: - performTimeViewModel bind
@@ -700,8 +839,76 @@ class DetailHabitView: BaseViewController, Navigatable {
         tfPicker.inputAccessoryView = toolbar
     }
     
+    func disableCycleClick(index: Int) {
+        for i in 0...6 {
+            if i == index {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, index]) as? CycleCell
+                cell?.isUserInteractionEnabled = false
+                cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.priLight018Dis)
+                cell?.layoutIfNeeded()
+            } else {
+                let cell = self.cycleCollectionView.cellForItem(at: [0, i]) as? CycleCell
+                cell?.isUserInteractionEnabled = true
+                cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+                cell?.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func initCycle() {
+        for i in 0...5 {
+            let cell = self.cycleCollectionView.cellForItem(at: [0, i]) as? CycleCell
+            cell?.isUserInteractionEnabled = true
+            cell?.contentView.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
+            cell?.layoutIfNeeded()
+        }
+    }
+    
     @objc
     func toolBarDoneAction() {
         self.view.endEditing(true)
+    }
+    
+    @objc
+    func selectDayAction(_ sender: UIDatePicker) {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko")
+        formatter.dateFormat = "yyyy.MM.dd (E)"
+        tfStartDate.text = formatter.string(from: sender.date)
+        formatter.dateFormat = "yyyy-MM-dd"
+        tfStartDateParam.text = formatter.string(from: sender.date)
+        formatter.dateFormat = "E"
+        startDateWeek = formatter.string(from: sender.date)
+        
+        if self.startDateWeek != "" {
+            if self.startDateWeek == "월" {
+                self.disableCycleClick(index: 0)
+                self.week = 0
+            } else if self.startDateWeek == "화" {
+                self.disableCycleClick(index: 1)
+                self.week = 1
+            } else if self.startDateWeek == "수" {
+                self.disableCycleClick(index: 2)
+                self.week = 2
+            } else if self.startDateWeek == "목" {
+                self.disableCycleClick(index: 3)
+                self.week = 3
+            } else if self.startDateWeek == "금" {
+                self.disableCycleClick(index: 4)
+                self.week = 4
+            } else if self.startDateWeek == "토" {
+                self.disableCycleClick(index: 5)
+                self.week = 5
+            } else if self.startDateWeek == "일" {
+                self.disableCycleClick(index: 6)
+                self.week = 6
+            }
+        }
+    }
+    @objc
+    func selectDateAction() {
+        self.view.endEditing(true)
+        self.datePickerView.isHidden = true
+        self.datePickerControlBar.isHidden = true
     }
 }

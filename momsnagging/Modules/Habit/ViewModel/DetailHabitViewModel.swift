@@ -76,6 +76,8 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     private var modifyAlarm: String?
     private var isModify: Bool = true
     
+    private var selectDateWeek: [String] = []
+    
     private var weekAndNumberType = 0
 
     private func selectItemSet(items: [String]) {
@@ -145,6 +147,10 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         /// 수행 시간
         let btnPerformTimeTapped: Driver<Void>
         let textPerformTime: Driver<String?>
+        /// 시작 날짜
+        let btnStartDateTapped: Driver<Void>
+        let textStartDate: Driver<String?>
+        let startDateParam: Driver<String?>
         /// 이행 주기
         let btnCycleWeekTapped: Driver<Void>
         let btnCycleNumber: Driver<Void>
@@ -315,10 +321,30 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 Log.debug("modifyTime", "\(text ?? "")")
             }).disposed(by: disposeBag)
         
+        /// 시작 날짜
+        let textStartDate = BehaviorRelay<String>(value: "")
+        input.textStartDate
+            .drive(onNext: { text in
+                textStartDate.accept(text ?? "")
+            }).disposed(by: disposeBag)
+        
+        input.startDateParam
+            .drive(onNext: { text in
+                self.param.scheduleDate = text
+                self.selectDateWeek.removeAll()
+                let date = text?.toDate()
+                let st = date?.toStringE()
+                
+                if text != "" {
+                    self.selectDateWeek.append(st ?? "")
+                }
+            }).disposed(by: disposeBag)
+        
         /// 이행 주기
         let selectCycleType = BehaviorRelay<CycleType>(value: .week)
         let cycleItems = BehaviorRelay<[String]>(value: [])
         let selectedCycleItems = BehaviorRelay<[String]>(value: [])
+        
 
         /// 상세 페이지로 진입시 서버 데이터 세팅 ========================= START
         if todoModel?.goalCount == 0 || todoModel?.goalCount == nil {
@@ -366,8 +392,17 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 if !selectedItems.contains(obj: item) {
                     selectedItems.append(item)
                     let items: [String] = selectedItems
-                    Log.debug("selectedItems ", items)
-                    self.selectItemSet(items: items)
+//                    Log.debug("selectedItems ", items)
+                    let addItems: [String] = selectedItems + self.selectDateWeek
+                    print("selectDateWeek : \(self.selectDateWeek)")
+                    let removeDupleicateItems: [String] = TaviCommon.removeDuplicate(addItems)
+                    Log.debug("test!", self.selectDateWeek)
+                    Log.debug("selectedItems", removeDupleicateItems)
+                    if removeDupleicateItems.isEmpty {
+                        self.selectItemSet(items: self.selectDateWeek)
+                    } else {
+                        self.selectItemSet(items: items)
+                    }
                     selectedCycleItems.accept(items)
                 }
             }).disposed(by: disposeBag)
@@ -409,9 +444,9 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         var canBeDone: Observable<Bool>?
         
         if isRecommendHabitBool {
-            canBeDone = Observable.combineLatest(textPerformTime.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
-                .map({ textPerformTime, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
-                    if !textPerformTime.isEmpty && !selectedCycleItems.isEmpty {
+            canBeDone = Observable.combineLatest(textPerformTime.asObservable(), textStartDate.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
+                .map({ textPerformTime, textStartDate, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
+                    if !textPerformTime.isEmpty && !selectedCycleItems.isEmpty && !textStartDate.isEmpty {
                         if !isNaggingPush {
                             return true
                         } else {
@@ -423,9 +458,9 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                     return false
                 })
         } else {
-            canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
-                .map({ isValidName, textPerformTime, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
-                    if isValidName && !textPerformTime.isEmpty && !selectedCycleItems.isEmpty {
+            canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), textStartDate.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
+                .map({ isValidName, textPerformTime, textStartDate, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
+                    if isValidName && !textPerformTime.isEmpty && !selectedCycleItems.isEmpty && !textStartDate.isEmpty {
                         if !isNaggingPush {
                             return true
                         } else {
@@ -491,7 +526,7 @@ extension DetailHabitViewModel {
         if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
-        param.scheduleDate = self.dateParam ?? ""
+//        param.scheduleDate = self.dateParam ?? ""
         if self.recommendHabitName != nil {
             self.param.scheduleName = self.recommendHabitName
         }

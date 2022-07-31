@@ -75,6 +75,16 @@ class TaviCommon {
         }
     }
     
+    static func removeDuplicate (_ array: [String]) -> [String] {
+        var removedArray = [String]()
+        for i in array {
+            if removedArray.contains(i) == false {
+                removedArray.append(i)
+            }
+        }
+        return removedArray
+    }
+    
 }
 
 extension UIViewController {
@@ -483,5 +493,37 @@ class LoadingHUD {
         animationArray.append(UIImage(named: "loading2")!)
         animationArray.append(UIImage(named: "loading3")!)
         return animationArray
+    }
+}
+
+
+extension String {
+    func toDate() -> Date? { //"yyyy-MM-dd HH:mm:ss"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier: "ko")
+        if let date = dateFormatter.date(from: self) {
+            return date
+        } else {
+            return nil
+        }
+    }
+}
+
+extension Date {
+    func toString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "ko")
+        dateFormatter.locale = Locale(identifier: "ko")
+        dateFormatter.dateFormat = "yyyy.MM.dd (E)"
+        return dateFormatter.string(from: self)
+    }
+    
+    func toStringE() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "ko")
+        dateFormatter.locale = Locale(identifier: "ko")
+        dateFormatter.dateFormat = "E"
+        return dateFormatter.string(from: self)
     }
 }
