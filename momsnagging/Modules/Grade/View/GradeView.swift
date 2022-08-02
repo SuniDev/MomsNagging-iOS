@@ -98,6 +98,13 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
         $0.textAlignment = .center
     })
+    lazy var lblTipMore = UILabel().then({
+        $0.numberOfLines = 0
+        $0.text = "습관/할일을 입력하지 않은 날에는 물음표 상태로 처리 된단다"
+        $0.textColor = Asset.Color.monoDark010.color
+        $0.font = FontFamily.Pretendard.regular.font(size: 12)
+        $0.textAlignment = .center
+    })
     
     // 통게
     lazy var statisticsBtn = UIButton().then({
@@ -446,7 +453,6 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         })
         
         vTipBackground.snp.makeConstraints({
-            $0.height.equalTo(172)
             $0.top.equalTo(imgvTipArrow.snp.bottom)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
@@ -475,7 +481,6 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.height.equalTo(98)
             $0.leading.equalToSuperview().offset(12)
             $0.top.equalTo(lblTipTitle.snp.bottom).offset(16)
-            $0.bottom.equalToSuperview().offset(-12)
         })
         
         vTipBackground.addSubview(vTip2)
@@ -517,6 +522,15 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.top.bottom.equalTo(vTip2)
             $0.trailing.equalToSuperview().offset(-12)
         })
+        
+        vTipBackground.addSubview(lblTipMore)
+        lblTipMore.snp.makeConstraints({
+            $0.top.equalTo(vTip1.snp.bottom).offset(16)
+            $0.leading.equalTo(vTip1)
+            $0.trailing.equalTo(vTip3)
+            $0.bottom.equalToSuperview().offset(-18)
+        })
+        
         self.view.layoutIfNeeded()
     }
     
