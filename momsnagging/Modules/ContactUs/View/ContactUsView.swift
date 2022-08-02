@@ -205,7 +205,7 @@ class ContactUsView: BaseViewController, Navigatable {
         }.disposed(by: disposedBag)
         
         viewModel.requestQuestionSuccessOb.subscribe(onNext: { _ in
-            CommonView.showToast(vc: self, message: "문의하기가 완료 되었습니다", duration: 1.5)
+            CommonView.showToast(vc: self, message: "문의하기가 완료 되었습니다.", duration: 1.5)
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1510)) {
                 self.bottomBtn.isUserInteractionEnabled = true
                 self.navigator.pop(sender: self)

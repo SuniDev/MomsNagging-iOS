@@ -16,7 +16,7 @@ class PerformTimeSettingViewModel: BaseViewModel, ViewModelType {
     let timeGuideItems = BehaviorRelay<[String]>(value: [])
     
     enum TextHintType: String {
-        case invalid    = "수행 시간은 11글자를 넘길 수 없단다"
+        case invalid    = "수행 시간은 11글자를 넘길 수 없단다."
         case none       = ""
     }
     

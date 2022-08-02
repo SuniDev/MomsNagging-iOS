@@ -100,7 +100,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     })
     lazy var lblTipMore = UILabel().then({
         $0.numberOfLines = 0
-        $0.text = "습관/할일을 입력하지 않은 날에는 물음표 상태로 처리 된단다"
+        $0.text = "습관/할일을 입력하지 않은 날에는 물음표 상태로 처리 된단다."
         $0.textColor = Asset.Color.monoDark010.color
         $0.font = FontFamily.Pretendard.regular.font(size: 12)
         $0.textAlignment = .center
