@@ -332,7 +332,7 @@ class MyView: BaseViewController, Navigatable {
         })
         imgvTipFondMom.snp.makeConstraints({
             $0.height.equalTo(62)
-            $0.width.equalTo(276)
+            $0.width.equalTo(235)
             $0.top.equalTo(imgvTipArrowFondMom.snp.bottom)
             $0.leading.bottom.equalToSuperview()
         })
@@ -343,7 +343,7 @@ class MyView: BaseViewController, Navigatable {
         })
         imgvTipCoolMom.snp.makeConstraints({
             $0.height.equalTo(62)
-            $0.width.equalTo(237)
+            $0.width.equalTo(144)
             $0.top.equalTo(imgvTipArrowCoolMom.snp.bottom)
             $0.bottom.centerX.equalToSuperview()
         })
