@@ -40,7 +40,7 @@ internal enum Asset {
     internal static let coachmarkTip3A = ImageAsset(name: "coachmark_tip_3_a")
     internal static let coachmarkTip3B = ImageAsset(name: "coachmark_tip_3_b")
     internal static let coachmarkTip3C = ImageAsset(name: "coachmark_tip_3_c")
-    internal static let coachmarkTip3D = ImageAsset(name: "coachmark_tip_3_d")
+    internal static let coachmarkTipLast = ImageAsset(name: "coachmark_tip_last")
     internal static let contactUs = ImageAsset(name: "contactUs")
     internal static let defautImage = ImageAsset(name: "defautImage")
     internal static let emojiAngry = ImageAsset(name: "emoji_angry")
