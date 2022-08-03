@@ -14,8 +14,8 @@ import SwiftyJSON
 class DetailTodoViewModel: BaseViewModel {
     
     enum TextHintType: String {
-        case empty      = "할일 이름은 필수로 입력해야 한단다"
-        case invalid    = "할일 이름은 30글자를 넘길 수 없단다"
+        case empty      = "할일 이름은 필수로 입력해야 한단다."
+        case invalid    = "할일 이름은 30글자를 넘길 수 없단다."
         case none       = ""
     }
     

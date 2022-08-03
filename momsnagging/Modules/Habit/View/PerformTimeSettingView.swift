@@ -60,7 +60,7 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
     lazy var viewHintTextField = UIView()
     lazy var tfPerformTime = CommonTextField().then({
         $0.normalBorderColor = Asset.Color.monoLight030.color
-        $0.placeholder = "밥 먹고 난 후, 씻고 나서, 아침 7:00"
+        $0.placeholder = "어떤 시간 혹은 상황에서 할래?"
         $0.returnKeyType = .done
         $0.clearButtonMode = .whileEditing
     })
@@ -69,6 +69,13 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.textColor = Asset.Color.monoDark020.color
         $0.text = "0/11"
+    })
+    
+    lazy var lblTip = UILabel().then({
+        $0.textColor = Asset.Color.monoDark030.color
+        $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.numberOfLines = 0
+        $0.text = "뭘 입력해야 할 지 모르겠다면 아래에서 골라보렴~"
     })
     
     lazy var timeGuideCollectionView: UICollectionView = {
@@ -124,6 +131,7 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
         viewBackground.addSubview(lblTitle)
         viewBackground.addSubview(viewHintTextField)
         viewHintTextField.addSubview(lblTextCount)
+        viewBackground.addSubview(lblTip)
         
         viewBackground.addSubview(timeGuideCollectionView)
         
@@ -162,9 +170,14 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
             $0.trailing.bottom.equalToSuperview()
         })
         
+        lblTip.snp.makeConstraints({
+            $0.trailing.leading.equalTo(viewHintTextField)
+            $0.top.equalTo(viewHintTextField.snp.bottom).offset(12)
+        })
+        
         timeGuideCollectionView.snp.makeConstraints({
             $0.width.equalTo(300)
-            $0.top.equalTo(viewHintTextField.snp.bottom).offset(32)
+            $0.top.equalTo(lblTip.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(16)
         })
     }
