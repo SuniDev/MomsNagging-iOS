@@ -361,9 +361,14 @@ extension HomeView {
                 })
             }
         case .countRoutine:
+            Log.debug("countRoutine", "\(postpone)")
             if postpone ?? false {
-                delayLbl.text = "취소"
-                delayImg.image = UIImage(asset: Asset.Icon.cancel)
+                skipLbl.text = "취소"
+                skipImg.image = UIImage(asset: Asset.Icon.cancel)
+                skipLbl.snp.remakeConstraints({
+                    $0.centerY.equalTo(skipView.snp.centerY)
+                    $0.leading.equalTo(skipView.snp.leading).offset(29)
+                })
             }
             if let vc = UIApplication.shared.keyWindow?.visibleViewController as? UIViewController {
                 vc.view.addSubview(backgroundView)
