@@ -43,6 +43,9 @@ class HomeView: BaseViewController, Navigatable {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // suni. GA 사용자 추적
+        CommonAnalytics.setUserId()
+        
         hiddenAlignment()
     }
     
