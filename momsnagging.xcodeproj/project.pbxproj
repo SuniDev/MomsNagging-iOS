@@ -166,7 +166,7 @@
 		A0AA717028426F11005ABAF6 /* Diary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AA716F28426F11005ABAF6 /* Diary.swift */; };
 		A0AA7173284273F0005ABAF6 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AA7172284273F0005ABAF6 /* Date+Extension.swift */; };
 		A0AA7175284274A2005ABAF6 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AA7174284274A2005ABAF6 /* String+Extension.swift */; };
-		A0B114D5289A97D1000BA7E4 /* CommonGoogleAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B114D4289A97D1000BA7E4 /* CommonGoogleAnalytics.swift */; };
+		A0B114D5289A97D1000BA7E4 /* CommonAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B114D4289A97D1000BA7E4 /* CommonAnalytics.swift */; };
 		A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */; };
 		A0B581B02827A0010099C9BA /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */; };
 		A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */; };
@@ -348,7 +348,7 @@
 		A0AA716F28426F11005ABAF6 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		A0AA7172284273F0005ABAF6 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		A0AA7174284274A2005ABAF6 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		A0B114D4289A97D1000BA7E4 /* CommonGoogleAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonGoogleAnalytics.swift; sourceTree = "<group>"; };
+		A0B114D4289A97D1000BA7E4 /* CommonAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonAnalytics.swift; sourceTree = "<group>"; };
 		A0B581AD282797810099C9BA /* RecommendHabitTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitleCell.swift; sourceTree = "<group>"; };
 		A0B581AF2827A0010099C9BA /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		A0B581B32827A4D60099C9BA /* RecommendHabitTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendHabitTitle.swift; sourceTree = "<group>"; };
@@ -800,7 +800,7 @@
 				8F1F93A827EF51B4000F08AF /* Common.swift */,
 				8FEEE5BB283A48D400764C43 /* TaviCommon.swift */,
 				86D4BE2D27F6BE2000E9EE8B /* CommonUser.swift */,
-				A0B114D4289A97D1000BA7E4 /* CommonGoogleAnalytics.swift */,
+				A0B114D4289A97D1000BA7E4 /* CommonAnalytics.swift */,
 				86BD71BE280EB0E50038200E /* UI */,
 				A06BB33727F0BA1F005727AD /* Base */,
 				A06BB35627F0E53B005727AD /* Extensions */,
@@ -1571,7 +1571,7 @@
 				A06E0576284885CF00183EF3 /* GradeCalendar.swift in Sources */,
 				86B36F722817756800655059 /* UIView+Extension.swift in Sources */,
 				863A556A28321C7400995BC9 /* DetailTodoViewModel.swift in Sources */,
-				A0B114D5289A97D1000BA7E4 /* CommonGoogleAnalytics.swift in Sources */,
+				A0B114D5289A97D1000BA7E4 /* CommonAnalytics.swift in Sources */,
 				8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
