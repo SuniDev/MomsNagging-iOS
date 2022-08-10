@@ -17,10 +17,6 @@ class HomeView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // GA - 홈 첫 화면
-        if CommonAnalytics.isFirst {
-            CommonAnalytics.logEvent(.first_home_view)
-        }
         
         actionBind()
         setTodoTableView()
@@ -49,8 +45,8 @@ class HomeView: BaseViewController, Navigatable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // GA - 사용자 추적
-        CommonAnalytics.setUserId()
+        
+        Log.debug("HomeView viewWillAppear")
         
         hiddenAlignment()
     }
@@ -79,7 +75,6 @@ class HomeView: BaseViewController, Navigatable {
     var moveList: [TodoListModel] = []
     var moveListModel: [ScheduleArrayModel] = []
     var checkBtnInteractionEnable = true
-    var coachMarkStatus: Bool = false
     var popOb = PublishSubject<Void>()
     /*
      prefix : head

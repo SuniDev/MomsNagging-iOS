@@ -9,7 +9,6 @@ import Foundation
 import FirebaseAnalytics
 
 struct CommonAnalyticsParam: Equatable {
-    var screen_name: String?
     var nick_name: String?
     var sns_type: String?
 }
@@ -21,15 +20,17 @@ class CommonAnalytics: NSObject {
     static var isFirst: Bool = false    // 신규
     
     static func setUserId() {
+        
         if let authorization = CommonUser.authorization {
+            Log.info("GA Log setUserId : \(authorization)")
             Analytics.setUserID(authorization)
         } else {
+            Log.info("GA Log setUserId : unknown")
             Analytics.setUserID("unknown")
         }
     }
     
     enum EventId: CustomStringConvertible {
-        case screen_view    // 화면
         case sign_up(CommonAnalyticsParam)  // 회원 가입
         // FIRST
         case first_app_entry
@@ -68,8 +69,6 @@ class CommonAnalytics: NSObject {
         
         var description: String {
                 switch self {
-                case .screen_view:
-                    return "screen_view"
                 case .sign_up:
                     return "sign_up"
                 case .first_app_entry:
@@ -109,53 +108,56 @@ class CommonAnalytics: NSObject {
     }
         
     enum ScreenName: CustomStringConvertible {
-        case ONBOARD
-        case LOGIN
-        case ID
-        case COACHMARK
-        case HOME
-        case HABIT_DETAIL
-        case HABIT_ADD
-        case HABIT_ADD_OWN
-        case HABIT_ADD_RECOMMEND
-        case TODO_DETAIL
-        case TODO_ADD
-        case DIARY_WRITE
-        case GRADECARD_STATISTICS
-        case GRADECARD_CALENDAR
-        case MY
+        case onboard
+        case login
+        case id
+        case coachmark
+        case home
+        case habit_add
+        case habit_add_own
+        case habit_add_recommend
+        case habit_modify
+        case todo_add
+        case todo_modify
+        case diary_detail
+        case diary_write
+        case gradecard_statistics
+        case gradecard_calendar
+        case my
                 
         var description: String {
             switch self {
-            case .ONBOARD:
+            case .onboard:
                 return "onboard"
-            case .LOGIN:
+            case .login:
                 return "login"
-            case .ID:
+            case .id:
                 return "id"
-            case .COACHMARK:
+            case .coachmark:
                 return "coachmark"
-            case .HOME:
+            case .home:
                 return "home"
-            case .HABIT_DETAIL:
-                return "habit_detail"
-            case .HABIT_ADD:
+            case .habit_add:
                 return "habit_add"
-            case .HABIT_ADD_OWN:
+            case .habit_add_own:
                 return "habit_add_own"
-            case .HABIT_ADD_RECOMMEND:
+            case .habit_add_recommend:
                 return "habit_add_recommend"
-            case .TODO_DETAIL:
-                return "todo_detail"
-            case .TODO_ADD:
+            case .habit_modify:
+                return "habit_modify"
+            case .todo_add:
                 return "todo_add"
-            case .DIARY_WRITE:
+            case .todo_modify:
+                return "todo_modify"
+            case .diary_detail:
+                return "diary_detail"
+            case .diary_write:
                 return "diary_write"
-            case .GRADECARD_STATISTICS:
+            case .gradecard_statistics:
                 return "gradecard_statistics"
-            case .GRADECARD_CALENDAR:
+            case .gradecard_calendar:
                 return "gradecard_calendar"
-            case .MY:
+            case .my:
                 return "my"
             }
         }
@@ -167,13 +169,10 @@ class CommonAnalytics: NSObject {
         var parameters: [String: Any] = [:]
         let param = eventId.param
         
-        Log.debug("GA Log Event : \(eventName)")
+        Log.info("GA Log Event : \(eventName)")
         
         DispatchQueue.main.async {
             switch eventId {
-            case .screen_view:
-                parameters[AnalyticsParameterScreenName] = param?.screen_name
-                Analytics.logEvent(eventName, parameters: parameters)
             case .sign_up:
                 parameters["nick_name"] = param?.nick_name
                 parameters["sns_type"] = param?.sns_type
@@ -193,6 +192,14 @@ class CommonAnalytics: NSObject {
             case .tap_coachmark_skip, .tap_home_plus_button, .tap_home_checkbox_habit, .tap_home_checkbox_todo, .tap_home_monthly_calendar, .tap_home_diary, .tap_tab_home, .tap_tab_gradecard, .tap_tab_my, .tap_diary_write:
                 Analytics.logEvent(eventName, parameters: parameters)
             }
+        }
+    }
+    
+    static func logScreenView(_ screenName: ScreenName) {
+        Log.info("GA Log ScreenView : \(screenName.description)")
+        
+        DispatchQueue.main.async {
+            Analytics.logEvent(AnalyticsEventScreenView, parameters: [AnalyticsParameterScreenName: screenName.description])
         }
     }
 }

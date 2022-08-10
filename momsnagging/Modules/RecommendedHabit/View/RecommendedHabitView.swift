@@ -15,6 +15,7 @@ class RecommendedHabitView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         action()
         viewModel.requestRecommendedHabitItemList()
     }

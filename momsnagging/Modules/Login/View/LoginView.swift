@@ -84,6 +84,10 @@ class LoginView: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // GA - 로그인 화면
+        CommonAnalytics.logScreenView(.login)
+        
         // GA - 로그인 첫 화면
         if CommonAnalytics.isFirstLogin {
             CommonAnalytics.logEvent(.first_login_view)

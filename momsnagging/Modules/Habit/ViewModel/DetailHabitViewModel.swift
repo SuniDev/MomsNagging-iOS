@@ -44,6 +44,19 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     var coachMarkStatusCheck: Bool?
     
     init(isNew: Bool, isRecommendHabit: Bool, dateParam: String, homeViewModel: HomeViewModel, todoModel: TodoListModel?=nil, recommendHabitName: String?=nil, coachMarkStatus: Bool? = false) {
+        // GA - 습관 추가/수정 화면
+        if coachMarkStatus == false {
+            if isNew {
+                if isRecommendHabit {
+                    CommonAnalytics.logScreenView(.habit_add_recommend)
+                } else {
+                    CommonAnalytics.logScreenView(.habit_add_own)
+                }
+            } else {
+                CommonAnalytics.logScreenView(.habit_modify)
+            }
+        }
+        
         self.isNew = BehaviorRelay<Bool>(value: isNew)
         self.modifyPage = !isNew
         self.isRecommendHabit = BehaviorRelay<Bool>(value: isRecommendHabit)
@@ -345,7 +358,6 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         let cycleItems = BehaviorRelay<[String]>(value: [])
         let selectedCycleItems = BehaviorRelay<[String]>(value: [])
         
-
         /// 상세 페이지로 진입시 서버 데이터 세팅 ========================= START
         if todoModel?.goalCount == 0 || todoModel?.goalCount == nil {
             selectCycleType.accept(.week)
