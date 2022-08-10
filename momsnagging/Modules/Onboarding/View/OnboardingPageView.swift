@@ -80,6 +80,9 @@ class OnboardingPageView: BasePageViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // GA - 온보딩 첫 화면
+        CommonAnalytics.logEvent(.first_onboard_view)
+        
         self.dataSource = self
         self.delegate = self
     }

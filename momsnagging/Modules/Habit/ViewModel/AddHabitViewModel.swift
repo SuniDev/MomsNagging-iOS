@@ -26,6 +26,11 @@ class AddHabitViewModel: BaseViewModel, ViewModelType {
     private var image: [UIImage] = [UIImage(asset: Asset.Assets.recommendHabit1)!, UIImage(asset: Asset.Assets.recommendHabit2)!, UIImage(asset: Asset.Assets.recommendHabit3)!, UIImage(asset: Asset.Assets.recommendHabit4)!, UIImage(asset: Asset.Assets.recommendHabit5)!, UIImage(asset: Asset.Assets.recommendHabit6)!]
     
     init(dateParam: String, homeViewModel: HomeViewModel, coachMarkStatus: Bool? = false) {
+        // GA - 습관 추가 화면
+        if coachMarkStatus == false {
+            CommonAnalytics.logScreenView(.habit_add)
+        }
+        
         self.dateParam = dateParam
         self.homeViewModel = homeViewModel
         self.coachMarkStatusCheck = coachMarkStatus

@@ -109,7 +109,6 @@ class AddHabitView: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
     

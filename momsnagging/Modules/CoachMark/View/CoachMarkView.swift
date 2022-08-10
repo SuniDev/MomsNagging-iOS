@@ -197,6 +197,11 @@ class CoachMarkView: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        // GA - 코치마크 화면
+        CommonAnalytics.logScreenView(.coachmark)
+        
+        // GA - 코치마크 첫 화면
+        CommonAnalytics.logEvent(.first_coachmark_view)
         
         view.backgroundColor = Asset.Color.monoWhite.color
     }

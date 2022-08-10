@@ -36,6 +36,13 @@ class DetailTodoViewModel: BaseViewModel {
     private var modifyAlarm: String?
     
     init(isNew: Bool, homeVM: HomeViewModel, dateParam: String, todoModel: TodoListModel?=nil) {
+        // GA - 할일 추가/수정 화면
+        if isNew {
+            CommonAnalytics.logScreenView(.todo_add)
+        } else {
+            CommonAnalytics.logScreenView(.todo_modify)
+        }
+        
         self.isNew = BehaviorRelay<Bool>(value: isNew)
         self.modifyPage = !isNew
         self.homeViewModel = homeVM

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "삭제.png",
+      "filename" : "coachmark_more_popuup.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "삭제@2x.png",
+      "filename" : "coachmark_more_popuup@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "삭제@3x.png",
+      "filename" : "coachmark_more_popuup@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

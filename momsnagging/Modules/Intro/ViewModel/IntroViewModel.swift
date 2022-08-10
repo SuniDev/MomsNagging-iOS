@@ -87,6 +87,8 @@ class IntroViewModel: ViewModel, ViewModelType {
         let goToOnboarding = isFirstEntryApp
             .filter { isFirst in isFirst == true }
             .map { _ -> OnboardingViewModel in
+                // GA - 앱 첫 진입
+                CommonAnalytics.logEvent(.first_app_entry)
                 let viewModel = OnboardingViewModel(withService: self.provider)
                 return viewModel
             }

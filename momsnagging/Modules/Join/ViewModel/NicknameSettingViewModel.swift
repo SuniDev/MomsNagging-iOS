@@ -165,7 +165,7 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
                 self.isLoading.accept(false)
                 self.networkError.accept(STR_NETWORK_ERROR_MESSAGE)
             }).disposed(by: disposeBag)
-        
+                
         let requestGetUser = requestJoin
             .filter { $0 != nil }
             .map { CommonUser.authorization = $0 }
@@ -187,6 +187,13 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
         
         setUser
             .subscribe(onNext: { user in
+                // GA - 회원가입
+                var nickname = user.nickName
+                if !(nickname == "아들" || nickname == "딸") {
+                    nickname = "custom"
+                }
+                CommonAnalytics.logEvent(.sign_up(CommonAnalyticsParam(nick_name: nickname, sns_type: user.provider)))
+                
                 CommonUser.setUser(user)
             }).disposed(by: disposeBag)
         

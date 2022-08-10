@@ -238,6 +238,22 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Log.debug("GradeView viewWillAppear")
+        
+        if !calendarScrollView.isHidden {
+            // GA - 성적표 달력 화면
+            CommonAnalytics.logScreenView(.gradecard_calendar)
+        }
+        
+        if !statisticsScrollView.isHidden {
+            // GA - 성적표 통계 화면
+            CommonAnalytics.logScreenView(.gradecard_statistics)
+        }
+        
+    }
         
     // MARK: - Init
     init(viewModel: GradeViewModel, navigator: Navigator) {
@@ -564,28 +580,38 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         // MARK: - 탭 Bind
         output.tabCalendar
             .drive(onNext: {
-                self.calendarBtn.setTitleColor(UIColor(asset: Asset.Color.priMain), for: .normal)
-                self.calendarBtn.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 16)
-                self.statisticsBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark040), for: .normal)
-                self.statisticsBtn.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 16)
-                self.calendarUnderLine.isHidden = false
-                self.statisticsUnderLine.isHidden = true
-
-                self.calendarScrollView.isHidden = false
-                self.statisticsScrollView.isHidden = true
+                if self.calendarScrollView.isHidden {
+                    // GA - 성적표 달력 화면
+                    CommonAnalytics.logScreenView(.gradecard_calendar)
+                    
+                    self.calendarBtn.setTitleColor(UIColor(asset: Asset.Color.priMain), for: .normal)
+                    self.calendarBtn.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 16)
+                    self.statisticsBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark040), for: .normal)
+                    self.statisticsBtn.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 16)
+                    self.calendarUnderLine.isHidden = false
+                    self.statisticsUnderLine.isHidden = true
+                    
+                    self.calendarScrollView.isHidden = false
+                    self.statisticsScrollView.isHidden = true
+                }
             }).disposed(by: disposedBag)
         
         output.tabStatistics
             .drive(onNext: {
-                self.statisticsBtn.setTitleColor(UIColor(asset: Asset.Color.priMain), for: .normal)
-                self.statisticsBtn.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 16)
-                self.calendarBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark040), for: .normal)
-                self.calendarBtn.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 16)
-                self.calendarUnderLine.isHidden = true
-                self.statisticsUnderLine.isHidden = false
-                
-                self.calendarScrollView.isHidden = true
-                self.statisticsScrollView.isHidden = false
+                if self.statisticsScrollView.isHidden {
+                    // GA - 성적표 통계 화면
+                    CommonAnalytics.logScreenView(.gradecard_statistics)
+                    
+                    self.statisticsBtn.setTitleColor(UIColor(asset: Asset.Color.priMain), for: .normal)
+                    self.statisticsBtn.titleLabel?.font = FontFamily.Pretendard.bold.font(size: 16)
+                    self.calendarBtn.setTitleColor(UIColor(asset: Asset.Color.monoDark040), for: .normal)
+                    self.calendarBtn.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 16)
+                    self.calendarUnderLine.isHidden = true
+                    self.statisticsUnderLine.isHidden = false
+                    
+                    self.calendarScrollView.isHidden = true
+                    self.statisticsScrollView.isHidden = false
+                }
             }).disposed(by: disposedBag)
         
         // MARK: - 달력 탭 Bind
