@@ -163,27 +163,33 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 dayItems.accept(items)
             }).disposed(by: disposeBag)
         
-        let selectedDayTrigger = BehaviorRelay<Int>(value: 0)
-        let cancelSelectedDayIndex = BehaviorRelay<Int>(value: 0)
+        let selectedDayTriggerIndex = BehaviorRelay<Int>(value: -1)
+        let cancelSelectedDayIndex = BehaviorRelay<Int>(value: -1)
         let selectedDayIndex = BehaviorRelay<Int>(value: 0)
         
-         input.dayItemsSelected.debug()
+         input.dayItemsSelected
              .drive(onNext: { indexPath in
-                 selectedDayTrigger.accept(indexPath.row)
+                 if indexPath.row != selectedDayIndex.value {
+                     selectedDayTriggerIndex.accept(indexPath.row)
+                 }
              }).disposed(by: disposeBag)
         
-        selectedDayTrigger.skip(1)
+        selectedDayTriggerIndex.skip(1)
             .subscribe(onNext: { _ in
                 cancelSelectedDayIndex.accept(selectedDayIndex.value)
             }).disposed(by: disposeBag)
         
         selectedDayIndex.skip(1)
             .subscribe(onNext: { index in
-                let model = dayItems.value[index]
-                selectedDate.accept(model.strDate)
+                if cancelSelectedDayIndex.value == -1 {
+                    let model = dayItems.value[index]
+                    selectedDate.accept(model.strDate)
+                } else {
+                    cancelSelectedDayIndex.accept(-1)
+                }
             }).disposed(by: disposeBag)
        
-        let isCanDateChange = selectedDayTrigger.skip(1)
+        let isCanDateChange = selectedDayTriggerIndex.skip(1)
             .flatMapLatest { _ -> Observable<Bool> in
                 return Observable.just(!isWriting.value)
             }.share()
@@ -199,10 +205,11 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         Observable.merge(isCanDateChange.filter { $0 == true }.asObservable(),
                          dateChangeAlertHandler.filter { $0 == true })
             .subscribe(onNext: { _ in
-                selectedDayIndex.accept(selectedDayTrigger.value)
+                cancelSelectedDayIndex.accept(-1)
+                selectedDayIndex.accept(selectedDayTriggerIndex.value)
             }).disposed(by: disposeBag)
         
-        dateChangeAlertHandler.debug()
+        dateChangeAlertHandler
             .filter { $0 == false }
             .subscribe(onNext: { _ in
                 selectedDayIndex.accept(cancelSelectedDayIndex.value)
@@ -267,10 +274,23 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             }
         
         isWriting
+            .skip(1)
+            .filter { $0 == false }
+            .mapToVoid()
+            .subscribe(onNext: {
+                // GA - 일기 상세 화면
+                CommonAnalytics.logScreenView(.diary_detail)
+                
+            }).disposed(by: disposeBag)
+        
+        isWriting
             .filter { $0 == true }
             .flatMapLatest({ _ -> Observable<String> in
                 // GA - 다이어리 작성
                 CommonAnalytics.logEvent(.tap_diary_write)
+                
+                // GA - 일기 작성 화면
+                CommonAnalytics.logScreenView(.diary_write)
                 
                 return self.getContentsPlaceholder()
             })
@@ -290,19 +310,6 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             .flatMapLatest { _ -> Observable<String> in
                 return Observable.just(STR_DIARY_BACK)
             }
-        
-        let backAlertDoneHandler = input.backAlertDoneHandler
-            .asObservable()
-            .flatMapLatest { _ -> Observable<Bool> in
-                return Observable.just(isWriting.value)
-            }.share()
-            
-        backAlertDoneHandler
-            .filter { $0 == false }
-            .mapToVoid()
-            .subscribe(onNext: {
-                isWriting.accept(false)
-            }).disposed(by: disposeBag)
         
         ///  삭제하기
         let requestDeleteDiary = input.deleteAlertDoneHandler
@@ -394,7 +401,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         let goToBack = Observable.merge(
-            backAlertDoneHandler.filter { $0 == true }.mapToVoid(),
+            input.backAlertDoneHandler.asObservable(),
             btnBackTapped.filter { $0 == false }.mapToVoid(),
             requestDeleteDiary.mapToVoid().asObservable(),
             requestSaveDiary.mapToVoid())
