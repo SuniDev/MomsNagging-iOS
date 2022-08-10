@@ -208,7 +208,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                 selectedDayIndex.accept(cancelSelectedDayIndex.value)
             }).disposed(by: disposeBag)
                 
-        let requestGetDiary = selectedDate.debug()
+        let requestGetDiary = selectedDate
             .asObservable()
             .flatMapLatest { date -> Observable<Diary> in
                 self.isLoading.accept(true)
@@ -269,6 +269,9 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         isWriting
             .filter { $0 == true }
             .flatMapLatest({ _ -> Observable<String> in
+                // GA - 다이어리 작성
+                CommonAnalytics.logEvent(.tap_diary_write)
+                
                 return self.getContentsPlaceholder()
             })
             .subscribe(onNext: { text in

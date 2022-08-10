@@ -52,8 +52,15 @@ class CoachMarkViewModel: BaseViewModel, ViewModelType {
                 }
             }).disposed(by: disposeBag)
                 
+        let btnCloseTapped = input.btnCloseTapped.asObservable().share()
+        btnCloseTapped
+            .subscribe(onNext: {
+                // GA - 코치마크 건너뛰기 버튼
+                CommonAnalytics.logEvent(.tap_coachmark_skip)
+            }).disposed(by: disposeBag)
+        
         let goToMain = Observable.merge(
-            input.btnCloseTapped.asObservable(),
+            btnCloseTapped,
             coachMarkIndex.filter({ $0 == 7 }).asObservable().mapToVoid())
             .map { _ -> MainContainerViewModel in
                 let viewModel = MainContainerViewModel()

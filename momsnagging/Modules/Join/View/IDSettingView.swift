@@ -85,6 +85,12 @@ class IDSettingView: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        // GA - ID 설정 첫 화면
+        if CommonAnalytics.isFirstId {
+            CommonAnalytics.logEvent(.first_id_view)
+        }
+        
+        Log.debug("idsetting viewDidLoad")
     }
     
     // MARK: - initUI

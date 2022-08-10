@@ -89,6 +89,9 @@ class MainContainerView: BaseViewController, Navigatable {
     // MARK: Bind
     override func bind() {
         tabbarBtn1.rx.tap.bind(onNext: { _ in
+            // GA - 홈 TAB
+            CommonAnalytics.logEvent(.tap_tab_home)
+            
             self.tabbarButtonBind(buttonTag: 0)
             globalTabOb.onNext(0)
             self.tab0.viewWillAppear(true)
@@ -96,12 +99,18 @@ class MainContainerView: BaseViewController, Navigatable {
         }).disposed(by: disposedBag)
         
         tabbarBtn2.rx.tap.bind(onNext: { _ in
+            // GA - 성적표 TAB
+            CommonAnalytics.logEvent(.tap_tab_gradecard)
+            
             self.tabbarButtonBind(buttonTag: 1)
             globalTabOb.onNext(1)
             self.setReportCardView()
         }).disposed(by: disposedBag)
         
         tabbarBtn3.rx.tap.bind(onNext: { _ in
+            // GA - 마이 TAB
+            CommonAnalytics.logEvent(.tap_tab_my)
+            
             self.tabbarButtonBind(buttonTag: 2)
             globalTabOb.onNext(2)
             self.setMyView()

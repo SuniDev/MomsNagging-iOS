@@ -69,6 +69,9 @@ extension HomeView {
                 }
                 self.dimView.isHidden = true
             } else { // + 버튼 클릭시
+                // GA - 홈 화면 + 버튼
+                CommonAnalytics.logEvent(.tap_home_plus_button)
+                
                 self.floatingBackgroundView.isHidden = false
                 self.floatingBtn.isSelected = true
                 self.floatingBind(btnSelected: false, img: self.floatingBtnIc)

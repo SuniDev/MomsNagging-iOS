@@ -143,7 +143,7 @@ class NicknameSettingView: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        Log.debug("nickname setting viewDidLoad")
         /// ScrollView TapGesture로 키보드 내리기.
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         singleTapGestureRecognizer.numberOfTapsRequired = 1

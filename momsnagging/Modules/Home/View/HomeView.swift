@@ -17,6 +17,11 @@ class HomeView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        // GA - 홈 첫 화면
+        if CommonAnalytics.isFirst {
+            CommonAnalytics.logEvent(.first_home_view)
+        }
+        
         actionBind()
         setTodoTableView()
         setHomeCalendarView()
@@ -43,7 +48,8 @@ class HomeView: BaseViewController, Navigatable {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // suni. GA 사용자 추적
+        super.viewWillAppear(animated)
+        // GA - 사용자 추적
         CommonAnalytics.setUserId()
         
         hiddenAlignment()
@@ -71,7 +77,7 @@ class HomeView: BaseViewController, Navigatable {
     var todoList: [TodoListModel] = []
     var todoListType: [Int] = []
     var moveList: [TodoListModel] = []
-    var moveListModel:[ScheduleArrayModel] = []
+    var moveListModel: [ScheduleArrayModel] = []
     var checkBtnInteractionEnable = true
     var coachMarkStatus: Bool = false
     var popOb = PublishSubject<Void>()
@@ -101,15 +107,14 @@ class HomeView: BaseViewController, Navigatable {
     var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
     var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
     var selectDate: String = ""
-    var dayList: [String] = [] //Observable하고있는 dayList의 데이터를 담기위함 (선택한 날짜의 index값을 찾기위함)
+    var dayList: [String] = [] // Observable하고있는 dayList의 데이터를 담기위함 (선택한 날짜의 index값을 찾기위함)
     
-    enum MonthlyConfirmation { //주간 달력에서 선택한 일자가 이번달,이전달,다음달 중 속하는곳을 확인
+    enum MonthlyConfirmation { // 주간 달력에서 선택한 일자가 이번달,이전달,다음달 중 속하는곳을 확인
         case previousMonth
         case thisMonth
         case nextMonth
     }
     var monthlyConfirmation: MonthlyConfirmation?
-    
     
     // MARK: - UI Properties
     // 헤드프레임 UI Properties
@@ -561,6 +566,9 @@ class HomeView: BaseViewController, Navigatable {
                 self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronDown)
                 self.headDropDownBtn.isSelected = false
             } else {
+                // GA - 홈 월간 달력 탭
+                CommonAnalytics.logEvent(.tap_home_monthly_calendar)
+                
                 self.calendarFrame.isHidden = false
                 self.headDropDownIc.image = UIImage(asset: Asset.Icon.chevronUp)
                 self.headDropDownBtn.isSelected = true
@@ -594,7 +602,9 @@ class HomeView: BaseViewController, Navigatable {
         
         // 일기장 ClickEvent
         self.diaryBtn.rx.tap.bind {
-            // TODO: service 
+            // GA - 홈 일기장 탭
+            CommonAnalytics.logEvent(.tap_home_diary)
+            
             let viewModel = DiaryViewModel(withService: SceneDelegate.appService)
             let vc = self.navigator.get(seque: .diary(viewModel: viewModel))
             self.navigator.show(seque: .diary(viewModel: viewModel), sender: vc, transition: .navigation)

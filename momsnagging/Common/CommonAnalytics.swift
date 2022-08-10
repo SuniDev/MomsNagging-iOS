@@ -10,11 +10,15 @@ import FirebaseAnalytics
 
 struct CommonAnalyticsParam: Equatable {
     var screen_name: String?
-    var user_name: String?
+    var nick_name: String?
     var sns_type: String?
 }
 
 class CommonAnalytics: NSObject {
+    
+    static var isFirstLogin: Bool = false    // 신규 사용자
+    static var isFirstId: Bool = false    // 신규 사용자
+    static var isFirst: Bool = false    // 신규
     
     static func setUserId() {
         if let authorization = CommonUser.authorization {
@@ -25,8 +29,8 @@ class CommonAnalytics: NSObject {
     }
     
     enum EventId: CustomStringConvertible {
-        case screen_view                // 화면
-        case sign_up                    // 회원 가입
+        case screen_view    // 화면
+        case sign_up(CommonAnalyticsParam)  // 회원 가입
         // FIRST
         case first_app_entry
         case first_onboard_view
@@ -171,15 +175,24 @@ class CommonAnalytics: NSObject {
                 parameters[AnalyticsParameterScreenName] = param?.screen_name
                 Analytics.logEvent(eventName, parameters: parameters)
             case .sign_up:
-                parameters["user_name"] = param?.user_name
+                parameters["nick_name"] = param?.nick_name
                 parameters["sns_type"] = param?.sns_type
                 Analytics.logEvent(eventName, parameters: parameters)
-            case .first_app_entry, .first_onboard_view, .first_login_view, .first_id_view, .first_coachmark_view, .first_home_view:
+            case .first_app_entry:
+                CommonAnalytics.isFirst = true
+                CommonAnalytics.isFirstLogin = true
+                CommonAnalytics.isFirstId = true
+            case .first_login_view:
+                CommonAnalytics.isFirstLogin = false
+            case .first_id_view:
+                CommonAnalytics.isFirstId = false
+            case .first_home_view:
+                CommonAnalytics.isFirst = false
+            case .first_onboard_view, .first_coachmark_view:
                 Analytics.logEvent(eventName, parameters: parameters)
             case .tap_coachmark_skip, .tap_home_plus_button, .tap_home_checkbox_habit, .tap_home_checkbox_todo, .tap_home_monthly_calendar, .tap_home_diary, .tap_tab_home, .tap_tab_gradecard, .tap_tab_my, .tap_diary_write:
                 Analytics.logEvent(eventName, parameters: parameters)
             }
         }
-        
     }
 }
