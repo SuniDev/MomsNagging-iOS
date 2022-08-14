@@ -139,7 +139,7 @@ extension HomeView {
         case countRoutine
         case routine
     }
-    func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController, senderBtn: UIButton, postpone: Bool?=nil) {
+    func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController, senderBtn: UIButton, postpone: Bool?=nil, count: Int?=0) {
         let emptyBtn = UIButton()
         let backgroundView = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
@@ -270,7 +270,7 @@ extension HomeView {
 //            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
 //            }, doneHandler: {
 //            })
-            HomeViewModel().requestRemainSkip(scheduleId: itemId)
+//            HomeViewModel().requestRemainSkip(scheduleId: itemId)
             if postpone ?? false {
                 Log.debug("미룸취소", "미룸취소 클릭!")
                 self.viewModel.requestDeleayCancel(scheduleId: itemId)
@@ -315,13 +315,26 @@ extension HomeView {
         })
         skipBtn.rx.tap.subscribe(onNext: {
             //건너뜀 API 호출
-            HomeViewModel().requestRemainSkip(scheduleId: itemId)
             if postpone ?? false {
                 Log.debug("건너뜀 취소", "건너뜀취소 클릭!")
                 self.viewModel.requestDeleayCancel(scheduleId: itemId)
                 backgroundView.removeFromSuperview()
             } else {
-                let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?", preferredStyle: .alert)
+                LoadingHUD.show()
+                HomeViewModel().requestRemainSkip(scheduleId: itemId)
+                backgroundView.removeFromSuperview()
+            }
+        }).disposed(by: disposedBag)
+        
+        skipCount.subscribe(onNext: { count in
+            if count == 0 {
+                let alert = UIAlertController(title: "", message: "해당 습관은 더 이상 건너뛸 수 없단다!", preferredStyle: .alert)
+                let doneAction = UIAlertAction(title: "닫기", style: .default, handler: { _ in
+                })
+                alert.addAction(doneAction)
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?\n(이번 주 남은 건너뜀 횟수 \(count)회)", preferredStyle: .alert)
                 let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
                     self.viewModel.requestDeleay(scheduleId: itemId)
                 })
@@ -329,8 +342,8 @@ extension HomeView {
                 alert.addAction(cancelAction)
                 alert.addAction(doneAction)
                 self.present(alert, animated: true, completion: nil)
-                backgroundView.removeFromSuperview()
             }
+            LoadingHUD.hide()
         }).disposed(by: disposedBag)
         
         switch type {

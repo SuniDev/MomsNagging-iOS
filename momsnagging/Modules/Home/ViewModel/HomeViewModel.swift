@@ -12,6 +12,7 @@ import UIKit
 import Moya
 import SwiftyJSON
 
+var skipCount = PublishSubject<Int>()
 class HomeViewModel: BaseViewModel, ViewModelType {
     
     // MARK: Properties
@@ -385,6 +386,7 @@ extension HomeViewModel {
                 do {
                     let json = JSON(try result.mapJSON())
                     print("remainSkipDays json : \(json)")
+                    skipCount.onNext(json.intValue)
                 } catch let error {
                     Log.error("deleteTodo error", "\(error)")
                 }
