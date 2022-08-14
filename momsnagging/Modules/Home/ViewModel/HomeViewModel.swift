@@ -378,4 +378,20 @@ extension HomeViewModel {
         })
     }
     
+    func requestRemainSkip(scheduleId: Int) {
+        provider.request(.remainSkipDays(scheduleId: scheduleId), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("remainSkipDays json : \(json)")
+                } catch let error {
+                    Log.error("deleteTodo error", "\(error)")
+                }
+            case .failure(let error):
+                Log.error("deleteTodo failure error", "\(error)")
+            }
+        })
+    }
+    
 }

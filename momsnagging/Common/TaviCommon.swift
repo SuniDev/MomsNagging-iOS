@@ -270,6 +270,7 @@ extension HomeView {
 //            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
 //            }, doneHandler: {
 //            })
+            HomeViewModel().requestRemainSkip(scheduleId: itemId)
             if postpone ?? false {
                 Log.debug("미룸취소", "미룸취소 클릭!")
                 self.viewModel.requestDeleayCancel(scheduleId: itemId)
@@ -314,6 +315,7 @@ extension HomeView {
         })
         skipBtn.rx.tap.subscribe(onNext: {
             //건너뜀 API 호출
+            HomeViewModel().requestRemainSkip(scheduleId: itemId)
             if postpone ?? false {
                 Log.debug("건너뜀 취소", "건너뜀취소 클릭!")
                 self.viewModel.requestDeleayCancel(scheduleId: itemId)
