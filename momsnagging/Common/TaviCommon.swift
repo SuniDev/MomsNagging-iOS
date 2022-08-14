@@ -30,13 +30,19 @@ class TaviCommon {
         return formatter.string(from: date)
     }
     
+    static func alarmTimeDateToStringFormatE(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "E"
+        return formatter.string(from: date)
+    }
+    
     static func alarmTimeStringToDateToString(stringData: String) -> String {
         var date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"
         dateFormatter.locale = Locale(identifier: "ko_KR")
         date = dateFormatter.date(from: stringData) ?? date
-        print("date!!!! : \(date)")
         let toStringFormatter = DateFormatter()
         toStringFormatter.locale = Locale(identifier: "ko_KR")
         toStringFormatter.dateFormat = "hh:mm a"

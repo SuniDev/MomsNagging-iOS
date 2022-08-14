@@ -43,6 +43,8 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
     
     var coachMarkStatusCheck: Bool?
     
+    var btnCycleNumberSelect: Bool = false
+    
     init(isNew: Bool, isRecommendHabit: Bool, dateParam: String, homeViewModel: HomeViewModel, todoModel: TodoListModel?=nil, recommendHabitName: String?=nil, coachMarkStatus: Bool? = false) {
         // GA - 습관 추가/수정 화면
         if coachMarkStatus == false {
@@ -351,12 +353,16 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
                 if text != "" {
                     self.selectDateWeek.append(st ?? "")
                 }
+                if !self.btnCycleNumberSelect {
+//                    selectedCycleItems.accept(self.selectDateWeek)
+                    self.selectItemSet(items: self.selectDateWeek)
+                }
             }).disposed(by: disposeBag)
         
         /// 이행 주기
         let selectCycleType = BehaviorRelay<CycleType>(value: .week)
         let cycleItems = BehaviorRelay<[String]>(value: [])
-        let selectedCycleItems = BehaviorRelay<[String]>(value: [])
+        var selectedCycleItems = BehaviorRelay<[String]>(value: [])
         
         /// 상세 페이지로 진입시 서버 데이터 세팅 ========================= START
         if todoModel?.goalCount == 0 || todoModel?.goalCount == nil {
@@ -369,11 +375,13 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         input.btnCycleWeekTapped
             .drive(onNext: { _ in
                 selectCycleType.accept(.week)
+                self.btnCycleNumberSelect = false
             }).disposed(by: disposeBag)
         
         input.btnCycleNumber
             .drive(onNext: { _ in
                 selectCycleType.accept(.number)
+                self.btnCycleNumberSelect = true
             }).disposed(by: disposeBag)
         
         selectCycleType
@@ -458,12 +466,26 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         if isRecommendHabitBool {
             canBeDone = Observable.combineLatest(textPerformTime.asObservable(), textStartDate.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
                 .map({ textPerformTime, textStartDate, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
-                    if !textPerformTime.isEmpty && !selectedCycleItems.isEmpty && !textStartDate.isEmpty {
-                        if !isNaggingPush {
-                            return true
-                        } else {
-                            if timeNaggingPush != nil {
+                    Log.debug("btnCycleNumberSelect", "\(self.btnCycleNumberSelect)")
+                    if self.btnCycleNumberSelect {
+                        if !textPerformTime.isEmpty && !selectedCycleItems.isEmpty  && !textStartDate.isEmpty {
+                            if !isNaggingPush {
                                 return true
+                            } else {
+                                if timeNaggingPush != nil {
+                                    return true
+                                }
+                            }
+                        }
+                    } else {
+                        Log.debug("여길 탐!", "여기여기여기야!")
+                        if !textPerformTime.isEmpty && !textStartDate.isEmpty {
+                            if !isNaggingPush {
+                                return true
+                            } else {
+                                if timeNaggingPush != nil {
+                                    return true
+                                }
                             }
                         }
                     }
@@ -472,12 +494,26 @@ class DetailHabitViewModel: BaseViewModel, ViewModelType {
         } else {
             canBeDone = Observable.combineLatest(isValidName.asObservable(), textPerformTime.asObservable(), textStartDate.asObservable(), selectedCycleItems.asObservable(), isNaggingPush.asObservable(), timeNaggingPush.asObservable())
                 .map({ isValidName, textPerformTime, textStartDate, selectedCycleItems, isNaggingPush, timeNaggingPush -> Bool in
-                    if isValidName && !textPerformTime.isEmpty && !selectedCycleItems.isEmpty && !textStartDate.isEmpty {
-                        if !isNaggingPush {
-                            return true
-                        } else {
-                            if timeNaggingPush != nil {
+                    Log.debug("btnCycleNumberSelect", "\(self.btnCycleNumberSelect)")
+                    if self.btnCycleNumberSelect {
+                        if !textPerformTime.isEmpty && !selectedCycleItems.isEmpty && !textStartDate.isEmpty {
+                            if !isNaggingPush {
                                 return true
+                            } else {
+                                if timeNaggingPush != nil {
+                                    return true
+                                }
+                            }
+                        }
+                    } else {
+                        Log.debug("여길 탐!", "여기여기여기야!")
+                        if !textPerformTime.isEmpty && !textStartDate.isEmpty {
+                            if !isNaggingPush {
+                                return true
+                            } else {
+                                if timeNaggingPush != nil {
+                                    return true
+                                }
                             }
                         }
                     }
