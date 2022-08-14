@@ -139,8 +139,16 @@ class CoachMarkView: BaseViewController, Navigatable {
         $0.layer.cornerRadius = 8
         $0.backgroundColor = Asset.Color.monoLight010.color
     })
+    lazy var btnRoutineCount = UIButton().then({
+        $0.isUserInteractionEnabled = false
+        $0.setTitle("4회", for: .normal)
+        $0.setTitleColor(Asset.Color.monoDark010.color, for: .normal)
+        $0.titleLabel?.font = FontFamily.Pretendard.regular.font(size: 12)
+        $0.layer.cornerRadius = 5
+        $0.backgroundColor = Asset.Color.subLight030.color
+    })
     lazy var lblRoutineTitle = UILabel().then({
-        $0.text = "(예시) 6시 기상하기"
+        $0.text = "명상하기"
         $0.font = FontFamily.Pretendard.semiBold.font(size: 14)
         $0.textColor = Asset.Color.monoDark010.color
     })
@@ -168,10 +176,10 @@ class CoachMarkView: BaseViewController, Navigatable {
         $0.image = Asset.Assets.coachmarkMorePopuup.image
     })
     
-    // 코치마크 3 - 4 : 홈 화면 미룸
-    lazy var imgvTip3D = UIImageView().then({
+    // 코치마크 마지막
+    lazy var imgvTipLast = UIImageView().then({
         $0.isHidden = true
-        $0.image = Asset.Assets.coachmarkTip3D.image
+        $0.image = Asset.Assets.coachmarkTipLast.image
     })
     
     // MARK: - init
@@ -189,6 +197,11 @@ class CoachMarkView: BaseViewController, Navigatable {
     // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        // GA - 코치마크 화면
+        CommonAnalytics.logScreenView(.coachmark)
+        
+        // GA - 코치마크 첫 화면
+        CommonAnalytics.logEvent(.first_coachmark_view)
         
         view.backgroundColor = Asset.Color.monoWhite.color
     }
@@ -313,14 +326,14 @@ class CoachMarkView: BaseViewController, Navigatable {
         })
         
         // 코치마크 2 - 2 : 습관 상세
-        viewCoachMark2.addSubview(viewDimCoachMark2CBottom)
+//        viewCoachMark2.addSubview(viewDimCoachMark2CBottom)
         viewCoachMark2.addSubview(imgvTip2C)
         
-        dimBottomHeight = self.view.frame.height - 545.0 - dimTopHeight
-        viewDimCoachMark2CBottom.snp.makeConstraints({
-            $0.bottom.leading.trailing.equalToSuperview()
-            $0.height.equalTo(dimBottomHeight)
-        })
+//        dimBottomHeight = self.view.frame.height - 545.0 - dimTopHeight
+//        viewDimCoachMark2CBottom.snp.makeConstraints({
+//            $0.bottom.leading.trailing.equalToSuperview()
+//            $0.height.equalTo(dimBottomHeight)
+//        })
         imgvTip2C.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.top.equalTo(viewDimCoachMark2Top.snp.bottom).offset(16)
@@ -355,6 +368,7 @@ class CoachMarkView: BaseViewController, Navigatable {
         viewCoachMark3.addSubview(vRoutinCell)
         vRoutinCell.addSubview(imgvRoutineCheckBox)
         vRoutinCell.addSubview(btnRoutineTime)
+        vRoutinCell.addSubview(btnRoutineCount)
         vRoutinCell.addSubview(lblRoutineTitle)
         vRoutinCell.addSubview(imgvMore)
         vRoutinCell.snp.makeConstraints({
@@ -365,19 +379,24 @@ class CoachMarkView: BaseViewController, Navigatable {
         })
         imgvRoutineCheckBox.snp.makeConstraints({
             $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(5)
+            $0.leading.equalToSuperview().offset(20)
             $0.width.height.equalTo(24)
         })
         btnRoutineTime.snp.makeConstraints({
             $0.centerY.equalToSuperview()
             $0.width.equalTo(80)
             $0.height.equalTo(30)
-            $0.leading.equalTo(imgvRoutineCheckBox.snp.trailing).offset(7)
+            $0.leading.equalTo(imgvRoutineCheckBox.snp.trailing).offset(12)
+        })
+        btnRoutineCount.snp.makeConstraints({
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(24)
+            $0.leading.equalTo(btnRoutineTime.snp.trailing).offset(12)
         })
         lblRoutineTitle.snp.makeConstraints({
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(btnRoutineTime.snp.trailing).offset(12)
-            $0.trailing.equalTo(imgvMore.snp.leading).offset(-16)
+            $0.leading.equalTo(btnRoutineCount.snp.trailing).offset(8)
+            $0.trailing.equalTo(imgvMore.snp.leading).offset(-12)
         })
         imgvMore.snp.makeConstraints({
             $0.width.height.equalTo(24)
@@ -411,10 +430,9 @@ class CoachMarkView: BaseViewController, Navigatable {
         })
         
         // 코치마크 3 - 4 : 홈 화면 미룸
-        viewCoachMark3.addSubview(imgvTip3D)
-        imgvTip3D.snp.makeConstraints({
-            $0.leading.equalToSuperview().offset(30)
-            $0.top.equalTo(viewDimCoachMark3Bottom.snp.top).offset(16)
+        viewCoachMark3.addSubview(imgvTipLast)
+        imgvTipLast.snp.makeConstraints({
+            $0.center.equalToSuperview()
         })
         
     }
@@ -460,10 +478,10 @@ class CoachMarkView: BaseViewController, Navigatable {
                        let vc = self.navigator.get(seque: .detailHabit(viewModel: viewModel)),
                        let v = vc.view {
                         view = v
-                        self.viewDimCoachMark2Bottom.fadeOut()
+//                        self.viewDimCoachMark2Bottom.fadeOut()
                         self.imgvTip2A.fadeOut()
                         self.imgvTip2B.fadeOut()
-                        self.viewDimCoachMark2CBottom.fadeIn(alpha: 0.6)
+//                        self.viewDimCoachMark2CBottom.fadeIn(alpha: 0.6)
                         self.imgvTip2C.fadeIn()
                     }
                     
@@ -473,7 +491,7 @@ class CoachMarkView: BaseViewController, Navigatable {
                        let v = vc.view {
                         view = v
                         self.viewDimCoachMark2Top.fadeOut()
-                        self.viewDimCoachMark2CBottom.fadeOut()
+                        self.viewDimCoachMark2Bottom.fadeOut()
                         self.viewCoachMark2.fadeOut()
                         self.viewDimCoachMark3Top.fadeIn(alpha: 0.6)
                         self.viewDimCoachMark3Bottom.fadeIn(alpha: 0.6)
@@ -498,6 +516,8 @@ class CoachMarkView: BaseViewController, Navigatable {
                     self.imgvRoutineCheckBox.image = Asset.Icon.todoSelect.image
                     self.btnRoutineTime.backgroundColor = Asset.Color.monoLight030.color
                     self.btnRoutineTime.setTitleColor(Asset.Color.monoDark020.color, for: .normal)
+                    self.btnRoutineCount.backgroundColor = Asset.Color.monoLight030.color
+                    self.btnRoutineCount.setTitleColor(Asset.Color.monoDark020.color, for: .normal)
                     self.lblRoutineTitle.textColor = Asset.Color.monoDark020.color
                     
                     self.imgvTip3A.fadeOut()
@@ -507,6 +527,8 @@ class CoachMarkView: BaseViewController, Navigatable {
                     self.imgvRoutineCheckBox.image = Asset.Icon.todoNonSelect.image
                     self.btnRoutineTime.backgroundColor = Asset.Color.monoLight010.color
                     self.btnRoutineTime.setTitleColor(Asset.Color.monoDark010.color, for: .normal)
+                    self.btnRoutineCount.backgroundColor = Asset.Color.monoLight030.color
+                    self.btnRoutineCount.setTitleColor(Asset.Color.monoDark010.color, for: .normal)
                     
                     self.viewDimCoachMark3Top.fadeOut()
                     self.viewDimCoachMark3Bottom.fadeOut()
@@ -516,17 +538,13 @@ class CoachMarkView: BaseViewController, Navigatable {
                     self.imgvMorePopup.fadeIn()
                     
                 case 6:
-                    self.vRoutinCell.backgroundColor = Asset.Color.subLight010.color
-                    self.imgvRoutineCheckBox.image = Asset.Icon.delay.image
-                    self.btnRoutineTime.backgroundColor = Asset.Color.subLight020.color
                     self.btnNext.setTitle("마침", for: .normal)
                     
-                    self.viewDimCoachMark3Full.fadeOut()
+                    self.vRoutinCell.fadeOut()
+                    self.btnClose.fadeOut()
                     self.imgvTip3C.fadeOut()
                     self.imgvMorePopup.fadeOut()
-                    self.viewDimCoachMark3Top.fadeIn(alpha: 0.6)
-                    self.viewDimCoachMark3Bottom.fadeIn(alpha: 0.6)
-                    self.imgvTip3D.fadeIn()
+                    self.imgvTipLast.fadeIn()
                     
                 default:
                     break

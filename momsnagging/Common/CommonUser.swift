@@ -19,6 +19,9 @@ class CommonUser: NSObject {
     static var authorization: String? {
         didSet {
             if let authorization = authorization {
+                // GA - 사용자 추적
+                CommonAnalytics.setUserId()
+                
                 isLogin = true
                 Common.setUserDefaults(true, forKey: .isAutoLogin)
                 Common.setKeychain(authorization, forKey: .authorization)

@@ -63,10 +63,10 @@ class MyView: BaseViewController, Navigatable {
     lazy var viewNickname = UIView()
     lazy var btnNicknameSetting = UIButton()
     
-    /// 잔소리 강도 설정
+    /// 잔소리 성격 설정
     lazy var viewNaggingLevel = UIView()
     lazy var lblNaggingLevel = UILabel().then({
-        $0.text = "잔소리 강도 설정"
+        $0.text = "잔소리 성격 설정"
         $0.textColor = Asset.Color.monoDark010.color
         $0.font = FontFamily.Pretendard.regular.font(size: 16)
     })
@@ -141,13 +141,19 @@ class MyView: BaseViewController, Navigatable {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         /// ScrollView TapGesture로 키보드 내리기.
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // GA - 마이 화면
+        CommonAnalytics.logScreenView(.my)
     }
     
     @objc
@@ -284,7 +290,7 @@ class MyView: BaseViewController, Navigatable {
             $0.bottom.equalToSuperview().offset(-1)
         })
         
-        /// 잔소리 강도 설정
+        /// 잔소리 성격 설정
         viewNaggingLevel.addSubview(lblNaggingLevel)
         viewNaggingLevel.addSubview(viewRadioGroupNagging)
         
@@ -332,7 +338,7 @@ class MyView: BaseViewController, Navigatable {
         })
         imgvTipFondMom.snp.makeConstraints({
             $0.height.equalTo(62)
-            $0.width.equalTo(276)
+            $0.width.equalTo(235)
             $0.top.equalTo(imgvTipArrowFondMom.snp.bottom)
             $0.leading.bottom.equalToSuperview()
         })
@@ -343,7 +349,7 @@ class MyView: BaseViewController, Navigatable {
         })
         imgvTipCoolMom.snp.makeConstraints({
             $0.height.equalTo(62)
-            $0.width.equalTo(237)
+            $0.width.equalTo(144)
             $0.top.equalTo(imgvTipArrowCoolMom.snp.bottom)
             $0.bottom.centerX.equalToSuperview()
         })
@@ -476,7 +482,7 @@ class MyView: BaseViewController, Navigatable {
                 self.present(alert, animated: true)
             }).disposed(by: disposeBag)
         
-        // 잔소리 강도 설정
+        // 잔소리 성격 설정
         output.setNaggingLevel
             .drive(onNext: { naggingLevel in
                 self.rbFondMom.isSelected = naggingLevel == .fondMom

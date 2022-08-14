@@ -423,9 +423,9 @@ class CommonView {
      - Returns: UIView
      - Note: 공통 divider 뷰 함수
      */
-    static func divider() -> UIView {
+    static func divider(color: UIColor = Asset.Color.monoLight010.color) -> UIView {
         lazy var divider = UIView().then({
-            $0.backgroundColor = Asset.Color.monoLight010.color
+            $0.backgroundColor = color
         })
         
         divider.snp.makeConstraints({
@@ -795,11 +795,11 @@ class CommonView {
     /**
      # naggingRadioButtonFrame
      - parameters:
-        - naggingLevel : 잔소리 강도
-        - btnNaggingRadio : 잔소리 강도 버튼
+        - naggingLevel : 잔소리 성격
+        - btnNaggingRadio : 잔소리 성격 버튼
      - Authors: suni
      - Returns: UIView
-     - Note: 잔소리 강도 라디오 버튼 프레임
+     - Note: 잔소리 성격 라디오 버튼 프레임
      */
     static func naggingRadioButtonFrame(naggingLevel: NaggingLevel, rbNagging: CommonTextRadioButton) -> UIView {
         

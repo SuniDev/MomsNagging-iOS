@@ -33,7 +33,7 @@ public let STR_LOGIN_ERROR_TITLE    = "로그인 실패"
 public let STR_LOGIN_ERROR_MESSAGE  = "로그인에 실패 했습니다.\n다시 시도해주세요."
 
 /// 호칭 설정
-public let STR_NICKNAME_SUCCESS     = "굿 네이밍~^^\n참고로 개명 신청은 마이에서 가능하단다."
+public let STR_NICKNAME_SUCCESS     = "굿 네이밍^^\n참고로 호칭 변경은 '마이'에서 가능하단다."
 
 /// 뒤로가기
 public let STR_HABIT_BACK       = "지금 나가면 습관이 저장되지 않는단다.\n그래도 나가겠니?"
@@ -61,7 +61,7 @@ public let STR_LOGOUT                   = "로그아웃 할꺼니?"
 
 /// 설정
 public let STR_DELETE_ACCOUNT           = "정말로 탈퇴하시겠습니까?"
-public let STR_SUCCESS_ACCOUNT          = "주신 의견 반영하여 더 나은 엄마의 잔소리가 되겠습니다. 감사합니다!"
+public let STR_SUCCESS_ACCOUNT          = "주신 의견을 반영하여 더 나은 엄마의 잔소리가 되겠습니다.\n감사합니다!"
 
 /// 네트워크
 public let STR_NETWORK_ERROR_MESSAGE    = "네트워크 연결이 실패했단다.\n다시 시도 해주겠니?"

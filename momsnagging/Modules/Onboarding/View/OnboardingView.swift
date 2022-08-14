@@ -41,6 +41,13 @@ class OnboardingView: BaseViewController, Navigatable {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // GA - 온보딩 화면
+        CommonAnalytics.logScreenView(.onboard)
+    }
+    
     // MARK: - initUI
     override func initUI() {
         

@@ -47,6 +47,8 @@ class DetailDiaryView: BaseViewController, Navigatable {
         $0.returnKeyType = .next
     })
     
+    lazy var divider = CommonView.divider(color: Asset.Color.monoLight030.color)
+    
     lazy var tvContents = UITextView().then({
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.textColor = Asset.Color.monoDark010.color
@@ -55,27 +57,8 @@ class DetailDiaryView: BaseViewController, Navigatable {
     
     // MARK: - 캘린더 UI: Properties & Variable & UI Properties
     var calendarViewModel = CalendarViewModel()
-    /*
-     prefix : head
-     Year, Month, Day 홈화면의 Head 타이틀에 들어갈 날짜 연,월,일
-     */
-//    var headYear: Int = 0
-//    var headMonth: Int = 0
-//    var headDay: Int = 0
-//    var selectDayIndex: Int?// 주간달력 달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
-    /*
-     prefix : calendar
-     Year, Month, Day 월간달력의 Lbl에 표시하기 위한 날짜 연, 월, 일
-     */
-//    var calendarYear: Int?
-//    var calendarMonth: Int?
-//    var calendarDay: Int?
     
     var monthCollectionViewHeight: Int? // 월별로 주(4주~6주)수를 카운팅하여 CollectionView의 높이를 remake하기 위함.
-//    var dateCheck: Int = 0 // 현재월 (0)로부터 다음달(1) 이전달 (-1)로 더하거나 빼는 변수
-//    var calendarSelectIndex: Int? // 월간달력의 현재 월의 선택된 셀의 인덱스.row값으로 선택된 날짜에 둥근원 표시를 위함
-//    var selectMonth: Int = 0 // 현재 월(0) 인지 확인 하는 변수
-//    var selectDate: String = ""
     
     lazy var headTitleLbl = UILabel()
     lazy var headDropDownIc = UIImageView().then({
@@ -176,6 +159,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
         
         view.addSubview(viewBackground)
         viewBackground.addSubview(tfTitle)
+        viewBackground.addSubview(divider)
         viewBackground.addSubview(tvContents)
         view.addSubview(dimView)
         
@@ -206,8 +190,15 @@ class DetailDiaryView: BaseViewController, Navigatable {
             $0.trailing.equalToSuperview().offset(-16)
         })
         
+        divider.snp.makeConstraints({
+            $0.height.equalTo(1)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.top.equalTo(tfTitle.snp.bottom).offset(12)
+        })
+        
         tvContents.snp.makeConstraints({
-            $0.top.equalTo(tfTitle.snp.bottom).offset(30)
+            $0.top.equalTo(divider.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-24)

@@ -38,8 +38,6 @@ class MainContainerView: BaseViewController, Navigatable {
         fatalError("init(coder:) has not been implemented")
     }
     // MARK: - Tabbar Child View
-//    let tab0 = HomeView(viewModel: HomeViewModel(), navigator: Navigator())
-    let homeViewModel = HomeViewModel()
     var tab0: UIViewController!
     var tab1: UIViewController!
     var tab2: UIViewController!
@@ -89,6 +87,9 @@ class MainContainerView: BaseViewController, Navigatable {
     // MARK: Bind
     override func bind() {
         tabbarBtn1.rx.tap.bind(onNext: { _ in
+            // GA - 홈 TAB
+            CommonAnalytics.logEvent(.tap_tab_home)
+            
             self.tabbarButtonBind(buttonTag: 0)
             globalTabOb.onNext(0)
             self.tab0.viewWillAppear(true)
@@ -96,14 +97,22 @@ class MainContainerView: BaseViewController, Navigatable {
         }).disposed(by: disposedBag)
         
         tabbarBtn2.rx.tap.bind(onNext: { _ in
+            // GA - 성적표 TAB
+            CommonAnalytics.logEvent(.tap_tab_gradecard)
+            
             self.tabbarButtonBind(buttonTag: 1)
             globalTabOb.onNext(1)
+            self.tab1.viewWillAppear(true)
             self.setReportCardView()
         }).disposed(by: disposedBag)
         
         tabbarBtn3.rx.tap.bind(onNext: { _ in
+            // GA - 마이 TAB
+            CommonAnalytics.logEvent(.tap_tab_my)
+            
             self.tabbarButtonBind(buttonTag: 2)
             globalTabOb.onNext(2)
+            self.tab2.viewWillAppear(true)
             self.setMyView()
         }).disposed(by: disposedBag)
     }
@@ -233,6 +242,17 @@ extension MainContainerView {
      - Note : Container에있는 tab0(홈 페이지로 이동)
      */
     func setHomeView() {
+        
+        if MainContainerViewModel.coachMarkStatusCheck == false {
+            // GA - 홈 화면
+            CommonAnalytics.logScreenView(.home)
+
+            // GA - 홈 첫 화면
+            if CommonAnalytics.isFirst {
+                CommonAnalytics.logEvent(.first_home_view)
+            }
+            
+        }
         view.addSubview(tab0.view)
         tab0.view.snp.makeConstraints({
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)

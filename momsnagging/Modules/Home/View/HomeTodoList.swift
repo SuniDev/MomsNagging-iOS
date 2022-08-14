@@ -84,6 +84,8 @@ extension HomeView {
             if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
             } else if sender.accessibilityLabel == "0" {
+                // GA - 홈 할일 체크박스 탭
+                CommonAnalytics.logEvent(.tap_home_checkbox_todo)
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
@@ -93,6 +95,8 @@ extension HomeView {
             if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
             } else if sender.accessibilityLabel == "0" {
+                // GA - 홈 습관 체크박스 탭
+                CommonAnalytics.logEvent(.tap_home_checkbox_habit)
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
@@ -102,6 +106,8 @@ extension HomeView {
             if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
             } else if sender.accessibilityLabel == "0" {
+                // GA - 홈 습관 체크박스 탭
+                CommonAnalytics.logEvent(.tap_home_checkbox_habit)
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }

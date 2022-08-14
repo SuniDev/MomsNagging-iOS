@@ -14,8 +14,8 @@ import SwiftyJSON
 class DetailTodoViewModel: BaseViewModel {
     
     enum TextHintType: String {
-        case empty      = "할일 이름은 필수로 입력해야 한단다"
-        case invalid    = "할일 이름은 30글자를 넘길 수 없단다"
+        case empty      = "할일 이름은 필수로 입력해야 한단다."
+        case invalid    = "할일 이름은 30글자를 넘길 수 없단다."
         case none       = ""
     }
     
@@ -36,6 +36,13 @@ class DetailTodoViewModel: BaseViewModel {
     private var modifyAlarm: String?
     
     init(isNew: Bool, homeVM: HomeViewModel, dateParam: String, todoModel: TodoListModel?=nil) {
+        // GA - 할일 추가/수정 화면
+        if isNew {
+            CommonAnalytics.logScreenView(.todo_add)
+        } else {
+            CommonAnalytics.logScreenView(.todo_modify)
+        }
+        
         self.isNew = BehaviorRelay<Bool>(value: isNew)
         self.modifyPage = !isNew
         self.homeViewModel = homeVM

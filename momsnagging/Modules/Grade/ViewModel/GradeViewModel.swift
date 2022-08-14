@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import Moya
 import SwiftyJSON
+import UIKit
 
 class GradeViewModel: ViewModel, ViewModelType {
     
@@ -106,6 +107,8 @@ class GradeViewModel: ViewModel, ViewModelType {
         let countTogether: Driver<Int>
         /// 성적표 통게 개수
         let countStt: Driver<Int>
+        /// 팁 숨기기
+        let hideTip: Driver<Void>
         
         // 상장
         let showAward: Driver<AwardViewModel>
@@ -371,6 +374,7 @@ class GradeViewModel: ViewModel, ViewModelType {
                     sttItems: sttItems,
                     countTogether: countTogether.asDriverOnErrorJustComplete(),
                     countStt: countStt.asDriverOnErrorJustComplete(),
+                    hideTip: input.viewTapped,
                     showAward: showAward.asDriver()
         )
     }
@@ -469,12 +473,12 @@ extension GradeViewModel {
         return Observable<[StatisticsItem]>.create { observer -> Disposable in            
             var items = [StatisticsItem]()
             
-            items.append(StatisticsItem(title: "전체 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "일부 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "습관 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "할일 수행", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "일기 작성", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.diaryCount ?? 0)", suffix: "번"))
-            items.append(StatisticsItem(title: "평균 수행률", description: "하루에 100% 수행한 날짜를 의미한단다", data: "\(data.performanceAvg ?? 0)", suffix: "%"))
+            items.append(StatisticsItem(title: "전체 수행", tip: Asset.Assets.gradeTip1.image, data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "일부 수행", tip: Asset.Assets.gradeTip2.image, data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "습관 수행", tip: Asset.Assets.gradeTip3.image, data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "할일 수행", tip: Asset.Assets.gradeTip4.image, data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "일기 작성", tip: Asset.Assets.gradeTip5.image, data: "\(data.diaryCount ?? 0)", suffix: "번"))
+            items.append(StatisticsItem(title: "평균 수행률", tip: Asset.Assets.gradeTip6.image, data: "\(data.performanceAvg ?? 0)", suffix: "%"))
             
             observer.onNext(items)
             observer.onCompleted()
@@ -504,7 +508,7 @@ extension GradeViewModel {
     private func requestSchedule(date: String) -> Observable<[TodoListModel]> {
         return Observable<[TodoListModel]>.create { observer -> Disposable in
             if Common.TEST {
-                observer.onNext(Test.getRandomTodoList())
+                 observer.onNext(Test.getRandomTodoList())
                 observer.onCompleted()
             }
             
@@ -564,7 +568,7 @@ struct StatisticsMontlyItem {
 
 struct StatisticsItem {
     let title: String
-    let description: String
+    let tip: UIImage
     let data: String
     let suffix: String
 }
