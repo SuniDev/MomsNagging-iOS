@@ -475,8 +475,8 @@ extension GradeViewModel {
             
             items.append(StatisticsItem(title: "전체 수행", tip: Asset.Assets.gradeTip1.image, data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
             items.append(StatisticsItem(title: "일부 수행", tip: Asset.Assets.gradeTip2.image, data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "습관 수행", tip: Asset.Assets.gradeTip3.image, data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "할일 수행", tip: Asset.Assets.gradeTip4.image, data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "습관 수행", tip: Asset.Assets.gradeTip3.image, data: "\(data.routineDoneCount ?? 0)", suffix: "회"))
+            items.append(StatisticsItem(title: "할일 수행", tip: Asset.Assets.gradeTip4.image, data: "\(data.todoDoneCount ?? 0)", suffix: "회"))
             items.append(StatisticsItem(title: "일기 작성", tip: Asset.Assets.gradeTip5.image, data: "\(data.diaryCount ?? 0)", suffix: "번"))
             items.append(StatisticsItem(title: "평균 수행률", tip: Asset.Assets.gradeTip6.image, data: "\(data.performanceAvg ?? 0)", suffix: "%"))
             
