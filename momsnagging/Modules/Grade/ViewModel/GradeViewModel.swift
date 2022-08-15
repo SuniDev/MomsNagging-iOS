@@ -108,7 +108,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         /// 성적표 통게 개수
         let countStt: Driver<Int>
         /// 팁 숨기기
-        let hideTip: Driver<Void>
+//        let hideTip: Driver<Void>
         
         // 상장
         let showAward: Driver<AwardViewModel>
@@ -141,8 +141,9 @@ class GradeViewModel: ViewModel, ViewModelType {
                 requestStatisticsTrigger.onNext(())
             }).disposed(by: disposeBag)
         
-        input.willApearView
-            .drive(onNext: {
+        let willApearView = input.willApearView.asObservable().share()
+        willApearView
+            .subscribe(onNext: {
                 requestStatisticsTrigger.onNext(())
             }).disposed(by: disposeBag)
         
@@ -342,7 +343,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 달력 Tip
         let isHiddenTip = BehaviorRelay<Bool>(value: true)
         
-        tabStatistics
+        Observable.merge(tabStatistics, input.viewTapped.asObservable(), willApearView)
             .subscribe(onNext: {
                 if !isHiddenTip.value {
                     isHiddenTip.accept(true)
@@ -374,7 +375,6 @@ class GradeViewModel: ViewModel, ViewModelType {
                     sttItems: sttItems,
                     countTogether: countTogether.asDriverOnErrorJustComplete(),
                     countStt: countStt.asDriverOnErrorJustComplete(),
-                    hideTip: input.viewTapped,
                     showAward: showAward.asDriver()
         )
     }
