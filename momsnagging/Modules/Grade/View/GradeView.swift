@@ -41,6 +41,10 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     lazy var calendarTab = UIView()
     
     // 달력 Tip
+    lazy var vTipBack = UIView().then({
+        $0.backgroundColor = .clear
+        $0.isHidden = true
+    })
     lazy var btnTip = UIButton().then({
         $0.setImage(Asset.Icon.tipGray.image, for: .normal)
     })
@@ -48,7 +52,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         $0.isHidden = true
         $0.image = Asset.Assets.gradeTipArrow.image
     })
-    lazy var vTipBackground = UIView().then({
+    lazy var vTip = UIView().then({
         $0.isHidden = true
         $0.backgroundColor = Asset.Color.subLight010.color
         $0.addShadow(color: Asset.Color.monoDark030.color, alpha: 30, x: 0, y: 4, blur: 24, spread: 0)
@@ -459,7 +463,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.centerY.equalTo(calendarDateLbl.snp.centerY)
             $0.leading.equalToSuperview().offset(20)
         })
-        view.addSubview(vTipBackground)
+        view.addSubview(vTip)
         view.addSubview(imgvTipArrow)
         imgvTipArrow.snp.makeConstraints({
             $0.top.equalTo(btnTip.snp.bottom).offset(4)
@@ -468,20 +472,20 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.height.equalTo(4)
         })
         
-        vTipBackground.snp.makeConstraints({
+        vTip.snp.makeConstraints({
             $0.top.equalTo(imgvTipArrow.snp.bottom)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         })
         
-        vTipBackground.addSubview(lblTipTitle)
+        vTip.addSubview(lblTipTitle)
         lblTipTitle.snp.makeConstraints({
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(22)
             $0.leading.trailing.equalToSuperview()
         })
         
-        vTipBackground.addSubview(vTip1)
+        vTip.addSubview(vTip1)
         vTip1.addSubview(imgvTip1)
         vTip1.addSubview(lblTip1)
         imgvTip1.snp.makeConstraints({
@@ -499,7 +503,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.top.equalTo(lblTipTitle.snp.bottom).offset(16)
         })
         
-        vTipBackground.addSubview(vTip2)
+        vTip.addSubview(vTip2)
         vTip2.addSubview(imgvTip2)
         vTip2.addSubview(lblTip2)
         imgvTip2.snp.makeConstraints({
@@ -519,7 +523,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.top.bottom.equalTo(vTip1)
         })
         
-        vTipBackground.addSubview(vTip3)
+        vTip.addSubview(vTip3)
         vTip3.addSubview(imgvTip3)
         vTip3.addSubview(lblTip3)
         imgvTip3.snp.makeConstraints({
@@ -539,12 +543,18 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.trailing.equalToSuperview().offset(-12)
         })
         
-        vTipBackground.addSubview(lblTipMore)
+        vTip.addSubview(lblTipMore)
         lblTipMore.snp.makeConstraints({
             $0.top.equalTo(vTip1.snp.bottom).offset(16)
             $0.leading.equalTo(vTip1)
             $0.trailing.equalTo(vTip3)
             $0.bottom.equalToSuperview().offset(-18)
+        })
+        
+        view.addSubview(vTipBack)
+        vTipBack.snp.makeConstraints({
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.equalTo(calendarTab.snp.bottom)
         })
         
         self.view.layoutIfNeeded()
@@ -556,7 +566,6 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
         
         let input = GradeViewModel.Input(
             willApearView: self.rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
-            viewTapped: self.view.rx.tapGesture().mapToVoid().asDriverOnErrorJustComplete(),
             tabCalendar: self.calendarBtn.rx.tap.asDriverOnErrorJustComplete(),
             tabStatistics: self.statisticsBtn.rx.tap.asDriverOnErrorJustComplete(),
             loadCalendar: Observable.just(CalendarDate(year: self.calendarViewModel.getYear(),
@@ -570,6 +579,7 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             btnPrevTapped: self.btnPrev.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             btnNextTapped: self.btnNext.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
             btnTipTapped: self.btnTip.rx.tap.mapToVoid().asDriverOnErrorJustComplete(),
+            viewTipBackTapped: self.vTipBack.rx.tapGesture().mapToVoid().asDriverOnErrorJustComplete(),
             setSttCalendarMonth: self.sttCalendarViewModel.monthObservable.asDriverOnErrorJustComplete(),
             setSttCalendarYear: self.sttCalendarViewModel.yearObservable.asDriverOnErrorJustComplete(),
             btnSttPrevTapped: self.statisticsPrevBtn.rx.tap.asDriverOnErrorJustComplete(),
@@ -707,10 +717,12 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             .drive(onNext: { isHidden in
                 if isHidden {
                     self.imgvTipArrow.fadeOut()
-                    self.vTipBackground.fadeOut()
+                    self.vTip.fadeOut()
+                    self.vTipBack.isHidden = true
                 } else {
                     self.imgvTipArrow.fadeIn()
-                    self.vTipBackground.fadeIn()
+                    self.vTip.fadeIn()
+                    self.vTipBack.isHidden = false
                 }
             }).disposed(by: disposedBag)
         

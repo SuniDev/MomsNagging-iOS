@@ -29,7 +29,6 @@ class GradeViewModel: ViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
         let willApearView: Driver<Void>
-        let viewTapped: Driver<Void>
         
         // 탭
         let tabCalendar: Driver<Void>
@@ -51,6 +50,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         let btnNextTapped: Driver<Void>
         /// 달력 팁
         let btnTipTapped: Driver<Void>
+        let viewTipBackTapped: Driver<Void>
         
         // 통계 - 월간 평가
         /// 캘린더 데이터
@@ -343,7 +343,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 달력 Tip
         let isHiddenTip = BehaviorRelay<Bool>(value: true)
         
-        Observable.merge(tabStatistics, input.viewTapped.asObservable(), willApearView)
+        Observable.merge(tabStatistics, input.viewTipBackTapped.asObservable(), willApearView)
             .subscribe(onNext: {
                 if !isHiddenTip.value {
                     isHiddenTip.accept(true)
