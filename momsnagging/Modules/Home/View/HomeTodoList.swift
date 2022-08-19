@@ -318,6 +318,7 @@ extension HomeView {
         
         viewModel.addHabitSuccessOb.subscribe(onNext: { _ in
 //            self.todoList.removeAll()
+            Log.debug("addHabitSuccessOb", "Call")
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)

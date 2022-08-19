@@ -39,6 +39,7 @@ class Navigator {
         case detailDiary(viewModel: DetailDiaryViewModel)
         case addHabit(viewModel: AddHabitViewModel)
         case detailHabit(viewModel: DetailHabitViewModel)
+        case detailHabitNew(viewModel: DetailHabitViewModelNew)
         case performTimeSetting(viewModel: PerformTimeSettingViewModel)
         case detailTodo(viewModel: DetailTodoViewModel)
         case recommendedHabit(viewModel: RecommendedHabitViewModel)
@@ -91,6 +92,7 @@ class Navigator {
         case .pushSetting(viewModel: let viewModel): return PushSettingView(viewModel: viewModel, navigator: self)
         case .coachMark(viewModel: let viewModel): return CoachMarkView(viewModel: viewModel, navigator: self)
         case .weeklyEvaluation(viewModel: let viewModel): return WeeklyEvaluationView(viewModel: viewModel, navigator: self)
+        case .detailHabitNew(viewModel: let viewModel) : return DetailHabitViewNew(viewModel: viewModel, navigator: self)
         }
     }
     

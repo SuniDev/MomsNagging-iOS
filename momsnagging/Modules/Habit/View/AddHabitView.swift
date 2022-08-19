@@ -236,7 +236,8 @@ class AddHabitView: BaseViewController, Navigatable {
         
         output.goToMyOwnHabit
             .drive(onNext: {
-                self.navigator.show(seque: .detailHabit(viewModel: DetailHabitViewModel(isNew: true, isRecommendHabit: false, dateParam: self.viewModel?.dateParam ?? "", homeViewModel: (self.viewModel?.homeViewModel!)!)), sender: self, transition: .navigation)
+//                self.navigator.show(seque: .detailHabit(viewModel: DetailHabitViewModel(isNew: true, isRecommendHabit: false, dateParam: self.viewModel?.dateParam ?? "", homeViewModel: (self.viewModel?.homeViewModel!)!)), sender: self, transition: .navigation)
+                self.navigator.show(seque: .detailHabitNew(viewModel: DetailHabitViewModelNew(modify: false, homeViewModel: (self.viewModel?.homeViewModel!)!)), sender: self)
             }).disposed(by: disposeBag)
         
         output.isHiddenTip

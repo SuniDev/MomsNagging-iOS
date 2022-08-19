@@ -30,6 +30,13 @@ class TaviCommon {
         return formatter.string(from: date)
     }
     
+    static func alarmTimeDateToStringFormatHHMMa(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "HH:mm a"
+        return formatter.string(from: date)
+    }
+    
     static func alarmTimeDateToStringFormatE(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
@@ -46,6 +53,54 @@ class TaviCommon {
         let toStringFormatter = DateFormatter()
         toStringFormatter.locale = Locale(identifier: "ko_KR")
         toStringFormatter.dateFormat = "hh:mm a"
+        return toStringFormatter.string(from: date)
+    }
+    
+    static func alarmTimeStringToDateToStringHHMM(stringData: String) -> String {
+        var date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        date = dateFormatter.date(from: stringData) ?? date
+        let toStringFormatter = DateFormatter()
+        toStringFormatter.locale = Locale(identifier: "ko_KR")
+        toStringFormatter.dateFormat = "HH:mm"
+        return toStringFormatter.string(from: date)
+    }
+    
+    static func stringDateToE(stringData: String) -> String {
+        var date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        date = dateFormatter.date(from: stringData) ?? date
+        let toStringFormatter = DateFormatter()
+        toStringFormatter.locale = Locale(identifier: "ko_KR")
+        toStringFormatter.dateFormat = "E"
+        return toStringFormatter.string(from: date)
+    }
+    
+    static func stringDateToyyyyMMdd_E(stringData: String) -> String {
+        var date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        date = dateFormatter.date(from: stringData) ?? date
+        let toStringFormatter = DateFormatter()
+        toStringFormatter.locale = Locale(identifier: "ko_KR")
+        toStringFormatter.dateFormat = "yyyy.MM.dd (E)"
+        return toStringFormatter.string(from: date)
+    }
+    
+    static func stringDateToHHMM_A(stringData: String) -> String {
+        var date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        date = dateFormatter.date(from: stringData) ?? date
+        let toStringFormatter = DateFormatter()
+        toStringFormatter.locale = Locale(identifier: "ko_KR")
+        toStringFormatter.dateFormat = "HH:mm a"
         return toStringFormatter.string(from: date)
     }
     
@@ -91,6 +146,118 @@ class TaviCommon {
         return removedArray
     }
     
+    static func addTimeView(tf: UITextField) -> UIView {
+        let view = UIView().then({
+            $0.backgroundColor = Asset.Color.monoWhite.color
+            $0.layer.cornerRadius = 8
+            $0.layer.masksToBounds = true
+            $0.layer.borderColor = Asset.Color.monoLight030.color.cgColor
+            $0.layer.borderWidth = 1
+        })
+        let clockIc = UIImageView().then({
+            $0.image = Asset.Icon.clockDark040.image
+        })
+        
+        let timeAddLbl = UILabel().then({
+            $0.text = "시간 추가"
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        let plusIc = UIImageView().then({
+            $0.image = Asset.Icon.plusFill.image
+        })
+        
+        view.addSubview(clockIc)
+        view.addSubview(timeAddLbl)
+        view.addSubview(plusIc)
+        view.addSubview(tf)
+        
+        clockIc.snp.makeConstraints({
+            $0.width.height.equalTo(16)
+            $0.leading.equalTo(view.snp.leading).offset(12)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        timeAddLbl.snp.makeConstraints({
+            $0.leading.equalTo(clockIc.snp.trailing).offset(10)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        plusIc.snp.makeConstraints({
+            $0.width.height.equalTo(18)
+            $0.trailing.equalTo(view.snp.trailing).offset(-11)
+            $0.centerY.equalTo(view.snp.centerY)
+        })
+        tf.snp.makeConstraints({
+            $0.edges.equalTo(view.snp.edges)
+        })
+        
+        return view
+    }
+
+    static func modifyInputView(contentsLbl: UILabel, tf: UITextField) -> UIView {
+        let view = UIView().then({
+            $0.backgroundColor = Asset.Color.monoLight010.color
+            $0.layer.cornerRadius = 8
+        })
+        _ = contentsLbl.then({
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        let modifyLbl = UILabel().then({
+            $0.textColor = Asset.Color.error.color
+            $0.text = "수정"
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        
+        view.addSubview(tf)
+        view.addSubview(contentsLbl)
+        view.addSubview(modifyLbl)
+        
+        contentsLbl.snp.makeConstraints({
+            $0.centerY.equalTo(view.snp.centerY)
+            $0.leading.equalTo(view.snp.leading).offset(16)
+        })
+        modifyLbl.snp.makeConstraints({
+            $0.centerY.equalTo(view.snp.centerY)
+            $0.trailing.equalTo(view.snp.trailing).offset(-14)
+        })
+        tf.snp.makeConstraints({
+            $0.edges.equalTo(view.snp.edges)
+        })
+        return view
+    }
+    
+    static func modifyBtnInputView(contentsLbl: UILabel, btn: UIButton) -> UIView {
+        let view = UIView().then({
+            $0.backgroundColor = Asset.Color.monoLight010.color
+            $0.layer.cornerRadius = 8
+        })
+        _ = contentsLbl.then({
+            $0.textColor = Asset.Color.monoDark010.color
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        let modifyLbl = UILabel().then({
+            $0.textColor = Asset.Color.error.color
+            $0.text = "수정"
+            $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        })
+        
+        view.addSubview(btn)
+        view.addSubview(contentsLbl)
+        view.addSubview(modifyLbl)
+        
+        contentsLbl.snp.makeConstraints({
+            $0.centerY.equalTo(view.snp.centerY)
+            $0.leading.equalTo(view.snp.leading).offset(16)
+        })
+        modifyLbl.snp.makeConstraints({
+            $0.centerY.equalTo(view.snp.centerY)
+            $0.trailing.equalTo(view.snp.trailing).offset(-14)
+        })
+        btn.snp.makeConstraints({
+            $0.edges.equalTo(view.snp.edges)
+        })
+        return view
+    }
 }
 
 extension UIViewController {
@@ -192,8 +359,9 @@ extension HomeView {
                 let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: self.todoList[index])
                 self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
             } else {
-                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: self.todoList[index], recommendHabitName: self.todoList[index].scheduleName)
-                self.navigator.show(seque: .detailHabit(viewModel: viewModel), sender: self, transition: .navigation)
+//                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: self.todoList[index], recommendHabitName: self.todoList[index].scheduleName)
+                let viewModel = DetailHabitViewModelNew(modify: true, homeViewModel: self.viewModel, todoModel: self.todoList[index])
+                self.navigator.show(seque: .detailHabitNew(viewModel: viewModel), sender: self)
             }
             backgroundView.removeFromSuperview()
         }).disposed(by: disposedBag)
@@ -552,4 +720,42 @@ extension Date {
         dateFormatter.dateFormat = "E"
         return dateFormatter.string(from: self)
     }
+}
+
+public enum ScrollDirection {
+    case top
+    case center
+    case bottom
+}
+extension UIScrollView {
+
+    func scroll(to direction: ScrollDirection) {
+        DispatchQueue.main.async {
+            switch direction {
+            case .top:
+                self.scrollToTop()
+            case .center:
+                self.scrollToCenter()
+            case .bottom:
+                self.scrollToBottom()
+            }
+        }
+    }
+    private func scrollToTop() {
+        setContentOffset(.zero, animated: true)
+    }
+
+    private func scrollToCenter() {
+        let centerOffset = CGPoint(x: 0, y: (contentSize.height - bounds.size.height) / 2)
+        setContentOffset(centerOffset, animated: true)
+    }
+
+    private func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + contentInset.bottom)
+        if(bottomOffset.y > 0) {
+            setContentOffset(bottomOffset, animated: true)
+        }
+    }
+    
+    
 }
