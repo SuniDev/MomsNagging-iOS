@@ -797,14 +797,14 @@ extension HomeView {
         })
         weekDayCollectionView.snp.makeConstraints({
             $0.top.equalTo(calendarDateLbl.snp.bottom).offset(20)
-            $0.leading.equalTo(view.snp.leading).offset(26)
-            $0.trailing.equalTo(view.snp.trailing).offset(-26)
+            $0.leading.equalTo(view.snp.leading).offset(20)
+            $0.trailing.equalTo(view.snp.trailing).offset(-20)
             $0.height.equalTo(12)
         })
         dayCollectionView.snp.makeConstraints({
             $0.top.equalTo(weekDayCollectionView.snp.bottom).offset(16)
-            $0.leading.equalTo(calendarView.snp.leading).offset(20)
-            $0.trailing.equalTo(calendarView.snp.trailing).offset(-20)
+            $0.leading.equalTo(calendarView.snp.leading).offset(16)
+            $0.trailing.equalTo(calendarView.snp.trailing).offset(-16)
             $0.height.equalTo(38 * 7)
         })
         
