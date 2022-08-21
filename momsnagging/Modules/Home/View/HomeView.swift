@@ -624,6 +624,7 @@ class HomeView: BaseViewController, Navigatable {
             }
         }.disposed(by: disposedBag)
         self.headCancel.rx.tap.bind {
+            self.moveListModel.removeAll()
             self.checkBtnInteractionEnable = true
             lazy var input = HomeViewModel.Input(floatingBtnStatus: nil, selectStatus: nil, listBtnAction: false)
             self.headBtnBind(input: input)
@@ -642,6 +643,7 @@ class HomeView: BaseViewController, Navigatable {
                 self.todoListTableView.dragInteractionEnabled = false
                 self.todoListTableView.reloadData()
             }
+            self.moveListModel.removeAll()
         }.disposed(by: disposedBag)
     }
     // MARK: - Other

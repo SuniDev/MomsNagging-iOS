@@ -363,6 +363,8 @@ extension HomeView {
         
         // 이동 처리
         todoListTableView.rx.itemMoved.bind { sIndexPath, dIndexPath in
+            
+//            self.moveListModel.removeAll()
             Log.debug("이동처리의 todo", "\(self.todoList)")
             
             let sRow = self.todoList[sIndexPath.row]
@@ -384,6 +386,8 @@ extension HomeView {
                     self.moveListModel.append(model)
                 }
             }
+            
+            Log.debug("정렬확인", self.moveListModel)
 //            var model = ScheduleArrayModel()
 //            model.oneOriginalId = self.todoList[sIndexPath.row].originalId ?? 0
 //            model.theOtherOriginalId = self.todoList[dIndexPath.row].originalId ?? 0
