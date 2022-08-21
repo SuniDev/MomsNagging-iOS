@@ -166,8 +166,12 @@ class PerformTimeSettingView: BaseViewController, Navigatable {
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
         })
+//        lblTextCount.snp.makeConstraints({
+//            $0.trailing.bottom.equalToSuperview()
+//        })
         lblTextCount.snp.makeConstraints({
-            $0.trailing.bottom.equalToSuperview()
+            $0.centerY.equalTo(lblTitle.snp.centerY)
+            $0.trailing.equalToSuperview()
         })
         
         lblTip.snp.makeConstraints({

@@ -46,6 +46,11 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         $0.isUserInteractionEnabled = false
     })
     
+    var textCountLbl = UILabel().then({
+        $0.textColor = UIColor(asset: Asset.Color.monoDark020)
+        $0.font = FontFamily.Pretendard.regular.font(size: 14)
+        $0.text = "0/30"
+    })
     // 습관이름
     var habitNameFocusFrame = UIView()
     var habitNameXbtn = UIButton().then({
@@ -244,6 +249,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         backgroundFrame.addSubview(habitNameTitle)
         backgroundFrame.addSubview(habitNameInputFrame)
         backgroundFrame.addSubview(habitNameXbtn)
+        backgroundFrame.addSubview(textCountLbl)
         backgroundFrame.addSubview(timeTitle)
         backgroundFrame.addSubview(timeInputFrame)
         backgroundFrame.addSubview(modifyTimeView)
@@ -302,6 +308,11 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             $0.top.equalTo(habitNameInputFrame.snp.top).offset(12)
             $0.width.height.equalTo(24)
             $0.trailing.equalTo(habitNameInputFrame.snp.trailing).offset(-8)
+        })
+        textCountLbl.snp.makeConstraints({
+            $0.centerY.equalTo(habitNameTitle.snp.centerY)
+            $0.trailing.equalTo(habitNameInputFrame.snp.trailing)
+            $0.height.equalTo(24)
         })
         
         timeTitle.snp.makeConstraints({
@@ -415,6 +426,13 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     override func bind() {
         habitNameTF.rx.text.subscribe(onNext: { text in
             self.requestParam.scheduleName = text
+            
+            if text?.count ?? 0 > 30 {
+                self.habitNameTF.text?.removeLast()
+            } else {
+                self.textCountLbl.text = "\(text?.count ?? 0)/30"
+            }
+            
             if text?.count != 0 {
                 self.habitNameXbtn.isHidden = false
             } else {
@@ -422,6 +440,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             }
             self.doneValidCheck()
         }).disposed(by: disposeBag)
+        
         
         viewModel?.habitInfoOb.subscribe(onNext: { info in
             self.requestParam.scheduleName = info.scheduleName

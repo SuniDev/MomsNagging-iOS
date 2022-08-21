@@ -196,10 +196,14 @@ class DetailTodoView: BaseViewController, Navigatable {
             $0.trailing.equalToSuperview().offset(-16)
         })
         
+//        textCountLbl.snp.makeConstraints({
+//            $0.top.equalTo(tfName.snp.bottom).offset(8)
+//            $0.trailing.equalTo(tfName.snp.trailing)
+//            $0.height.equalTo(20)
+//        })
         textCountLbl.snp.makeConstraints({
-            $0.top.equalTo(tfName.snp.bottom).offset(8)
-            $0.trailing.equalTo(tfName.snp.trailing)
-            $0.height.equalTo(20)
+            $0.centerY.equalTo(viewNameTitle.snp.centerY)
+            $0.trailing.equalTo(detailNameFrame.snp.trailing)
         })
         
         /// 수행 시간
