@@ -82,8 +82,7 @@ class DiaryView: BaseViewController, Navigatable {
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 9
         layout.minimumLineSpacing = 0
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 40 - (9 * 6)) / 7, height: 12
-        )
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 41 - (9 * 6)) / 7, height: 12)
         return layout
     }
     /// 월간 달력의 일(1 ~ 28,29,30,31)에 해당하는 셀 레이아웃
@@ -93,7 +92,7 @@ class DiaryView: BaseViewController, Navigatable {
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 9
         layout.minimumLineSpacing = 22
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 40 - (9 * 6)) / 7, height: 40)
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 41 - (9 * 6)) / 7, height: 40)
         return layout
     }
     

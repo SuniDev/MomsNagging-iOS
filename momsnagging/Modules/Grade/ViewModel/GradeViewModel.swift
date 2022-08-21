@@ -29,7 +29,6 @@ class GradeViewModel: ViewModel, ViewModelType {
     // MARK: - Input
     struct Input {
         let willApearView: Driver<Void>
-        let viewTapped: Driver<Void>
         
         // 탭
         let tabCalendar: Driver<Void>
@@ -51,6 +50,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         let btnNextTapped: Driver<Void>
         /// 달력 팁
         let btnTipTapped: Driver<Void>
+        let viewTipBackTapped: Driver<Void>
         
         // 통계 - 월간 평가
         /// 캘린더 데이터
@@ -108,7 +108,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         /// 성적표 통게 개수
         let countStt: Driver<Int>
         /// 팁 숨기기
-        let hideTip: Driver<Void>
+//        let hideTip: Driver<Void>
         
         // 상장
         let showAward: Driver<AwardViewModel>
@@ -141,8 +141,9 @@ class GradeViewModel: ViewModel, ViewModelType {
                 requestStatisticsTrigger.onNext(())
             }).disposed(by: disposeBag)
         
-        input.willApearView
-            .drive(onNext: {
+        let willApearView = input.willApearView.asObservable().share()
+        willApearView
+            .subscribe(onNext: {
                 requestStatisticsTrigger.onNext(())
             }).disposed(by: disposeBag)
         
@@ -342,7 +343,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 달력 Tip
         let isHiddenTip = BehaviorRelay<Bool>(value: true)
         
-        tabStatistics
+        Observable.merge(tabStatistics, input.viewTipBackTapped.asObservable(), willApearView)
             .subscribe(onNext: {
                 if !isHiddenTip.value {
                     isHiddenTip.accept(true)
@@ -374,7 +375,6 @@ class GradeViewModel: ViewModel, ViewModelType {
                     sttItems: sttItems,
                     countTogether: countTogether.asDriverOnErrorJustComplete(),
                     countStt: countStt.asDriverOnErrorJustComplete(),
-                    hideTip: input.viewTapped,
                     showAward: showAward.asDriver()
         )
     }
@@ -475,8 +475,8 @@ extension GradeViewModel {
             
             items.append(StatisticsItem(title: "전체 수행", tip: Asset.Assets.gradeTip1.image, data: "\(data.fullDoneCount ?? 0)", suffix: "일"))
             items.append(StatisticsItem(title: "일부 수행", tip: Asset.Assets.gradeTip2.image, data: "\(data.partialDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "습관 수행", tip: Asset.Assets.gradeTip3.image, data: "\(data.routineDoneCount ?? 0)", suffix: "일"))
-            items.append(StatisticsItem(title: "할일 수행", tip: Asset.Assets.gradeTip4.image, data: "\(data.todoDoneCount ?? 0)", suffix: "일"))
+            items.append(StatisticsItem(title: "습관 수행", tip: Asset.Assets.gradeTip3.image, data: "\(data.routineDoneCount ?? 0)", suffix: "회"))
+            items.append(StatisticsItem(title: "할일 수행", tip: Asset.Assets.gradeTip4.image, data: "\(data.todoDoneCount ?? 0)", suffix: "회"))
             items.append(StatisticsItem(title: "일기 작성", tip: Asset.Assets.gradeTip5.image, data: "\(data.diaryCount ?? 0)", suffix: "번"))
             items.append(StatisticsItem(title: "평균 수행률", tip: Asset.Assets.gradeTip6.image, data: "\(data.performanceAvg ?? 0)", suffix: "%"))
             

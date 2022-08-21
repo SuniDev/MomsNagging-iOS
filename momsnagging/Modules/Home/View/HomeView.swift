@@ -197,9 +197,9 @@ class HomeView: BaseViewController, Navigatable {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 32.83
+        layout.minimumInteritemSpacing = 9
         layout.minimumLineSpacing = 0
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 52 - (32.83 * 6)) / 7, height: 18)
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 41 - (9 * 6)) / 7, height: 12)
         return layout
     }
     /// 월간 달력의 일(1 ~ 28,29,30,31)에 해당하는 셀 레이아웃
@@ -207,9 +207,9 @@ class HomeView: BaseViewController, Navigatable {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 23
+        layout.minimumInteritemSpacing = 9
         layout.minimumLineSpacing = 10
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 42 - (23 * 6)) / 7, height: 28)
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 41 - (9 * 6)) / 7, height: 28)
         return layout
     }
     
@@ -797,8 +797,8 @@ extension HomeView {
         })
         weekDayCollectionView.snp.makeConstraints({
             $0.top.equalTo(calendarDateLbl.snp.bottom).offset(20)
-            $0.leading.equalTo(view.snp.leading).offset(26)
-            $0.trailing.equalTo(view.snp.trailing).offset(-26)
+            $0.leading.equalTo(view.snp.leading).offset(20)
+            $0.trailing.equalTo(view.snp.trailing).offset(-20)
             $0.height.equalTo(12)
         })
         dayCollectionView.snp.makeConstraints({
