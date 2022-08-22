@@ -18,6 +18,7 @@ enum ScheduleService {
     case sortingTodoList(param: Array<ScheduleArrayModel>)
     case recommendedHabitCategoryLookUp
     case recommnededHabitListLookUp(categoryId: Int)
+    case remainSkipDays(scheduleId: Int)
 }
 
 extension ScheduleService: TargetType {
@@ -43,6 +44,8 @@ extension ScheduleService: TargetType {
             return "schedules/categories"
         case .recommnededHabitListLookUp(categoryId: let id):
             return "schedules/categories/\(id)"
+        case .remainSkipDays(scheduleId: let id):
+            return "schedules/\(id)/remainSkipDays"
         }
     }
     
@@ -64,6 +67,8 @@ extension ScheduleService: TargetType {
             return .get
         case .recommnededHabitListLookUp:
             return .get
+        case .remainSkipDays:
+            return .get
         }
     }
     
@@ -84,6 +89,8 @@ extension ScheduleService: TargetType {
         case .recommendedHabitCategoryLookUp:
             return .requestPlain
         case .recommnededHabitListLookUp:
+            return .requestPlain
+        case .remainSkipDays:
             return .requestPlain
         }
     }
@@ -112,6 +119,9 @@ extension ScheduleService: TargetType {
             return ["Content-Type": "application/json",
                     "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         case .recommnededHabitListLookUp:
+            return ["Content-Type": "application/json",
+                    "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
+        case .remainSkipDays:
             return ["Content-Type": "application/json",
                     "Authorization": "Bearer \(CommonUser.authorization ?? "")"]
         }

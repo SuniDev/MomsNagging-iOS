@@ -78,6 +78,8 @@
 		8F334E2B2830BEB100E731E8 /* RecommendedHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F334E282830BEB100E731E8 /* RecommendedHabitView.swift */; };
 		8F334E2D2830DAC700E731E8 /* RecommendedHabitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F334E2C2830DAC700E731E8 /* RecommendedHabitCell.swift */; };
 		8F334E362831109100E731E8 /* GradeWeekDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F334E352831109100E731E8 /* GradeWeekDayCell.swift */; };
+		8F4682C228ADDE210064C34E /* DetailHabitViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4682C128ADDE210064C34E /* DetailHabitViewNew.swift */; };
+		8F4682C428ADDE300064C34E /* DetailHabitViewModelNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4682C328ADDE300064C34E /* DetailHabitViewModelNew.swift */; };
 		8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E72E27D8A89F008CDC22 /* CommonView.swift */; };
 		8F82E73127D8AA9C008CDC22 /* ApiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E73027D8AA9C008CDC22 /* ApiList.swift */; };
 		8F8D11D62826225300E7DA6C /* FloatingBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8D11D52826225300E7DA6C /* FloatingBtn.swift */; };
@@ -257,6 +259,8 @@
 		8F334E282830BEB100E731E8 /* RecommendedHabitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendedHabitView.swift; sourceTree = "<group>"; };
 		8F334E2C2830DAC700E731E8 /* RecommendedHabitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedHabitCell.swift; sourceTree = "<group>"; };
 		8F334E352831109100E731E8 /* GradeWeekDayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeWeekDayCell.swift; sourceTree = "<group>"; };
+		8F4682C128ADDE210064C34E /* DetailHabitViewNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewNew.swift; sourceTree = "<group>"; };
+		8F4682C328ADDE300064C34E /* DetailHabitViewModelNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewModelNew.swift; sourceTree = "<group>"; };
 		8F82E72E27D8A89F008CDC22 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
 		8F82E73027D8AA9C008CDC22 /* ApiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiList.swift; sourceTree = "<group>"; };
 		8F8D11D52826225300E7DA6C /* FloatingBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBtn.swift; sourceTree = "<group>"; };
@@ -777,6 +781,31 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		8F4682BE28ADD68B0064C34E /* HabitNew */ = {
+			isa = PBXGroup;
+			children = (
+				8F4682C028ADD6A40064C34E /* View */,
+				8F4682BF28ADD6A10064C34E /* ViewModel */,
+			);
+			path = HabitNew;
+			sourceTree = "<group>";
+		};
+		8F4682BF28ADD6A10064C34E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8F4682C328ADDE300064C34E /* DetailHabitViewModelNew.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8F4682C028ADD6A40064C34E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8F4682C128ADDE210064C34E /* DetailHabitViewNew.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		8F6BCB2627D89E840038B020 /* Release */ = {
 			isa = PBXGroup;
 			children = (
@@ -1084,6 +1113,7 @@
 				8F22F81D281D08E600AB4180 /* Home */,
 				8F1F939A27EC8975000F08AF /* Calendar */,
 				86523C9E2824F44C00F243A8 /* Habit */,
+				8F4682BE28ADD68B0064C34E /* HabitNew */,
 				8F334E222830BEB100E731E8 /* RecommendedHabit */,
 				863A556428321BBA00995BC9 /* Todo */,
 				8F927A552824D52A000FFA75 /* Diary */,
@@ -1574,6 +1604,7 @@
 				A0B114D5289A97D1000BA7E4 /* CommonAnalytics.swift in Sources */,
 				8677C734282B469700709F99 /* PerformTimeGuideCell.swift in Sources */,
 				8F22F836281D0B4400AB4180 /* MyViewModel.swift in Sources */,
+				8F4682C428ADDE300064C34E /* DetailHabitViewModelNew.swift in Sources */,
 				A06BB35127F0D18B005727AD /* Navigator.swift in Sources */,
 				A06BB35527F0D216005727AD /* LoginViewModel.swift in Sources */,
 				866F2C30283F4B5D004B5691 /* SNSLogin.swift in Sources */,
@@ -1637,6 +1668,7 @@
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
 				866F2C32283F516A004B5691 /* NetworkLoggerPlugin.swift in Sources */,
 				866F2C2A283F44EB004B5691 /* Single+Response.swift in Sources */,
+				8F4682C228ADDE210064C34E /* DetailHabitViewNew.swift in Sources */,
 				86D4BE2727F6835C00E9EE8B /* OSLog+Extension.swift in Sources */,
 				8F22F82E281D0B1200AB4180 /* HomeModel.swift in Sources */,
 				A0B581AE282797810099C9BA /* RecommendHabitTitleCell.swift in Sources */,

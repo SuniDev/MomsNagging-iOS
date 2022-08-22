@@ -59,6 +59,11 @@ class MainContainerView: BaseViewController, Navigatable {
     var bottomTabbar = UIView()
     var inView = UIView()
     var containerView: UIContentContainer?
+    
+    let divider = UIView().then({
+        $0.backgroundColor = Asset.Color.monoDark040.color
+    })
+    
     // MARK: - InitUI
     override func initUI() {
 //        view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
@@ -76,11 +81,19 @@ class MainContainerView: BaseViewController, Navigatable {
     override func layoutSetting() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
         view.addSubview(bottomTabbar)
+        view.addSubview(divider)
         bottomTabbar.snp.makeConstraints({
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-60)
             $0.leading.equalTo(view.snp.leading)
             $0.trailing.equalTo(view.snp.trailing)
             $0.bottom.equalTo(view.snp.bottom)
+        })
+        divider.snp.makeConstraints({
+            $0.height.equalTo(1)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+            $0.top.equalTo(bottomTabbar.snp.top)
+            
         })
     }
     

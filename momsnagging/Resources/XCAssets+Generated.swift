@@ -194,6 +194,7 @@ internal enum Asset {
     internal static let todoNonSelect = ImageAsset(name: "todoNonSelect")
     internal static let todoSelect = ImageAsset(name: "todoSelect")
     internal static let x = ImageAsset(name: "x")
+    internal static let xCircleHabitName = ImageAsset(name: "xCircleHabitName")
     internal static let xFloating = ImageAsset(name: "xFloating")
     internal static let xCircle = ImageAsset(name: "x_circle")
   }

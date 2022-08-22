@@ -12,6 +12,7 @@ import UIKit
 import Moya
 import SwiftyJSON
 
+var skipCount = PublishSubject<Int>()
 class HomeViewModel: BaseViewModel, ViewModelType {
     
     // MARK: Properties
@@ -374,6 +375,23 @@ extension HomeViewModel {
             case .failure(let error):
                 Log.error("requestArray failure error", "\(error)")
                 LoadingHUD.hide()
+            }
+        })
+    }
+    
+    func requestRemainSkip(scheduleId: Int) {
+        provider.request(.remainSkipDays(scheduleId: scheduleId), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("remainSkipDays json : \(json)")
+                    skipCount.onNext(json.intValue)
+                } catch let error {
+                    Log.error("deleteTodo error", "\(error)")
+                }
+            case .failure(let error):
+                Log.error("deleteTodo failure error", "\(error)")
             }
         })
     }
