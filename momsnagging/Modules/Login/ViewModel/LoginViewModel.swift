@@ -186,7 +186,7 @@ class LoginViewModel: ViewModel, ViewModelType {
         setUser
             .flatMapLatest { _ -> Observable<GradeLastWeek> in
                 return self.requestLastWeek()
-            }.map { $0.new ?? false }
+            }.map { $0.newGrade ?? false }
             .subscribe(onNext: { new in
                 CommonUser.isNewEvaluation = new
             }).disposed(by: disposeBag)
