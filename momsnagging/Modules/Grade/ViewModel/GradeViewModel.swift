@@ -129,10 +129,13 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 통계 - 성적표 통계 트리거
         let requestStatisticsTrigger = PublishSubject<Void>()
         
-        self.mainTabHandler.skip(1)
-            .distinctUntilChanged()
-            .filter({ $0 == 1 })
-            .mapToVoid()
+        let gradeTabHandler = self.mainTabHandler
+                        .distinctUntilChanged()
+                        .filter({ $0 == 1 })
+                        .mapToVoid()
+                        .share()
+        
+        gradeTabHandler
             .subscribe(onNext: {
                 setCalendarDate.accept(setCalendarDate.value)
                 dayList.accept(dayList.value)
@@ -201,7 +204,7 @@ class GradeViewModel: ViewModel, ViewModelType {
             }).disposed(by: disposeBag)
         
         // 캘린더 API Request
-        let requestCalendarDate = setCalendarDate.debug()
+        let requestCalendarDate = setCalendarDate
             .flatMapLatest { date -> Observable<GradeCalendar> in
                 self.isLoading.accept(true)
                 return self.requestGradeCalendar(year: date.year, month: date.month)
@@ -343,7 +346,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 달력 Tip
         let isHiddenTip = BehaviorRelay<Bool>(value: true)
         
-        Observable.merge(tabStatistics, input.viewTipBackTapped.asObservable(), willApearView)
+        Observable.merge(tabStatistics, input.viewTipBackTapped.asObservable(), gradeTabHandler)
             .subscribe(onNext: {
                 if !isHiddenTip.value {
                     isHiddenTip.accept(true)
