@@ -69,12 +69,14 @@ class IntroView: BaseViewController, Navigatable {
     override func bind() {
         guard let viewModel = viewModel else { return }
         
+        let getppUpdateStatusHandler = PublishRelay<Void>()
         let foreceUpdatePopupHandler = PublishRelay<Void>()
         let selectUpdatePopupHandler = PublishRelay<Bool>()
         
         let input = IntroViewModel.Input(willAppearIntro: rx.viewWillAppear.mapToVoid().asDriverOnErrorJustComplete(),
                                          foreceUpdatePopupHandler: foreceUpdatePopupHandler.asDriverOnErrorJustComplete(),
-                                         selectUpdatePopupHandler: selectUpdatePopupHandler.asDriverOnErrorJustComplete())
+                                         selectUpdatePopupHandler: selectUpdatePopupHandler.asDriverOnErrorJustComplete(),
+                                         getppUpdateStatusHandler: getppUpdateStatusHandler.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
         output.forceUpdateStatus
@@ -117,7 +119,7 @@ class IntroView: BaseViewController, Navigatable {
         
         output.goToForceUpdate
             .drive(onNext: {
-                Common.moveAppStore(){
+                Common.moveAppStore() {
                     NotificationCenter.default.post(name: NSNotification.Name("UIApplicationWillTerminateNotification"), object: nil)
                     exit(0)
                 }
@@ -126,6 +128,15 @@ class IntroView: BaseViewController, Navigatable {
         output.goToSelectUpdate
             .drive(onNext: {
                 Common.moveAppStore()
+            }).disposed(by: disposeBag)
+        
+        output.networkError
+            .drive(onNext: {
+                CommonView.showNetworkAlert(vc: self) {
+                    getppUpdateStatusHandler.accept(())
+                } cancelHandler: {
+                    
+                }
             }).disposed(by: disposeBag)
         
     }

@@ -27,6 +27,8 @@ class IntroViewModel: ViewModel, ViewModelType {
         /// 업데이트 핸들러
         let foreceUpdatePopupHandler: Driver<Void>
         let selectUpdatePopupHandler: Driver<Bool>
+        /// 업데이트 상태 핸들러
+        let getppUpdateStatusHandler: Driver<Void>
     }
     
     // MARK: - Output
@@ -44,17 +46,18 @@ class IntroViewModel: ViewModel, ViewModelType {
         let goToForceUpdate: Driver<Void>
         /// 선택 업데이트
         let goToSelectUpdate: Driver<Void>
+        /// 네트워크 오류
+        let networkError: Driver<Void>
     }
     
     // MARK: - transform
     func transform(input: Input) -> Output {
         
         // MARK: - App Update Status
-        let appUpdateStatus = input.willAppearIntro
-            .asObservable()
-            .flatMapLatest { () -> Observable<AppUpdateStatus> in
-                return self.getAppUpdateStatus()
-            }.share()
+        let appUpdateStatus = Observable.merge(input.willAppearIntro.asObservable(), input.getppUpdateStatusHandler.asObservable())
+                .flatMapLatest { () -> Observable<AppUpdateStatus> in
+                    return self.getAppUpdateStatus()
+                }.share()
         
         let forceUpdateStatus = appUpdateStatus
             .filter { status in status == .forceUpdate }
@@ -63,6 +66,11 @@ class IntroViewModel: ViewModel, ViewModelType {
         
         let selectUpdateStatus = appUpdateStatus
             .filter { status in status == .selectUpdate }
+            .mapToVoid()
+            .asDriverOnErrorJustComplete()
+        
+        let networkError = appUpdateStatus
+            .filter { status in status == .error }
             .mapToVoid()
             .asDriverOnErrorJustComplete()
         
@@ -151,7 +159,8 @@ class IntroViewModel: ViewModel, ViewModelType {
                       goToLogin: goToLogin.asDriverOnErrorJustComplete(),
                       goToMain: goToMain.asDriverOnErrorJustComplete(),
                       goToForceUpdate: input.foreceUpdatePopupHandler,
-                      goToSelectUpdate: selectUpdate.asDriverOnErrorJustComplete())
+                      goToSelectUpdate: selectUpdate.asDriverOnErrorJustComplete(),
+                      networkError: networkError)
     }
 }
 

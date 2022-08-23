@@ -199,12 +199,22 @@ class CommonView {
     }
     
     static func showNetworkAlert(vc: UIViewController, doneHandler:(() -> Void)? = nil) {
-        
         CommonView.showAlert(vc: vc,
                              type: .oneBtn,
                              title: "",
                              message: STR_NETWORK_ERROR_MESSAGE,
                              doneTitle: STR_DONE,
+                             doneHandler: doneHandler)
+    }
+    
+    static func showNetworkAlert(vc: UIViewController, doneHandler:(() -> Void)? = nil, cancelHandler:(() -> Void)? = nil) {
+        CommonView.showAlert(vc: vc,
+                             type: .twoBtn,
+                             title: "",
+                             message: STR_NETWORK_ERROR_MESSAGE,
+                             cancelTitle: STR_NO,
+                             doneTitle: STR_YES,
+                             cancelHandler: cancelHandler,
                              doneHandler: doneHandler)
     }
     
