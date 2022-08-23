@@ -364,37 +364,58 @@ extension HomeView {
         // 이동 처리
         todoListTableView.rx.itemMoved.bind { sIndexPath, dIndexPath in
             
-//            self.moveListModel.removeAll()
-            Log.debug("이동처리의 todo", "\(self.todoList)")
-            
-            let sRow = self.todoList[sIndexPath.row]
-            let dRow = self.todoList[dIndexPath.row]
             let sIndex = sIndexPath.row
             let dIndex = dIndexPath.row
+                        
+            // suni. 이동 처리 refactor
+            var min = 0
+            var max = 0
+            var currentMoveList = [ScheduleArrayModel]()
             
-            if dIndex > sIndex { // 위에서 밑으로
-                let count = -(sIndex - dIndex)
-                for i in sIndex + 1...count {
-                    var model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
-                    self.moveListModel.append(model)
+            if sIndex < dIndex {
+                // 위에서 아래로
+                min = sIndex + 1
+                max = dIndex
+                
+                for i in min...max {
+                    let model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
+                    currentMoveList.append(model)
                 }
-            } else if dIndex < sIndex { // 밑에서 위로
-                print("밑에서 위로 \(sIndex - dIndex)")
-                let count = sIndex - dIndex
-                for i in (0...count - 1).reversed() {
-                    var model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
-                    self.moveListModel.append(model)
+            } else if sIndex > dIndex {
+                // 아래에서 위로
+                min = dIndex
+                max = sIndex - 1
+                
+                for i in (min...max).reversed() {
+                    let model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
+                    currentMoveList.append(model)
                 }
             }
             
-            Log.debug("정렬확인", self.moveListModel)
-//            var model = ScheduleArrayModel()
-//            model.oneOriginalId = self.todoList[sIndexPath.row].originalId ?? 0
-//            model.theOtherOriginalId = self.todoList[dIndexPath.row].originalId ?? 0
-//            self.moveListModel.append(model)
-//            self.moveList[sIndexPath.row] = dRow
-//            self.moveList[dIndexPath.row] = sRow
-//            print("moveRowAt ! \(sIndexPath),\(dIndexPath),\n \(self.todoList),\n\n \(self.moveList)")
+            if self.moveListModel.count > 0 {
+                let beforeMoveList = self.moveListModel
+                self.moveListModel = currentMoveList
+                self.moveListModel.append(contentsOf: beforeMoveList)
+            } else {
+                self.moveListModel.append(contentsOf: currentMoveList)
+            }
+            
+//            let count = sIndex - dIndex
+            
+//            if dIndex > sIndex { // 위에서 밑으로
+//                let count = sIndex - dIndex + 1
+//                for i in (sIndex)...count {
+//                    let model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
+//                    self.moveListModel.append(model)
+//                }
+//            } else if dIndex < sIndex { // 밑에서 위로
+//                let count = dIndex - sIndex + 1
+//                for i in (0...count - 1).reversed() {
+//                    let model = ScheduleArrayModel(oneOriginalId: self.todoList[sIndex].originalId ?? 0, theOtherOriginalId: self.todoList[i].originalId ?? 0)
+//                    self.moveListModel.append(model)
+//                }
+//            }
+//
         }.disposed(by: disposedBag)
         
         viewModel.emptyViewStatusOb.subscribe(onNext: { bool in
