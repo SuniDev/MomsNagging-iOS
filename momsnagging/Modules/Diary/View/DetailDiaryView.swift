@@ -308,6 +308,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
             }).disposed(by: disposeBag)
         
         output.selectedDayIndex
+            .filter { $0 != -1 }
             .drive(onNext: { index in
                 self.dayCollectionView.selectItem(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .top)
             }).disposed(by: disposeBag)
@@ -344,7 +345,6 @@ class DetailDiaryView: BaseViewController, Navigatable {
                 self.tfTitle.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
                 
                 self.tvContents.isEditable = isWriting
-//                self.tvContents.textColor = isWriting ? Asset.Color.monoDark010.color : Asset.Color.monoDark020.color
             }).disposed(by: disposeBag)
         
         /// 뒤로 가기
@@ -425,23 +425,7 @@ class DetailDiaryView: BaseViewController, Navigatable {
                 })
                 self.view.layoutIfNeeded()
             }).disposed(by: disposeBag)
-        
-        // MARK: - 캘린더 UI: bind
-//        dayCollectionView.rx.itemSelected.subscribe(onNext: { indexPath in
-//            let cell = self.dayCollectionView.cellForItem(at: [0, indexPath.row]) as? HomeCalendarCell
-//            var day: String = cell?.number.text ?? ""
-//            var month: String = "\(self.calendarMonth ?? 0)"
-//            if Int(day)! < 10 {
-//                day = "0\(day)"
-//            }
-//            if self.calendarMonth ?? 0 < 10 {
-//                month = "0\(self.calendarMonth ?? 0)"
-//            }
-//            self.selectDate = "\(self.calendarYear ?? 0)\(month)\(day)"
-//            self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
-//            self.selectMonth = self.dateCheck
-//        }).disposed(by: disposeBag)
-        
+                
         // MARK: - 캘린더 UI: Action Bind
         // dropDown Ic ClickEvent
         headDropDownBtn.rx.tap.bind(onNext: { _ in

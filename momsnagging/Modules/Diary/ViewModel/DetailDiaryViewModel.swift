@@ -14,6 +14,8 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
     var disposeBag = DisposeBag()
     private let selectedDate: BehaviorRelay<String>
     
+    private let selectedDayIndex = BehaviorRelay<Int>(value: -1)
+    
     // TODO: Diary 날짜 받기
     init(withService provider: AppServices, selectedDate: String) {
         self.selectedDate = BehaviorRelay<String>(value: selectedDate)
@@ -95,6 +97,10 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
     }
     
     func transform(input: Input) -> Output {
+        self.selectedDayIndex
+            .subscribe(onNext: { index in
+                Log.debug("indexindexindexindex", index)
+            }).disposed(by: disposeBag)
         let isWriting = BehaviorRelay<Bool>(value: false)
         let contentsPlaceHolder = BehaviorRelay<String>(value: "")
         
@@ -158,28 +164,28 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
         input.loadDayList
             .asObservable()
             .flatMapLatest { arrStrDay -> Observable<[DetailDiaryDayItem]> in
-                return self.getDayItems(arrStrDay: arrStrDay, date: setCalendarDate.value)
+                return self.getDayItems(arrStrDay: arrStrDay, date: setCalendarDate.value, selectedDate: selectedDate.value)
             }.subscribe(onNext: { items in
                 dayItems.accept(items)
             }).disposed(by: disposeBag)
         
         let selectedDayTriggerIndex = BehaviorRelay<Int>(value: -1)
         let cancelSelectedDayIndex = BehaviorRelay<Int>(value: -1)
-        let selectedDayIndex = BehaviorRelay<Int>(value: 0)
         
          input.dayItemsSelected
              .drive(onNext: { indexPath in
-                 if indexPath.row != selectedDayIndex.value {
+                 if indexPath.row != self.selectedDayIndex.value {
                      selectedDayTriggerIndex.accept(indexPath.row)
                  }
              }).disposed(by: disposeBag)
         
         selectedDayTriggerIndex.skip(1)
             .subscribe(onNext: { _ in
-                cancelSelectedDayIndex.accept(selectedDayIndex.value)
+                cancelSelectedDayIndex.accept(self.selectedDayIndex.value)
             }).disposed(by: disposeBag)
         
-        selectedDayIndex.skip(1)
+        self.selectedDayIndex
+            .filter { $0 != -1 }
             .subscribe(onNext: { index in
                 if cancelSelectedDayIndex.value == -1 {
                     let model = dayItems.value[index]
@@ -206,13 +212,13 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                          dateChangeAlertHandler.filter { $0 == true })
             .subscribe(onNext: { _ in
                 cancelSelectedDayIndex.accept(-1)
-                selectedDayIndex.accept(selectedDayTriggerIndex.value)
+                self.selectedDayIndex.accept(selectedDayTriggerIndex.value)
             }).disposed(by: disposeBag)
         
         dateChangeAlertHandler
             .filter { $0 == false }
             .subscribe(onNext: { _ in
-                selectedDayIndex.accept(cancelSelectedDayIndex.value)
+                self.selectedDayIndex.accept(cancelSelectedDayIndex.value)
             }).disposed(by: disposeBag)
                 
         let requestGetDiary = selectedDate
@@ -413,7 +419,7 @@ class DetailDiaryViewModel: ViewModel, ViewModelType {
                       setLastMonth: setLastMonth.asDriverOnErrorJustComplete(),
                       setNextMonth: setNextMonth.asDriverOnErrorJustComplete(),
                       showDateChangeAlert: showDateChangeAlert.asDriverOnErrorJustComplete(),
-                      selectedDayIndex: selectedDayIndex.asDriverOnErrorJustComplete(),
+                      selectedDayIndex: self.selectedDayIndex.asDriverOnErrorJustComplete(),
                       showBottomSheet: input.btnMoreTapped,
                       hideBottomSheet: hideBottomSheet.asDriverOnErrorJustComplete(),
                       isWriting: isWriting.asDriverOnErrorJustComplete(),
@@ -474,10 +480,10 @@ extension DetailDiaryViewModel {
     
 }
 extension DetailDiaryViewModel {
-    func getDayItems(arrStrDay: [String], date: CalendarDate) -> Observable<[DetailDiaryDayItem]> {
+    func getDayItems(arrStrDay: [String], date: CalendarDate, selectedDate: String? = nil) -> Observable<[DetailDiaryDayItem]> {
         return Observable<[DetailDiaryDayItem]>.create { observer -> Disposable in
             var dayItems = [DetailDiaryDayItem]()
-            for strDay in arrStrDay {
+            for (i, strDay) in arrStrDay.enumerated() {
                 let now = Date().to(for: "yyyy-MM-dd")
                 
                 var dayItem: DetailDiaryDayItem
@@ -490,6 +496,10 @@ extension DetailDiaryViewModel {
                     let strDate = self.getStrDate(date: date)
                     dayItem = DetailDiaryDayItem(strDay: strDay, strDate: strDate, isToday: false, isThisMonth: true)
                     dayItem.isToday = strDate == now.toString(for: "yyyy-MM-dd")
+                    
+                    if let selectedDate = selectedDate, selectedDate == strDate {
+                        self.selectedDayIndex.accept(i)
+                    }
                 }
                 dayItems.append(dayItem)
             }
