@@ -127,16 +127,6 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 통계 - 성적표 통계 트리거
         let requestStatisticsTrigger = PublishSubject<Void>()
         
-//        let gradeTabHandler = self.mainTabHandler
-//                        .distinctUntilChanged()
-//                        .filter({ $0 == 1 })
-//                        .mapToVoid()
-//                        .share()
-//
-//        gradeTabHandler
-//            .subscribe(onNext: {
-//            }).disposed(by: disposeBag)
-        
         let willApearView = input.willApearView.asObservable().share()
         willApearView
             .subscribe(onNext: {
@@ -253,6 +243,11 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 통계 탭
         let tabStatistics = input.tabStatistics.asObservable().share()
         
+        tabStatistics
+            .subscribe(onNext: {
+                requestStatisticsTrigger.onNext(())
+            }).disposed(by: disposeBag)
+        
         // 다음 달
         let setSttLastMonth = input.btnSttPrevTapped.asObservable()
             .map { _ -> CalendarDate in
@@ -356,7 +351,7 @@ class GradeViewModel: ViewModel, ViewModelType {
             .drive(onNext: {
                 isHiddenTip.accept(!isHiddenTip.value)
             }).disposed(by: disposeBag)
-        
+                
         return Output(
                     tabCalendar: input.tabCalendar,
                     tabStatistics: tabStatistics.asDriverOnErrorJustComplete(),
