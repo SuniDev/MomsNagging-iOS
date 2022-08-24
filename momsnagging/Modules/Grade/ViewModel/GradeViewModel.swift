@@ -17,8 +17,6 @@ class GradeViewModel: ViewModel, ViewModelType {
     var disposeBag = DisposeBag()
     var scheduleService = MoyaProvider<ScheduleService>()
     let mainTabHandler: PublishRelay<Int>
-//    var reportListData: [ReportModel] = []
-//    var cellCount: Int = -1
     
     // MARK: - init
     init(withService provider: AppServices, mainTabHandler: PublishRelay<Int>) {
@@ -129,24 +127,24 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 통계 - 성적표 통계 트리거
         let requestStatisticsTrigger = PublishSubject<Void>()
         
-        let gradeTabHandler = self.mainTabHandler
-                        .distinctUntilChanged()
-                        .filter({ $0 == 1 })
-                        .mapToVoid()
-                        .share()
-        
-        gradeTabHandler
-            .subscribe(onNext: {
-                setCalendarDate.accept(setCalendarDate.value)
-                dayList.accept(dayList.value)
-                selectedDate.accept(selectedDate.value)
-                setSttCalendarDate.accept(setSttCalendarDate.value)
-                requestStatisticsTrigger.onNext(())
-            }).disposed(by: disposeBag)
+//        let gradeTabHandler = self.mainTabHandler
+//                        .distinctUntilChanged()
+//                        .filter({ $0 == 1 })
+//                        .mapToVoid()
+//                        .share()
+//
+//        gradeTabHandler
+//            .subscribe(onNext: {
+//            }).disposed(by: disposeBag)
         
         let willApearView = input.willApearView.asObservable().share()
         willApearView
             .subscribe(onNext: {
+                setCalendarDate.accept(setCalendarDate.value)
+                selectedDate.accept(selectedDate.value)
+                
+                setSttCalendarDate.accept(setSttCalendarDate.value)
+                dayList.accept(dayList.value)
                 requestStatisticsTrigger.onNext(())
             }).disposed(by: disposeBag)
         
@@ -224,7 +222,8 @@ class GradeViewModel: ViewModel, ViewModelType {
         
         let dayItems = Observable.zip(dayList.asObservable(), arrDay)
             .flatMapLatest { arrStrDay, arrDay -> Observable<[GradeDayItem]> in
-                return self.getDayItems(arrStrDay: arrStrDay, arrDay: arrDay)
+                let strSelecteDate = selectedDate.value.isEmpty ? nil : selectedDate.value
+                return self.getDayItems(arrStrDay: arrStrDay, arrDay: arrDay, selectedDate: strSelecteDate)
             }.share()
         
         // 캘린더 날짜 개수
@@ -346,7 +345,7 @@ class GradeViewModel: ViewModel, ViewModelType {
         // 달력 Tip
         let isHiddenTip = BehaviorRelay<Bool>(value: true)
         
-        Observable.merge(tabStatistics, input.viewTipBackTapped.asObservable(), gradeTabHandler)
+        Observable.merge(tabStatistics, input.viewTipBackTapped.asObservable(), willApearView)
             .subscribe(onNext: {
                 if !isHiddenTip.value {
                     isHiddenTip.accept(true)
@@ -385,7 +384,7 @@ class GradeViewModel: ViewModel, ViewModelType {
 
 extension GradeViewModel {
     
-    func getDayItems(arrStrDay: [String], arrDay: [GradeDay]) -> Observable<[GradeDayItem]> {
+    func getDayItems(arrStrDay: [String], arrDay: [GradeDay], selectedDate: String? = nil) -> Observable<[GradeDayItem]> {
         return Observable<[GradeDayItem]>.create { observer -> Disposable in
             var dayItems = [GradeDayItem]()
             var cntDay = 0
@@ -406,6 +405,10 @@ extension GradeViewModel {
                     
                     if let strDate = day.date {
                         dayItem.isToday = strDate == now.toString(for: "yyyy-MM-dd")
+                        
+                        if let strSelecteDate = selectedDate {
+                            dayItem.isSelected = strSelecteDate == strDate
+                        }
                     }
                     
                     cntDay += 1
@@ -562,6 +565,7 @@ struct GradeDayItem {
     var isToday: Bool
     var isThisMonth: Bool
     var isFuture: Bool
+    var isSelected: Bool? = false
 }
 
 struct StatisticsMontlyItem {

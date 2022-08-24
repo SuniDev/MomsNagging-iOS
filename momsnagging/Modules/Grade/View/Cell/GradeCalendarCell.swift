@@ -38,14 +38,13 @@ class GradeCalendarCell: UICollectionViewCell {
     
     let sundayTitleColor: UIColor = Asset.Color.error.color
     
-    override var isSelected: Bool {
+    // MARK: - Variable
+    var isSelect = false {
         didSet {
-            if isEnabled {
-                configure()
-            }
+            self.viewBackground.addBorder(color: isSelect ? selectedBorderColor : normalBorderColor, width: 1.5)
+            
         }
     }
-    // MARK: - Variable
     var avg: Int? // 달성도
     var isToday = false // 오늘인지 아닌지 여부
     var isSunday = false
@@ -84,9 +83,7 @@ class GradeCalendarCell: UICollectionViewCell {
     }
     
     func configure() {
-        
         self.emoji.image = self.getEmoji(avg: avg, isEnabled: isEnabled)
-        
         if isEnabled {
             if self.isFuture {
                 self.emoji.isHidden = true
@@ -102,11 +99,10 @@ class GradeCalendarCell: UICollectionViewCell {
                 self.number.textColor = todayTitleColor
             } else {
                 self.viewBackground.backgroundColor = normalBackgroundColor
-                self.viewBackground.addBorder(color: isSelected ? selectedBorderColor : normalBorderColor, width: 1.5)
+                self.viewBackground.addBorder(color: isSelect ? selectedBorderColor : normalBorderColor, width: 1.5)
                 self.number.textColor = isSunday ? sundayTitleColor : normalTitleColor
             }
         } else {
-            // TODO: 이전달, 다음달 미리보기 사용할지 논의 필요.
             self.emoji.isHidden = true
             self.isUserInteractionEnabled = false
             self.viewBackground.backgroundColor = normalBackgroundColor

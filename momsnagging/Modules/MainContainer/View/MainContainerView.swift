@@ -115,7 +115,7 @@ class MainContainerView: BaseViewController, Navigatable {
             
             self.tabbarButtonBind(buttonTag: 1)
             globalTabOb.onNext(1)
-//            self.tab1.viewWillAppear(true)
+            self.tab1.viewWillAppear(true)
             self.setReportCardView()
         }).disposed(by: disposedBag)
         

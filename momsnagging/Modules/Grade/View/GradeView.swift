@@ -245,7 +245,6 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Log.debug("GradeView viewWillAppear")
         
         if !calendarScrollView.isHidden {
             // GA - 성적표 달력 화면
@@ -587,6 +586,20 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             btnAwardTapped: self.awardBtn.rx.tap.asDriverOnErrorJustComplete())
         let output = viewModel.transform(input: input)
         
+        let selectedDayIndex = BehaviorRelay<Int>(value: 0)
+        
+        self.dayCollectionView.rx.itemSelected.subscribe(onNext: { indexPath in
+            if let beforeCell = self.dayCollectionView.cellForItem(at: [0, selectedDayIndex.value]) as? GradeCalendarCell {
+                beforeCell.isSelect = false
+            }
+            
+            if let currentCell = self.dayCollectionView.cellForItem(at: indexPath) as? GradeCalendarCell {
+                currentCell.isSelect = true
+                selectedDayIndex.accept(indexPath.row)
+            }
+            
+        }).disposed(by: disposedBag)
+        
         // MARK: - 탭 Bind
         output.tabCalendar
             .drive(onNext: {
@@ -638,6 +651,12 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                 cell.avg = Common.TEST ? Test.getGradeAvg() : item.day?.avg
                 cell.isEnabled = item.isThisMonth
                 cell.isFuture = item.isFuture
+                cell.isSelect = item.isSelected ?? false
+                
+                if item.isSelected == true {
+                    selectedDayIndex.accept(index)
+                }
+                
                 cell.configure()
             }.disposed(by: disposedBag)
         
