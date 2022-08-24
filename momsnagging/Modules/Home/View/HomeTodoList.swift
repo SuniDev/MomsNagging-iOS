@@ -111,37 +111,39 @@ extension HomeView {
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
-//        showMorePopup(type: .todo, itemId: 0, index: 1)
     }
     
     @objc func selectTodoMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 투두", "\(sender.tag)")
-        let itemId = todoList[sender.tag]
+        let itemId = todoList[sender.tag].id ?? 0
+        Log.debug("itemId::", itemId)
         if sender.accessibilityLabel == "2" {
-            showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
+            showMorePopup(type: .todo, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
         } else {
-            showMorePopup(type: .todo, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
+            showMorePopup(type: .todo, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
         }
     }
     @objc func selectRoutineMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관요일", "\(sender.tag)")
-        let itemId = todoList[sender.tag]
+        let itemId = todoList[sender.tag].id ?? 0
+        Log.debug("itemId::", itemId)
         if sender.accessibilityLabel == "2" {
-            showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
+            showMorePopup(type: .routine, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
         } else {
-            showMorePopup(type: .routine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
+            showMorePopup(type: .routine, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
         }
     }
     @objc func selectCountRoutineMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관횟수", "\(sender.tag)")
-        let itemId = todoList[sender.tag]
+        let itemId = todoList[sender.tag].id ?? 0
+        Log.debug("itemId::", itemId)
         if sender.accessibilityLabel == "2" {
-            showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
+            showMorePopup(type: .countRoutine, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: true)
         } else {
-            showMorePopup(type: .countRoutine, itemId: itemId.id ?? 0, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
+            showMorePopup(type: .countRoutine, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
         }
     }
     
@@ -344,6 +346,12 @@ extension HomeView {
         }).disposed(by: disposedBag)
         viewModel.delaySuccessOb.subscribe(onNext: { _ in
 //            self.todoList.removeAll()
+            Log.debug("delaySuccessOb Call", "!")
+            self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
+            self.todoListTableView.reloadData()
+        }).disposed(by: disposedBag)
+        skipOb.subscribe(onNext: { _ in
+            Log.debug("delaySuccessOb Call", "!")
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)

@@ -12,7 +12,7 @@ import UIKit
 import Moya
 import SwiftyJSON
 
-var skipCount = PublishSubject<Int>()
+var skipOb = PublishSubject<Void>()
 class HomeViewModel: BaseViewModel, ViewModelType {
     
     // MARK: Properties
@@ -306,12 +306,14 @@ extension HomeViewModel {
         model.value = "2"
         param.append(model)
         provider.request(.modifyTodo(scheduleId: scheduleId, modifyParam: param), completion: { res in
+            Log.debug("스케쥴 아이디 : \(scheduleId)", "파라미터 : \(param)")
             switch res {
             case .success(let result):
                 do {
                     let json = JSON(try result.mapJSON())
                     print("requestDeleay : \(json)")
                     self.delaySuccessOb.onNext(())
+                    skipOb.onNext(())
                     LoadingHUD.hide()
                 } catch let error {
                     Log.error("requestDeleay error", "\(error)")
@@ -339,7 +341,7 @@ extension HomeViewModel {
             case .success(let result):
                 do {
                     let json = JSON(try result.mapJSON())
-                    print("requestDeleay : \(json)")
+                    print("requestDeleay Cancel : \(json)")
                     self.delaySuccessOb.onNext(())
                     LoadingHUD.hide()
                 } catch let error {
@@ -375,23 +377,6 @@ extension HomeViewModel {
             case .failure(let error):
                 Log.error("requestArray failure error", "\(error)")
                 LoadingHUD.hide()
-            }
-        })
-    }
-    
-    func requestRemainSkip(scheduleId: Int) {
-        provider.request(.remainSkipDays(scheduleId: scheduleId), completion: { res in
-            switch res {
-            case .success(let result):
-                do {
-                    let json = JSON(try result.mapJSON())
-                    print("remainSkipDays json : \(json)")
-                    skipCount.onNext(json.intValue)
-                } catch let error {
-                    Log.error("deleteTodo error", "\(error)")
-                }
-            case .failure(let error):
-                Log.error("deleteTodo failure error", "\(error)")
             }
         })
     }
