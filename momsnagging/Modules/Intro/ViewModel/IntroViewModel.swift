@@ -126,20 +126,19 @@ class IntroViewModel: ViewModel, ViewModelType {
             .share()
         
         setUser
-            .flatMapLatest { _ -> Observable<GradeLastWeek> in
-                return self.requestLastWeek()
-            }.map { $0.newGrade ?? false }
-            .subscribe(onNext: { new in
-                CommonUser.isNewEvaluation = new
-            }).disposed(by: disposeBag)
-        
-        setUser
             .subscribe(onNext: { user in
                 CommonUser.setUser(user)
             }).disposed(by: disposeBag)
         
-        let goToMain = setUser
-            .map { _ -> MainContainerViewModel in
+        let isNewEvaluation = setUser.debug()
+            .flatMapLatest { _ -> Observable<GradeLastWeek> in
+                return self.requestLastWeek()
+            }.map { $0.newGrade ?? false }
+            .share()
+            
+        let goToMain = isNewEvaluation
+            .map { new -> MainContainerViewModel in
+                CommonUser.isNewEvaluation = new
                 let viewModel = MainContainerViewModel()
                 return viewModel
             }
