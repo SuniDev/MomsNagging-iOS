@@ -687,6 +687,10 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     }
     @objc
     func selectDayAction(_ sender: UIDatePicker) {
+        Log.debug("weekAndCount", weekAndCount)
+        if weekAndCount {
+            resetWeek()
+        }
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko")
         formatter.dateFormat = "yyyy.MM.dd (E)"
