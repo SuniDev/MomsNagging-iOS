@@ -1040,32 +1040,34 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     }
     
     func notSelectSet(item: String) {
-        resetWeek()
-        weekListSet()
-        switch item {
-        case "월":
-            cycleBtnNotTouchable(btn: mon)
-            requestParam.mon = true
-        case "화":
-            cycleBtnNotTouchable(btn: tue)
-            requestParam.tue = true
-        case "수":
-            cycleBtnNotTouchable(btn: wed)
-            requestParam.wed = true
-        case "목":
-            cycleBtnNotTouchable(btn: thu)
-            requestParam.thu = true
-        case "금":
-            cycleBtnNotTouchable(btn: fri)
-            requestParam.fri = true
-        case "토":
-            cycleBtnNotTouchable(btn: sat)
-            requestParam.sat = true
-        case "일":
-            cycleBtnNotTouchable(btn: sun)
-            requestParam.sun = true
-        default:
-            break
+        if !weekAndCount {
+            resetWeek()
+            weekListSet()
+            switch item {
+            case "월":
+                cycleBtnNotTouchable(btn: mon)
+                requestParam.mon = true
+            case "화":
+                cycleBtnNotTouchable(btn: tue)
+                requestParam.tue = true
+            case "수":
+                cycleBtnNotTouchable(btn: wed)
+                requestParam.wed = true
+            case "목":
+                cycleBtnNotTouchable(btn: thu)
+                requestParam.thu = true
+            case "금":
+                cycleBtnNotTouchable(btn: fri)
+                requestParam.fri = true
+            case "토":
+                cycleBtnNotTouchable(btn: sat)
+                requestParam.sat = true
+            case "일":
+                cycleBtnNotTouchable(btn: sun)
+                requestParam.sun = true
+            default:
+                break
+            }
         }
     }
     

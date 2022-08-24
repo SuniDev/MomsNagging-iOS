@@ -42,6 +42,8 @@ extension DetailHabitViewModelNew {
         LoadingHUD.show()
 //        let param = CreateTodoRequestModel(scheduleName: scheduleName, naggingId: naggingId, goalCount: goalCount, scheduleTime: scheduleTime, scheduleDate: scheduleDate, alarmTime: alarmTime, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun)
         let param = createTodoRequestModel
+        Log.debug("createHabit param:", "\(param)")
+        
         provider.request(.createTodo(param: param), completion: { res in
             switch res {
             case .success(let result):
