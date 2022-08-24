@@ -9,11 +9,15 @@ import Foundation
 import UIKit
 import Then
 import SnapKit
+import Moya
+import SwiftyJSON
 
 /*
  동시작업시 Common의 충돌 방지를 위해서 여기서 작성 후 병합 후 하나씩 Common으로 옮기겠습니당 :) 참고부탁드릴께요
  */
 class TaviCommon {
+    
+    static var provider = MoyaProvider<ScheduleService>()
     // 현재 앱의 버전을 가져오는 함수
     static func getVersion() -> String {
         guard let dictionary = Bundle.main.infoDictionary,
@@ -258,6 +262,40 @@ class TaviCommon {
         })
         return view
     }
+    
+    static func requestRemainSkip(scheduleId: Int, vc: UIViewController) {
+        provider.request(.remainSkipDays(scheduleId: scheduleId), completion: { res in
+            switch res {
+            case .success(let result):
+                do {
+                    let json = JSON(try result.mapJSON())
+                    print("remainSkipDays json : \(json)")
+                    if json.intValue == 0 {
+                        let alert = UIAlertController(title: "", message: "해당 습관은 더 이상 건너뛸 수 없단다!", preferredStyle: .alert)
+                        let doneAction = UIAlertAction(title: "닫기", style: .default, handler: { _ in
+                        })
+                        alert.addAction(doneAction)
+                        vc.present(alert, animated: true, completion: nil)
+                    } else {
+                        let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?\n(이번 주 남은 건너뜀 횟수 \(json.intValue)회)", preferredStyle: .alert)
+                        let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
+                            Log.debug("건너뜀 itemid", scheduleId)
+                            HomeViewModel().requestDeleay(scheduleId: scheduleId)
+                        })
+                        let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+                        alert.addAction(cancelAction)
+                        alert.addAction(doneAction)
+                        vc.present(alert, animated: true, completion: nil)
+                    }
+                    LoadingHUD.hide()
+                } catch let error {
+                    Log.error("deleteTodo error", "\(error)")
+                }
+            case .failure(let error):
+                Log.error("deleteTodo failure error", "\(error)")
+            }
+        })
+    }
 }
 
 extension UIViewController {
@@ -313,6 +351,7 @@ extension HomeView {
         case routine
     }
     func showMorePopup(type: CellItemMoreType, itemId: Int, index: Int, vc: UIViewController, senderBtn: UIButton, postpone: Bool?=nil, count: Int?=0) {
+        print("showPopUp todoList: \(self.todoList)")
         let emptyBtn = UIButton()
         let backgroundView = UIView().then({
             $0.backgroundColor = UIColor(asset: Asset.Color.black)?.withAlphaComponent(0.34)
@@ -354,7 +393,8 @@ extension HomeView {
             $0.edges.equalTo(modifyView.snp.edges)
         })
         
-        modifyBtn.rx.tap.subscribe(onNext: {
+        modifyBtn.rx.tap.bind { [weak self] in
+            guard let self = self else { return }
             if type == .todo {
                 let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: self.todoList[index])
                 self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
@@ -364,7 +404,7 @@ extension HomeView {
                 self.navigator.show(seque: .detailHabitNew(viewModel: viewModel), sender: self)
             }
             backgroundView.removeFromSuperview()
-        }).disposed(by: disposedBag)
+        }.disposed(by: disposedBag)
         
         let deleteView = UIView()
         let deleteLbl = UILabel().then({
@@ -392,15 +432,10 @@ extension HomeView {
         deleteBtn.snp.makeConstraints({
             $0.edges.equalTo(deleteView.snp.edges)
         })
-        
-        deleteBtn.rx.tap.subscribe(onNext: {
+        deleteBtn.rx.tap.bind { [weak self] in
+            guard let self = self else { return }
             backgroundView.removeFromSuperview()
             // 삭제 API 호출
-//            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "정말로 삭제할꺼니?", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
-//
-//            }, doneHandler: {
-//            })
-//            self.viewModel.requestDelete(scheduleId: itemId)
             let alert = UIAlertController(title: "", message: "정말로 삭제할꺼니?", preferredStyle: .alert)
             let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
                 self.viewModel.requestDelete(scheduleId: itemId)
@@ -410,8 +445,7 @@ extension HomeView {
             alert.addAction(doneAction)
             self.present(alert, animated: true, completion: nil)
             backgroundView.removeFromSuperview()
-
-        }).disposed(by: disposedBag)
+        }.disposed(by: disposedBag)
         
         let delayView = UIView()
         let delayLbl = UILabel().then({
@@ -439,12 +473,10 @@ extension HomeView {
         delayBtn.snp.makeConstraints({
             $0.edges.equalTo(delayView.snp.edges)
         })
-        delayBtn.rx.tap.subscribe(onNext: {
-            // 미룸 API 호출
-//            TaviCommon.showAlert(vc: vc, type: .twoBtn, title: nil, message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까??", cancelTitle: "아니요", doneTitle: "네", cancelHandler: {
-//            }, doneHandler: {
-//            })
-//            HomeViewModel().requestRemainSkip(scheduleId: itemId)
+
+        
+        delayBtn.rx.tap.bind { [weak self] in
+            guard let self = self else { return }
             if postpone ?? false {
                 Log.debug("미룸취소", "미룸취소 클릭!")
                 self.viewModel.requestDeleayCancel(scheduleId: itemId)
@@ -460,7 +492,7 @@ extension HomeView {
                 self.present(alert, animated: true, completion: nil)
                 backgroundView.removeFromSuperview()
             }
-        }).disposed(by: disposedBag)
+        }.disposed(by: disposedBag)
         
         let skipView = UIView()
         let skipLbl = UILabel().then({
@@ -487,7 +519,8 @@ extension HomeView {
         skipBtn.snp.makeConstraints({
             $0.edges.equalTo(skipView.snp.edges)
         })
-        skipBtn.rx.tap.subscribe(onNext: {
+        skipBtn.rx.tap.bind { [weak self] in
+            guard let self = self else { return }
             //건너뜀 API 호출
             if postpone ?? false {
                 Log.debug("건너뜀 취소", "건너뜀취소 클릭!")
@@ -495,30 +528,34 @@ extension HomeView {
                 backgroundView.removeFromSuperview()
             } else {
                 LoadingHUD.show()
-                HomeViewModel().requestRemainSkip(scheduleId: itemId)
+                Log.debug("건너뜀 itemid", itemId)
+                TaviCommon.requestRemainSkip(scheduleId: itemId, vc: vc)
                 backgroundView.removeFromSuperview()
             }
-        }).disposed(by: disposedBag)
+        }.disposed(by: disposedBag)
         
-        skipCount.subscribe(onNext: { count in
-            if count == 0 {
-                let alert = UIAlertController(title: "", message: "해당 습관은 더 이상 건너뛸 수 없단다!", preferredStyle: .alert)
-                let doneAction = UIAlertAction(title: "닫기", style: .default, handler: { _ in
-                })
-                alert.addAction(doneAction)
-                self.present(alert, animated: true, completion: nil)
-            } else {
-                let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?\n(이번 주 남은 건너뜀 횟수 \(count)회)", preferredStyle: .alert)
-                let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
-                    self.viewModel.requestDeleay(scheduleId: itemId)
-                })
-                let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
-                alert.addAction(cancelAction)
-                alert.addAction(doneAction)
-                self.present(alert, animated: true, completion: nil)
-            }
-            LoadingHUD.hide()
-        }).disposed(by: disposedBag)
+        //여기가 문제지
+//        skipCount.subscribe(onNext: { [weak self] count in
+//            guard let self = self else { return }
+//            if count == 0 {
+//                let alert = UIAlertController(title: "", message: "해당 습관은 더 이상 건너뛸 수 없단다!", preferredStyle: .alert)
+//                let doneAction = UIAlertAction(title: "닫기", style: .default, handler: { _ in
+//                })
+//                alert.addAction(doneAction)
+//                self.present(alert, animated: true, completion: nil)
+//            } else {
+//                let alert = UIAlertController(title: "", message: "오늘 하루 많이 바빴구나ㅠㅠ\n내일 똑같은 시간에 다시 알려줄까?\n(이번 주 남은 건너뜀 횟수 \(count)회)", preferredStyle: .alert)
+//                let doneAction = UIAlertAction(title: "네", style: .default, handler: { _ in
+//                    Log.debug("건너뜀 itemid", itemId)
+//                    self.viewModel.requestDeleay(scheduleId: itemId)
+//                })
+//                let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+//                alert.addAction(cancelAction)
+//                alert.addAction(doneAction)
+//                self.present(alert, animated: true, completion: nil)
+//            }
+//            LoadingHUD.hide()
+//        }).disposed(by: disposedBag)
         
         switch type {
         case .todo:
