@@ -11,6 +11,7 @@ import SnapKit
 import RxSwift
 import RxRelay
 import RxCocoa
+import RxGesture
 
 class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     // MARK: - Properties & Variable
@@ -187,6 +188,10 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
     })
     
     // 통계 UI Properties
+    lazy var vStatisticsTipBack = UIView().then({
+        $0.backgroundColor = .clear
+        $0.isHidden = true
+    })
     lazy var statisticsScrollView = UIScrollView().then({
         $0.isHidden = true
     })
@@ -556,6 +561,12 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
             $0.top.equalTo(calendarTab.snp.bottom)
         })
         
+        view.addSubview(vStatisticsTipBack)
+        vStatisticsTipBack.snp.makeConstraints({
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.equalTo(statisticsTab.snp.bottom)
+        })
+        
         self.view.layoutIfNeeded()
     }
     
@@ -794,15 +805,18 @@ class GradeView: BaseViewController, Navigatable, UIScrollViewDelegate {
                     .throttle(.microseconds(500), scheduler: MainScheduler.instance)
                     .bind(onNext: {
                         if cell.imgvTip.isHidden {
+                            self.vStatisticsTipBack.isHidden = false
                             cell.imgvTip.fadeIn()
                         } else {
+                            self.vStatisticsTipBack.isHidden = true
                             cell.imgvTip.fadeOut()
                         }
                     }).disposed(by: cell.disposedBag)
-                
-                self.view.rx.tapGesture()
+                                
+                self.vStatisticsTipBack.rx.tapGesture()
                     .subscribe(onNext: { _ in
                         if !cell.imgvTip.isHidden {
+                            self.vStatisticsTipBack.isHidden = true
                             cell.imgvTip.fadeOut()
                         }
                     }).disposed(by: cell.disposedBag)

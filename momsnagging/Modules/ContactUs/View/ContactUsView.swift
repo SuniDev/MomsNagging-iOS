@@ -89,7 +89,12 @@ class ContactUsView: BaseViewController, Navigatable {
     // MARK: - InitUI
     override func initUI() {
         view.backgroundColor = UIColor(asset: Asset.Color.monoWhite)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        
+        view.addGestureRecognizer(singleTapGestureRecognizer)
         headFrame = CommonView.defaultHeadFrame(leftIcBtn: backBtn, headTitle: "문의하기")
         contentsTextView.delegate = self
         
