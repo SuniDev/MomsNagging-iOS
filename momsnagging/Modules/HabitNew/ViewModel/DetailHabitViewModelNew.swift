@@ -104,89 +104,131 @@ extension DetailHabitViewModelNew {
         })
     }
     
-    
-    func requestModifyRoutine(requestParam: CreateTodoRequestModel) {
+    func requestModifyRoutine(requestParam: CreateTodoRequestModel, requestModifyParam: CreateTodoRequestModel) {
         LoadingHUD.show()
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         param.removeAll()
-        if let name = requestParam.scheduleName {
-            model.op = "replace"
-            model.path = "/scheduleName"
-            model.value = "\(name)"
-            param.append(model)
+        Log.debug("requestParam__wed", requestParam.wed)
+        Log.debug("requestParam__Modify__wed", requestModifyParam.wed)
+        
+        Log.debug("requestParam__thu", requestParam.thu)
+        Log.debug("requestParam__Modify__thu", requestModifyParam.thu)
+        
+        if requestParam.scheduleName != requestModifyParam.scheduleName {
+            if let name = requestParam.scheduleName {
+                model.op = "replace"
+                model.path = "/scheduleName"
+                model.value = "\(name)"
+                param.append(model)
+            }
         }
-        if let time = requestParam.scheduleTime {
-            model.op = "replace"
-            model.path = "/scheduleTime"
-            model.value = "\(time)"
-            param.append(model)
+        if requestParam.scheduleTime != requestModifyParam.scheduleTime {
+            if let time = requestParam.scheduleTime {
+                model.op = "replace"
+                model.path = "/scheduleTime"
+                model.value = "\(time)"
+                param.append(model)
+            }
         }
-        if let mon = requestParam.mon {
-            model.op = "replace"
-            model.path = "/mon"
-            model.value = "\(mon)"
-            param.append(model)
+        if requestParam.scheduleDate != requestModifyParam.scheduleDate {
+            if let date = requestParam.scheduleDate {
+                model.op = "replace"
+                model.path = "/scheduleDate"
+                model.value = "\(date)"
+                param.append(model)
+            }
         }
-        if let tue = requestParam.tue {
-            model.op = "replace"
-            model.path = "/tue"
-            model.value = "\(tue)"
-            param.append(model)
+        if requestParam.mon != requestModifyParam.mon {
+            if let mon = requestParam.mon {
+                model.op = "replace"
+                model.path = "/mon"
+                model.value = "\(mon)"
+                param.append(model)
+            }
         }
-        if let wed = requestParam.wed {
-            model.op = "replace"
-            model.path = "/wed"
-            model.value = "\(wed)"
-            param.append(model)
+        if requestParam.tue != requestModifyParam.tue {
+            if let tue = requestParam.tue {
+                model.op = "replace"
+                model.path = "/tue"
+                model.value = "\(tue)"
+                param.append(model)
+            }
         }
-        if let thu = requestParam.thu {
-            model.op = "replace"
-            model.path = "/thu"
-            model.value = "\(thu)"
-            param.append(model)
+        if requestParam.wed != requestModifyParam.wed {
+            print("수요일탐")
+            if let wed = requestParam.wed {
+                model.op = "replace"
+                model.path = "/wed"
+                model.value = "\(wed)"
+                param.append(model)
+            }
         }
-        if let fri = requestParam.fri {
-            model.op = "replace"
-            model.path = "/fri"
-            model.value = "\(fri)"
-            param.append(model)
+        if requestParam.thu != requestModifyParam.thu {
+            print("목요일탐")
+            if let thu = requestParam.thu {
+                model.op = "replace"
+                model.path = "/thu"
+                model.value = "\(thu)"
+                param.append(model)
+            }
         }
-        if let sat = requestParam.sat {
-            model.op = "replace"
-            model.path = "/sat"
-            model.value = "\(sat)"
-            param.append(model)
+        if requestParam.fri != requestModifyParam.fri {
+            if let fri = requestParam.fri {
+                model.op = "replace"
+                model.path = "/fri"
+                model.value = "\(fri)"
+                param.append(model)
+            }
         }
-        if let sun = requestParam.sun {
-            model.op = "replace"
-            model.path = "/sun"
-            model.value = "\(sun)"
-            param.append(model)
+        if requestParam.sat != requestModifyParam.sat {
+            if let sat = requestParam.sat {
+                model.op = "replace"
+                model.path = "/sat"
+                model.value = "\(sat)"
+                param.append(model)
+            }
         }
-        if let goalCount = requestParam.goalCount {
-            model.op = "replace"
-            model.path = "/goalCount"
-            model.value = "\(goalCount)"
-            param.append(model)
+        if requestParam.sun != requestModifyParam.sun {
+            if let sun = requestParam.sun {
+                model.op = "replace"
+                model.path = "/sun"
+                model.value = "\(sun)"
+                param.append(model)
+            }
+        }
+        if requestParam.goalCount != requestModifyParam.goalCount {
+            if let goalCount = requestParam.goalCount {
+                model.op = "replace"
+                model.path = "/goalCount"
+                model.value = "\(goalCount)"
+                param.append(model)
+            }
         }
         if requestParam.alarmTime == nil {
-            if let alarm = requestParam.alarmTime {
-                let alarmTime = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
-                model.op = "replace"
-                model.path = "/alarmTime"
-                model.value = "null"
-                param.append(model)
+            if requestParam.alarmTime != requestModifyParam.alarmTime {
+                if let alarm = requestParam.alarmTime {
+                    let alarmTime = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
+                    model.op = "replace"
+                    model.path = "/alarmTime"
+                    model.value = "null"
+                    param.append(model)
+                }
             }
         } else {
-            if let alarm = requestParam.alarmTime {
-                let alarmTime = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
-                model.op = "replace"
-                model.path = "/alarmTime"
-                model.value = "\(alarmTime)"
-                param.append(model)
+            if requestParam.alarmTime != requestModifyParam.alarmTime {
+                if let alarm = requestParam.alarmTime {
+                    let alarmTime = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
+                    model.op = "replace"
+                    model.path = "/alarmTime"
+                    model.value = "\(alarmTime)"
+                    param.append(model)
+                }
             }
         }
+        
+        Log.debug("modifyParam: ", param)
+        
         provider.request(.modifyTodo(scheduleId: todoModel?.id ?? 0, modifyParam: param), completion: { res in
             switch res {
             case .success(let result):

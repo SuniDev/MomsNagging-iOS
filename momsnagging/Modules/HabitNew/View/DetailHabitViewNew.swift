@@ -24,6 +24,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     var selectCount: Int = 0
     
     var requestParam = CreateTodoRequestModel()
+    var requestModifyParam = CreateTodoRequestModel()
 
     var alarmOn: Bool = false
     var weekAndCount: Bool = false // false = week
@@ -484,6 +485,8 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
                 }
             }
             
+            self.requestModifyParam = self.requestParam
+            
             self.doneValidCheck()
             LoadingHUD.hide()
         }).disposed(by: disposeBag)
@@ -514,7 +517,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
 //            viewModel?.requestRegistHabit(scheduleName: requestParam.scheduleName ?? "", naggingId: 0, goalCount: requestParam.goalCount ?? 0, scheduleTime: requestParam.scheduleTime ?? "", scheduleDate: requestParam.scheduleDate ?? "", alarmTime: requestParam.alarmTime ?? "", mon: requestParam.mon, tue: requestParam.tue, wed: requestParam.wed, thu: requestParam.thu, fri: requestParam.fri, sat: requestParam.sat, sun: requestParam.sun)
             if self.modify {
                 Log.debug("완료버튼 누름", "수정페이지")
-                self.viewModel?.requestModifyRoutine(requestParam: self.requestParam)
+                self.viewModel?.requestModifyRoutine(requestParam: self.requestParam, requestModifyParam: self.requestModifyParam)
             } else {
                 Log.debug("완료버튼 누름", "생성페이지")
                 self.viewModel?.requestRegistHabit(createTodoRequestModel: self.requestParam)
