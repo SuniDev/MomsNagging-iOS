@@ -687,6 +687,10 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     }
     @objc
     func selectDayAction(_ sender: UIDatePicker) {
+        Log.debug("weekAndCount", weekAndCount)
+        if weekAndCount {
+            resetWeek()
+        }
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko")
         formatter.dateFormat = "yyyy.MM.dd (E)"
@@ -1307,7 +1311,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         if alarmOn {
             Log.debug("알람 on!", "")
             if weekAndCount { // 몇회
-                if requestParam.scheduleName != "" && requestParam.scheduleTime != "" && requestParam.scheduleDate != "" && requestParam.goalCount != 0 && requestParam.alarmTime != nil {
+                if requestParam.scheduleName != "" && !modifyTimeView.isHidden && requestParam.scheduleDate != "" && requestParam.goalCount != 0 && requestParam.alarmTime != nil {
                     print("알람 있고 카운트 선택 완료 Done")
                     doneBtn.isUserInteractionEnabled = true
                     doneBtn.setTitleColor(Asset.Color.priMain.color, for: .normal)
@@ -1316,7 +1320,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
                     doneBtn.setTitleColor(Asset.Color.monoDark040.color, for: .normal)
                 }
             } else { // 요일
-                if requestParam.scheduleName != "" && requestParam.scheduleTime != "" && requestParam.scheduleDate != "" && (requestParam.mon ?? false || requestParam.tue  ?? false || requestParam.wed ?? false || requestParam.thu ?? false || requestParam.fri ?? false || requestParam.sat ?? false || requestParam.sun ?? false) && requestParam.alarmTime != nil {
+                if requestParam.scheduleName != "" && !modifyTimeView.isHidden && requestParam.scheduleDate != "" && (requestParam.mon ?? false || requestParam.tue ?? false || requestParam.wed ?? false || requestParam.thu ?? false || requestParam.fri ?? false || requestParam.sat ?? false || requestParam.sun ?? false) && requestParam.alarmTime != nil {
                     print("알람 있고 요일 선택 완료 Done")
                     doneBtn.isUserInteractionEnabled = true
                     doneBtn.setTitleColor(Asset.Color.priMain.color, for: .normal)
@@ -1328,7 +1332,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         } else {
             Log.debug("알람 off!", "")
             if weekAndCount { // 몇회
-                if requestParam.scheduleName != "" && requestParam.scheduleTime != "" && requestParam.scheduleDate != "" && requestParam.goalCount != 0 {
+                if requestParam.scheduleName != "" && !modifyTimeView.isHidden && requestParam.scheduleDate != "" && requestParam.goalCount != 0 {
                     print("알람 없이 횟수 선택 완료 Done")
                     doneBtn.isUserInteractionEnabled = true
                     doneBtn.setTitleColor(Asset.Color.priMain.color, for: .normal)
@@ -1337,7 +1341,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
                     doneBtn.setTitleColor(Asset.Color.monoDark040.color, for: .normal)
                 }
             } else { // 요일
-                if requestParam.scheduleName != "" && requestParam.scheduleTime != "" && requestParam.scheduleDate != "" && (requestParam.mon ?? false || requestParam.tue  ?? false || requestParam.wed ?? false || requestParam.thu ?? false || requestParam.fri ?? false || requestParam.sat ?? false || requestParam.sun ?? false){
+                if requestParam.scheduleName != "" && !modifyTimeView.isHidden && requestParam.scheduleDate != "" && (requestParam.mon ?? false || requestParam.tue ?? false || requestParam.wed ?? false || requestParam.thu ?? false || requestParam.fri ?? false || requestParam.sat ?? false || requestParam.sun ?? false){
                     print("알람 없이 요일 선택 완료 Done")
                     doneBtn.isUserInteractionEnabled = true
                     doneBtn.setTitleColor(Asset.Color.priMain.color, for: .normal)
