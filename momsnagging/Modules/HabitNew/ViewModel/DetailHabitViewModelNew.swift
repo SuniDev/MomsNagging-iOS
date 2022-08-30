@@ -140,63 +140,47 @@ extension DetailHabitViewModelNew {
                 param.append(model)
             }
         }
-        if requestParam.mon != requestModifyParam.mon {
-            if let mon = requestParam.mon {
-                model.op = "replace"
-                model.path = "/mon"
-                model.value = "\(mon)"
-                param.append(model)
-            }
+        if let mon = requestParam.mon {
+            model.op = "replace"
+            model.path = "/mon"
+            model.value = "\(mon)"
+            param.append(model)
         }
-        if requestParam.tue != requestModifyParam.tue {
-            if let tue = requestParam.tue {
-                model.op = "replace"
-                model.path = "/tue"
-                model.value = "\(tue)"
-                param.append(model)
-            }
+        if let tue = requestParam.tue {
+            model.op = "replace"
+            model.path = "/tue"
+            model.value = "\(tue)"
+            param.append(model)
         }
-        if requestParam.wed != requestModifyParam.wed {
-            print("수요일탐")
-            if let wed = requestParam.wed {
-                model.op = "replace"
-                model.path = "/wed"
-                model.value = "\(wed)"
-                param.append(model)
-            }
+        if let wed = requestParam.wed {
+            model.op = "replace"
+            model.path = "/wed"
+            model.value = "\(wed)"
+            param.append(model)
         }
-        if requestParam.thu != requestModifyParam.thu {
-            print("목요일탐")
-            if let thu = requestParam.thu {
-                model.op = "replace"
-                model.path = "/thu"
-                model.value = "\(thu)"
-                param.append(model)
-            }
+        if let thu = requestParam.thu {
+            model.op = "replace"
+            model.path = "/thu"
+            model.value = "\(thu)"
+            param.append(model)
         }
-        if requestParam.fri != requestModifyParam.fri {
-            if let fri = requestParam.fri {
-                model.op = "replace"
-                model.path = "/fri"
-                model.value = "\(fri)"
-                param.append(model)
-            }
+        if let fri = requestParam.fri {
+            model.op = "replace"
+            model.path = "/fri"
+            model.value = "\(fri)"
+            param.append(model)
         }
-        if requestParam.sat != requestModifyParam.sat {
-            if let sat = requestParam.sat {
-                model.op = "replace"
-                model.path = "/sat"
-                model.value = "\(sat)"
-                param.append(model)
-            }
+        if let sat = requestParam.sat {
+            model.op = "replace"
+            model.path = "/sat"
+            model.value = "\(sat)"
+            param.append(model)
         }
-        if requestParam.sun != requestModifyParam.sun {
-            if let sun = requestParam.sun {
-                model.op = "replace"
-                model.path = "/sun"
-                model.value = "\(sun)"
-                param.append(model)
-            }
+        if let sun = requestParam.sun {
+            model.op = "replace"
+            model.path = "/sun"
+            model.value = "\(sun)"
+            param.append(model)
         }
         if requestParam.goalCount != requestModifyParam.goalCount {
             if let goalCount = requestParam.goalCount {
