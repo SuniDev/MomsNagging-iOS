@@ -1,16 +1,18 @@
 //
-//  DetailHabitViewModelNew.swift
+//  TodoViewModelNew.swift
 //  momsnagging
 //
-//  Created by 전창평 on 2022/08/18.
+//  Created by 전창평 on 2022/08/30.
 //
+
+import Foundation
 
 import Foundation
 import Moya
 import SwiftyJSON
 import RxSwift
 
-class DetailHabitViewModelNew: BaseViewModel {
+class TodoViewModelNew: BaseViewModel {
     let provider = MoyaProvider<ScheduleService>()
     
     var homeViewModel: HomeViewModel!
@@ -37,8 +39,8 @@ class DetailHabitViewModelNew: BaseViewModel {
 }
 
 
-extension DetailHabitViewModelNew {
-    func requestRegistHabit(createTodoRequestModel: CreateTodoRequestModel) {
+extension TodoViewModelNew {
+    func requestRegistTodo(createTodoRequestModel: CreateTodoRequestModel) {
         LoadingHUD.show()
 //        let param = CreateTodoRequestModel(scheduleName: scheduleName, naggingId: naggingId, goalCount: goalCount, scheduleTime: scheduleTime, scheduleDate: scheduleDate, alarmTime: alarmTime, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun)
         let param = createTodoRequestModel
@@ -64,7 +66,7 @@ extension DetailHabitViewModelNew {
         })
     }
     
-    func requestRoutineInfo() {
+    func requestTodoInfo() {
         LoadingHUD.show()
         provider.request(.todoDetailLookUp(scheduleId: self.todoModel?.id ?? 0), completion: { res in
             switch res {
@@ -104,7 +106,7 @@ extension DetailHabitViewModelNew {
         })
     }
     
-    func requestModifyRoutine(requestParam: CreateTodoRequestModel, requestModifyParam: CreateTodoRequestModel) {
+    func requestModifyTodo(requestParam: CreateTodoRequestModel, requestModifyParam: CreateTodoRequestModel) {
         
         LoadingHUD.show()
         var param: [ModifyTodoRequestModel] = []

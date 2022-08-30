@@ -175,9 +175,10 @@ extension HomeView {
                     self.todoItem.frame = self.todoItem.frame.offsetBy(dx: 0, dy: 80)
                     self.habitItem.frame = self.habitItem.frame.offsetBy(dx: 0, dy: 160)
                 }
-                let viewModel = DetailTodoViewModel(isNew: true, homeVM: self.viewModel, dateParam: self.todoListLookUpParam)
-                let vc = self.navigator.get(seque: .detailTodo(viewModel: viewModel))
-                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: vc, transition: .navigation)
+//                let viewModel = DetailTodoViewModel(isNew: true, homeVM: self.viewModel, dateParam: self.todoListLookUpParam)
+                let viewModel = TodoViewModelNew(modify: false, homeViewModel: self.viewModel)
+                let vc = self.navigator.get(seque: .detailTodoNew(viewModel: viewModel))
+                self.navigator.show(seque: .detailTodoNew(viewModel: viewModel), sender: vc, transition: .navigation)
                 
                 // MARK: 테스트용 - 할일 수정
 //                let viewModel = DetailTodoViewModel(isNew: false)
