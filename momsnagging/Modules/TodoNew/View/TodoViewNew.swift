@@ -52,7 +52,7 @@ class TodoViewNew: BaseViewController, Navigatable{
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
         $0.text = "0/30"
     })
-    // 습관이름
+    // 할일이름
     var habitNameFocusFrame = UIView()
     var habitNameXbtn = UIButton().then({
         $0.setImage(Asset.Icon.xCircleHabitName.image, for: .normal)
@@ -206,9 +206,9 @@ class TodoViewNew: BaseViewController, Navigatable{
         view.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(gesture)
-        headFrame = CommonView.defaultHeadFrame(leftIcBtn: backBtn, headTitle: "습관 상세")
-        habitNameTitle = detailHabitTitle(title: "습관 이름", required: true)
-        habitNameInputFrame = inputFrame(placeHolderString: "어떤 습관 추가할래?", ic: false, textField: habitNameTF, btn: habitNameBtn, textFieldFrame: habitNameFocusFrame)
+        headFrame = CommonView.defaultHeadFrame(leftIcBtn: backBtn, headTitle: "할일 상세")
+        habitNameTitle = detailHabitTitle(title: "할일 이름", required: true)
+        habitNameInputFrame = inputFrame(placeHolderString: "어떤 할일 추가할래?", ic: false, textField: habitNameTF, btn: habitNameBtn, textFieldFrame: habitNameFocusFrame)
         
         if let recommendedTitle = viewModel?.recommendedTitle {
             self.habitNameTF.text = recommendedTitle
