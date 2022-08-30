@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import RxSwift
 import RxDataSources
+import RxKeyboard
 
 class DetailHabitViewNew: BaseViewController, Navigatable{
     
@@ -159,12 +160,14 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         $0.textColor = .clear
         $0.backgroundColor = .clear
         $0.tintColor = .clear
+        $0.tag = 10
     })
     lazy var modifyTfPicker = UITextField().then({
         $0.borderStyle = .none
         $0.textColor = .clear
         $0.backgroundColor = .clear
         $0.tintColor = .clear
+        $0.tag = 11
     })
     lazy var timePicker = UIDatePicker().then({
         $0.minuteInterval = 5
@@ -494,6 +497,32 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         viewModel?.modifySuccessOb.subscribe(onNext: { _ in
             self.navigator.pop(sender: self)
         }).disposed(by: disposeBag)
+        
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { height in
+                Log.debug("습관상세 키보드 높이", "\(height)")
+                if height == 0.0 {
+                    if self.alarmOn {
+                        self.backgroundFrame.snp.updateConstraints({
+                            $0.height.equalTo(736)
+                        })
+                    } else {
+                        self.backgroundFrame.snp.updateConstraints({
+                            $0.height.equalTo(676)
+                        })
+                    }
+                } else {
+                    if self.alarmOn {
+                        self.backgroundFrame.snp.updateConstraints({
+                            $0.height.equalTo(736+height)
+                        })
+                    } else {
+                        self.backgroundFrame.snp.updateConstraints({
+                            $0.height.equalTo(676+height)
+                        })
+                    }
+                }
+            }).disposed(by: disposeBag)
         
     }
     
@@ -1367,12 +1396,24 @@ extension DetailHabitViewNew: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: true)
+        } else if textField.tag == 10 {
+//            backgroundFrame.snp.remakeConstraints({
+//                $0.edges.equalTo(scrollView.snp.edges)
+//                $0.width.equalTo(UIScreen.main.bounds.width)
+//                $0.height.equalTo(676)
+//            })
+        } else if textField.tag == 11 {
+            
         }
         return true
     }
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: false)
+        } else if textField.tag == 10 {
+            
+        } else if textField.tag == 11 {
+            
         }
         return true
     }
