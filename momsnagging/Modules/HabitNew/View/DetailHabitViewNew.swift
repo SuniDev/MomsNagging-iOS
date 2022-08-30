@@ -462,6 +462,28 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             self.requestParam.sat = info.sat
             self.requestParam.sun = info.sun
             
+            if info.mon ?? false {
+                self.selectWeekListSet(item: "월")
+            }
+            if info.tue ?? false {
+                self.selectWeekListSet(item: "화")
+            }
+            if info.wed ?? false {
+                self.selectWeekListSet(item: "수")
+            }
+            if info.thu ?? false {
+                self.selectWeekListSet(item: "목")
+            }
+            if info.fri ?? false {
+                self.selectWeekListSet(item: "금")
+            }
+            if info.sat ?? false {
+                self.selectWeekListSet(item: "토")
+            }
+            if info.sun ?? false {
+                self.selectWeekListSet(item: "일")
+            }
+            
             self.habitNameTF.text = info.scheduleName ?? ""
             self.modifyTimeLbl.text = info.scheduleTime ?? ""
             self.modifyTimeView.isHidden = false
@@ -487,6 +509,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
                     self.modifyAlarmLbl.text = TaviCommon.stringDateToHHMM_A(stringData: alarmTime)
                 }
             }
+            
             
             self.requestModifyParam = self.requestParam
             
