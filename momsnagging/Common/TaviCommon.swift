@@ -104,7 +104,7 @@ class TaviCommon {
         date = dateFormatter.date(from: stringData) ?? date
         let toStringFormatter = DateFormatter()
         toStringFormatter.locale = Locale(identifier: "ko_KR")
-        toStringFormatter.dateFormat = "HH:mm a"
+        toStringFormatter.dateFormat = "hh:mm a"
         return toStringFormatter.string(from: date)
     }
     
