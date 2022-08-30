@@ -348,10 +348,10 @@ class TodoViewNew: BaseViewController, Navigatable{
             $0.height.equalTo(24)
         })
         switchPush.snp.makeConstraints({
-            $0.width.equalTo(32)
-            $0.height.equalTo(16)
+            $0.width.equalTo(60)
+            $0.height.equalTo(36)
             $0.centerY.equalTo(pushAlarmTitle.snp.centerY)
-            $0.trailing.equalTo(backgroundFrame.snp.trailing).offset(-30)
+            $0.trailing.equalTo(backgroundFrame.snp.trailing).offset(-2)
         })
         addTimeView.snp.makeConstraints({
             $0.top.equalTo(pushAlarmTitle.snp.bottom).offset(20)

@@ -37,7 +37,7 @@ class TaviCommon {
     static func alarmTimeDateToStringFormatHHMMa(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "HH:mm a"
+        formatter.dateFormat = "hh:mm a"
         return formatter.string(from: date)
     }
     
