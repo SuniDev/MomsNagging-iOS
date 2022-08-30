@@ -396,8 +396,11 @@ extension HomeView {
         modifyBtn.rx.tap.bind { [weak self] in
             guard let self = self else { return }
             if type == .todo {
-                let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: self.todoList[index])
-                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
+//                let viewModel = DetailTodoViewModel(isNew: false, homeVM: self.viewModel, dateParam: self.todoListLookUpParam, todoModel: self.todoList[index])
+//                self.navigator.show(seque: .detailTodo(viewModel: viewModel), sender: self, transition: .navigation)
+                let viewModel = TodoViewModelNew(modify: true, homeViewModel: self.viewModel, todoModel: self.todoList[index])
+                let vc = self.navigator.get(seque: .detailTodoNew(viewModel: viewModel))
+                self.navigator.show(seque: .detailTodoNew(viewModel: viewModel), sender: vc, transition: .navigation)
             } else {
 //                let viewModel = DetailHabitViewModel(isNew: false, isRecommendHabit: false, dateParam: self.todoListLookUpParam, homeViewModel: self.viewModel, todoModel: self.todoList[index], recommendHabitName: self.todoList[index].scheduleName)
                 let viewModel = DetailHabitViewModelNew(modify: true, homeViewModel: self.viewModel, todoModel: self.todoList[index])

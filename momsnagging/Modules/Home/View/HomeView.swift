@@ -346,8 +346,16 @@ class HomeView: BaseViewController, Navigatable {
                     month = 12
                     year -= year
                 }
+            } else if day < self.calendarViewModel.getToday() - 6 {
+                Log.debug("흠 얘는 9월달이여~", "")
+                month += 1
+                if month == 13 {
+                    month = 1
+                    year += year
+                }
             }
             Log.debug("day!", "\(day), \(month)")
+            
             
             if month < self.calendarViewModel.getMonth() {
                 self.monthlyConfirmation = .previousMonth
