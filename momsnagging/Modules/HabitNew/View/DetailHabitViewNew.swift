@@ -604,6 +604,9 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             self.habitNameFrameFocus(bool: false)
             self.datePickerView.isHidden = false
             self.datePickerControlBar.isHidden = false
+            if !self.modify && self.modifyStartDateView.isHidden {
+                self.defaultStartDateSet()
+            }
         }.disposed(by: disposeBag)
         modifyStartDateBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
@@ -766,6 +769,25 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         self.view.endEditing(true)
         self.datePickerView.isHidden = true
         self.datePickerControlBar.isHidden = true
+    }
+    func defaultStartDateSet() {
+        if weekAndCount {
+            resetWeek()
+        }
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko")
+        formatter.dateFormat = "yyyy.MM.dd (E)"
+//        tfStartDate.text = formatter.string(from: sender.date)
+        modifyStartDateLbl.text = formatter.string(from: Date())
+        formatter.dateFormat = "yyyy-MM-dd"
+//        tfStartDateParam.text = formatter.string(from: sender.date)
+        requestParam.scheduleDate = formatter.string(from: Date())
+        formatter.dateFormat = "E"
+//        startDateWeek = formatter.string(from: sender.date)
+        notSelectWeek = formatter.string(from: Date())
+        notSelectSet(item: formatter.string(from: Date()))
+        doneValidCheck()
+        modifyStartDateView.isHidden = false
     }
     
     func modifySetCycleBtn() {

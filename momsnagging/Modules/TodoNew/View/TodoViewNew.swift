@@ -504,6 +504,9 @@ class TodoViewNew: BaseViewController, Navigatable{
             self.habitNameFrameFocus(bool: false)
             self.datePickerView.isHidden = false
             self.datePickerControlBar.isHidden = false
+            if !self.modify && self.modifyStartDateView.isHidden {
+                self.defaultStartDateSet()
+            }
         }.disposed(by: disposeBag)
         modifyStartDateBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
@@ -592,6 +595,20 @@ class TodoViewNew: BaseViewController, Navigatable{
         self.datePickerControlBar.isHidden = true
     }
     
+    func defaultStartDateSet() {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko")
+        formatter.dateFormat = "yyyy.MM.dd (E)"
+//        tfStartDate.text = formatter.string(from: sender.date)
+        modifyStartDateLbl.text = formatter.string(from: Date())
+        formatter.dateFormat = "yyyy-MM-dd"
+//        tfStartDateParam.text = formatter.string(from: sender.date)
+        requestParam.scheduleDate = formatter.string(from: Date())
+        formatter.dateFormat = "E"
+//        startDateWeek = formatter.string(from: sender.date)
+        doneValidCheck()
+        modifyStartDateView.isHidden = false
+    }
     
     func detailHabitTitle(title: String, required: Bool) -> UIView {
         let view = UIView()
