@@ -182,18 +182,19 @@ extension IntroViewModel {
                      observer.onCompleted()
                  }
                  
-                 let forceVresion = remoteConfig["forceUpdateVersion_iOS"].stringValue ?? "0.0.0"
                  let lastVersion = remoteConfig["latestUpdateVersion_iOS"].stringValue ?? "0.0.0"
+                 let forceVersion = remoteConfig["forceUpdateVersion_iOS"].stringValue ?? "0.0.0"
+                 
                  let currentVersion = TaviCommon.getVersion()
                  
-                 Log.debug(lastVersion, forceVresion)
+                 Log.debug(lastVersion, forceVersion)
                  
                  if lastVersion == "0.0.0" {
                      observer.onNext(.error)
                      observer.onCompleted()
                  }
                  
-                 let forceSplit = forceVresion.split(separator: ".")
+                 let forceSplit = forceVersion.split(separator: ".")
                  let latestSplit = lastVersion.split(separator: ".")
                  
                  if forceSplit.count != 3 || latestSplit.count != 3 {
@@ -202,7 +203,7 @@ extension IntroViewModel {
                  }
                  
                  // 버전 체크
-                 if self.isOldVersion(latest: forceVresion, current: currentVersion) {
+                 if self.isOldVersion(latest: forceVersion, current: currentVersion) {
                      observer.onNext(.forceUpdate)
                      observer.onCompleted()
                  } else {
