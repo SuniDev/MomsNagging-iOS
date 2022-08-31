@@ -182,8 +182,8 @@ extension IntroViewModel {
                      observer.onCompleted()
                  }
                  
-                 let forceVresion = remoteConfig["forceUpdateVersion"].stringValue ?? "0.0.0"
-                 let lastVersion = remoteConfig["latestUpdateVersion"].stringValue ?? "0.0.0"
+                 let forceVresion = remoteConfig["forceUpdateVersion_iOS"].stringValue ?? "0.0.0"
+                 let lastVersion = remoteConfig["latestUpdateVersion_iOS"].stringValue ?? "0.0.0"
                  let currentVersion = TaviCommon.getVersion()
                  
                  Log.debug(lastVersion, forceVresion)

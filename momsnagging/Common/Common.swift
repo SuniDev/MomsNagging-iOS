@@ -22,7 +22,7 @@ enum AppUpdateStatus {
 class Common {
     
     static let TEST: Bool = false
-    static let appStoreUrl: String = "itms-apps://itunes.apple.com/app/id363590051"
+    static let appStoreUrl: String = "itms-apps://itunes.apple.com/app/id1614134886"
     static var appUpdateStatus: AppUpdateStatus?
     
     private static let configKey = "DeployPhase"
