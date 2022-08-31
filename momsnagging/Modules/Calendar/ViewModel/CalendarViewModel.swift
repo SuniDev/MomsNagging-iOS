@@ -17,7 +17,7 @@ class CalendarViewModel {
     
     var weekDay = BehaviorSubject<[String]>(value: CalendarModel().weekDayList) // 월~일 리스트 방출
     var daylist = BehaviorSubject<[String]>(value: CalendarModel().getDefaultDayList()) // 최초 이번달 일수 리스트 방출
-    var weekDayListObservable = PublishSubject<[Int]>() // 이번주 주간 리스트 옵저버블
+    var weekDayListObservable = PublishSubject<[WeekDayListModel]>() // 이번주 주간 리스트 옵저버블
     
     var collectionViewHeight = PublishSubject<Int>() // 해당 월의 행수(row)
     
@@ -57,6 +57,12 @@ class CalendarViewModel {
     func weekDayList(currentMonth: Int, currentYear: Int) {
         weekDayListObservable.onNext(model.getWeek(currentMonth: currentMonth, currentYear: currentYear))
     }
+    
+    func selectWeekDayList(currentMonth: Int, currentYear: Int, selectDate: Date) {
+//        Log.debug("weekDayListObservableIntList", model.selectDateGetWeek(currentMonth: currentMonth, currentYear: currentYear, selectDate: selectDate))
+        weekDayListObservable.onNext(model.selectDateGetWeek(currentMonth: currentMonth, currentYear: currentYear, selectDate: selectDate))
+    }
+    
     /// 월~일 String 호출
     func getWeekDayList() -> [String] {
         return model.weekDayList

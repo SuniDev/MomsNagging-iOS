@@ -78,6 +78,7 @@
 		8F334E2B2830BEB100E731E8 /* RecommendedHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F334E282830BEB100E731E8 /* RecommendedHabitView.swift */; };
 		8F334E2D2830DAC700E731E8 /* RecommendedHabitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F334E2C2830DAC700E731E8 /* RecommendedHabitCell.swift */; };
 		8F334E362831109100E731E8 /* GradeWeekDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F334E352831109100E731E8 /* GradeWeekDayCell.swift */; };
+		8F3D371628BFB5F4003B8807 /* WeekDayCalendarTodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3D371528BFB5F4003B8807 /* WeekDayCalendarTodayCell.swift */; };
 		8F4682C228ADDE210064C34E /* DetailHabitViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4682C128ADDE210064C34E /* DetailHabitViewNew.swift */; };
 		8F4682C428ADDE300064C34E /* DetailHabitViewModelNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4682C328ADDE300064C34E /* DetailHabitViewModelNew.swift */; };
 		8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F82E72E27D8A89F008CDC22 /* CommonView.swift */; };
@@ -261,6 +262,7 @@
 		8F334E282830BEB100E731E8 /* RecommendedHabitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendedHabitView.swift; sourceTree = "<group>"; };
 		8F334E2C2830DAC700E731E8 /* RecommendedHabitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedHabitCell.swift; sourceTree = "<group>"; };
 		8F334E352831109100E731E8 /* GradeWeekDayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeWeekDayCell.swift; sourceTree = "<group>"; };
+		8F3D371528BFB5F4003B8807 /* WeekDayCalendarTodayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCalendarTodayCell.swift; sourceTree = "<group>"; };
 		8F4682C128ADDE210064C34E /* DetailHabitViewNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewNew.swift; sourceTree = "<group>"; };
 		8F4682C328ADDE300064C34E /* DetailHabitViewModelNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHabitViewModelNew.swift; sourceTree = "<group>"; };
 		8F82E72E27D8A89F008CDC22 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				8F1F93A427EEF2C5000F08AF /* CalendarDayCell.swift */,
 				8F1F93A627EEF2DA000F08AF /* CalendarWeekDayCell.swift */,
 				8FBA8528281D56CB0013C91C /* WeekDayCalendarCell.swift */,
+				8F3D371528BFB5F4003B8807 /* WeekDayCalendarTodayCell.swift */,
 				8FBA852B281E4C940013C91C /* HomeCalendarCell.swift */,
 			);
 			path = View;
@@ -1659,6 +1662,7 @@
 				A0066C3828437C3800805570 /* PushSettingViewModel.swift in Sources */,
 				8F334E292830BEB100E731E8 /* RecommendedHabitViewModel.swift in Sources */,
 				8F82E72F27D8A89F008CDC22 /* CommonView.swift in Sources */,
+				8F3D371628BFB5F4003B8807 /* WeekDayCalendarTodayCell.swift in Sources */,
 				A0269005283148E0009A40A0 /* CommonSwitch.swift in Sources */,
 				868A57562828CC7C004153BB /* CycleCell.swift in Sources */,
 				A0B581B42827A4D60099C9BA /* RecommendHabitTitle.swift in Sources */,

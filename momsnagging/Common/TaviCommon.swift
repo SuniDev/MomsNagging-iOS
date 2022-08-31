@@ -742,6 +742,18 @@ extension String {
             return nil
         }
     }
+    
+    func toDate(dateString: String) -> Date? { //"yyyy-MM-dd HH:mm:ss"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "ko")
+        dateFormatter.timeZone = TimeZone(identifier: "KST")
+        if let date = dateFormatter.date(from: dateString) {
+            return date
+        } else {
+            return nil
+        }
+    }
 }
 
 extension Date {
@@ -758,6 +770,14 @@ extension Date {
         dateFormatter.timeZone = TimeZone(identifier: "ko")
         dateFormatter.locale = Locale(identifier: "ko")
         dateFormatter.dateFormat = "E"
+        return dateFormatter.string(from: self)
+    }
+    
+    func toStringYYYYMMDD() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "ko")
+        dateFormatter.locale = Locale(identifier: "ko")
+        dateFormatter.dateFormat = "yyyyMMdd"
         return dateFormatter.string(from: self)
     }
 }
