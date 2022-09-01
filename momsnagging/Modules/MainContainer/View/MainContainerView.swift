@@ -25,6 +25,8 @@ class MainContainerView: BaseViewController, Navigatable {
                 guard let viewModel = viewModel else { return }
                 self.navigator.show(seque: .weeklyEvaluation(viewModel: viewModel), sender: self, transition: .modal)
             }).disposed(by: disposedBag)
+        
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     // MARK: - Init
     init(viewModel: MainContainerViewModel, navigator: Navigator) {
