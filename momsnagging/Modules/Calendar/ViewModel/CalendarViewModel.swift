@@ -63,6 +63,7 @@ class CalendarViewModel {
     }
     
     func reloadDayListNew(currentMonth: Int, currentYear: Int, selectDateSt: String) {
+        Log.debug("startWeekDay!_", "reloadDayListNew")
         dayListNew.onNext(model.getOtherMonthDayListNew(currentMonth: currentMonth, currentYear: currentYear, selectDateSt: selectDateSt))
     }
     

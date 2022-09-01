@@ -320,6 +320,7 @@ class HomeView: BaseViewController, Navigatable {
                     } else {
                         cell?.weekDayLbl.textColor = UIColor(asset: Asset.Color.monoDark010)
                     }
+                    Log.debug("calendarViewModel Item Month, Year", "\(item.month), \(item.year)")
                     return cell ?? cv.dequeueReusableCell(withReuseIdentifier: "WeekDayCalendarTodayCell", for: indexPath)
                 } else {
                     let cell = cv.dequeueReusableCell(withReuseIdentifier: "WeekDayCalendarCell", for: indexPath) as? WeekDayCalendarCell
@@ -340,6 +341,7 @@ class HomeView: BaseViewController, Navigatable {
                     } else {
                         cell?.selectDayRoundFrame.isHidden = true
                     }
+                    Log.debug("calendarViewModel Item Month, Year", "\(item.month), \(item.year)")
                     return cell ?? cv.dequeueReusableCell(withReuseIdentifier: "WeekDayCalendarCell", for: indexPath)
                 }
                 
@@ -369,8 +371,19 @@ class HomeView: BaseViewController, Navigatable {
             } else {
                 day = cell?.day ?? 0
             }
+            if cell?.year == nil {
+                year = cellToday?.year ?? 0
+            } else {
+                year = cell?.year ?? 0
+            }
             var month: Int = cell?.month ?? 0
-            Log.debug("day!", "\(day), \(month), \(year)")
+            if cell?.month == nil {
+                month = cellToday?.month ?? 0
+            } else {
+                month = cell?.month ?? 0
+            }
+            
+            Log.debug("day!__", "\(day), \(month), \(year)")
             
             if month < self.calendarViewModel.getMonth() {
                 self.monthlyConfirmation = .previousMonth
@@ -397,7 +410,7 @@ class HomeView: BaseViewController, Navigatable {
             
             Log.debug("monthlyConfirmation Test", "\(self.monthlyConfirmation)")
             
-            self.calendarViewModel.reloadDayListNew(currentMonth: cell?.month ?? 0, currentYear: cell?.year ?? 0, selectDateSt: self.weekDaySelectDateString)
+            self.calendarViewModel.reloadDayListNew(currentMonth: month, currentYear: year, selectDateSt: self.weekDaySelectDateString)
             
             for (index, item) in self.dayList.enumerated() where "\(item.day ?? 0)" == "\(day ?? 0)" {
                 self.calendarSelectIndex = index

@@ -278,7 +278,9 @@ class CalendarModel {
         } else {
             startWeekDayString = "\(currentYear)-0\(currentMonth)-01"
         }
+        Log.debug("startWeekDay!", "\(startWeekDayString)")
         let startWeekDay = getDayOfWeek(startWeekDayString)
+        Log.debug("startWeekDay!", startWeekDay)
         var dayList = [DateItemModel]()
         for _ in 0..<(startWeekDay!) {
             var model = DateItemModel()
