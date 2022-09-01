@@ -436,6 +436,14 @@ class TodoViewNew: BaseViewController, Navigatable{
                     self.pushAlarmSet(isOn: true)
                     self.modifyAlarmView.isHidden = false
                     self.modifyAlarmLbl.text = TaviCommon.stringDateToHHMM_A(stringData: alarmTime)
+                    
+                    let dateForm = DateFormatter()
+                    dateForm.dateFormat = "HH:mm:ss"
+                    
+                    let dateTime = dateForm.date(from: alarmTime)
+                    if let unwrappedDate = dateTime {
+                        self.timePicker.setDate(unwrappedDate, animated: true)
+                    }
                 }
             }
             

@@ -234,6 +234,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         countView.isHidden = true
         
         pushAlarmTitle = detailHabitTitle(title: "잔소리 알림", required: false)
+        
         tfPicker.inputView = timePicker
         addTimeView = TaviCommon.addTimeView(tf: tfPicker)
         addTimeView.isHidden = true
@@ -508,9 +509,16 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
                     self.pushAlarmSet(isOn: true)
                     self.modifyAlarmView.isHidden = false
                     self.modifyAlarmLbl.text = TaviCommon.stringDateToHHMM_A(stringData: alarmTime)
+                    
+                    let dateForm = DateFormatter()
+                    dateForm.dateFormat = "HH:mm:ss"
+                    
+                    let dateTime = dateForm.date(from: alarmTime)
+                    if let unwrappedDate = dateTime {
+                        self.timePicker.setDate(unwrappedDate, animated: true)
+                    }
                 }
             }
-            
             
             self.requestModifyParam = self.requestParam
             
