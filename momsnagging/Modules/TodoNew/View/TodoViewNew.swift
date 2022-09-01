@@ -420,6 +420,7 @@ class TodoViewNew: BaseViewController, Navigatable{
             self.requestParam.sun = info.sun
             
             self.habitNameTF.text = info.scheduleName ?? ""
+            self.textCountLbl.text = "\(info.scheduleName?.count ?? 0)/30"
             self.modifyTimeLbl.text = info.scheduleTime ?? ""
             self.modifyTimeView.isHidden = false
             self.modifyStartDateLbl.text = TaviCommon.stringDateToyyyyMMdd_E(stringData: info.scheduleDate ?? "")
