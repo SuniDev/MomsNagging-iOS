@@ -190,24 +190,22 @@ class CalendarView: UIViewController {
             .bind(to: self.weekDayCollectionView.rx.items(cellIdentifier: "CalendarWeekDayCell", cellType: CalendarWeekDayCell.self)) { _, item, cell in
                 cell.dayWeekLabel.text = item
             }.disposed(by: disposedBag)
-        viewModel.daylist // 월 달력 데이터 [String]
-            .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "CalendarDayCell", cellType: CalendarDayCell.self)) { _, item, cell in
-                if item == "emptyCell" {
-                    cell.emoji.isHidden = true
-                    cell.number.isHidden = false
-                    cell.number.text = ""
-                } else {
-                    cell.emoji.isHidden = false
-                    cell.number.isHidden = false
-                    cell.number.text = item
-                }
-            }.disposed(by: disposedBag)
+//        viewModel.daylist // 월 달력 데이터 [String]
+//            .bind(to: self.dayCollectionView.rx.items(cellIdentifier: "CalendarDayCell", cellType: CalendarDayCell.self)) { _, item, cell in
+//                if item == "emptyCell" {
+//                    cell.emoji.isHidden = true
+//                    cell.number.isHidden = false
+//                    cell.number.text = ""
+//                } else {
+//                    cell.emoji.isHidden = false
+//                    cell.number.isHidden = false
+//                    cell.number.text = item
+//                }
+//            }.disposed(by: disposedBag)
         viewModel.weekDayListObservable // 주달력 데이터 [String]
             .bind(to: self.weekCalendarCollectionView.rx.items(cellIdentifier: "CalendarDayCell", cellType: CalendarDayCell.self)) { _, item, cell in
                 cell.number.text = "\(item)"
             }.disposed(by: disposedBag)
-        viewModel.monthObservable.subscribe { self.monthLabel.text = "\($0.element ?? 0)" }.disposed(by: disposedBag)
-        viewModel.yearObservable.subscribe { self.yearLabel.text = "\($0.element ?? 0)" }.disposed(by: disposedBag)
         viewModel.weekDayList(currentMonth: Int(self.monthLabel.text!)!, currentYear: Int(self.yearLabel.text!)!)
         monthCollectionViewHeight = viewModel.rowCount(currentMonth: Int(self.monthLabel.text!)!, currentYear: Int(self.yearLabel.text!)!)
         viewModel.collectionViewHeight.subscribe { self.dayCollectionViewRemakeConstraint(count: $0) }.disposed(by: disposedBag)
