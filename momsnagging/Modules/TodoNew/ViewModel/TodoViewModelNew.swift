@@ -68,6 +68,7 @@ extension TodoViewModelNew {
     
     func requestTodoInfo() {
         LoadingHUD.show()
+        Log.debug("requestRoutineInfo _  Todo:", self.todoModel?.id ?? 0)
         provider.request(.todoDetailLookUp(scheduleId: self.todoModel?.id ?? 0), completion: { res in
             switch res {
             case .success(let result):

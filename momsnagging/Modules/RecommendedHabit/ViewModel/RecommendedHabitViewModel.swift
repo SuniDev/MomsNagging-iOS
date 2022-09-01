@@ -119,6 +119,7 @@ extension RecommendedHabitViewModel {
                             var model = RecommendedHabitModel()
                             model.id = item.dictionary?["id"]?.intValue ?? 0
                             model.scheduleName = item.dictionary?["scheduleName"]?.stringValue ?? ""
+                            model.naggingId = item.dictionary?["naggingId"]?.intValue ?? 0
                             recommendList.append(model)
                         }
                         self.itemList.accept(recommendList)

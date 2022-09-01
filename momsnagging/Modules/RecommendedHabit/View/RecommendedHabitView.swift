@@ -103,7 +103,9 @@ class RecommendedHabitView: BaseViewController, Navigatable {
                 }
             })
 //            let viewModel = DetailHabitViewModel(isNew: true, isRecommendHabit: true, dateParam: self.viewModel.dateParam ?? "", homeViewModel: self.viewModel.homeViewModel ?? HomeViewModel(), recommendHabitName: self.itemList[indexPath.row].scheduleName ?? "")
-            let viewModel = DetailHabitViewModelNew(modify: false, homeViewModel: (self.viewModel?.homeViewModel!)!, recommendedTitle: self.itemList[indexPath.row].scheduleName ?? "")
+            let viewModel = DetailHabitViewModelNew(modify: false, homeViewModel: (self.viewModel?.homeViewModel!)!, recommendedTitle: self.itemList[indexPath.row].scheduleName ?? "",naggingId: self.itemList[indexPath.row].naggingId ?? 0)
+//            Log.debug("잔소리 아이디", self.itemList[indexPath.row].naggingId ?? 0)
+            
             let cell = self.habitTableView.cellForRow(at: [0, indexPath.row]) as? RecommendedHabitCell
             cell?.itemFrame.backgroundColor = UIColor(hexString: self.cellColor)
             cell?.title.textColor = UIColor(asset: Asset.Color.monoDark010)

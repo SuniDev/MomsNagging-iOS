@@ -159,12 +159,14 @@ class TodoViewNew: BaseViewController, Navigatable{
         $0.textColor = .clear
         $0.backgroundColor = .clear
         $0.tintColor = .clear
+        $0.tag = 10
     })
     lazy var modifyTfPicker = UITextField().then({
         $0.borderStyle = .none
         $0.textColor = .clear
         $0.backgroundColor = .clear
         $0.tintColor = .clear
+        $0.tag = 11
     })
     lazy var timePicker = UIDatePicker().then({
         $0.minuteInterval = 5
@@ -235,6 +237,8 @@ class TodoViewNew: BaseViewController, Navigatable{
         requestParam.goalCount = 0
         // delegate
         habitNameTF.delegate = self
+        tfPicker.delegate = self
+        modifyTfPicker.delegate = self
         
     }
     override func layoutSetting() {
@@ -807,12 +811,20 @@ extension TodoViewNew: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: true)
+        } else if textField.tag == 10 {
+            scrollView.scroll(to: .bottom)
+        } else if textField.tag == 11 {
+            scrollView.scroll(to: .bottom)
         }
         return true
     }
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: false)
+        } else if textField.tag == 10 {
+            scrollView.scroll(to: .top)
+        } else if textField.tag == 11 {
+            scrollView.scroll(to: .top)
         }
         return true
     }

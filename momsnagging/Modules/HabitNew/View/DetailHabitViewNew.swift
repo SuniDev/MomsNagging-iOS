@@ -244,6 +244,8 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         requestParam.goalCount = 0
         // delegate
         habitNameTF.delegate = self
+        tfPicker.delegate = self
+        modifyTfPicker.delegate = self
         
     }
     override func layoutSetting() {
@@ -532,7 +534,6 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { height in
-                Log.debug("습관상세 키보드 높이", "\(height)")
                 if height == 0.0 {
                     if self.alarmOn {
                         self.backgroundFrame.snp.updateConstraints({
@@ -574,13 +575,12 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             self.navigator.pop(sender: self)
         }.disposed(by: disposeBag)
         doneBtn.rx.tap.bind {
-            Log.debug("완료버튼 누름", "완료!!")
-//            viewModel?.requestRegistHabit(scheduleName: requestParam.scheduleName ?? "", naggingId: 0, goalCount: requestParam.goalCount ?? 0, scheduleTime: requestParam.scheduleTime ?? "", scheduleDate: requestParam.scheduleDate ?? "", alarmTime: requestParam.alarmTime ?? "", mon: requestParam.mon, tue: requestParam.tue, wed: requestParam.wed, thu: requestParam.thu, fri: requestParam.fri, sat: requestParam.sat, sun: requestParam.sun)
             if self.modify {
                 Log.debug("완료버튼 누름", "수정페이지")
                 self.viewModel?.requestModifyRoutine(requestParam: self.requestParam, requestModifyParam: self.requestModifyParam)
             } else {
                 Log.debug("완료버튼 누름", "생성페이지")
+                self.requestParam.naggingId = self.viewModel?.naggingId ?? 0
                 self.viewModel?.requestRegistHabit(createTodoRequestModel: self.requestParam)
                 self.navigator.pop(sender: self, toRoot: true)
             }
@@ -708,6 +708,8 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
                 self.doneValidCheck()
             }
         }.disposed(by: disposeBag)
+        
+//        self.timePicker.rx.controlEvent(.allEvents).subscribe(<#T##observer: ObserverType##ObserverType#>)
         
         self.timePicker.rx.controlEvent(.valueChanged).subscribe(onNext: { _ in
             let date: Date = self.timePicker.date
@@ -1451,13 +1453,9 @@ extension DetailHabitViewNew: UITextFieldDelegate {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: true)
         } else if textField.tag == 10 {
-//            backgroundFrame.snp.remakeConstraints({
-//                $0.edges.equalTo(scrollView.snp.edges)
-//                $0.width.equalTo(UIScreen.main.bounds.width)
-//                $0.height.equalTo(676)
-//            })
+            scrollView.scroll(to: .bottom)
         } else if textField.tag == 11 {
-            
+            scrollView.scroll(to: .bottom)
         }
         return true
     }

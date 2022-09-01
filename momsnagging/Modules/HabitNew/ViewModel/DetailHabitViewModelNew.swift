@@ -20,19 +20,26 @@ class DetailHabitViewModelNew: BaseViewModel {
     var habitInfoOb = PublishSubject<TodoInfoResponseModel>()
     
     var recommendedTitle: String?
+    var naggingId: Int?
     
     var modifySuccessOb = PublishSubject<Void>()
 //    var registSuccess = PublishSubject<Void>()
 //    var registError = PublishSubject<String>()
     
-    init(modify: Bool, homeViewModel: HomeViewModel, recommendedTitle: String?="", todoModel: TodoListModel?=nil) {
+    init(modify: Bool, homeViewModel: HomeViewModel, recommendedTitle: String?="", todoModel: TodoListModel?=nil, naggingId: Int?=0) {
         self.modify = modify
         self.homeViewModel = homeViewModel
         self.recommendedTitle = recommendedTitle
         if let todoModel = todoModel {
             self.todoModel = todoModel
         }
+        if let naggingId = naggingId {
+            self.naggingId = naggingId
+        } else {
+            self.naggingId = 0
+        }
         print("DetailHabitViewModelNew : \(self.todoModel?.id ?? 0)")
+        print("DetailHabitViewModelNew : \(self.recommendedTitle ?? "")")
     }
 }
 
@@ -42,6 +49,7 @@ extension DetailHabitViewModelNew {
         LoadingHUD.show()
 //        let param = CreateTodoRequestModel(scheduleName: scheduleName, naggingId: naggingId, goalCount: goalCount, scheduleTime: scheduleTime, scheduleDate: scheduleDate, alarmTime: alarmTime, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun)
         let param = createTodoRequestModel
+        
         Log.debug("createHabit param:", "\(param)")
         
         provider.request(.createTodo(param: param), completion: { res in
@@ -66,6 +74,7 @@ extension DetailHabitViewModelNew {
     
     func requestRoutineInfo() {
         LoadingHUD.show()
+        Log.debug("requestRoutineInfo:", self.todoModel?.id ?? 0)
         provider.request(.todoDetailLookUp(scheduleId: self.todoModel?.id ?? 0), completion: { res in
             switch res {
             case .success(let result):
