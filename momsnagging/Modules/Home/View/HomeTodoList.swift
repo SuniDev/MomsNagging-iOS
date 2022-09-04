@@ -86,6 +86,7 @@ extension HomeView {
             } else if sender.accessibilityLabel == "0" {
                 // GA - 홈 할일 체크박스 탭
                 CommonAnalytics.logEvent(.tap_home_checkbox_todo)
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
@@ -97,6 +98,7 @@ extension HomeView {
             } else if sender.accessibilityLabel == "0" {
                 // GA - 홈 습관 체크박스 탭
                 CommonAnalytics.logEvent(.tap_home_checkbox_habit)
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
@@ -108,6 +110,7 @@ extension HomeView {
             } else if sender.accessibilityLabel == "0" {
                 // GA - 홈 습관 체크박스 탭
                 CommonAnalytics.logEvent(.tap_home_checkbox_habit)
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
