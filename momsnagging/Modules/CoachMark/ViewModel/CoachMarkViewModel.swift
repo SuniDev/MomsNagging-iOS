@@ -83,7 +83,7 @@ extension CoachMarkViewModel {
         return AddHabitViewModel(dateParam: "", homeViewModel: HomeViewModel(), coachMarkStatus: true)
     }
     
-    private func getDetailHabitViewModel() -> DetailHabitViewModel {
-        return DetailHabitViewModel(isNew: true, isRecommendHabit: false, dateParam: "", homeViewModel: HomeViewModel(), coachMarkStatus: true)
+    private func getDetailHabitViewModel() -> DetailHabitViewModelNew {
+        return DetailHabitViewModelNew(modify: false, homeViewModel: HomeViewModel(), recommendedTitle: nil, todoModel: nil, naggingId: nil, coachMarkStatus: true)
     }
 }

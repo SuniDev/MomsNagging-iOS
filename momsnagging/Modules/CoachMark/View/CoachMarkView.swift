@@ -474,8 +474,8 @@ class CoachMarkView: BaseViewController, Navigatable {
                     }
                     
                 case 2: // 코치마크 2 - 2
-                    if let viewModel = viewModel as? DetailHabitViewModel,
-                       let vc = self.navigator.get(seque: .detailHabit(viewModel: viewModel)),
+                    if let viewModel = viewModel as? DetailHabitViewModelNew,
+                       let vc = self.navigator.get(seque: .detailHabitNew(viewModel: viewModel)),
                        let v = vc.view {
                         view = v
 //                        self.viewDimCoachMark2Bottom.fadeOut()
