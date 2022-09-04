@@ -19,7 +19,7 @@ class NicknameSettingViewModel: ViewModel, ViewModelType {
     }
 
     enum TextHintType: String {
-        case success = "그것 참 재밌는 호칭이구나!"
+        case success = "그것 참 좋은 호칭이구나!"
         case error = "다른 이름을 생각해보겠니?"
         case none = ""
     }
