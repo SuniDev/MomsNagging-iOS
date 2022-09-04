@@ -38,7 +38,7 @@ class MyView: BaseViewController, Navigatable {
     lazy var imgvProfile = UIImageView().then({
         $0.image = Asset.Assets.emojiDaughter.image
     })
-    lazy var lblID = UILabel().then({
+    lazy var lblNickname = UILabel().then({
         $0.text = ""
         $0.font = FontFamily.Pretendard.bold.font(size: 24)
         $0.textColor = Asset.Color.monoDark010.color
@@ -243,7 +243,7 @@ class MyView: BaseViewController, Navigatable {
             $0.center.equalToSuperview()
         })
         
-        viewProfile.addSubview(lblID)
+        viewProfile.addSubview(lblNickname)
         viewProfile.addSubview(viewStatusMsg)
         viewStatusMsg.addSubview(lblStatusMsg)
         viewStatusMsg.addSubview(btnModifyStatusMsg)
@@ -262,13 +262,13 @@ class MyView: BaseViewController, Navigatable {
         viewProfile.addSubview(lblEmail)
         viewProfile.addSubview(dividerProfile)
         
-        lblID.snp.makeConstraints({
+        lblNickname.snp.makeConstraints({
             $0.top.equalTo(viewProfileImage.snp.bottom).offset(12)
             $0.centerX.equalToSuperview()
         })
         viewStatusMsg.snp.makeConstraints({
             $0.height.equalTo(22)
-            $0.top.equalTo(lblID.snp.bottom).offset(8)
+            $0.top.equalTo(lblNickname.snp.bottom).offset(8)
             $0.leading.greaterThanOrEqualToSuperview().offset(18)
             $0.trailing.lessThanOrEqualToSuperview().offset(-18)
             $0.centerX.equalToSuperview()
@@ -423,11 +423,11 @@ class MyView: BaseViewController, Navigatable {
                 self.navigator.show(seque: .setting(viewModel: SettingViewModel()), sender: self, transition: .navigation)
             }).disposed(by: disposeBag)
         
-        // 아이디
-        output.id
-            .drive(onNext: { id in
-                self.lblID.text = id
-            }).disposed(by: disposeBag)
+//        // 아이디
+//        output.id
+//            .drive(onNext: { id in
+//                self.lblNickname.text = id
+//            }).disposed(by: disposeBag)
         
         // 이메일
 //        output.email
@@ -463,6 +463,7 @@ class MyView: BaseViewController, Navigatable {
             .debug()
             .drive(onNext: { nickName in
                 self.imgvProfile.image = CommonUser.getNicknameImage(nickName)
+                self.lblNickname.text = nickName
             }).disposed(by: disposeBag)
         output.showNicknameSettingAlert
             .drive(onNext: { model in

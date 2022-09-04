@@ -43,7 +43,7 @@ class MyViewModel: ViewModel, ViewModelType {
         /// 설정
         let goToSetting: Driver<Void>
         /// 아이디
-        let id: Driver<String>
+        let nickname: Driver<String>
         /// 각오
         let statusMsg: Driver<String>
         let showStatusModifyAlert: Driver<Alert>
@@ -235,7 +235,7 @@ class MyViewModel: ViewModel, ViewModelType {
             }
         
         return Output(goToSetting: input.btnSettingTapped,
-                      id: id.asDriverOnErrorJustComplete(),
+                      nickname: id.asDriverOnErrorJustComplete(),
                       statusMsg: statusMsg.asDriver(onErrorJustReturn: STR_STATUSMSG_DEFAULT),
                       showStatusModifyAlert: showStatusModifyAlert.asDriverOnErrorJustComplete(),
                       nickName: nickName.asDriverOnErrorJustComplete(),
