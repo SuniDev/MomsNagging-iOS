@@ -21,6 +21,13 @@ class CalendarModel {
             return false
         }
     }
+    /// 선택한날짜 Int로 변경
+    func getSelectDateToInt(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd"
+        let dateSt = dateFormatter.string(from: date)
+        return Int(dateSt)!
+    }
     /// 오늘날짜 가져오기
     func getToday() -> Int {
         let today: Int = Date().getDay()
@@ -71,6 +78,11 @@ class CalendarModel {
     /// 이번주 몇번째 요일인지 일(0)~토(6)
     func getWeekDay() -> Int {
         let weekDay: Int = Date().getWeekDay()
+        return weekDay
+    }
+    /// 선택한 일이 몇번째 요일인가?
+    func getWeekDayselectDate(date: Date) -> Int {
+        let weekDay: Int = date.getWeekDay()
         return weekDay
     }
     /// 이번달 일수
@@ -192,6 +204,168 @@ class CalendarModel {
         }
         return dayList
     }
+    
+    /// 이번달 일 list (시작요일에 맞추기 위해 빈 cell 추가) + (이번달 일수 추가)  최초 세팅시에만 호출
+    func getDefaultDayListNew(currentYear: Int, currentMonth: Int) -> [DateItemModel] {
+        let startWeekDay = getMonthFirstDayWeekDay()
+        var dayList = [DateItemModel]()
+        for _ in 0..<(startWeekDay) {
+            var model = DateItemModel()
+            model.isEmpty = true
+            dayList.append(model)
+        }
+        let yearSt = "\(getYear())"
+        var monthSt = ""
+        var daySt = ""
+        
+        if getMonth() < 10 {
+            monthSt = "0\(getMonth())"
+        } else {
+            monthSt = "\(getMonth())"
+        }
+        if getToday() < 10 {
+            daySt = "0\(getToday())"
+        } else {
+            daySt = "\(getToday())"
+        }
+        
+        Log.debug("getOtherMonthDayListNew 날짜 가져오기", "\(yearSt)\(monthSt)\(daySt)")
+        for i in 1...getMonthDaysCount() {
+            var model = DateItemModel()
+            model.isEmpty = false
+            model.year = currentYear
+            model.month = currentMonth
+            model.day = i
+            if i < 10 { //일수가 10보다 작을때
+                if currentMonth < 10 {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)0\(currentMonth)0\(i)"{
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                } else {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)\(currentMonth)0\(i)"{
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                }
+            } else {
+                if currentMonth < 10 {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)0\(currentMonth)\(i)"{
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                } else {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)\(currentMonth)\(i)"{
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                }
+            }
+            dayList.append(model)
+        }
+        Log.debug("getOtherMonthDayListNew", "\(currentYear), \(currentMonth)")
+        return dayList
+    }
+    /// 이전달, 다음달로 넘어갈때 일 list 값 전달
+    func getOtherMonthDayListNew(currentMonth: Int, currentYear: Int, selectDateSt: String?="") -> [DateItemModel] {
+        var startWeekDayString: String = ""
+        if currentMonth > 9 {
+            startWeekDayString = "\(currentYear)-\(currentMonth)-01"
+        } else {
+            startWeekDayString = "\(currentYear)-0\(currentMonth)-01"
+        }
+        Log.debug("startWeekDay!", "\(startWeekDayString)")
+        let startWeekDay = getDayOfWeek(startWeekDayString)
+        Log.debug("startWeekDay!", startWeekDay)
+        var dayList = [DateItemModel]()
+        for _ in 0..<(startWeekDay!) {
+            var model = DateItemModel()
+            model.isEmpty = true
+            dayList.append(model)
+        }
+        let yearSt = "\(getYear())"
+        var monthSt = ""
+        var daySt = ""
+        
+        if getMonth() < 10 {
+            monthSt = "0\(getMonth())"
+        } else {
+            monthSt = "\(getMonth())"
+        }
+        if getToday() < 10 {
+            daySt = "0\(getToday())"
+        } else {
+            daySt = "\(getToday())"
+        }
+        
+        Log.debug("getOtherMonthDayListNew 날짜 가져오기", "\(yearSt)\(monthSt)\(daySt)")
+        for i in 1...getMonthDaysCount(currentMonth: currentMonth, currentYear: currentYear) {
+            var model = DateItemModel()
+            model.isEmpty = false
+            model.year = currentYear
+            model.month = currentMonth
+            model.day = i
+            if i < 10 { // 일수가 10보다 작을때
+                if currentMonth < 10 {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)0\(currentMonth)0\(i)" {
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                } else {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)\(currentMonth)0\(i)" {
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                }
+            } else {
+                if currentMonth < 10 {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)0\(currentMonth)\(i)" {
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                } else {
+                    if "\(yearSt)\(monthSt)\(daySt)" == "\(currentYear)\(currentMonth)\(i)" {
+                        model.isToday = true
+                    } else {
+                        model.isToday = false
+                    }
+                }
+            }
+            
+            let yearSt = "\(currentYear)"
+            var monthSt = ""
+            var daySt = ""
+            
+            if currentMonth < 10 {
+                monthSt = "0\(currentMonth)"
+            } else {
+                monthSt = "\(currentMonth)"
+            }
+            if i < 10 {
+                daySt = "0\(i)"
+            } else {
+                daySt = "\(i)"
+            }
+            
+            if selectDateSt == "\(yearSt)\(monthSt)\(daySt)" {
+                model.select = true
+            } else {
+                model.select = false
+            }
+            dayList.append(model)
+        }
+        
+        
+        return dayList
+    }
+    
     /// 저번달 일수 _ 주간 달력 데이터에서 사용
     func getLastMonthDaysCount(currentMonth: Int?=nil, currentYear: Int) -> Int {
         var count = 0
@@ -221,33 +395,192 @@ class CalendarModel {
         return count
     }
     // 주간 달력 데이터
-    func getWeek(currentMonth: Int, currentYear: Int) -> [Int] {
+    func getWeek(currentMonth: Int, currentYear: Int) -> [WeekDayListModel] {
         let today = getToday()
         let weekDay = getWeekDay()
         var lastMonthDay = getLastMonthDaysCount(currentMonth: currentMonth, currentYear: currentYear)
         var lastMonthDayCount = 0
         var nextMonthDay = 1
-        var weekDayList = [Int]()
+        var weekDayList = [WeekDayListModel]()
+        
+        Log.debug("selectDateGetWeek_todayDate", Date().toStringYYYYMMDD())
+        Log.debug("selectDateGetWeek_today__", today)
+        Log.debug("selectDateGetWeek_weekDay__", weekDay)
+        Log.debug("selectDateGetWeek_lastMonthDay__", lastMonthDay)
+        //오늘이전
         for i in 0..<weekDay {
-            weekDayList.append(today - (i + 1))
+            var model = WeekDayListModel()
+            model.select = false
+            model.isToday = false
+            model.day = today - (i + 1)
+            model.month = currentMonth
+            model.year = currentYear
+            weekDayList.append(model)
         }
-        weekDayList.append(today)
+        //오늘
+        var model = WeekDayListModel()
+        model.select = false
+        model.isToday = true
+        model.day = today
+        model.month = currentMonth
+        model.year = currentYear
+        weekDayList.append(model)
+        //다음날부터
         for i in 0..<(7 - weekDayList.count) {
-            weekDayList.append(today + (i + 1))
+            var model = WeekDayListModel()
+            model.select = false
+            model.isToday = false
+            model.day = today + (i + 1)
+            model.month = currentMonth
+            model.year = currentYear
+            weekDayList.append(model)
         }
-        weekDayList = weekDayList.sorted(by: <)
-        for i in weekDayList where i <= 0 {
-            lastMonthDayCount += 1
+        
+        weekDayList = weekDayList.sorted(by: {$0.day! < $1.day!})
+        for i in weekDayList {
+            if i.day! <= 0 {
+                lastMonthDayCount += 1
+            }
         }
-        for i in 0..<weekDayList.count where weekDayList[i] > getMonthDaysCount(currentMonth: currentMonth, currentYear: currentYear) {
-            weekDayList[i] = nextMonthDay
-            nextMonthDay += 1
+        
+        for i in 0..<weekDayList.count {
+            if weekDayList[i].day! > getMonthDaysCount(currentMonth: currentMonth, currentYear: currentYear) {
+                weekDayList[i].day = nextMonthDay
+                if currentMonth + 1 == 13 {
+                    weekDayList[i].month = 1
+                    weekDayList[i].year = currentYear + 1
+                } else {
+                    weekDayList[i].month = currentMonth + 1
+                    weekDayList[i].year = currentYear
+                }
+                nextMonthDay += 1
+                Log.debug("WeekDayListCount!!", nextMonthDay)
+            }
         }
+        
         lastMonthDay -= lastMonthDayCount
         lastMonthDay += 1
         for i in 0..<lastMonthDayCount {
-            weekDayList[i] = lastMonthDay + i
+            weekDayList[i].day = lastMonthDay + i
+            if currentMonth - 1 == 0 {
+                weekDayList[i].month = 12
+                weekDayList[i].year = currentYear - 1
+            } else {
+                weekDayList[i].month = currentMonth - 1
+                weekDayList[i].year = currentYear
+            }
         }
+        Log.debug("selectDateGetWeek_weekDayList__", weekDayList)
+        return weekDayList
+    }
+    // 선택한 날의 주간 달력 데이터
+    func selectDateGetWeek(currentMonth: Int, currentYear: Int, selectDate: Date, selectWeekDay: Int) -> [WeekDayListModel] {
+        let today = getSelectDateToInt(date: selectDate)
+        let weekDay = getWeekDayselectDate(date: selectDate)
+        var lastMonthDay = getLastMonthDaysCount(currentMonth: currentMonth, currentYear: currentYear)
+        var lastMonthDayCount = 0
+        var nextMonthDay = 1
+        var weekDayList = [WeekDayListModel]()
+        Log.debug("selectDateGetWeek_selectDate", selectDate.toStringYYYYMMDD())
+        Log.debug("selectDateGetWeek_today", today)
+        Log.debug("selectDateGetWeek_weekDay", weekDay)
+        Log.debug("selectDateGetWeek_lastMonthDay", lastMonthDay)
+        //선택한날 이전
+        for i in 0..<weekDay {
+            var model = WeekDayListModel()
+            model.select = false
+            model.isToday = false
+            model.day = today - (i + 1)
+            model.month = currentMonth
+            model.year = currentYear
+            weekDayList.append(model)
+        }
+        // 선택한 날
+        var model = WeekDayListModel()
+        model.select = false
+        model.isToday = false
+        model.day = today
+        model.month = currentMonth
+        model.year = currentYear
+        weekDayList.append(model)
+//        if selectDate.toStringYYYYMMDD() == Date().toStringYYYYMMDD() {
+//        } else {
+//            var model = WeekDayListModel()
+//            model.select = false
+//            model.isToday = false
+//            model.day = today
+//            weekDayList.append(model)
+//        }
+        // 선택한날 다음
+        for i in 0..<(7 - weekDayList.count) {
+            var model = WeekDayListModel()
+            model.select = false
+            model.isToday = false
+            model.day = today + (i + 1)
+            model.month = currentMonth
+            model.year = currentYear
+            weekDayList.append(model)
+        }
+        
+        weekDayList = weekDayList.sorted(by: {$0.day! < $1.day!})
+        for i in weekDayList {
+            if i.day! <= 0 {
+                lastMonthDayCount += 1
+            }
+        }
+        for i in 0..<weekDayList.count {
+            if weekDayList[i].day! > getMonthDaysCount(currentMonth: currentMonth, currentYear: currentYear) {
+                weekDayList[i].day = nextMonthDay
+                if currentMonth + 1 == 13 {
+                    weekDayList[i].month = 1
+                    weekDayList[i].year = currentYear + 1
+                } else {
+                    weekDayList[i].month = currentMonth + 1
+                    weekDayList[i].year = currentYear
+                }
+                Log.debug("WeekDayListCount_Next", "\(nextMonthDay)_ currentMonth : \(currentMonth)")
+                nextMonthDay += 1
+            }
+        }
+        
+        lastMonthDay -= lastMonthDayCount
+        lastMonthDay += 1
+        for i in 0..<lastMonthDayCount {
+            Log.debug("WeekDayListCount_Last", "\(lastMonthDay + i)_ currentMonth : \(currentMonth)")
+            weekDayList[i].day = lastMonthDay + i
+            if currentMonth - 1 == 0 {
+                weekDayList[i].month = 12
+                weekDayList[i].year = currentYear - 1
+            } else {
+                weekDayList[i].month = currentMonth - 1
+                weekDayList[i].year = currentYear
+            }
+        }
+        for (index, item) in weekDayList.enumerated() {
+            var month = ""
+            var day = ""
+            if item.month ?? 0 < 10 {
+                month = "0\(item.month ?? 0)"
+            } else {
+                month = "\(item.month ?? 0)"
+            }
+            if item.day ?? 0 < 10 {
+                day = "0\(item.day ?? 0)"
+            } else {
+                day = "\(item.day ?? 0)"
+            }
+            
+            if Date().toStringYYYYMMDD() == "\(item.year ?? 0)\(month)\(day)" {
+                weekDayList[index].isToday = true
+            }
+            if selectWeekDay == index {
+                weekDayList[index].select = true
+            } else {
+                weekDayList[index].select = false
+            }
+            
+        }
+        Log.debug("selectDateGetWeek_weekDayList", weekDayList)
         return weekDayList
     }
 }
@@ -262,6 +595,9 @@ extension Date {
     func getDay() -> Int {
         return Calendar.current.component(.day, from: self)
     }
+//    func selectGetDat() -> Int {
+//        return 11
+//    }
     /// 일요일이 1로시작하지 않고 0으로 index하는게 편리하여 -1 함 (일 : 0 ~ 토: 6)
     /// -> (월 : 0 ~ 일 :6)으로 변경 4.2.
     func getWeekDay() -> Int {
@@ -286,4 +622,22 @@ extension Date {
         }
         return i
     }
+}
+
+
+struct WeekDayListModel {
+    var day: Int?
+    var month: Int?
+    var year: Int?
+    var isToday: Bool?
+    var select: Bool?
+}
+
+struct DateItemModel {
+    var isEmpty: Bool?
+    var day: Int?
+    var month: Int?
+    var year: Int?
+    var isToday: Bool?
+    var select: Bool?
 }

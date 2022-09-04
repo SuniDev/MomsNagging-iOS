@@ -159,12 +159,14 @@ class TodoViewNew: BaseViewController, Navigatable{
         $0.textColor = .clear
         $0.backgroundColor = .clear
         $0.tintColor = .clear
+        $0.tag = 10
     })
     lazy var modifyTfPicker = UITextField().then({
         $0.borderStyle = .none
         $0.textColor = .clear
         $0.backgroundColor = .clear
         $0.tintColor = .clear
+        $0.tag = 11
     })
     lazy var timePicker = UIDatePicker().then({
         $0.minuteInterval = 5
@@ -235,6 +237,8 @@ class TodoViewNew: BaseViewController, Navigatable{
         requestParam.goalCount = 0
         // delegate
         habitNameTF.delegate = self
+        tfPicker.delegate = self
+        modifyTfPicker.delegate = self
         
     }
     override func layoutSetting() {
@@ -420,6 +424,7 @@ class TodoViewNew: BaseViewController, Navigatable{
             self.requestParam.sun = info.sun
             
             self.habitNameTF.text = info.scheduleName ?? ""
+            self.textCountLbl.text = "\(info.scheduleName?.count ?? 0)/30"
             self.modifyTimeLbl.text = info.scheduleTime ?? ""
             self.modifyTimeView.isHidden = false
             self.modifyStartDateLbl.text = TaviCommon.stringDateToyyyyMMdd_E(stringData: info.scheduleDate ?? "")
@@ -435,6 +440,14 @@ class TodoViewNew: BaseViewController, Navigatable{
                     self.pushAlarmSet(isOn: true)
                     self.modifyAlarmView.isHidden = false
                     self.modifyAlarmLbl.text = TaviCommon.stringDateToHHMM_A(stringData: alarmTime)
+                    
+                    let dateForm = DateFormatter()
+                    dateForm.dateFormat = "HH:mm:ss"
+                    
+                    let dateTime = dateForm.date(from: alarmTime)
+                    if let unwrappedDate = dateTime {
+                        self.timePicker.setDate(unwrappedDate, animated: true)
+                    }
                 }
             }
             
@@ -504,6 +517,9 @@ class TodoViewNew: BaseViewController, Navigatable{
             self.habitNameFrameFocus(bool: false)
             self.datePickerView.isHidden = false
             self.datePickerControlBar.isHidden = false
+            if !self.modify && self.modifyStartDateView.isHidden {
+                self.defaultStartDateSet()
+            }
         }.disposed(by: disposeBag)
         modifyStartDateBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
@@ -592,6 +608,20 @@ class TodoViewNew: BaseViewController, Navigatable{
         self.datePickerControlBar.isHidden = true
     }
     
+    func defaultStartDateSet() {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko")
+        formatter.dateFormat = "yyyy.MM.dd (E)"
+//        tfStartDate.text = formatter.string(from: sender.date)
+        modifyStartDateLbl.text = formatter.string(from: Date())
+        formatter.dateFormat = "yyyy-MM-dd"
+//        tfStartDateParam.text = formatter.string(from: sender.date)
+        requestParam.scheduleDate = formatter.string(from: Date())
+        formatter.dateFormat = "E"
+//        startDateWeek = formatter.string(from: sender.date)
+        doneValidCheck()
+        modifyStartDateView.isHidden = false
+    }
     
     func detailHabitTitle(title: String, required: Bool) -> UIView {
         let view = UIView()
@@ -781,12 +811,20 @@ extension TodoViewNew: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: true)
+        } else if textField.tag == 10 {
+            scrollView.scroll(to: .bottom)
+        } else if textField.tag == 11 {
+            scrollView.scroll(to: .bottom)
         }
         return true
     }
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: false)
+        } else if textField.tag == 10 {
+            scrollView.scroll(to: .top)
+        } else if textField.tag == 11 {
+            scrollView.scroll(to: .top)
         }
         return true
     }

@@ -111,7 +111,7 @@ class DetailTodoViewModel: BaseViewModel {
         
     func transform(input: Input) -> Output {
         
-        self.requestTodoInfo(scheduleId: todoModel?.id ?? 0)
+//        self.requestTodoInfo(scheduleId: todoModel?.id ?? 0)
         
         /// 작성 모드
         let isWriting = BehaviorRelay<Bool>(value: true)
@@ -336,49 +336,49 @@ extension DetailTodoViewModel {
         Log.debug("requestParamData:", "\(self.param)")
     }
     
-    func requestTodoInfo(scheduleId: Int) {
-        LoadingHUD.show()
-        provider.request(.todoDetailLookUp(scheduleId: scheduleId), completion: { res in
-            switch res {
-            case .success(let result):
-                do {
-                    let json = JSON(try result.mapJSON())
-                    var model = TodoInfoResponseModel()
-                    model.id = json.dictionary?["id"]?.intValue ?? 0
-                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? 0
-                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? 0
-                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? ""
-                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? ""
-                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? ""
-                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? ""
-                    model.done = json.dictionary?["done"]?.boolValue ?? false
-                    model.mon = json.dictionary?["mon"]?.boolValue ?? false
-                    model.tue = json.dictionary?["tue"]?.boolValue ?? false
-                    model.wed = json.dictionary?["wed"]?.boolValue ?? false
-                    model.thu = json.dictionary?["thu"]?.boolValue ?? false
-                    model.fri = json.dictionary?["fri"]?.boolValue ?? false
-                    model.sat = json.dictionary?["sat"]?.boolValue ?? false
-                    model.sun = json.dictionary?["sun"]?.boolValue ?? false
-                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? ""
-                    
-                    self.todoInfoOb.onNext(model)
-                    Log.debug("todoDetailLookUp json:", "\(json)")
-                    if json.dictionary?["alarmTime"]?.stringValue == "" {
-                        self.alarmOb.onNext(false)
-                    } else {
-                        self.alarmOb.onNext(true)
-                    }
-                    LoadingHUD.hide()
-                } catch let error {
-                    Log.error("todoDetailLookUp error", "\(error)")
-                    LoadingHUD.hide()
-                }
-            case .failure(let error):
-                Log.error("todoDetailLookUp error", "\(error)")
-                LoadingHUD.hide()
-            }
-        })
-    }
+//    func requestTodoInfo(scheduleId: Int) {
+//        LoadingHUD.show()
+//        provider.request(.todoDetailLookUp(scheduleId: scheduleId), completion: { res in
+//            switch res {
+//            case .success(let result):
+//                do {
+//                    let json = JSON(try result.mapJSON())
+//                    var model = TodoInfoResponseModel()
+//                    model.id = json.dictionary?["id"]?.intValue ?? 0
+//                    model.naggingId = json.dictionary?["naggingId"]?.intValue ?? 0
+//                    model.goalCount = json.dictionary?["goalCount"]?.intValue ?? 0
+//                    model.scheduleName = json.dictionary?["scheduleName"]?.stringValue ?? ""
+//                    model.scheduleTime = json.dictionary?["scheduleTime"]?.stringValue ?? ""
+//                    model.scheduleDate = json.dictionary?["scheduleDate"]?.stringValue ?? ""
+//                    model.alarmTime = json.dictionary?["alarmTime"]?.stringValue ?? ""
+//                    model.done = json.dictionary?["done"]?.boolValue ?? false
+//                    model.mon = json.dictionary?["mon"]?.boolValue ?? false
+//                    model.tue = json.dictionary?["tue"]?.boolValue ?? false
+//                    model.wed = json.dictionary?["wed"]?.boolValue ?? false
+//                    model.thu = json.dictionary?["thu"]?.boolValue ?? false
+//                    model.fri = json.dictionary?["fri"]?.boolValue ?? false
+//                    model.sat = json.dictionary?["sat"]?.boolValue ?? false
+//                    model.sun = json.dictionary?["sun"]?.boolValue ?? false
+//                    model.scheduleType = json.dictionary?["scheduleType"]?.stringValue ?? ""
+//
+//                    self.todoInfoOb.onNext(model)
+//                    Log.debug("todoDetailLookUp json:", "\(json)")
+//                    if json.dictionary?["alarmTime"]?.stringValue == "" {
+//                        self.alarmOb.onNext(false)
+//                    } else {
+//                        self.alarmOb.onNext(true)
+//                    }
+//                    LoadingHUD.hide()
+//                } catch let error {
+//                    Log.error("todoDetailLookUp error", "\(error)")
+//                    LoadingHUD.hide()
+//                }
+//            case .failure(let error):
+//                Log.error("todoDetailLookUp error", "\(error)")
+//                LoadingHUD.hide()
+//            }
+//        })
+//    }
     
     func requestModifyTodo(scheduleId: Int) {
         var param: [ModifyTodoRequestModel] = []

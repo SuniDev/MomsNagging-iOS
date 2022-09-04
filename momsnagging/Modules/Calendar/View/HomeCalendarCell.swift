@@ -13,7 +13,6 @@ class HomeCalendarCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         setUI()
-        todayCheck()
     }
     // MARK: - Variable
     var isToday = false
@@ -54,13 +53,5 @@ extension HomeCalendarCell {
             $0.center.equalTo(contentView.snp.center)
             $0.width.height.equalTo(28)
         })
-    }
-    
-    func todayCheck() {
-        if isToday {
-            todayRoundFrame.isHidden = false
-        } else {
-            todayRoundFrame.isHidden = true
-        }
     }
 }

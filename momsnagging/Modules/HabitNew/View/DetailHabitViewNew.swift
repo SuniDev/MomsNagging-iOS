@@ -234,6 +234,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         countView.isHidden = true
         
         pushAlarmTitle = detailHabitTitle(title: "잔소리 알림", required: false)
+        
         tfPicker.inputView = timePicker
         addTimeView = TaviCommon.addTimeView(tf: tfPicker)
         addTimeView.isHidden = true
@@ -243,6 +244,8 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         requestParam.goalCount = 0
         // delegate
         habitNameTF.delegate = self
+        tfPicker.delegate = self
+        modifyTfPicker.delegate = self
         
     }
     override func layoutSetting() {
@@ -485,6 +488,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             }
             
             self.habitNameTF.text = info.scheduleName ?? ""
+            self.textCountLbl.text = "\(info.scheduleName?.count ?? 0)/30"
             self.modifyTimeLbl.text = info.scheduleTime ?? ""
             self.modifyTimeView.isHidden = false
             self.modifyStartDateLbl.text = TaviCommon.stringDateToyyyyMMdd_E(stringData: info.scheduleDate ?? "")
@@ -507,9 +511,16 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
                     self.pushAlarmSet(isOn: true)
                     self.modifyAlarmView.isHidden = false
                     self.modifyAlarmLbl.text = TaviCommon.stringDateToHHMM_A(stringData: alarmTime)
+                    
+                    let dateForm = DateFormatter()
+                    dateForm.dateFormat = "HH:mm:ss"
+                    
+                    let dateTime = dateForm.date(from: alarmTime)
+                    if let unwrappedDate = dateTime {
+                        self.timePicker.setDate(unwrappedDate, animated: true)
+                    }
                 }
             }
-            
             
             self.requestModifyParam = self.requestParam
             
@@ -523,7 +534,6 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { height in
-                Log.debug("습관상세 키보드 높이", "\(height)")
                 if height == 0.0 {
                     if self.alarmOn {
                         self.backgroundFrame.snp.updateConstraints({
@@ -565,13 +575,12 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             self.navigator.pop(sender: self)
         }.disposed(by: disposeBag)
         doneBtn.rx.tap.bind {
-            Log.debug("완료버튼 누름", "완료!!")
-//            viewModel?.requestRegistHabit(scheduleName: requestParam.scheduleName ?? "", naggingId: 0, goalCount: requestParam.goalCount ?? 0, scheduleTime: requestParam.scheduleTime ?? "", scheduleDate: requestParam.scheduleDate ?? "", alarmTime: requestParam.alarmTime ?? "", mon: requestParam.mon, tue: requestParam.tue, wed: requestParam.wed, thu: requestParam.thu, fri: requestParam.fri, sat: requestParam.sat, sun: requestParam.sun)
             if self.modify {
                 Log.debug("완료버튼 누름", "수정페이지")
                 self.viewModel?.requestModifyRoutine(requestParam: self.requestParam, requestModifyParam: self.requestModifyParam)
             } else {
                 Log.debug("완료버튼 누름", "생성페이지")
+                self.requestParam.naggingId = self.viewModel?.naggingId ?? 0
                 self.viewModel?.requestRegistHabit(createTodoRequestModel: self.requestParam)
                 self.navigator.pop(sender: self, toRoot: true)
             }
@@ -604,6 +613,9 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             self.habitNameFrameFocus(bool: false)
             self.datePickerView.isHidden = false
             self.datePickerControlBar.isHidden = false
+            if !self.modify && self.modifyStartDateView.isHidden {
+                self.defaultStartDateSet()
+            }
         }.disposed(by: disposeBag)
         modifyStartDateBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
@@ -697,6 +709,8 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             }
         }.disposed(by: disposeBag)
         
+//        self.timePicker.rx.controlEvent(.allEvents).subscribe(<#T##observer: ObserverType##ObserverType#>)
+        
         self.timePicker.rx.controlEvent(.valueChanged).subscribe(onNext: { _ in
             let date: Date = self.timePicker.date
             let st = "\(TaviCommon.alarmTimeDateToStringFormatHHMMa(date: date))"
@@ -766,6 +780,25 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         self.view.endEditing(true)
         self.datePickerView.isHidden = true
         self.datePickerControlBar.isHidden = true
+    }
+    func defaultStartDateSet() {
+        if weekAndCount {
+            resetWeek()
+        }
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko")
+        formatter.dateFormat = "yyyy.MM.dd (E)"
+//        tfStartDate.text = formatter.string(from: sender.date)
+        modifyStartDateLbl.text = formatter.string(from: Date())
+        formatter.dateFormat = "yyyy-MM-dd"
+//        tfStartDateParam.text = formatter.string(from: sender.date)
+        requestParam.scheduleDate = formatter.string(from: Date())
+        formatter.dateFormat = "E"
+//        startDateWeek = formatter.string(from: sender.date)
+        notSelectWeek = formatter.string(from: Date())
+        notSelectSet(item: formatter.string(from: Date()))
+        doneValidCheck()
+        modifyStartDateView.isHidden = false
     }
     
     func modifySetCycleBtn() {
@@ -1420,13 +1453,9 @@ extension DetailHabitViewNew: UITextFieldDelegate {
         if textField.tag == 0 {
             self.habitNameFrameFocus(bool: true)
         } else if textField.tag == 10 {
-//            backgroundFrame.snp.remakeConstraints({
-//                $0.edges.equalTo(scrollView.snp.edges)
-//                $0.width.equalTo(UIScreen.main.bounds.width)
-//                $0.height.equalTo(676)
-//            })
+            scrollView.scroll(to: .bottom)
         } else if textField.tag == 11 {
-            
+            scrollView.scroll(to: .bottom)
         }
         return true
     }

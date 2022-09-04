@@ -1,15 +1,15 @@
 //
-//  WeekDayCalendarCell.swift
+//  WeekDayCalendarTodayCell.swift
 //  momsnagging
 //
-//  Created by 전창평 on 2022/04/30.
+//  Created by 전창평 on 2022/09/01.
 //
 
 import UIKit
 import Then
 import SnapKit
 
-class WeekDayCalendarCell: UICollectionViewCell {
+class WeekDayCalendarTodayCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         setUI()
@@ -17,7 +17,7 @@ class WeekDayCalendarCell: UICollectionViewCell {
     }
     
     // MARK: - Variable
-    var isToday: Bool = false
+    var isToday: Bool = true
     
     var day: Int?
     var month: Int?
@@ -49,12 +49,12 @@ class WeekDayCalendarCell: UICollectionViewCell {
         $0.isHidden = true
     })
     lazy var numberLbl = UILabel().then({
-        $0.textColor = UIColor(asset: Asset.Color.monoDark010)
+        $0.textColor = UIColor(asset: Asset.Color.monoWhite)
         $0.font = FontFamily.Pretendard.regular.font(size: 14)
     })
     
 }
-extension WeekDayCalendarCell {
+extension WeekDayCalendarTodayCell {
     private func setUI() {
         
         contentView.addSubview(itemBackgroundFrame)

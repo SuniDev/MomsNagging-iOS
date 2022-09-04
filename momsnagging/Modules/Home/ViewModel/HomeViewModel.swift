@@ -170,6 +170,7 @@ extension HomeViewModel {
         if coachMarkStatusCheck != true {
             LoadingHUD.show()
         }
+        Log.debug("requestTodoListLookUp-", date)
         provider.request(.todoListLookUp(retrieveDate: date), completion: { res in
             switch res {
             case .success(let result):
