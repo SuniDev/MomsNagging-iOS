@@ -6,8 +6,6 @@
 //
 
 import Foundation
-
-import Foundation
 import Moya
 import SwiftyJSON
 import RxSwift
@@ -28,6 +26,13 @@ class TodoViewModelNew: BaseViewModel {
 //    var registError = PublishSubject<String>()
     
     init(modify: Bool, homeViewModel: HomeViewModel, recommendedTitle: String?="", todoModel: TodoListModel?=nil) {
+        // GA - 할일 추가/수정 화면
+        if modify {
+            CommonAnalytics.logScreenView(.todo_modify)
+        } else {
+            CommonAnalytics.logScreenView(.todo_add)
+        }
+        
         self.modify = modify
         self.homeViewModel = homeViewModel
         self.recommendedTitle = recommendedTitle
@@ -37,7 +42,6 @@ class TodoViewModelNew: BaseViewModel {
         print("DetailHabitViewModelNew : \(self.todoModel?.id ?? 0)")
     }
 }
-
 
 extension TodoViewModelNew {
     func requestRegistTodo(createTodoRequestModel: CreateTodoRequestModel) {
@@ -54,7 +58,7 @@ extension TodoViewModelNew {
                     Log.debug("createHabit json:", "\(json)")
                     self.homeViewModel.addHabitSuccessOb.onNext(())
                     LoadingHUD.hide()
-                } catch let error {
+                } catch {
                     Log.error("createHabit error", "\(error)")
                     LoadingHUD.hide()
                     return
@@ -96,7 +100,7 @@ extension TodoViewModelNew {
                     
                     Log.debug("todoDetailLookUp json:", "\(json)")
                     LoadingHUD.hide()
-                } catch let error {
+                } catch {
                     Log.error("todoDetailLookUp error", "\(error)")
                     LoadingHUD.hide()
                 }
@@ -113,11 +117,6 @@ extension TodoViewModelNew {
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         param.removeAll()
-        Log.debug("requestParam__wed", requestParam.wed)
-        Log.debug("requestParam__Modify__wed", requestModifyParam.wed)
-        
-        Log.debug("requestParam__thu", requestParam.thu)
-        Log.debug("requestParam__Modify__thu", requestModifyParam.thu)
         
         if requestParam.scheduleName != requestModifyParam.scheduleName {
             if let name = requestParam.scheduleName {
@@ -212,7 +211,7 @@ extension TodoViewModelNew {
         if requestParam.alarmTime == nil {
             if requestParam.alarmTime != requestModifyParam.alarmTime {
                 if let alarm = requestParam.alarmTime {
-                    let alarmTime = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
+                    let _ = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
                     model.op = "replace"
                     model.path = "/alarmTime"
                     model.value = "null"
@@ -243,7 +242,7 @@ extension TodoViewModelNew {
                     self.homeViewModel.isEndProgress.onNext(())
                     self.homeViewModel.addHabitSuccessOb.onNext(())
                     LoadingHUD.hide()
-                } catch let error {
+                } catch {
                     Log.error("modifyTodo error", "\(error)")
                     LoadingHUD.hide()
                 }

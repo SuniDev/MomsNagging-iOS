@@ -26,7 +26,25 @@ class DetailHabitViewModelNew: BaseViewModel {
 //    var registSuccess = PublishSubject<Void>()
 //    var registError = PublishSubject<String>()
     
-    init(modify: Bool, homeViewModel: HomeViewModel, recommendedTitle: String?="", todoModel: TodoListModel?=nil, naggingId: Int?=0) {
+    var coachMarkStatusCheck: Bool?
+    
+    init(modify: Bool, homeViewModel: HomeViewModel, recommendedTitle: String?="", todoModel: TodoListModel?=nil, naggingId: Int?=0, coachMarkStatus: Bool? = false) {
+        
+        self.coachMarkStatusCheck = coachMarkStatus
+        
+        // GA - 습관 추가/수정 화면
+        if coachMarkStatus == false {
+            if modify {
+                CommonAnalytics.logScreenView(.habit_modify)
+            } else {
+                if (recommendedTitle ?? "").isEmpty {
+                    CommonAnalytics.logScreenView(.habit_add_own)
+                } else {
+                    CommonAnalytics.logScreenView(.habit_add_recommend)
+                }
+            }
+        }
+        
         self.modify = modify
         self.homeViewModel = homeViewModel
         self.recommendedTitle = recommendedTitle
@@ -43,9 +61,12 @@ class DetailHabitViewModelNew: BaseViewModel {
     }
 }
 
-
 extension DetailHabitViewModelNew {
     func requestRegistHabit(createTodoRequestModel: CreateTodoRequestModel) {
+        if coachMarkStatusCheck == true {
+            return
+        }
+        
         LoadingHUD.show()
 //        let param = CreateTodoRequestModel(scheduleName: scheduleName, naggingId: naggingId, goalCount: goalCount, scheduleTime: scheduleTime, scheduleDate: scheduleDate, alarmTime: alarmTime, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun)
         let param = createTodoRequestModel
@@ -60,7 +81,7 @@ extension DetailHabitViewModelNew {
                     Log.debug("createHabit json:", "\(json)")
                     self.homeViewModel.addHabitSuccessOb.onNext(())
                     LoadingHUD.hide()
-                } catch let error {
+                } catch { // Error
                     Log.error("createHabit error", "\(error)")
                     LoadingHUD.hide()
                     return
@@ -73,6 +94,10 @@ extension DetailHabitViewModelNew {
     }
     
     func requestRoutineInfo() {
+        if coachMarkStatusCheck == true {
+            return
+        }
+        
         LoadingHUD.show()
         Log.debug("requestRoutineInfo:", self.todoModel?.id ?? 0)
         provider.request(.todoDetailLookUp(scheduleId: self.todoModel?.id ?? 0), completion: { res in
@@ -102,7 +127,7 @@ extension DetailHabitViewModelNew {
                     
                     Log.debug("todoDetailLookUp json:", "\(json)")
                     LoadingHUD.hide()
-                } catch let error {
+                } catch { // Error
                     Log.error("todoDetailLookUp error", "\(error)")
                     LoadingHUD.hide()
                 }
@@ -114,16 +139,14 @@ extension DetailHabitViewModelNew {
     }
     
     func requestModifyRoutine(requestParam: CreateTodoRequestModel, requestModifyParam: CreateTodoRequestModel) {
+        if coachMarkStatusCheck == true {
+            return
+        }
         
         LoadingHUD.show()
         var param: [ModifyTodoRequestModel] = []
         var model = ModifyTodoRequestModel()
         param.removeAll()
-        Log.debug("requestParam__wed", requestParam.wed)
-        Log.debug("requestParam__Modify__wed", requestModifyParam.wed)
-        
-        Log.debug("requestParam__thu", requestParam.thu)
-        Log.debug("requestParam__Modify__thu", requestModifyParam.thu)
         
         if requestParam.scheduleName != requestModifyParam.scheduleName {
             if let name = requestParam.scheduleName {
@@ -202,7 +225,7 @@ extension DetailHabitViewModelNew {
         if requestParam.alarmTime == nil {
             if requestParam.alarmTime != requestModifyParam.alarmTime {
                 if let alarm = requestParam.alarmTime {
-                    let alarmTime = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
+                    _ = "\(TaviCommon.alarmTimeStringToDateToStringHHMM(stringData: alarm)):00"
                     model.op = "replace"
                     model.path = "/alarmTime"
                     model.value = "null"
@@ -233,7 +256,7 @@ extension DetailHabitViewModelNew {
                     self.homeViewModel.isEndProgress.onNext(())
                     self.homeViewModel.addHabitSuccessOb.onNext(())
                     LoadingHUD.hide()
-                } catch let error {
+                } catch { // Error
                     Log.error("modifyTodo error", "\(error)")
                     LoadingHUD.hide()
                 }

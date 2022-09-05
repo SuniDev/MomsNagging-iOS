@@ -79,41 +79,48 @@ extension HomeView {
 //    func listBtnActionInputData(listBtnAction: Bool) {
 //
 //    }
-    @objc func selectTodoCheck(_ sender: UIButton) {
+    @objc
+    func selectTodoCheck(_ sender: UIButton) {
         if checkBtnInteractionEnable {
             if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
             } else if sender.accessibilityLabel == "0" {
                 // GA - 홈 할일 체크박스 탭
                 CommonAnalytics.logEvent(.tap_home_checkbox_todo)
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
     }
-    @objc func selectRoutineCheck(_ sender: UIButton) {
+    @objc
+    func selectRoutineCheck(_ sender: UIButton) {
         if checkBtnInteractionEnable {
             if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
             } else if sender.accessibilityLabel == "0" {
                 // GA - 홈 습관 체크박스 탭
                 CommonAnalytics.logEvent(.tap_home_checkbox_habit)
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
     }
-    @objc func selectCountRoutineCheck(_ sender: UIButton) {
+    @objc
+    func selectCountRoutineCheck(_ sender: UIButton) {
         if checkBtnInteractionEnable {
             if sender.accessibilityLabel == "1" {
                 self.viewModel.requestRoutineCancel(scheduleId: sender.tag)
             } else if sender.accessibilityLabel == "0" {
                 // GA - 홈 습관 체크박스 탭
                 CommonAnalytics.logEvent(.tap_home_checkbox_habit)
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 self.viewModel.requestRoutineDone(scheduleId: sender.tag)
             }
         }
     }
     
-    @objc func selectTodoMoreAction(_ sender: UIButton) {
+    @objc
+    func selectTodoMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 투두", "\(sender.tag)")
         let itemId = todoList[sender.tag].id ?? 0
@@ -124,7 +131,8 @@ extension HomeView {
             showMorePopup(type: .todo, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
         }
     }
-    @objc func selectRoutineMoreAction(_ sender: UIButton) {
+    @objc
+    func selectRoutineMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관요일", "\(sender.tag)")
         let itemId = todoList[sender.tag].id ?? 0
@@ -135,7 +143,8 @@ extension HomeView {
             showMorePopup(type: .routine, itemId: itemId, index: sender.tag, vc: self, senderBtn: sender, postpone: false)
         }
     }
-    @objc func selectCountRoutineMoreAction(_ sender: UIButton) {
+    @objc
+    func selectCountRoutineMoreAction(_ sender: UIButton) {
         Log.debug("todoListDebug", "\(todoList), \(todoList.count)")
         Log.debug("senderTag 습관횟수", "\(sender.tag)")
         let itemId = todoList[sender.tag].id ?? 0
@@ -168,7 +177,7 @@ extension HomeView {
                 self.moveList = self.todoList
                 if item.goalCount == 0 {
                     if item.scheduleType == "TODO" {
-                        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: IndexPath.init(row: row, section: 0)) as? TodoCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: IndexPath(row: row, section: 0)) as? TodoCell
     //                    cell?.todoIsSelected = item.done ?? false
                         cell?.timeBtn.setTitle(item.scheduleTime ?? "", for: .normal)
                         cell?.titleLbl.text = item.scheduleName ?? ""
@@ -215,7 +224,7 @@ extension HomeView {
                         self.todoListType.append(0)
                         return cell!
                     } else {
-                        let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: IndexPath.init(row: row, section: 0)) as? RoutineCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: IndexPath(row: row, section: 0)) as? RoutineCell
                         cell?.todoIsSelected = item.done ?? false
                         cell?.timeBtn.setTitle(item.scheduleTime ?? "", for: .normal)
                         cell?.titleLbl.text = item.scheduleName ?? ""
@@ -263,7 +272,7 @@ extension HomeView {
                         return cell!
                     }
                 } else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCountCell", for: IndexPath.init(row: row, section: 0)) as? RoutineCountCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCountCell", for: IndexPath(row: row, section: 0)) as? RoutineCountCell
                     cell?.todoIsSelected = item.done ?? false
                     cell?.timeBtn.setTitle(item.scheduleTime ?? "", for: .normal)
                     cell?.titleLbl.text = item.scheduleName ?? ""
