@@ -233,7 +233,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         countView = countBtnFrame(count1: count1, count2: count2, count3: count3, count4: count4, count5: count5, count6: count6)
         countView.isHidden = true
         
-        pushAlarmTitle = detailHabitTitle(title: "잔소리 알림", required: false)
+        pushAlarmTitle = detailHabitTitle(title: "잔소리 PUSH 알림", required: false)
         
         tfPicker.inputView = timePicker
         addTimeView = TaviCommon.addTimeView(tf: tfPicker)

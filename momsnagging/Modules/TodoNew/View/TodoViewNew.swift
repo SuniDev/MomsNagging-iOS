@@ -227,7 +227,7 @@ class TodoViewNew: BaseViewController, Navigatable{
         modifyStartDateView = TaviCommon.modifyBtnInputView(contentsLbl: modifyStartDateLbl, btn: modifyStartDateBtn)
         modifyStartDateView.isHidden = true
         
-        pushAlarmTitle = detailHabitTitle(title: "잔소리 알림", required: false)
+        pushAlarmTitle = detailHabitTitle(title: "잔소리 PUSH 알림", required: false)
         tfPicker.inputView = timePicker
         addTimeView = TaviCommon.addTimeView(tf: tfPicker)
         addTimeView.isHidden = true
