@@ -22,6 +22,7 @@ class HomeViewModel: BaseViewModel, ViewModelType {
     var todoListDataOB = BehaviorRelay<[TodoListModel]>(value: [])
     var addHabitSuccessOb = PublishSubject<Void>()
     var toggleIcSuccessOb = PublishSubject<Void>()
+    var toggleIcErrorOb = PublishSubject<Void>()
     var toggleCancelOb = PublishSubject<Void>()
     var delaySuccessOb = PublishSubject<Void>()
     var arraySuccessOb = PublishSubject<Void>()
@@ -178,7 +179,7 @@ extension HomeViewModel {
                     let json = JSON(try result.mapJSON())
                     print("requestTodoListLookUp json : \(json)")
                     self.todoListData.removeAll()
-                    if json.dictionary?["status"]?.intValue == nil {
+                    if json.dictionary?["code"]?.stringValue == nil {
                         for item in json.array! {
                             var model = TodoListModel()
                             model.seqNumber = item.dictionary?["seqNumber"]?.intValue ?? 0
@@ -231,8 +232,13 @@ extension HomeViewModel {
                 do {
                     let json = JSON(try result.mapJSON())
                     print("requestRoutineDone json : \(json)")
-                    self.toggleIcSuccessOb.onNext(())
-                    LoadingHUD.hide()
+                    if json.dictionary?["code"]?.stringValue != nil {
+                        self.toggleIcErrorOb.onNext(())
+                        LoadingHUD.hide()
+                    } else {
+                        self.toggleIcSuccessOb.onNext(())
+                        LoadingHUD.hide()
+                    }
                 } catch let error {
                     print("requestRoutineDone error : \(error)")
                     LoadingHUD.hide()
@@ -259,8 +265,13 @@ extension HomeViewModel {
                 do {
                     let json = JSON(try result.mapJSON())
                     print("requestRoutineCancel json : \(json)")
-                    self.toggleCancelOb.onNext(())
-                    LoadingHUD.hide()
+                    if json.dictionary?["code"]?.stringValue != nil {
+                        self.toggleIcErrorOb.onNext(())
+                        LoadingHUD.hide()
+                    } else {
+                        self.toggleCancelOb.onNext(())
+                        LoadingHUD.hide()
+                    }
                 } catch let error {
                     print("requestRoutineCancel error : \(error)")
                     LoadingHUD.hide()
