@@ -562,7 +562,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     func bindPerformTime(_ viewModel: PerformTimeSettingViewModel) {
         viewModel.perfromTime.skip(1)
             .subscribe(onNext: { text in
-//                self.timeTF.text = text
+                self.timeTF.text = text
                 self.requestParam.scheduleTime = text
                 self.modifyTimeLbl.text = text
                 self.modifyTimeView.isHidden = false
@@ -597,13 +597,13 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         // 수행 시간 버튼, 수정 버튼
         timeBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
-            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.timeTF.text)
+            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.modifyTimeLbl.text)
             self.bindPerformTime(performTimeViewModel)
             self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
         }.disposed(by: disposeBag)
         modifyTimeBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
-            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.timeTF.text)
+            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.modifyTimeLbl.text)
             self.bindPerformTime(performTimeViewModel)
             self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
         }.disposed(by: disposeBag)
