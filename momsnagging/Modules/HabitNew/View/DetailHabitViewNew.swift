@@ -621,6 +621,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             self.habitNameFrameFocus(bool: false)
             self.datePickerView.isHidden = false
             self.datePickerControlBar.isHidden = false
+            self.defaultStartDateSet()
         }.disposed(by: disposeBag)
         
         // 이행주기 버튼
@@ -757,19 +758,17 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     @objc
     func selectDayAction(_ sender: UIDatePicker) {
         Log.debug("weekAndCount", weekAndCount)
+        self.selectWeekList.removeAll()
         if weekAndCount {
             resetWeek()
         }
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko")
         formatter.dateFormat = "yyyy.MM.dd (E)"
-//        tfStartDate.text = formatter.string(from: sender.date)
         modifyStartDateLbl.text = formatter.string(from: sender.date)
         formatter.dateFormat = "yyyy-MM-dd"
-//        tfStartDateParam.text = formatter.string(from: sender.date)
         requestParam.scheduleDate = formatter.string(from: sender.date)
         formatter.dateFormat = "E"
-//        startDateWeek = formatter.string(from: sender.date)
         notSelectWeek = formatter.string(from: sender.date)
         notSelectSet(item: formatter.string(from: sender.date))
         doneValidCheck()
@@ -785,20 +784,36 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         if weekAndCount {
             resetWeek()
         }
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko")
-        formatter.dateFormat = "yyyy.MM.dd (E)"
-//        tfStartDate.text = formatter.string(from: sender.date)
-        modifyStartDateLbl.text = formatter.string(from: Date())
-        formatter.dateFormat = "yyyy-MM-dd"
-//        tfStartDateParam.text = formatter.string(from: sender.date)
-        requestParam.scheduleDate = formatter.string(from: Date())
-        formatter.dateFormat = "E"
-//        startDateWeek = formatter.string(from: sender.date)
-        notSelectWeek = formatter.string(from: Date())
-        notSelectSet(item: formatter.string(from: Date()))
-        doneValidCheck()
-        modifyStartDateView.isHidden = false
+        Log.debug("defaultStartDateSet 1", modifyStartDateLbl)
+        if modifyStartDateLbl.text != nil {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd (E)"
+            let date = formatter.date(from: modifyStartDateLbl.text ?? "")
+            Log.debug("defaultStartDateSet 1", modifyStartDateLbl)
+            datePickerView.date = date!
+            modifyStartDateLbl.text = formatter.string(from: date!)
+            formatter.dateFormat = "yyyy-MM-dd"
+            requestParam.scheduleDate = formatter.string(from: date!)
+            formatter.dateFormat = "E"
+            notSelectWeek = formatter.string(from: date!)
+//            notSelectSet(item: formatter.string(from: date!))
+            doneValidCheck()
+            modifyStartDateView.isHidden = false
+            
+        } else {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd (E)"
+            modifyStartDateLbl.text = formatter.string(from: Date())
+            formatter.dateFormat = "yyyy-MM-dd"
+            requestParam.scheduleDate = formatter.string(from: Date())
+            formatter.dateFormat = "E"
+            notSelectWeek = formatter.string(from: Date())
+            notSelectSet(item: formatter.string(from: Date()))
+            doneValidCheck()
+            modifyStartDateView.isHidden = false
+        }
     }
     
     func modifySetCycleBtn() {
