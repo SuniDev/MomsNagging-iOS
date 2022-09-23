@@ -41,6 +41,7 @@ class HomeView: BaseViewController, Navigatable {
         
 //        LoadingHUD.show()
         Log.debug("CommonUser.authorization", "\(CommonUser.authorization ?? "")")
+        swipeGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -808,6 +809,29 @@ class HomeView: BaseViewController, Navigatable {
             print("오른쪽버튼")
             self.sortPopUp.hideAnim()
             self.sortDimView.isHidden = true
+        }
+    }
+    
+    func swipeGesture() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        self.view.addGestureRecognizer(swipeRight)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+        self.view.addGestureRecognizer(swipeLeft)
+    }
+    @objc
+    func respondToSwipeGesture(_ gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizer.Direction.right:
+                print("Swiped right")
+            case UISwipeGestureRecognizer.Direction.left:
+                print("Swiped left")
+            default:
+                break
+            }
         }
     }
     
