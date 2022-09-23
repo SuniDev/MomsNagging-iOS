@@ -384,14 +384,27 @@ class HomeView: BaseViewController, Navigatable {
             }
             
             Log.debug("day!__", "\(day), \(month), \(year)")
+//            self.ca
             
+            self.calendarDateLbl.text = "\(year)년 \(month)월"
+            self.calendarMonth = month
             if month < self.calendarViewModel.getMonth() {
                 self.monthlyConfirmation = .previousMonth
+                Log.debug("달 테스트 : ", "이전달")
             } else if month > self.calendarViewModel.getMonth() {
                 self.monthlyConfirmation = .nextMonth
+                Log.debug("달 테스트 : ", "다음달")
+//                self.calendarDateLbl.text = "\(year)년 \(month)월"
+//                self.calendarMonth = month
             } else {
                 self.monthlyConfirmation = .thisMonth
+//                self.calendarDateLbl.text = "\(year)년 \(month)월"
+//                self.calendarMonth = month
+//                Log.debug("달 테스트 : ", "이번달")
             }
+//            self.calendarDateLbl.text = "\(year)년 \(month)월"
+//            self.calendarMonth = month
+//            self.dateCheck -= 1
             var yearSt = ""
             var monthSt = ""
             var daySt = ""
