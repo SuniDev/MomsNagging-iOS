@@ -385,7 +385,6 @@ class HomeView: BaseViewController, Navigatable {
             }
             
             Log.debug("day!__", "\(day), \(month), \(year)")
-//            self.ca
             
             self.calendarDateLbl.text = "\(year)년 \(month)월"
             self.calendarMonth = month
@@ -395,18 +394,9 @@ class HomeView: BaseViewController, Navigatable {
             } else if month > self.calendarViewModel.getMonth() {
                 self.monthlyConfirmation = .nextMonth
                 Log.debug("달 테스트 : ", "다음달")
-//                self.calendarDateLbl.text = "\(year)년 \(month)월"
-//                self.calendarMonth = month
             } else {
                 self.monthlyConfirmation = .thisMonth
-//                self.calendarDateLbl.text = "\(year)년 \(month)월"
-//                self.calendarMonth = month
-//                Log.debug("달 테스트 : ", "이번달")
             }
-//            self.calendarDateLbl.text = "\(year)년 \(month)월"
-//            self.calendarMonth = month
-//            self.dateCheck -= 1
-            var yearSt = ""
             var monthSt = ""
             var daySt = ""
             if month < 10 {
@@ -420,30 +410,12 @@ class HomeView: BaseViewController, Navigatable {
                 daySt = "\(day ?? 0)"
             }
             self.weekDaySelectDateString = "\(year)\(monthSt)\(daySt)"
-            Log.debug("weekDaySelectDateString", self.weekDaySelectDateString)
-            
-            Log.debug("monthlyConfirmation Test", "\(self.monthlyConfirmation)")
             
             self.calendarViewModel.reloadDayListNew(currentMonth: month, currentYear: year, selectDateSt: self.weekDaySelectDateString)
             
             for (index, item) in self.dayList.enumerated() where "\(item.day ?? 0)" == "\(day ?? 0)" {
                 self.calendarSelectIndex = index
             }
-
-//            if day > self.calendarViewModel.getToday() + 6 { // 이전달의 날짜클릭시 month - 1처리 ex.) 6월첫번째 주 주간달력의 5월31일 선택시.
-//                month -= 1
-//                if month == 0 {
-//                    month = 12
-//                    year -= year
-//                }
-//            } else if day < self.calendarViewModel.getToday() - 6 {
-//                Log.debug("흠 얘는 9월달이여~", "")
-//                month += 1
-//                if month == 13 {
-//                    month = 1
-//                    year += year
-//                }
-//            }
             
             if day < 10 {
                 if month < 10 {
@@ -459,7 +431,6 @@ class HomeView: BaseViewController, Navigatable {
                 }
             }
             
-            
             Log.debug("selectDate _ DayCollectionView1 : ", "\(self.selectDate)")
             self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
             self.todoListLookUpParam = "20\(self.headTitleLbl.text ?? "")"
@@ -467,7 +438,7 @@ class HomeView: BaseViewController, Navigatable {
             self.todoListType.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
             
-            self.calendarSelectClear()
+//            self.calendarSelectClear()
             Log.debug("selectDate _ DayCollectionView : ", "\(self.selectDate)")
             self.dayCollectionView.reloadData()
         }).disposed(by: disposedBag)
@@ -513,7 +484,6 @@ class HomeView: BaseViewController, Navigatable {
                 }
                 var daySt = ""
                 var monthSt = ""
-                let yearSt = item.year ?? 0
                 if item.day ?? 0 < 10 {
                     daySt = "0\(item.day ?? 0)"
                 } else {
@@ -525,33 +495,11 @@ class HomeView: BaseViewController, Navigatable {
                     monthSt = "\(item.month ?? 0)"
                 }
                 
-//                if self.weekDaySelectDateString == "\(yearSt)\(monthSt)\(daySt)" {
-//                    cell.selectDayRoundFrame.isHidden = false
-//                } else {
-//                    cell.selectDayRoundFrame.isHidden = true
-//                }
-                
                 if item.select ?? false {
                     cell.selectDayRoundFrame.isHidden = false
                 } else {
                     cell.selectDayRoundFrame.isHidden = true
                 }
-                
-                // 새로 추가한 부분
-//                if self.calendarSelectIndex != nil {
-//                    if self.dateCheck != self.selectDayMonth {
-//                        cell.selectDayRoundFrame.isHidden = true
-//                    } else {
-//                        for i in 0..<37 {
-//                            let cell = self.dayCollectionView.cellForItem(at: [0, i]) as? HomeCalendarCell
-//                            if i == self.calendarSelectIndex {
-//                                cell?.selectDayRoundFrame.isHidden = false
-//                            } else {
-//                                cell?.selectDayRoundFrame.isHidden = true
-//                            }
-//                        }
-//                    }
-//                }
             }.disposed(by: disposedBag)
         
         dayCollectionView.rx.itemSelected.subscribe(onNext: { indexPath in
@@ -809,7 +757,7 @@ class HomeView: BaseViewController, Navigatable {
             print("오른쪽버튼")
             self.sortPopUp.hideAnim()
             self.sortDimView.isHidden = true
-        }
+        }.disposed(by: disposedBag)
     }
     
     func swipeGesture() {
@@ -829,10 +777,19 @@ class HomeView: BaseViewController, Navigatable {
                 print("Swiped right")
             case UISwipeGestureRecognizer.Direction.left:
                 print("Swiped left")
+//                swipeNextDate()
             default:
                 break
             }
         }
+    }
+    
+    func swipeNextDate() {
+        self.headTitleLbl.text = self.calendarViewModel.getSelectDate(dateString: self.selectDate)
+        self.todoListLookUpParam = "20\(self.headTitleLbl.text ?? "")"
+        self.todoListLookUpParam = self.todoListLookUpParam.replacingOccurrences(of: ".", with: "-")
+        self.todoListType.removeAll()
+        self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)
     }
     
 }
