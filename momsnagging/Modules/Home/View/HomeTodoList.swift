@@ -334,6 +334,10 @@ extension HomeView {
             self.todoListTableView.reloadData()
         }).disposed(by: disposedBag)
         
+        viewModel.toggleIcErrorOb.subscribe(onNext: { _ in
+            CommonView.showNetworkAlert(vc: self)
+        }).disposed(by: disposedBag)
+        
         viewModel.toggleIcSuccessOb.subscribe(onNext: { _ in
 //            self.todoList.removeAll()
             self.viewModel.requestTodoListLookUp(date: self.todoListLookUpParam)

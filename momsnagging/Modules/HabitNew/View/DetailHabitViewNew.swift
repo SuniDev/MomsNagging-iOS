@@ -242,6 +242,9 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         modifyAlarmView = TaviCommon.modifyInputView(contentsLbl: modifyAlarmLbl, tf: modifyTfPicker)
         modifyAlarmView.isHidden = true
         requestParam.goalCount = 0
+        
+        timePickerSet()
+        
         // delegate
         habitNameTF.delegate = self
         tfPicker.delegate = self
@@ -562,7 +565,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     func bindPerformTime(_ viewModel: PerformTimeSettingViewModel) {
         viewModel.perfromTime.skip(1)
             .subscribe(onNext: { text in
-//                self.timeTF.text = text
+                self.timeTF.text = text
                 self.requestParam.scheduleTime = text
                 self.modifyTimeLbl.text = text
                 self.modifyTimeView.isHidden = false
@@ -597,13 +600,13 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         // 수행 시간 버튼, 수정 버튼
         timeBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
-            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.timeTF.text)
+            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.modifyTimeLbl.text)
             self.bindPerformTime(performTimeViewModel)
             self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
         }.disposed(by: disposeBag)
         modifyTimeBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
-            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.timeTF.text)
+            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.modifyTimeLbl.text)
             self.bindPerformTime(performTimeViewModel)
             self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
         }.disposed(by: disposeBag)
@@ -621,6 +624,7 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
             self.habitNameFrameFocus(bool: false)
             self.datePickerView.isHidden = false
             self.datePickerControlBar.isHidden = false
+            self.defaultStartDateSet()
         }.disposed(by: disposeBag)
         
         // 이행주기 버튼
@@ -757,19 +761,17 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     @objc
     func selectDayAction(_ sender: UIDatePicker) {
         Log.debug("weekAndCount", weekAndCount)
+        self.selectWeekList.removeAll()
         if weekAndCount {
             resetWeek()
         }
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko")
         formatter.dateFormat = "yyyy.MM.dd (E)"
-//        tfStartDate.text = formatter.string(from: sender.date)
         modifyStartDateLbl.text = formatter.string(from: sender.date)
         formatter.dateFormat = "yyyy-MM-dd"
-//        tfStartDateParam.text = formatter.string(from: sender.date)
         requestParam.scheduleDate = formatter.string(from: sender.date)
         formatter.dateFormat = "E"
-//        startDateWeek = formatter.string(from: sender.date)
         notSelectWeek = formatter.string(from: sender.date)
         notSelectSet(item: formatter.string(from: sender.date))
         doneValidCheck()
@@ -785,20 +787,36 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
         if weekAndCount {
             resetWeek()
         }
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko")
-        formatter.dateFormat = "yyyy.MM.dd (E)"
-//        tfStartDate.text = formatter.string(from: sender.date)
-        modifyStartDateLbl.text = formatter.string(from: Date())
-        formatter.dateFormat = "yyyy-MM-dd"
-//        tfStartDateParam.text = formatter.string(from: sender.date)
-        requestParam.scheduleDate = formatter.string(from: Date())
-        formatter.dateFormat = "E"
-//        startDateWeek = formatter.string(from: sender.date)
-        notSelectWeek = formatter.string(from: Date())
-        notSelectSet(item: formatter.string(from: Date()))
-        doneValidCheck()
-        modifyStartDateView.isHidden = false
+        Log.debug("defaultStartDateSet 1", modifyStartDateLbl)
+        if modifyStartDateLbl.text != nil {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd (E)"
+            let date = formatter.date(from: modifyStartDateLbl.text ?? "")
+            Log.debug("defaultStartDateSet 1", modifyStartDateLbl)
+            datePickerView.date = date!
+            modifyStartDateLbl.text = formatter.string(from: date!)
+            formatter.dateFormat = "yyyy-MM-dd"
+            requestParam.scheduleDate = formatter.string(from: date!)
+            formatter.dateFormat = "E"
+            notSelectWeek = formatter.string(from: date!)
+//            notSelectSet(item: formatter.string(from: date!))
+            doneValidCheck()
+            modifyStartDateView.isHidden = false
+            
+        } else {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd (E)"
+            modifyStartDateLbl.text = formatter.string(from: Date())
+            formatter.dateFormat = "yyyy-MM-dd"
+            requestParam.scheduleDate = formatter.string(from: Date())
+            formatter.dateFormat = "E"
+            notSelectWeek = formatter.string(from: Date())
+            notSelectSet(item: formatter.string(from: Date()))
+            doneValidCheck()
+            modifyStartDateView.isHidden = false
+        }
     }
     
     func modifySetCycleBtn() {
@@ -1444,6 +1462,22 @@ class DetailHabitViewNew: BaseViewController, Navigatable{
     func modifySetting() {
         
     }
+    
+    func timePickerSet() {
+        if modifyTimeLbl.text == nil {
+            let date = Date(timeInterval: 300, since: Date())
+            Log.debug("dateTest : ", date)
+            timePicker.date = date
+        }
+    }
+    func defaultSetAlarmTimeSet() {
+        let date: Date = self.timePicker.date
+        let st = "\(TaviCommon.alarmTimeDateToStringFormatHHMMa(date: date))"
+        self.modifyAlarmLbl.text = st
+        self.modifyAlarmView.isHidden = false
+        self.requestParam.alarmTime = "\(TaviCommon.alarmTimeDateToStringFormatHHMM(date: date)):00"
+        self.doneValidCheck()
+    }
   
 }
 
@@ -1454,6 +1488,7 @@ extension DetailHabitViewNew: UITextFieldDelegate {
             self.habitNameFrameFocus(bool: true)
         } else if textField.tag == 10 {
             scrollView.scroll(to: .bottom)
+            defaultSetAlarmTimeSet()
         } else if textField.tag == 11 {
             scrollView.scroll(to: .bottom)
         }

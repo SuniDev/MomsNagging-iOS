@@ -235,6 +235,8 @@ class TodoViewNew: BaseViewController, Navigatable{
         modifyAlarmView = TaviCommon.modifyInputView(contentsLbl: modifyAlarmLbl, tf: modifyTfPicker)
         modifyAlarmView.isHidden = true
         requestParam.goalCount = 0
+        timePickerSet()
+        
         // delegate
         habitNameTF.delegate = self
         tfPicker.delegate = self
@@ -501,13 +503,13 @@ class TodoViewNew: BaseViewController, Navigatable{
         // 수행 시간 버튼, 수정 버튼
         timeBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
-            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.timeTF.text)
+            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.modifyTimeLbl.text)
             self.bindPerformTime(performTimeViewModel)
             self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
         }.disposed(by: disposeBag)
         modifyTimeBtn.rx.tap.bind {
             self.habitNameFrameFocus(bool: false)
-            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.timeTF.text)
+            let performTimeViewModel = PerformTimeSettingViewModel(performTime: self.modifyTimeLbl.text)
             self.bindPerformTime(performTimeViewModel)
             self.navigator.show(seque: .performTimeSetting(viewModel: performTimeViewModel), sender: self, transition: .navigation)
         }.disposed(by: disposeBag)
@@ -803,6 +805,22 @@ class TodoViewNew: BaseViewController, Navigatable{
     func modifySetting() {
         
     }
+    
+    func timePickerSet() {
+        if modifyAlarmLbl.text == nil {
+            let date = Date(timeInterval: 300, since: Date())
+            Log.debug("dateTest : ", date)
+            timePicker.date = date
+        }
+    }
+    func defaultSetAlarmTimeSet() {
+        let date: Date = self.timePicker.date
+        let st = "\(TaviCommon.alarmTimeDateToStringFormatHHMMa(date: date))"
+        self.modifyAlarmLbl.text = st
+        self.modifyAlarmView.isHidden = false
+        self.requestParam.alarmTime = "\(TaviCommon.alarmTimeDateToStringFormatHHMM(date: date)):00"
+        self.doneValidCheck()
+    }
   
 }
 
@@ -813,6 +831,7 @@ extension TodoViewNew: UITextFieldDelegate {
             self.habitNameFrameFocus(bool: true)
         } else if textField.tag == 10 {
             scrollView.scroll(to: .bottom)
+            defaultSetAlarmTimeSet()
         } else if textField.tag == 11 {
             scrollView.scroll(to: .bottom)
         }

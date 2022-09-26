@@ -22,6 +22,7 @@ class PerformTimeSettingViewModel: BaseViewModel, ViewModelType {
     
     init(performTime: String? = "") {
         self.perfromTime = BehaviorRelay<String?>(value: performTime)
+        Log.debug("performTime Log : ", performTime)
     }
     
     // MARK: - Input
