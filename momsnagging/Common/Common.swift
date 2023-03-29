@@ -48,9 +48,11 @@ class Common {
     static func getBaseUrl() -> String {
         switch Common.getDeployPhase() {
         case .debug:
-            return "https://api.momsnagging.ml/api/v1/"
+//            return "https://api.momsnagging.ml/api/v1/"
+            return "https://api.momsnagging.link/api/v1"
         case .release:
-            return "https://api.momsnagging.ml/api/v1/"
+//            return "https://api.momsnagging.ml/api/v1/"
+            return "https://api.momsnagging.link/api/v1"
         }
     }
     

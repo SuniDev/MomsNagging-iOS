@@ -38,7 +38,7 @@ target 'momsnagging' do
 	pod 'Firebase/RemoteConfig'
   
 	#Google
-	pod 'GoogleSignIn'
+	pod 'GoogleSignIn', '= 6.2.0'
   
 	#Kakao
 	pod 'RxKakaoSDKAuth'
