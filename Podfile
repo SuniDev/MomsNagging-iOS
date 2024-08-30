@@ -7,44 +7,29 @@ target 'momsnagging' do
 
   # Pods for momsnagging
 	#UI&CodeConvention
-	pod 'SnapKit', '~> 5.0.0'
+	pod 'SnapKit'
 	pod 'Then'
-	pod 'Kingfisher','~> 5.0'
+	pod 'Kingfisher'
 	pod 'SwiftLint'
-	pod 'SwiftGen', '~> 6.0'
-	pod 'Toast-Swift', '~> 5.0.1'
-
-	#Networking
-	pod 'Moya/RxSwift', '~> 15.0'
-	pod 'SwiftyJSON', '~> 4.0'
+	pod 'SwiftGen'
 
 	#async
-	pod 'RxSwift', '~> 6'
-	pod 'RxCocoa', '~> 6'
+	pod 'RxSwift'
+	pod 'RxCocoa'
 
 	#RX Extensions
-	pod 'RxGesture', '~> 4.0' # https://github.com/RxSwiftCommunity/RxGesture
-	pod 'RxDataSources', '~> 5.0' # https://github.com/RxSwiftCommunity/RxDataSources
-	pod 'RxViewController', '~> 2.0' # https://github.com/devxoul/RxViewController
-	pod 'RxOptional', '~> 5.0'  # https://github.com/RxSwiftCommunity/RxOptional
-	pod 'RxSwiftExt', '~> 6.0'  # https://github.com/RxSwiftCommunity/RxSwiftExt
+	pod 'RxGesture'
+	pod 'RxDataSources'
+	pod 'RxViewController'
+	pod 'RxOptional'
+	pod 'RxSwiftExt'
 	pod 'RxKeyboard'
+	pod 'ReactorKit'
 
 	#firebase
 	pod 'Firebase/Analytics'
 	pod 'Firebase/Crashlytics'
 	pod 'Firebase/Messaging'
-	pod 'Firebase/AppDistribution'
 	pod 'Firebase/RemoteConfig'
-  
-	#Google
-	pod 'GoogleSignIn', '= 6.2.0'
-  
-	#Kakao
-	pod 'RxKakaoSDKAuth'
-	pod 'RxKakaoSDKUser'
-  
-	#Keychain
-	pod 'SwiftKeychainWrapper'
 
 end
