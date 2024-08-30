@@ -54,10 +54,10 @@ playground.xcworkspace
 # you should judge for yourself, the pros and cons are mentioned at:
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
 #
-Pods/*
+# Pods/
 #
 # Add this line if you want to avoid checking in source code from the Xcode workspace
-*.xcworkspace
+# *.xcworkspace
 
 # Carthage
 #
@@ -88,3 +88,26 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# 환경 변수 파일
+*.env
+*.xcconfig
+
+# 보안 파일
+Secrets.swift
+Secrets/
+GoogleService-Info.plist
+
+# 빌드 출력 디렉토리
+dist/
+
+# Xcode 특정 파일 및 디렉토리
+*.xcworkspace
+
+# 로그 파일
+*.log
+
+# 특정 키 파일
+*.pem
+*.key
+*.crt
