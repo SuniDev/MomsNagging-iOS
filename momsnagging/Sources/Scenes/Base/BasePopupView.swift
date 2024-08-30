@@ -96,8 +96,7 @@ class BasePopupView: BaseViewController {
     lazy var dividerHori = UIView().then({
         $0.backgroundColor = Asset.Color.monoLight030.color
     })
-    
-    
+        
     override func initUI() {
         self.view.backgroundColor = .clear
     }
@@ -292,4 +291,3 @@ class BasePopupView: BaseViewController {
         }
     }
 }
-

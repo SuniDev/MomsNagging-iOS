@@ -20,4 +20,3 @@ protocol UserServiceType {
 final class UserService: BaseService, UserServiceType {
     
 }
-

@@ -14,4 +14,3 @@ class BaseService {
     self.provider = provider
   }
 }
-

@@ -3,6 +3,9 @@
 # 린트 과정에서 무시할 파일 경로.
 excluded:
   - Pods
+  - momsnagging/Resources/Strings+Generated.swift
+  - momsnagging/Resources/Fonts+Generated.swift
+  - momsnagging/Resources/XCAssets+Generated.swift
 included:
   - momsnagging
 analyzer_rules:

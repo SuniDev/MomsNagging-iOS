@@ -33,6 +33,7 @@ class IntroViewController: BaseViewController, Popupable {
         self.reactor = reactor
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
