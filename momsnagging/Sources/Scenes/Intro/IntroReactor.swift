@@ -19,6 +19,8 @@ final class IntroReactor: Reactor, Stepper {
     // MARK: Events
     enum Action {
         case willAppearIntro
+        case tappedForceUpdate
+        case tappedLaterUpdate
     }
     
     enum Mutation {
@@ -28,6 +30,8 @@ final class IntroReactor: Reactor, Stepper {
     
     struct State {
         var updateStatus: AppUpdateStatus = .none
+        var shouldShowForceUpdatePopup: Bool = false
+        var shouldShowSelectUpdatePopup: Bool = false
         var error: String = ""
     }
     
@@ -49,9 +53,9 @@ extension IntroReactor {
             return provider.appUpdateService.fetchAppUpdateStatus()
                 .map { Mutation.setAppUpdateStatus($0) }
                 .catch { _ in
-                    return Observable.just(Mutation.setError("Error - Fetch Update"))
+                    return Observable.just(Mutation.setAppUpdateStatus(.error))
                 }
-            
+        default: return .empty()            
         }
     }
 }
@@ -64,6 +68,19 @@ extension IntroReactor {
         switch mutation {
         case .setAppUpdateStatus(let status):
             newState.updateStatus = status
+            switch status {
+            case .forceUpdate:
+                newState.shouldShowForceUpdatePopup = true
+                newState.shouldShowSelectUpdatePopup = false
+            case .selectUpdate:
+                newState.shouldShowForceUpdatePopup = false
+                newState.shouldShowSelectUpdatePopup = true
+            case .latestVersion, .none:
+                newState.shouldShowForceUpdatePopup = false
+                newState.shouldShowSelectUpdatePopup = false
+            case .error:
+                newState.error = "Error - Fetch Update"
+            }
         case .setError(let error):
             newState.error = error
         }

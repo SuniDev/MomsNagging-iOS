@@ -71,5 +71,39 @@ extension IntroViewController: View {
             .disposed(by: disposeBag)
     }
     
-    private func bindState(_ reactor: IntroReactor) {}
+    private func bindState(_ reactor: IntroReactor) {
+        reactor.state.map { $0.shouldShowForceUpdatePopup }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .subscribe(onNext: { [weak self] _ in
+                self?.showPopup(
+                    type: .forceUpdate,
+                    title: "Update Available",
+                    message: "Would you like to update now?",
+                    doneTitle: "Update",
+                    doneHandler: {
+                        reactor.action.onNext(.tappedForceUpdate)
+                    }
+                )
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.shouldShowSelectUpdatePopup }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .subscribe(onNext: { [weak self] _ in
+                self?.showPopup(
+                    type: .selectUpdate,
+                    title: "Update Available",
+                    message: "Would you like to update now?",
+                    cancelTitle: "나중에",
+                    doneTitle: "Update",
+                    cancelHandler: {
+                        reactor.action.onNext(.tappedLaterUpdate)
+                    },
+                    doneHandler: {
+                        reactor.action.onNext(.tappedForceUpdate)
+                    }
+                )
+            }).disposed(by: disposeBag)
+    }
 }
