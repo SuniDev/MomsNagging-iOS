@@ -13,10 +13,19 @@ import RxFlow
 import RxCocoa
 import ReactorKit
 
-class IntroViewController: BaseViewController {
+class IntroViewController: BaseViewController, Popupable {
 
     // MARK: - Properties & Variable
     var disposeBag = DisposeBag()
+    
+    // MARK: - UI Properties
+    lazy var viewBackground = UIView().then({
+        $0.backgroundColor = Asset.Color.priMain.color
+    })
+    
+    lazy var imgvLogo = UIImageView().then({
+        $0.image = Asset.Assets.introLogo.image
+    })
     
     init(with reactor: IntroReactor) {
         super.init(nibName: nil, bundle: nil)
