@@ -34,6 +34,8 @@ final class IntroFlow: Flow {
         guard let step = step as? AppStep else { return FlowContributors.none }
         
         switch step {
+        case .intro:
+            return navigationToIntroScreen()
         default:
             return .none
         }

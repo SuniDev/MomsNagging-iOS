@@ -18,13 +18,17 @@ final class IntroReactor: Reactor, Stepper {
     
     // MARK: Events
     enum Action {
-        case loginButtonDidTap
+        case willAppearIntro
     }
     
     enum Mutation {
+        case setAppUpdateStatus(AppUpdateStatus)
+        case setError(String)
     }
     
     struct State {
+        var updateStatus: AppUpdateStatus = .none
+        var error: String = ""
     }
     
     // MARK: Properties
@@ -40,28 +44,35 @@ final class IntroReactor: Reactor, Stepper {
 // MARK: Mutation
 extension IntroReactor {
     func mutate(action: Action) -> Observable<Mutation> {
-//        switch action {
-//        case .loginButtonDidTap:
-//            provider.loginService.setUserLogin()
-//            
-//            steps.accept(SampleStep.loginIsCompleted)
-            return .empty()
-//        }
+        switch action {
+        case .willAppearIntro:
+            return provider.appUpdateService.fetchAppUpdateStatus()
+                .map { Mutation.setAppUpdateStatus($0) }
+                .catch { _ in
+                    return Observable.just(Mutation.setError("Error - Fetch Update"))
+                }
+            
+        }
     }
 }
 
 // MARK: Reduce
 extension IntroReactor {
     func reduce(state: State, mutation: Mutation) -> State {
-//        var newState = state
-//
-//        switch mutation {
-//        }
-//
-//        return newState
+        var newState = state
+
+        switch mutation {
+        case .setAppUpdateStatus(let status):
+            newState.updateStatus = status
+        case .setError(let error):
+            newState.error = error
+        }
+
+        return newState
     }
 }
 
 // MARK: Method
 private extension IntroReactor {
+    
 }

@@ -11,6 +11,7 @@ import SnapKit
 import Then
 import RxFlow
 import RxCocoa
+import RxViewController
 import ReactorKit
 
 class IntroViewController: BaseViewController, Popupable {
@@ -27,6 +28,7 @@ class IntroViewController: BaseViewController, Popupable {
         $0.image = Asset.Assets.introLogo.image
     })
     
+    // MARK: - Init
     init(with reactor: IntroReactor) {
         super.init(nibName: nil, bundle: nil)
         
@@ -38,6 +40,19 @@ class IntroViewController: BaseViewController, Popupable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - init UI & Layout
+    override func initLayout() {
+        view.addSubview(viewBackground)
+        viewBackground.addSubview(imgvLogo)
+        
+        viewBackground.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalToSuperview()
+        })
+        
+        imgvLogo.snp.makeConstraints({
+            $0.center.equalTo(self.view.safeAreaLayoutGuide)
+        })
+    }
 }
 
 extension IntroViewController: View {
@@ -47,11 +62,14 @@ extension IntroViewController: View {
         bindState(reactor)
     }
     
-    private func bindView(_ reactor: IntroReactor) {
-        
-    }
+    private func bindView(_ reactor: IntroReactor) { }
     
-    private func bindAction(_ reactor: IntroReactor) {}
+    private func bindAction(_ reactor: IntroReactor) {
+        self.rx.viewWillAppear
+            .map { _ in Reactor.Action.willAppearIntro }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
     
     private func bindState(_ reactor: IntroReactor) {}
 }
