@@ -2,7 +2,7 @@
 # Reference : https://realm.github.io/SwiftLint/index.html
 # 린트 과정에서 무시할 파일 경로.
 excluded:
-  - Pods
+  - Pods/**
   - momsnagging/Resources/Strings+Generated.swift
   - momsnagging/Resources/Fonts+Generated.swift
   - momsnagging/Resources/XCAssets+Generated.swift

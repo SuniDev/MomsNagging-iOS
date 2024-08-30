@@ -25,7 +25,7 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         
         self.initUI()
-        self.layoutSetting()
+        self.initLayout()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +46,11 @@ class BaseViewController: UIViewController {
     func initUI() { }
     
     /**
-     # layoutSetting
+     # initLayout
      - Authors: suni
      - Note: layout 관련 설정하는 Override용 함수
      */
-    func layoutSetting() { }
+    func initLayout() { }
     
     /**
      # reloadData

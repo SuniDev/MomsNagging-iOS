@@ -101,7 +101,7 @@ class BasePopupView: BaseViewController {
         self.view.backgroundColor = .clear
     }
     
-    override func layoutSetting() {
+    override func initLayout() {
         view.addSubview(dimView)
         view.addSubview(backView)
         backView.addSubview(popupView)
