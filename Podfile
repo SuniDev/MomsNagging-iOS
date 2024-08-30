@@ -13,9 +13,11 @@ target 'momsnagging' do
 	pod 'SwiftLint'
 	pod 'SwiftGen'
 
-	#async
+	#RX Architecture
 	pod 'RxSwift'
 	pod 'RxCocoa'
+  pod 'RxFlow'
+  pod 'ReactorKit'
 
 	#RX Extensions
 	pod 'RxGesture'
@@ -24,12 +26,10 @@ target 'momsnagging' do
 	pod 'RxOptional'
 	pod 'RxSwiftExt'
 	pod 'RxKeyboard'
-	pod 'ReactorKit'
 
 	#firebase
 	pod 'Firebase/Analytics'
 	pod 'Firebase/Crashlytics'
-	pod 'Firebase/Messaging'
 	pod 'Firebase/RemoteConfig'
 
 end
