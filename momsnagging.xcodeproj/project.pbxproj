@@ -21,6 +21,17 @@
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
 		A0568DD92876C3F300AE9A9C /* RemoteConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0568DD82876C3F300AE9A9C /* RemoteConfigDefaults.plist */; };
 		EA8539C92C8222AA00A22F5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA8539C52C8222AA00A22F5C /* GoogleService-Info.plist */; };
+		EA8539CD2C82296900A22F5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8539CC2C82296900A22F5C /* LaunchScreen.storyboard */; };
+		EA8539CF2C822A7800A22F5C /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539CE2C822A7800A22F5C /* IntroView.swift */; };
+		EA8539D22C822ACE00A22F5C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539D12C822ACE00A22F5C /* BaseViewController.swift */; };
+		EA8539D92C822BD800A22F5C /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */; };
+		EA8539DB2C822C7F00A22F5C /* IntroReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */; };
+		EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539DC2C822D9500A22F5C /* ServiceProvider.swift */; };
+		EA8539E12C822EC700A22F5C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E02C822EC700A22F5C /* UserService.swift */; };
+		EA8539E32C82301800A22F5C /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E22C82301800A22F5C /* BaseService.swift */; };
+		EA8539E52C82315100A22F5C /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E42C82315100A22F5C /* AppFlow.swift */; };
+		EA8539E72C8231E400A22F5C /* AppStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E62C8231E400A22F5C /* AppStep.swift */; };
+		EA8539E92C82329E00A22F5C /* IntroFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E82C82329E00A22F5C /* IntroFlow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +54,17 @@
 		A0568DD82876C3F300AE9A9C /* RemoteConfigDefaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RemoteConfigDefaults.plist; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EA8539C52C8222AA00A22F5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EA8539CC2C82296900A22F5C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EA8539CE2C822A7800A22F5C /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		EA8539D12C822ACE00A22F5C /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
+		EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroReactor.swift; sourceTree = "<group>"; };
+		EA8539DC2C822D9500A22F5C /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
+		EA8539E02C822EC700A22F5C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		EA8539E22C82301800A22F5C /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
+		EA8539E42C82315100A22F5C /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
+		EA8539E62C8231E400A22F5C /* AppStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStep.swift; sourceTree = "<group>"; };
+		EA8539E82C82329E00A22F5C /* IntroFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFlow.swift; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -163,6 +185,8 @@
 		EA8539BE2C82203E00A22F5C /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				EA8539D62C822BB300A22F5C /* Base */,
+				EA8539CB2C82295500A22F5C /* Intro */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -170,6 +194,7 @@
 		EA8539BF2C82213100A22F5C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EA8539D72C822BD200A22F5C /* Extensions */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -177,6 +202,9 @@
 		EA8539C02C82213600A22F5C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				EA8539DC2C822D9500A22F5C /* ServiceProvider.swift */,
+				EA8539E22C82301800A22F5C /* BaseService.swift */,
+				EA8539E02C822EC700A22F5C /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -193,6 +221,7 @@
 		EA8539C22C82216200A22F5C /* Step */ = {
 			isa = PBXGroup;
 			children = (
+				EA8539E62C8231E400A22F5C /* AppStep.swift */,
 			);
 			path = Step;
 			sourceTree = "<group>";
@@ -200,6 +229,8 @@
 		EA8539C32C82217600A22F5C /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				EA8539E42C82315100A22F5C /* AppFlow.swift */,
+				EA8539EA2C82330900A22F5C /* Intro */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -211,6 +242,40 @@
 				A0568DD82876C3F300AE9A9C /* RemoteConfigDefaults.plist */,
 			);
 			path = Supporting;
+			sourceTree = "<group>";
+		};
+		EA8539CB2C82295500A22F5C /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				EA8539CC2C82296900A22F5C /* LaunchScreen.storyboard */,
+				EA8539CE2C822A7800A22F5C /* IntroView.swift */,
+				EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */,
+			);
+			path = Intro;
+			sourceTree = "<group>";
+		};
+		EA8539D62C822BB300A22F5C /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				EA8539D12C822ACE00A22F5C /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		EA8539D72C822BD200A22F5C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		EA8539EA2C82330900A22F5C /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				EA8539E82C82329E00A22F5C /* IntroFlow.swift */,
+			);
+			path = Intro;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +343,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA8539CD2C82296900A22F5C /* LaunchScreen.storyboard in Resources */,
 				86E3920C280FC923007D3C04 /* Pretendard-Bold.otf in Resources */,
 				EA8539C92C8222AA00A22F5C /* GoogleService-Info.plist in Resources */,
 				8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */,
@@ -393,9 +459,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */,
+				EA8539DB2C822C7F00A22F5C /* IntroReactor.swift in Sources */,
+				EA8539E92C82329E00A22F5C /* IntroFlow.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
+				EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */,
+				EA8539CF2C822A7800A22F5C /* IntroView.swift in Sources */,
+				EA8539E12C822EC700A22F5C /* UserService.swift in Sources */,
+				EA8539E72C8231E400A22F5C /* AppStep.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
+				EA8539E32C82301800A22F5C /* BaseService.swift in Sources */,
+				EA8539D92C822BD800A22F5C /* OSLog+Extension.swift in Sources */,
+				EA8539E52C82315100A22F5C /* AppFlow.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
+				EA8539D22C822ACE00A22F5C /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
