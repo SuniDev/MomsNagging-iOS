@@ -78,9 +78,9 @@ extension IntroViewController: View {
             .subscribe(onNext: { [weak self] _ in
                 self?.showPopup(
                     type: .forceUpdate,
-                    title: "Update Available",
-                    message: "Would you like to update now?",
-                    doneTitle: "Update",
+                    title: L10n.updateTitle,
+                    message: L10n.updateMessage,
+                    doneTitle: L10n.updateDone,
                     doneHandler: {
                         reactor.action.onNext(.tappedForceUpdate)
                     }
@@ -93,10 +93,10 @@ extension IntroViewController: View {
             .subscribe(onNext: { [weak self] _ in
                 self?.showPopup(
                     type: .selectUpdate,
-                    title: "Update Available",
-                    message: "Would you like to update now?",
-                    cancelTitle: "나중에",
-                    doneTitle: "Update",
+                    title: L10n.updateTitle,
+                    message: L10n.updateMessage,
+                    cancelTitle: L10n.updateCancel,
+                    doneTitle: L10n.updateDone,
                     cancelHandler: {
                         reactor.action.onNext(.tappedLaterUpdate)
                     },

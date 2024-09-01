@@ -1,0 +1,58 @@
+/* 
+  Localizable.strings
+  momsnagging
+
+  Created by suni on 9/2/24.
+  
+*/
+/* 알럿 문구 */
+"cancel" = "취소";
+"done" = "확인";
+"yes" = "네";
+"no" = "아니요";
+"close" = "닫기";
+"delete" = "네, 삭제할게요";
+
+/* 업데이트 안내 */
+"update_done" = "업데이트";
+"update_cancel" = "다음에 할게요";
+"update_title" = "새로운 버전이 업데이트 되었단다!";
+"update_message" = "우리 아들, 딸들의 의견을 반영해서\n사용성을 개선했는데\n지금 바로 업데이트 해보겠니~?";
+
+/* 인트로 & 로그인 */
+"login_error_title" = "로그인 실패";
+"login_error_message" = "로그인에 실패 했습니다.\n다시 시도해주세요.";
+
+/* 호칭 설정 */
+"nickname_success" = "굿 네이밍^^\n참고로 호칭 변경은 '마이'에서 가능하단다.";
+
+/* 뒤로가기 */
+"habit_back" = "지금 나가면 습관이 저장되지 않는단다.\n그래도 나가겠니?";
+"todo_back" = "지금 나가면 할일이 저장되지 않는단다.\n그래도 나가겠니?";
+"diary_back" = "지금 나가면 일기가 저장되지 않는단다.\n그래도 나가겠니?";
+
+/* 삭제 */
+"habit_delete" = "습관을 삭제하면 되돌릴 수 없단다.\n그래도 삭제하겠니?";
+"todo_delete" = "할일을 삭제하면 되돌릴 수 없단다.\n그래도 삭제하겠니?";
+"diary_delete" = "일기를 삭제하면 되돌릴 수 없단다.\n그래도 삭제하겠니?";
+
+/* 마이 */
+"statusmsg_default" = "오늘 하루도 파이팅 🔥";
+"statusmsg_modify_title" = "각오 한마디 적어볼래?";
+"statusmsg_modify_error" = "다른 각오를 생각해보겠니?";
+"statusmsg_modify_placeholder" = "띄어쓰기 포함 한/영/특수문자 30글자 이내";
+"statusmsg_modify_done" = "이렇게 할게요!";
+
+"nickname_setting_title" = "엄마가 뭐라고 불러줄까?";
+"nickname_setting_error" = "다른 이름을 생각해보겠니?";
+"nickname_setting_placeholder" = "띄어쓰기 포함 한/영/숫자 10글자 이내";
+"nickname_setting_done" = "이렇게요!";
+
+"logout" = "로그아웃 할꺼니?";
+
+/* 설정 */
+"delete_account" = "정말로 탈퇴하시겠습니까?";
+"success_account" = "주신 의견을 반영하여 더 나은 엄마의 잔소리가 되겠습니다.\n감사합니다!";
+
+/* 네트워크 */
+"network_error_message" = "네트워크 연결이 실패했단다.\n다시 시도 해주겠니?";
