@@ -11,10 +11,7 @@ import RxFlow
 import RxCocoa
 import ReactorKit
 
-final class IntroReactor: Reactor, Stepper {
-    
-    // MARK: Stepper
-    var steps: PublishRelay<Step> = .init()
+final class IntroReactor: Reactor {
     
     // MARK: Events
     enum Action {
@@ -24,11 +21,13 @@ final class IntroReactor: Reactor, Stepper {
     }
     
     enum Mutation {
+        case setStep(AppStep)
         case setAppUpdateStatus(AppUpdateStatus)
         case setError(String)
     }
     
     struct State {
+        var step: Step?
         var updateStatus: AppUpdateStatus = .none
         var shouldShowForceUpdatePopup: Bool = false
         var shouldShowSelectUpdatePopup: Bool = false
@@ -55,7 +54,11 @@ extension IntroReactor {
                 .catch { _ in
                     return Observable.just(Mutation.setAppUpdateStatus(.error))
                 }
-        default: return .empty()            
+        case .tappedForceUpdate:
+            return Observable.just(Mutation.setStep(.moveAppStore))
+        case .tappedLaterUpdate:
+            return Observable.just(Mutation.setStep(AppStep.introIsComplete))
+        default: return .empty()
         }
     }
 }
@@ -66,6 +69,8 @@ extension IntroReactor {
         var newState = state
 
         switch mutation {
+        case .setStep(let step):
+            newState.step = step
         case .setAppUpdateStatus(let status):
             newState.updateStatus = status
             switch status {
@@ -78,8 +83,10 @@ extension IntroReactor {
             case .latestVersion, .none:
                 newState.shouldShowForceUpdatePopup = false
                 newState.shouldShowSelectUpdatePopup = false
+                newState.step = AppStep.introIsComplete
             case .error:
                 newState.error = "Error - Fetch Update"
+                newState.step = AppStep.introIsComplete
             }
         case .setError(let error):
             newState.error = error

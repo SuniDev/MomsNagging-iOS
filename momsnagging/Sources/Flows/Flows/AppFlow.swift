@@ -21,7 +21,7 @@ struct AppStepper: Stepper {
     }
     
     var initialStep: Step {
-        return AppStep.intro
+        return AppStep.introIsRequired
     }
     
     func readyToEmitSteps() {
@@ -57,23 +57,21 @@ final class AppFlow: Flow {
         guard let step = step as? AppStep else { return FlowContributors.none }
         
         switch step {
-        case .intro:
-            return navigationToIntroScreen()
+        case .introIsRequired:
+            return coordinateToIntro()
         default:
             return .none
         }
     }
     
-    private func navigationToIntroScreen() -> FlowContributors {
-        let flow = IntroFlow(with: provider)
-        
-        Flows.use(flow, when: .created) { [unowned self] root in
+    private func coordinateToIntro() -> FlowContributors {
+        let introFlow = IntroFlow(with: provider)
+        Flows.use(introFlow, when: .created) { [unowned self] root in
             self.rootWindow.rootViewController = root
         }
         
-        let nextStep = OneStepper(withSingleStep: AppStep.intro)
+        let nextStep = OneStepper(withSingleStep: AppStep.introIsRequired)
         
-        return .one(flowContributor: .contribute(withNextPresentable: flow,
-                                                 withNextStepper: nextStep))
+        return .one(flowContributor: .contribute(withNextPresentable: introFlow, withNextStepper: nextStep))
     }
 }

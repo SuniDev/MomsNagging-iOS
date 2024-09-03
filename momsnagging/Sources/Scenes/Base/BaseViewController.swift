@@ -7,12 +7,16 @@
 
 import UIKit
 
+import RxCocoa
+import RxFlow
 /**
  # (C) BaseViewController
  - Authors: suni
  - Note: 모든 VC의 Base, 모든 ViewController의 기본 기능 정의.
  */
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController, Stepper {
+    let steps = PublishRelay<Step>()
+    
     lazy private(set) var className: String = {
         return type(of: self).description().components(separatedBy: ".").last ?? ""
     }()

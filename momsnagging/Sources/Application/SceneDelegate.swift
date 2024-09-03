@@ -13,16 +13,14 @@ import RxSwift
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
-    private let flow: FlowCoordinator = .init()
+    private let coordinator = FlowCoordinator()
     private let disposeBag: DisposeBag = .init()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        coordinatorLogStart()
-        
         // App Initialize
-        
+        coordinatorLogStart()
         coordinateToAppFlow(with: windowScene)
     }
     
@@ -31,22 +29,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         
         let provider: ServiceProviderType = ServiceProvider()
-        let appFlow = AppFlow(with: window, and: provider)
         let appStepper = AppStepper(provider: provider)
         
-        flow.coordinate(flow: appFlow, with: appStepper)
+        let appFlow = AppFlow(with: window, and: provider)
+        coordinator.coordinate(flow: appFlow, with: appStepper)
         
         window.makeKeyAndVisible()
     }
     
     private func coordinatorLogStart() {
-        flow.rx.willNavigate
+        coordinator.rx.willNavigate
             .subscribe(onNext: { flow, step in
                 let currentFlow = "\(flow)".split(separator: ".").last ?? "no flow"
-                Log.info("➡️ will navigate to flow = \(currentFlow) and step = \(step)")
+                Log.info("\n➡️ will navigate to flow = \(currentFlow) and step = \(step)")
             })
             .disposed(by: disposeBag)
         
-        // didNavigate
+        coordinator.rx.didNavigate.subscribe(onNext: { flow, step in
+            Log.info("\n➡️ did navigate to flow=\(flow) and step=\(step)")
+        }).disposed(by: self.disposeBag)
     }
 }

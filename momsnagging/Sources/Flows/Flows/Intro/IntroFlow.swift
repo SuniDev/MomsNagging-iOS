@@ -16,7 +16,6 @@ final class IntroFlow: Flow {
     
     private lazy var rootViewController: UINavigationController = {
         let viewController = UINavigationController()
-        viewController.navigationBar.topItem?.title = "OnBoarding"
         return viewController
     }()
     
@@ -34,18 +33,18 @@ final class IntroFlow: Flow {
         guard let step = step as? AppStep else { return FlowContributors.none }
         
         switch step {
-        case .intro:
-            return navigationToIntroScreen()
+        case .introIsRequired:
+            return coordinateToIntro()
         default:
             return .none
         }
     }
     
-    private func navigationToIntroScreen() -> FlowContributors {
+    private func coordinateToIntro() -> FlowContributors {
         let reactor = IntroReactor(provider: provider)
         let viewController = IntroViewController(with: reactor)
         
         self.rootViewController.setViewControllers([viewController], animated: false)
-        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
 }

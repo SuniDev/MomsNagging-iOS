@@ -24,7 +24,7 @@
 		EA820DF42C84C80C00EBABCE /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = EA820DF32C84C80C00EBABCE /* swiftgen.yml */; };
 		EA820DF62C84C85800EBABCE /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA820DF52C84C85800EBABCE /* Strings+Generated.swift */; };
 		EA8539CD2C82296900A22F5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8539CC2C82296900A22F5C /* LaunchScreen.storyboard */; };
-		EA8539CF2C822A7800A22F5C /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539CE2C822A7800A22F5C /* IntroView.swift */; };
+		EA8539CF2C822A7800A22F5C /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539CE2C822A7800A22F5C /* IntroViewController.swift */; };
 		EA8539D22C822ACE00A22F5C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539D12C822ACE00A22F5C /* BaseViewController.swift */; };
 		EA8539D92C822BD800A22F5C /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */; };
 		EA8539DB2C822C7F00A22F5C /* IntroReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */; };
@@ -67,7 +67,7 @@
 		EA820DF32C84C80C00EBABCE /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		EA820DF52C84C85800EBABCE /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
 		EA8539CC2C82296900A22F5C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		EA8539CE2C822A7800A22F5C /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		EA8539CE2C822A7800A22F5C /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		EA8539D12C822ACE00A22F5C /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
 		EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroReactor.swift; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				EA8539CC2C82296900A22F5C /* LaunchScreen.storyboard */,
-				EA8539CE2C822A7800A22F5C /* IntroView.swift */,
+				EA8539CE2C822A7800A22F5C /* IntroViewController.swift */,
 				EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */,
 			);
 			path = Intro;
@@ -513,7 +513,7 @@
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				EA8539F52C82441600A22F5C /* AppUpdateService.swift in Sources */,
 				EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */,
-				EA8539CF2C822A7800A22F5C /* IntroView.swift in Sources */,
+				EA8539CF2C822A7800A22F5C /* IntroViewController.swift in Sources */,
 				EA8539F12C823B4A00A22F5C /* Popupable.swift in Sources */,
 				EA8539E12C822EC700A22F5C /* UserService.swift in Sources */,
 				EA820DF62C84C85800EBABCE /* Strings+Generated.swift in Sources */,

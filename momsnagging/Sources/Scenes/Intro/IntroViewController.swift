@@ -9,8 +9,6 @@ import UIKit
 
 import SnapKit
 import Then
-import RxFlow
-import RxCocoa
 import RxViewController
 import ReactorKit
 
@@ -72,6 +70,14 @@ extension IntroViewController: View {
     }
     
     private func bindState(_ reactor: IntroReactor) {
+        reactor.state.map { $0.step }
+            .filterN
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] step in
+                self?.steps.accept(step)
+            })
+            .disposed(by: disposeBag)
+        
         reactor.state.map { $0.shouldShowForceUpdatePopup }
             .distinctUntilChanged()
             .filter { $0 }
