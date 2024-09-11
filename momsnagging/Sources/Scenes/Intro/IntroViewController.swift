@@ -12,7 +12,7 @@ import Then
 import RxViewController
 import ReactorKit
 
-class IntroViewController: BaseViewController, Popupable {
+class IntroViewController: BaseViewController {
 
     // MARK: - Properties & Variable
     var disposeBag = DisposeBag()
@@ -76,39 +76,5 @@ extension IntroViewController: View {
                 self?.steps.accept(step)
             })
             .disposed(by: disposeBag)
-        
-        reactor.state.map { $0.shouldShowForceUpdatePopup }
-            .distinctUntilChanged()
-            .filter { $0 }
-            .subscribe(onNext: { [weak self] _ in
-                self?.showPopup(
-                    type: .forceUpdate,
-                    title: L10n.updateTitle,
-                    message: L10n.updateMessage,
-                    doneTitle: L10n.updateDone,
-                    doneHandler: {
-                        reactor.action.onNext(.tappedForceUpdate)
-                    }
-                )
-            }).disposed(by: disposeBag)
-        
-        reactor.state.map { $0.shouldShowSelectUpdatePopup }
-            .distinctUntilChanged()
-            .filter { $0 }
-            .subscribe(onNext: { [weak self] _ in
-                self?.showPopup(
-                    type: .selectUpdate,
-                    title: L10n.updateTitle,
-                    message: L10n.updateMessage,
-                    cancelTitle: L10n.updateCancel,
-                    doneTitle: L10n.updateDone,
-                    cancelHandler: {
-                        reactor.action.onNext(.tappedLaterUpdate)
-                    },
-                    doneHandler: {
-                        reactor.action.onNext(.tappedForceUpdate)
-                    }
-                )
-            }).disposed(by: disposeBag)
     }
 }

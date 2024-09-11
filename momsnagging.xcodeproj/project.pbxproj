@@ -257,7 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				EA8539E42C82315100A22F5C /* AppFlow.swift */,
-				EA8539EA2C82330900A22F5C /* Intro */,
+				EA8539E82C82329E00A22F5C /* IntroFlow.swift */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -297,14 +297,6 @@
 				EA8539F22C823BF800A22F5C /* UIView+Extension.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		EA8539EA2C82330900A22F5C /* Intro */ = {
-			isa = PBXGroup;
-			children = (
-				EA8539E82C82329E00A22F5C /* IntroFlow.swift */,
-			);
-			path = Intro;
 			sourceTree = "<group>";
 		};
 		EA8539EB2C8239C500A22F5C /* Utils */ = {

@@ -16,21 +16,18 @@ final class IntroReactor: Reactor {
     // MARK: Events
     enum Action {
         case willAppearIntro
-        case tappedForceUpdate
-        case tappedLaterUpdate
     }
     
     enum Mutation {
-        case setStep(AppStep)
-        case setAppUpdateStatus(AppUpdateStatus)
+        case showForceUpdatePopup
+        case showSelectUpdatePopup
+        case moveToAppStore
         case setError(String)
+        case todo
     }
     
     struct State {
         var step: Step?
-        var updateStatus: AppUpdateStatus = .none
-        var shouldShowForceUpdatePopup: Bool = false
-        var shouldShowSelectUpdatePopup: Bool = false
         var error: String = ""
     }
     
@@ -50,14 +47,21 @@ extension IntroReactor {
         switch action {
         case .willAppearIntro:
             return provider.appUpdateService.fetchAppUpdateStatus()
-                .map { Mutation.setAppUpdateStatus($0) }
-                .catch { _ in
-                    return Observable.just(Mutation.setAppUpdateStatus(.error))
+                .flatMap { status -> Observable<Mutation> in
+                    switch status {
+                    case .forceUpdate:
+                        return .just(Mutation.showForceUpdatePopup)
+                    case .selectUpdate:
+                        return .just(Mutation.showSelectUpdatePopup)
+                    case .latestVersion, .none:
+                        return .just(Mutation.todo)
+                    case .error:
+                        return .just(Mutation.setError("Error - Fetch Update"))
+                    }
                 }
-        case .tappedForceUpdate:
-            return Observable.just(Mutation.setStep(.moveToAppStore))
-        case .tappedLaterUpdate:
-            return Observable.just(Mutation.setStep(AppStep.introIsComplete))
+                .catch { _ in
+                    return .just(Mutation.setError("Error - Fetch Update"))
+                }
         default: return .empty()
         }
     }
@@ -69,27 +73,37 @@ extension IntroReactor {
         var newState = state
 
         switch mutation {
-        case .setStep(let step):
-            newState.step = step
-        case .setAppUpdateStatus(let status):
-            newState.updateStatus = status
-            switch status {
-            case .forceUpdate:
-                newState.shouldShowForceUpdatePopup = true
-                newState.shouldShowSelectUpdatePopup = false
-            case .selectUpdate:
-                newState.shouldShowForceUpdatePopup = false
-                newState.shouldShowSelectUpdatePopup = true
-            case .latestVersion, .none:
-                newState.shouldShowForceUpdatePopup = false
-                newState.shouldShowSelectUpdatePopup = false
-                newState.step = AppStep.introIsComplete
-            case .error:
-                newState.error = "Error - Fetch Update"
-                newState.step = AppStep.introIsComplete
-            }
         case .setError(let error):
             newState.error = error
+        case .showForceUpdatePopup:
+            newState.step = AppStep.showPopup(
+                type: .forceUpdate,
+                title: L10n.updateTitle,
+                message: L10n.updateMessage,
+                cancelTitle: nil,
+                doneTitle: L10n.updateDone,
+                cancelHandler: nil,
+                doneHandler: {
+                    
+                })
+        case .showSelectUpdatePopup:
+            newState.step = AppStep.showPopup(
+                type: .selectUpdate,
+                title: L10n.updateTitle,
+                message: L10n.updateMessage,
+                cancelTitle: L10n.updateCancel,
+                doneTitle: L10n.updateDone,
+                cancelHandler: {
+                    
+                },
+                doneHandler: {
+                    
+                })
+        case .moveToAppStore:
+            newState.step = AppStep.appStore
+        case .todo:
+            // TODO: -
+            break
         }
 
         return newState

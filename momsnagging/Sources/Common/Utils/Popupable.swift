@@ -37,8 +37,8 @@ extension Popupable {
             popupType: type,
             title: title,
             message: message,
-            cancelTitle: cancelTitle ?? "Cancel",
-            doneTitle: doneTitle ?? "OK",
+            cancelTitle: cancelTitle ?? "취소",
+            doneTitle: doneTitle ?? "확인",
             cancelHandler: cancelHandler,
             doneHandler: doneHandler
         )
