@@ -39,6 +39,10 @@ final class IntroFlow: Flow {
             return hidePopup()
         case .introIsRequired:
             return coordinateToIntro()
+        case .onboardingIsRequired:
+            return .end(forwardToParentFlowWithStep: AppStep.onboardingIsRequired)
+        case .homeIsRequired:
+            return .end(forwardToParentFlowWithStep: AppStep.homeIsRequired)
         default:
             return .none
         }

@@ -16,12 +16,15 @@ final class IntroReactor: Reactor {
     // MARK: Events
     enum Action {
         case willAppearIntro
+        case laterUpdateButtonDidTap
+        case updateButtonDidTap
     }
     
     enum Mutation {
         case showForceUpdatePopup
         case showSelectUpdatePopup
         case moveToAppStore
+        case moveToOnboarding
         case setError(String)
         case todo
     }
@@ -62,6 +65,23 @@ extension IntroReactor {
                 .catch { _ in
                     return .just(Mutation.setError("Error - Fetch Update"))
                 }
+        case .updateButtonDidTap:
+            return .just(Mutation.moveToAppStore)
+        case .laterUpdateButtonDidTap:
+            return provider.userDefaultsService.value(forKey: .isFirstLaunch)
+                .asObservable()
+                .flatMap{ [weak self] isFirstLaunch -> Observable<Mutation> in
+                    guard let self else { return .empty() }
+                    
+                    if let isFirstLaunch, isFirstLaunch {
+                        // 앱 재실행
+                        return .just(.moveToOnboarding)
+                    } else {
+                        // 앱 첫 실행
+                        return self.provider.userDefaultsService.set(value: true, forKey: .isFirstLaunch)
+                            .andThen(Observable.just(.moveToOnboarding)) // Completable을 Observable로 연결
+                    }
+                }
         default: return .empty()
         }
     }
@@ -84,7 +104,7 @@ extension IntroReactor {
                 doneTitle: L10n.updateDone,
                 cancelHandler: nil,
                 doneHandler: {
-                    
+                    self.action.onNext(.updateButtonDidTap)
                 })
         case .showSelectUpdatePopup:
             newState.step = AppStep.showPopup(
@@ -94,16 +114,18 @@ extension IntroReactor {
                 cancelTitle: L10n.updateCancel,
                 doneTitle: L10n.updateDone,
                 cancelHandler: {
-                    
+                    self.action.onNext(.laterUpdateButtonDidTap)
                 },
                 doneHandler: {
-                    
+                    self.action.onNext(.updateButtonDidTap)
                 })
         case .moveToAppStore:
             newState.step = AppStep.appStore
         case .todo:
             // TODO: -
             break
+        case .moveToOnboarding:
+            newState.step = AppStep.onboardingIsRequired
         }
 
         return newState

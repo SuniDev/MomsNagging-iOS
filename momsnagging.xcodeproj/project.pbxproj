@@ -20,6 +20,11 @@
 		8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */; };
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
 		A0568DD92876C3F300AE9A9C /* RemoteConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0568DD82876C3F300AE9A9C /* RemoteConfigDefaults.plist */; };
+		EA70CFE62C9202FE00ABB5FE /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFE52C9202FE00ABB5FE /* UserDefaultsService.swift */; };
+		EA70CFE82C92045F00ABB5FE /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFE72C92045F00ABB5FE /* UserDefaultsKey.swift */; };
+		EA70CFEC2C920EB200ABB5FE /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFEB2C920EB200ABB5FE /* OnboardingViewController.swift */; };
+		EA70CFEE2C920F0800ABB5FE /* OnboardingReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFED2C920F0800ABB5FE /* OnboardingReactor.swift */; };
+		EA70CFF02C920FBE00ABB5FE /* OnboardingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFEF2C920FBE00ABB5FE /* OnboardingFlow.swift */; };
 		EA820DF22C84C7EA00EBABCE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA820DF02C84C7EA00EBABCE /* Localizable.strings */; };
 		EA820DF42C84C80C00EBABCE /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = EA820DF32C84C80C00EBABCE /* swiftgen.yml */; };
 		EA820DF62C84C85800EBABCE /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA820DF52C84C85800EBABCE /* Strings+Generated.swift */; };
@@ -29,7 +34,6 @@
 		EA8539D92C822BD800A22F5C /* OSLog+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */; };
 		EA8539DB2C822C7F00A22F5C /* IntroReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */; };
 		EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539DC2C822D9500A22F5C /* ServiceProvider.swift */; };
-		EA8539E12C822EC700A22F5C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E02C822EC700A22F5C /* UserService.swift */; };
 		EA8539E32C82301800A22F5C /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E22C82301800A22F5C /* BaseService.swift */; };
 		EA8539E52C82315100A22F5C /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E42C82315100A22F5C /* AppFlow.swift */; };
 		EA8539E72C8231E400A22F5C /* AppStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E62C8231E400A22F5C /* AppStep.swift */; };
@@ -63,6 +67,11 @@
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A0568DD82876C3F300AE9A9C /* RemoteConfigDefaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RemoteConfigDefaults.plist; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		EA70CFE52C9202FE00ABB5FE /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
+		EA70CFE72C92045F00ABB5FE /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
+		EA70CFEB2C920EB200ABB5FE /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		EA70CFED2C920F0800ABB5FE /* OnboardingReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingReactor.swift; sourceTree = "<group>"; };
+		EA70CFEF2C920FBE00ABB5FE /* OnboardingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlow.swift; sourceTree = "<group>"; };
 		EA820DF12C84C7EA00EBABCE /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA820DF32C84C80C00EBABCE /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		EA820DF52C84C85800EBABCE /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
@@ -72,7 +81,6 @@
 		EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OSLog+Extension.swift"; sourceTree = "<group>"; };
 		EA8539DA2C822C7F00A22F5C /* IntroReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroReactor.swift; sourceTree = "<group>"; };
 		EA8539DC2C822D9500A22F5C /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
-		EA8539E02C822EC700A22F5C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		EA8539E22C82301800A22F5C /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
 		EA8539E42C82315100A22F5C /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		EA8539E62C8231E400A22F5C /* AppStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStep.swift; sourceTree = "<group>"; };
@@ -184,11 +192,30 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EA70CFE92C9205F700ABB5FE /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				EA8539F72C82452D00A22F5C /* AppUpdateStatus.swift */,
+				EA70CFE72C92045F00ABB5FE /* UserDefaultsKey.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
+		EA70CFEA2C920E9D00ABB5FE /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				EA70CFEB2C920EB200ABB5FE /* OnboardingViewController.swift */,
+				EA70CFED2C920F0800ABB5FE /* OnboardingReactor.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		EA8539BB2C821D0D00A22F5C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				EA8539BD2C821DAE00A22F5C /* Application */,
 				EA8539BF2C82213100A22F5C /* Common */,
+				EA70CFE92C9205F700ABB5FE /* Types */,
 				EA8539F62C82451000A22F5C /* Models */,
 				EA8539C02C82213600A22F5C /* Services */,
 				EA8539C12C82213D00A22F5C /* Flows */,
@@ -211,6 +238,7 @@
 			children = (
 				EA8539D62C822BB300A22F5C /* Base */,
 				EA8539CB2C82295500A22F5C /* Intro */,
+				EA70CFEA2C920E9D00ABB5FE /* Onboarding */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -230,8 +258,8 @@
 			children = (
 				EA8539DC2C822D9500A22F5C /* ServiceProvider.swift */,
 				EA8539E22C82301800A22F5C /* BaseService.swift */,
-				EA8539E02C822EC700A22F5C /* UserService.swift */,
 				EA8539F42C82441600A22F5C /* AppUpdateService.swift */,
+				EA70CFE52C9202FE00ABB5FE /* UserDefaultsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -258,6 +286,7 @@
 			children = (
 				EA8539E42C82315100A22F5C /* AppFlow.swift */,
 				EA8539E82C82329E00A22F5C /* IntroFlow.swift */,
+				EA70CFEF2C920FBE00ABB5FE /* OnboardingFlow.swift */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -311,7 +340,6 @@
 		EA8539F62C82451000A22F5C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EA8539F72C82452D00A22F5C /* AppUpdateStatus.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -498,16 +526,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA70CFF02C920FBE00ABB5FE /* OnboardingFlow.swift in Sources */,
 				EA8539F82C82452D00A22F5C /* AppUpdateStatus.swift in Sources */,
 				86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */,
 				EA8539DB2C822C7F00A22F5C /* IntroReactor.swift in Sources */,
 				EA8539E92C82329E00A22F5C /* IntroFlow.swift in Sources */,
+				EA70CFEE2C920F0800ABB5FE /* OnboardingReactor.swift in Sources */,
+				EA70CFE62C9202FE00ABB5FE /* UserDefaultsService.swift in Sources */,
+				EA70CFE82C92045F00ABB5FE /* UserDefaultsKey.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				EA8539F52C82441600A22F5C /* AppUpdateService.swift in Sources */,
 				EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */,
 				EA8539CF2C822A7800A22F5C /* IntroViewController.swift in Sources */,
 				EA8539F12C823B4A00A22F5C /* Popupable.swift in Sources */,
-				EA8539E12C822EC700A22F5C /* UserService.swift in Sources */,
 				EA820DF62C84C85800EBABCE /* Strings+Generated.swift in Sources */,
 				EA8539E72C8231E400A22F5C /* AppStep.swift in Sources */,
 				EA8539FA2C8245BA00A22F5C /* Constants.swift in Sources */,
@@ -516,6 +547,7 @@
 				EA8539ED2C8239D200A22F5C /* Alertable.swift in Sources */,
 				EA8539F32C823BF800A22F5C /* UIView+Extension.swift in Sources */,
 				EA8539E32C82301800A22F5C /* BaseService.swift in Sources */,
+				EA70CFEC2C920EB200ABB5FE /* OnboardingViewController.swift in Sources */,
 				EA8539D92C822BD800A22F5C /* OSLog+Extension.swift in Sources */,
 				EA8539E52C82315100A22F5C /* AppFlow.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,

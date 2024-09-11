@@ -59,18 +59,30 @@ final class AppFlow: Flow {
         switch step {
         case .introIsRequired:
             return coordinateToIntro()
+        case .onboardingIsRequired:
+            return coordinateToOnboarding()
         default:
             return .none
         }
     }
     
     private func coordinateToIntro() -> FlowContributors {
-        let introFlow = IntroFlow(with: provider)
+        let flow = IntroFlow(with: provider)
         
-        Flows.use(introFlow, when: .ready) { [unowned self] root in
+        Flows.use(flow, when: .ready) { [unowned self] root in
             self.rootWindow.rootViewController = root
         }
         
-        return .one(flowContributor: .contribute(withNextPresentable: introFlow, withNextStepper: OneStepper(withSingleStep: AppStep.introIsRequired)))
+        return .one(flowContributor: .contribute(withNextPresentable: flow, withNextStepper: OneStepper(withSingleStep: AppStep.introIsRequired)))
+    }
+    
+    private func coordinateToOnboarding() -> FlowContributors {
+        let flow = OnboardingFlow(with: provider)
+        
+        Flows.use(flow, when: .ready) { [unowned self] root in
+            self.rootWindow.rootViewController = root
+        }
+        
+        return .one(flowContributor: .contribute(withNextPresentable: flow, withNextStepper: OneStepper(withSingleStep: AppStep.onboardingIsRequired)))
     }
 }
