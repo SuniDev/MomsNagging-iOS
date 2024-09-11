@@ -74,6 +74,9 @@ class OnboardingViewController: BasePageViewController {
     
     // MARK: - init UI & Layout
     override func initUI() {
+//        self.delegate = self
+        self.dataSource = self
+        
         view.backgroundColor = Asset.Color.monoWhite.color
         
         let loginAttributes: [NSAttributedString.Key: Any] = [
@@ -158,7 +161,19 @@ extension OnboardingViewController: View {
     }
     
     private func bindView(_ reactor: OnboardingReactor) {
+        // willTransitionTo 이벤트 구독
+        self.rx.willTransitionTo
+            .subscribe(onNext: { viewControllers in
+                print("Will transition to view controllers: \(viewControllers)")
+            })
+            .disposed(by: disposeBag)
         
+        // didFinishAnimating 이벤트 구독
+        self.rx.didFinishAnimating
+            .subscribe(onNext: { (finished, previousViewControllers, completed) in
+                print("Finished animating: \(finished), completed: \(completed)")
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindAction(_ reactor: OnboardingReactor) { }
@@ -172,4 +187,24 @@ extension OnboardingViewController: View {
             .disposed(by: disposeBag)
     }
     
+}
+
+extension OnboardingViewController: UIPageViewControllerDataSource {    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        return nil
+//        guard let index = pages.firstIndex(of: vc) else { return nil }
+//        
+//        let previousIndex = index - 1
+//        return previousIndex >= 0 ? pages[previousIndex] : nil
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        return nil
+//        guard let index = pages.firstIndex(of: vc) else { return nil }
+//        
+//        let nextIndex = index + 1
+//        return nextIndex < pages.count ? pages[nextIndex] : nil
+    }
 }
