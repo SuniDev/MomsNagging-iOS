@@ -66,12 +66,11 @@ final class AppFlow: Flow {
     
     private func coordinateToIntro() -> FlowContributors {
         let introFlow = IntroFlow(with: provider)
-        Flows.use(introFlow, when: .created) { [unowned self] root in
+        
+        Flows.use(introFlow, when: .ready) { [unowned self] root in
             self.rootWindow.rootViewController = root
         }
         
-        let nextStep = OneStepper(withSingleStep: AppStep.introIsRequired)
-        
-        return .one(flowContributor: .contribute(withNextPresentable: introFlow, withNextStepper: nextStep))
+        return .one(flowContributor: .contribute(withNextPresentable: introFlow, withNextStepper: OneStepper(withSingleStep: AppStep.introIsRequired)))
     }
 }

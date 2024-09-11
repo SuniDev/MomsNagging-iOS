@@ -60,19 +60,18 @@ extension IntroViewController: View {
         bindState(reactor)
     }
     
-    private func bindView(_ reactor: IntroReactor) { }
-    
-    private func bindAction(_ reactor: IntroReactor) {
+    private func bindView(_ reactor: IntroReactor) {
         self.rx.viewWillAppear
             .map { _ in Reactor.Action.willAppearIntro }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
     }
     
+    private func bindAction(_ reactor: IntroReactor) { }
+    
     private func bindState(_ reactor: IntroReactor) {
         reactor.state.map { $0.step }
-            .filterN
-            .distinctUntilChanged()
+            .compactMap { $0 }
             .subscribe(onNext: { [weak self] step in
                 self?.steps.accept(step)
             })

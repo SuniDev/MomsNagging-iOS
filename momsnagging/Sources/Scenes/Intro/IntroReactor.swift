@@ -55,7 +55,7 @@ extension IntroReactor {
                     return Observable.just(Mutation.setAppUpdateStatus(.error))
                 }
         case .tappedForceUpdate:
-            return Observable.just(Mutation.setStep(.moveAppStore))
+            return Observable.just(Mutation.setStep(.moveToAppStore))
         case .tappedLaterUpdate:
             return Observable.just(Mutation.setStep(AppStep.introIsComplete))
         default: return .empty()

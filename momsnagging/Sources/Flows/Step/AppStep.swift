@@ -10,8 +10,7 @@ import Foundation
 import RxFlow
 
 enum AppStep: Step {
-    case startApp
     case introIsRequired
     case introIsComplete
-    case moveAppStore
+    case moveToAppStore
 }
