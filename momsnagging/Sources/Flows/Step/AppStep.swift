@@ -13,7 +13,7 @@ enum AppStep: Step {
     // Global
     case appStore
     case showPopup(
-        type: BasePopupView.PopupType,
+        type: AppPopup.PopupType,
         title: String,
         message: String,
         cancelTitle: String?,

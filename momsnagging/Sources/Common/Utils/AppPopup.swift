@@ -1,5 +1,5 @@
 //
-//  BasePopupView.swift
+//  AppPopup.swift
 //  momsnagging
 //
 //  Created by suni on 8/31/24.
@@ -11,7 +11,7 @@ import RxSwift
 import SnapKit
 import Then
 
-class BasePopupView: BaseViewController {
+class AppPopup: BaseViewController {
     private var disposeBag = DisposeBag()
     
     enum PopupType {

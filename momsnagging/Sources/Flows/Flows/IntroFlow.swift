@@ -57,7 +57,7 @@ final class IntroFlow: Flow {
     }
     
     private func showPopup(
-        type: BasePopupView.PopupType,
+        type: AppPopup.PopupType,
         title: String = "",
         message: String = "",
         cancelTitle: String? = nil,
@@ -65,7 +65,7 @@ final class IntroFlow: Flow {
         cancelHandler: (() -> Void)? = nil,
         doneHandler: (() -> Void)? = nil
     ) -> FlowContributors {
-        let popup = BasePopupView()
+        let popup = AppPopup()
         popup.setUI(
             popupType: type,
             title: title,
@@ -82,7 +82,7 @@ final class IntroFlow: Flow {
     
     private func hidePopup() -> FlowContributors {
         
-        if let popup = rootViewController.children.compactMap({ $0 as? BasePopupView }).first {
+        if let popup = rootViewController.children.compactMap({ $0 as? AppPopup }).first {
             popup.hideAnim()
         }
         

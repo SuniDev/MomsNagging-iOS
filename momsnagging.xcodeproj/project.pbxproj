@@ -25,6 +25,9 @@
 		EA70CFEC2C920EB200ABB5FE /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFEB2C920EB200ABB5FE /* OnboardingViewController.swift */; };
 		EA70CFEE2C920F0800ABB5FE /* OnboardingReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFED2C920F0800ABB5FE /* OnboardingReactor.swift */; };
 		EA70CFF02C920FBE00ABB5FE /* OnboardingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFEF2C920FBE00ABB5FE /* OnboardingFlow.swift */; };
+		EA70CFF22C9212AC00ABB5FE /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFF12C9212AC00ABB5FE /* BasePageViewController.swift */; };
+		EA70CFF62C92137600ABB5FE /* AppButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFF52C92137600ABB5FE /* AppButton.swift */; };
+		EA70CFF92C92152800ABB5FE /* RxPageViewControllerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFF82C92152800ABB5FE /* RxPageViewControllerDelegateProxy.swift */; };
 		EA820DF22C84C7EA00EBABCE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA820DF02C84C7EA00EBABCE /* Localizable.strings */; };
 		EA820DF42C84C80C00EBABCE /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = EA820DF32C84C80C00EBABCE /* swiftgen.yml */; };
 		EA820DF62C84C85800EBABCE /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA820DF52C84C85800EBABCE /* Strings+Generated.swift */; };
@@ -38,9 +41,7 @@
 		EA8539E52C82315100A22F5C /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E42C82315100A22F5C /* AppFlow.swift */; };
 		EA8539E72C8231E400A22F5C /* AppStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E62C8231E400A22F5C /* AppStep.swift */; };
 		EA8539E92C82329E00A22F5C /* IntroFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539E82C82329E00A22F5C /* IntroFlow.swift */; };
-		EA8539ED2C8239D200A22F5C /* Alertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539EC2C8239D200A22F5C /* Alertable.swift */; };
-		EA8539EF2C823B3500A22F5C /* BasePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539EE2C823B3500A22F5C /* BasePopupView.swift */; };
-		EA8539F12C823B4A00A22F5C /* Popupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539F02C823B4A00A22F5C /* Popupable.swift */; };
+		EA8539EF2C823B3500A22F5C /* AppPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539EE2C823B3500A22F5C /* AppPopup.swift */; };
 		EA8539F32C823BF800A22F5C /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539F22C823BF800A22F5C /* UIView+Extension.swift */; };
 		EA8539F52C82441600A22F5C /* AppUpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539F42C82441600A22F5C /* AppUpdateService.swift */; };
 		EA8539F82C82452D00A22F5C /* AppUpdateStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539F72C82452D00A22F5C /* AppUpdateStatus.swift */; };
@@ -72,6 +73,9 @@
 		EA70CFEB2C920EB200ABB5FE /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		EA70CFED2C920F0800ABB5FE /* OnboardingReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingReactor.swift; sourceTree = "<group>"; };
 		EA70CFEF2C920FBE00ABB5FE /* OnboardingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlow.swift; sourceTree = "<group>"; };
+		EA70CFF12C9212AC00ABB5FE /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
+		EA70CFF52C92137600ABB5FE /* AppButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButton.swift; sourceTree = "<group>"; };
+		EA70CFF82C92152800ABB5FE /* RxPageViewControllerDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxPageViewControllerDelegateProxy.swift; sourceTree = "<group>"; };
 		EA820DF12C84C7EA00EBABCE /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA820DF32C84C80C00EBABCE /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		EA820DF52C84C85800EBABCE /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
@@ -85,9 +89,7 @@
 		EA8539E42C82315100A22F5C /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		EA8539E62C8231E400A22F5C /* AppStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStep.swift; sourceTree = "<group>"; };
 		EA8539E82C82329E00A22F5C /* IntroFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFlow.swift; sourceTree = "<group>"; };
-		EA8539EC2C8239D200A22F5C /* Alertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alertable.swift; sourceTree = "<group>"; };
-		EA8539EE2C823B3500A22F5C /* BasePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePopupView.swift; sourceTree = "<group>"; };
-		EA8539F02C823B4A00A22F5C /* Popupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popupable.swift; sourceTree = "<group>"; };
+		EA8539EE2C823B3500A22F5C /* AppPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPopup.swift; sourceTree = "<group>"; };
 		EA8539F22C823BF800A22F5C /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		EA8539F42C82441600A22F5C /* AppUpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateService.swift; sourceTree = "<group>"; };
 		EA8539F72C82452D00A22F5C /* AppUpdateStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateStatus.swift; sourceTree = "<group>"; };
@@ -210,6 +212,14 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		EA70CFF72C92151C00ABB5FE /* Rx */ = {
+			isa = PBXGroup;
+			children = (
+				EA70CFF82C92152800ABB5FE /* RxPageViewControllerDelegateProxy.swift */,
+			);
+			path = Rx;
+			sourceTree = "<group>";
+		};
 		EA8539BB2C821D0D00A22F5C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +259,7 @@
 				EA8539F92C8245BA00A22F5C /* Constants.swift */,
 				EA8539EB2C8239C500A22F5C /* Utils */,
 				EA8539D72C822BD200A22F5C /* Extensions */,
+				EA70CFF72C92151C00ABB5FE /* Rx */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -314,7 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				EA8539D12C822ACE00A22F5C /* BaseViewController.swift */,
-				EA8539EE2C823B3500A22F5C /* BasePopupView.swift */,
+				EA70CFF12C9212AC00ABB5FE /* BasePageViewController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -331,8 +342,8 @@
 		EA8539EB2C8239C500A22F5C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				EA8539EC2C8239D200A22F5C /* Alertable.swift */,
-				EA8539F02C823B4A00A22F5C /* Popupable.swift */,
+				EA8539EE2C823B3500A22F5C /* AppPopup.swift */,
+				EA70CFF52C92137600ABB5FE /* AppButton.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -534,17 +545,18 @@
 				EA70CFEE2C920F0800ABB5FE /* OnboardingReactor.swift in Sources */,
 				EA70CFE62C9202FE00ABB5FE /* UserDefaultsService.swift in Sources */,
 				EA70CFE82C92045F00ABB5FE /* UserDefaultsKey.swift in Sources */,
+				EA70CFF22C9212AC00ABB5FE /* BasePageViewController.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				EA8539F52C82441600A22F5C /* AppUpdateService.swift in Sources */,
+				EA70CFF62C92137600ABB5FE /* AppButton.swift in Sources */,
 				EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */,
 				EA8539CF2C822A7800A22F5C /* IntroViewController.swift in Sources */,
-				EA8539F12C823B4A00A22F5C /* Popupable.swift in Sources */,
 				EA820DF62C84C85800EBABCE /* Strings+Generated.swift in Sources */,
 				EA8539E72C8231E400A22F5C /* AppStep.swift in Sources */,
+				EA70CFF92C92152800ABB5FE /* RxPageViewControllerDelegateProxy.swift in Sources */,
 				EA8539FA2C8245BA00A22F5C /* Constants.swift in Sources */,
-				EA8539EF2C823B3500A22F5C /* BasePopupView.swift in Sources */,
+				EA8539EF2C823B3500A22F5C /* AppPopup.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
-				EA8539ED2C8239D200A22F5C /* Alertable.swift in Sources */,
 				EA8539F32C823BF800A22F5C /* UIView+Extension.swift in Sources */,
 				EA8539E32C82301800A22F5C /* BaseService.swift in Sources */,
 				EA70CFEC2C920EB200ABB5FE /* OnboardingViewController.swift in Sources */,
