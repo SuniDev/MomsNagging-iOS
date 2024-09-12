@@ -48,6 +48,8 @@
 		EA8539F82C82452D00A22F5C /* AppUpdateStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539F72C82452D00A22F5C /* AppUpdateStatus.swift */; };
 		EA8539FA2C8245BA00A22F5C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8539F92C8245BA00A22F5C /* Constants.swift */; };
 		EA8539FC2C82472100A22F5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA8539FB2C82472100A22F5C /* GoogleService-Info.plist */; };
+		EA882E1D2C92C79F00690707 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA882E1C2C92C79F00690707 /* Utils.swift */; };
+		EA882E1F2C92CC0700690707 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA882E1E2C92CC0700690707 /* Onboarding.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +99,8 @@
 		EA8539F72C82452D00A22F5C /* AppUpdateStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateStatus.swift; sourceTree = "<group>"; };
 		EA8539F92C8245BA00A22F5C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EA8539FB2C82472100A22F5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EA882E1C2C92C79F00690707 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		EA882E1E2C92CC0700690707 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -355,6 +359,7 @@
 			children = (
 				EA8539EE2C823B3500A22F5C /* AppPopup.swift */,
 				EA70CFF52C92137600ABB5FE /* AppButton.swift */,
+				EA882E1C2C92C79F00690707 /* Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -362,6 +367,7 @@
 		EA8539F62C82451000A22F5C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EA882E1E2C92CC0700690707 /* Onboarding.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -556,9 +562,11 @@
 				EA70CFEE2C920F0800ABB5FE /* OnboardingReactor.swift in Sources */,
 				EA70CFE62C9202FE00ABB5FE /* UserDefaultsService.swift in Sources */,
 				EA70CFE82C92045F00ABB5FE /* UserDefaultsKey.swift in Sources */,
+				EA882E1D2C92C79F00690707 /* Utils.swift in Sources */,
 				EA70CFF22C9212AC00ABB5FE /* BasePageViewController.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
 				EA8539F52C82441600A22F5C /* AppUpdateService.swift in Sources */,
+				EA882E1F2C92CC0700690707 /* Onboarding.swift in Sources */,
 				EA70CFF62C92137600ABB5FE /* AppButton.swift in Sources */,
 				EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */,
 				EA8539CF2C822A7800A22F5C /* IntroViewController.swift in Sources */,

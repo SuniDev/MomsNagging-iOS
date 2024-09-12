@@ -16,6 +16,7 @@ class OnboardingViewController: BasePageViewController {
     
     // MARK: - Properties & Variable
     var disposeBag = DisposeBag()
+    var pages: [OnboardingItemViewController] = []
     
     // MARK: - UI Properties
     lazy var lblTitle = UILabel().then({
@@ -30,9 +31,9 @@ class OnboardingViewController: BasePageViewController {
     })
     
     lazy var imgvEmoji = UIImageView().then({
-        $0.image = Asset.Assets.emojiDefault.image
+        $0.image = Asset.Assets.onboardingEmoji1.image
     })
-
+    
     lazy var btnLogin = AppButton().then({
         $0.normalBackgroundColor = Asset.Color.monoWhite.color
         $0.highlightedBackgroundColor = Asset.Color.monoLight020.color
@@ -58,13 +59,16 @@ class OnboardingViewController: BasePageViewController {
         $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
     })
     
-    lazy var imgvPagecontrol = UIImageView()
+    lazy var imgvPagecontrol = UIImageView().then({
+        $0.image = Asset.Assets.pagecontrol1.image
+    })
     
     // MARK: - Init
     init(with reactor: OnboardingReactor) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [:])
         
         self.reactor = reactor
+        self.initializePages()
     }
     
     @available(*, unavailable)
@@ -74,7 +78,7 @@ class OnboardingViewController: BasePageViewController {
     
     // MARK: - init UI & Layout
     override func initUI() {
-//        self.delegate = self
+        self.delegate = self
         self.dataSource = self
         
         view.backgroundColor = Asset.Color.monoWhite.color
@@ -85,9 +89,9 @@ class OnboardingViewController: BasePageViewController {
             .underlineStyle: NSUnderlineStyle.single.rawValue
         ]
         let loginAttributedString = NSMutableAttributedString(
-                string: "로그인",
-                attributes: loginAttributes
-         )
+            string: "로그인",
+            attributes: loginAttributes
+        )
         
         btnLogin.setAttributedTitle(loginAttributedString, for: .normal)
     }
@@ -96,38 +100,33 @@ class OnboardingViewController: BasePageViewController {
         // 서브뷰 추가
         [lblTitle, viewMessage, imgvPagecontrol, btnLogin, btnNext, btnStart].forEach { view.addSubview($0) }
         viewMessage.addSubview(imgvEmoji)
-
+        
         let safeArea = view.safeAreaLayoutGuide
         
-        // lblTitle 레이아웃
         lblTitle.snp.makeConstraints {
             $0.height.equalTo(30)
             $0.top.equalTo(safeArea.snp.top).offset(15)
             $0.centerX.equalTo(safeArea.snp.centerX)
         }
-
-        // viewMessage 레이아웃
+        
         viewMessage.snp.makeConstraints {
             $0.height.equalTo(100)
             $0.top.equalTo(lblTitle.snp.bottom).offset(40)
             $0.leading.trailing.equalTo(safeArea).inset(30)
         }
         
-        // imgvEmoji 레이아웃
         imgvEmoji.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.bottom.greaterThanOrEqualToSuperview()
         }
         
-        // imgvPagecontrol 레이아웃
         imgvPagecontrol.snp.makeConstraints {
             $0.height.equalTo(8)
             $0.centerX.equalTo(safeArea.snp.centerX)
             $0.bottom.equalTo(btnStart.snp.top).offset(-32)
         }
         
-        // btnLogin 레이아웃
         btnLogin.snp.makeConstraints {
             $0.width.equalTo(100)
             $0.height.equalTo(56)
@@ -135,7 +134,6 @@ class OnboardingViewController: BasePageViewController {
             $0.leading.equalTo(safeArea.snp.leading).offset(20)
         }
         
-        // btnNext 레이아웃
         btnNext.snp.makeConstraints {
             $0.width.equalTo(100)
             $0.height.equalTo(56)
@@ -143,14 +141,28 @@ class OnboardingViewController: BasePageViewController {
             $0.centerY.equalTo(btnLogin.snp.centerY)
         }
         
-        // btnStart 레이아웃
         btnStart.snp.makeConstraints {
             $0.height.equalTo(56)
             $0.leading.trailing.equalTo(safeArea).inset(20)
             $0.bottom.equalTo(safeArea.snp.bottom).offset(-32)
         }
     }
-
+    
+    // MARK: - Pages 초기화
+    private func initializePages() {
+        guard let reactor = reactor else { return }
+        
+        // OnboardingItemViewController 생성 후 각 페이지에 할당
+        for i in 0..<reactor.currentState.onboardings.count {
+            let itemVC = OnboardingItemViewController(with: reactor.currentState.onboardings[i])
+            pages.append(itemVC)
+        }
+        
+        // 첫 페이지로 설정
+        if let firstPage = pages.first {
+            setViewControllers([firstPage], direction: .forward, animated: true, completion: nil)
+        }
+    }
 }
 
 extension OnboardingViewController: View {
@@ -161,22 +173,25 @@ extension OnboardingViewController: View {
     }
     
     private func bindView(_ reactor: OnboardingReactor) {
-        // willTransitionTo 이벤트 구독
-        self.rx.willTransitionTo
-            .subscribe(onNext: { viewControllers in
-                print("Will transition to view controllers: \(viewControllers)")
-            })
-            .disposed(by: disposeBag)
-        
-        // didFinishAnimating 이벤트 구독
-        self.rx.didFinishAnimating
-            .subscribe(onNext: { (finished, previousViewControllers, completed) in
-                print("Finished animating: \(finished), completed: \(completed)")
+    }
+    
+    private func bindAction(_ reactor: OnboardingReactor) {
+        btnNext.rx.tap
+            .withLatestFrom(reactor.state.map { $0.currentPageIndex }) // 현재 페이지 인덱스를 가져옴
+            .subscribe(onNext: { [weak self] currentPageIndex in
+                guard let self = self else { return }
+
+                let nextPageIndex = currentPageIndex + 1
+                if nextPageIndex < reactor.currentState.onboardings.count {
+                    // 다음 페이지가 있을 경우 상태 업데이트 및 페이지 전환
+                    reactor.action.onNext(.setPage(nextPageIndex))
+
+                    let nextViewController = self.pages[nextPageIndex]
+                    self.setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
+                }
             })
             .disposed(by: disposeBag)
     }
-    
-    private func bindAction(_ reactor: OnboardingReactor) { }
     
     private func bindState(_ reactor: OnboardingReactor) {
         reactor.state.map { $0.step }
@@ -185,26 +200,57 @@ extension OnboardingViewController: View {
                 self?.steps.accept(step)
             })
             .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.currentPageIndex }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] pageIndex in
+                guard let self = self else { return }
+                
+                // 현재 페이지에 해당하는 뷰 컨트롤러로 페이지 전환
+                if pageIndex >= 0 && pageIndex < self.pages.count {
+                    
+                    // 페이지에 맞는 이미지 및 페이지 컨트롤 업데이트
+                    self.imgvEmoji.image = reactor.currentState.onboardings[pageIndex].emoji
+                    self.imgvPagecontrol.image = reactor.currentState.onboardings[pageIndex].pageControl
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
 }
 
-extension OnboardingViewController: UIPageViewControllerDataSource {    
+extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        guard let reactor = reactor else { return nil }
+        
+        // 현재 페이지가 무엇인지 정확히 계산
+        guard let itemVC = viewController as? OnboardingItemViewController, let currentIndex = pages.firstIndex(of: itemVC) else { return nil }
+        let previousIndex = currentIndex - 1
+        
+        if previousIndex >= 0 {
+            return pages[previousIndex]
+        }
         return nil
-//        guard let index = pages.firstIndex(of: vc) else { return nil }
-//        
-//        let previousIndex = index - 1
-//        return previousIndex >= 0 ? pages[previousIndex] : nil
     }
-    
+
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let vc = viewController as? OnboardingItemViewController else { return nil }
+        guard let reactor = reactor else { return nil }
+        
+        // 현재 페이지가 무엇인지 정확히 계산
+        guard let itemVC = viewController as? OnboardingItemViewController, let currentIndex = pages.firstIndex(of: itemVC) else { return nil }
+        let nextIndex = currentIndex + 1
+        
+        if nextIndex < reactor.currentState.onboardings.count {
+            return pages[nextIndex]
+        }
         return nil
-//        guard let index = pages.firstIndex(of: vc) else { return nil }
-//        
-//        let nextIndex = index + 1
-//        return nextIndex < pages.count ? pages[nextIndex] : nil
+    }
+
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed, let currentViewController = pageViewController.viewControllers?.first as? OnboardingItemViewController,
+           let currentIndex = pages.firstIndex(of: currentViewController) {
+            // 페이지 전환이 완료되었을 때 상태 업데이트
+            reactor?.action.onNext(.setPage(currentIndex))
+        }
     }
 }
