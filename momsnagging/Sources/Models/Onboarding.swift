@@ -23,11 +23,11 @@ struct Onboarding {
     
     var title: String {
         switch currentPage {
-        case 0: return "1. 습관/할일 추가"
-        case 1: return "2. 추천 습관"
-        case 2: return "3. 엄마가 잔소리 해주는 PUSH 알림"
-        case 3: return "4. 3가지 타입의 잔소리 성격 설정"
-        case 4: return "5. 기타 기능"
+        case 0: return L10n.onboardingTitle1
+        case 1: return L10n.onboardingTitle2
+        case 2: return L10n.onboardingTitle3
+        case 3: return L10n.onboardingTitle4
+        case 4: return L10n.onboardingTitle5
         default: return ""
         }
     }

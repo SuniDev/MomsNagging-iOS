@@ -19,9 +19,13 @@
 "update_title" = "새로운 버전이 업데이트 되었단다!";
 "update_message" = "우리 아들, 딸들의 의견을 반영해서\n사용성을 개선했는데\n지금 바로 업데이트 해보겠니~?";
 
-/* 인트로 & 로그인 */
-"login_error_title" = "로그인 실패";
-"login_error_message" = "로그인에 실패 했습니다.\n다시 시도해주세요.";
+/* 온보딩 */
+"onboarding_title1" = "1. 습관/할일 추가";
+"onboarding_title2" = "2. 추천 습관";
+"onboarding_title3" = "3. 엄마가 잔소리 해주는 PUSH 알림";
+"onboarding_title4" = "4. 3가지 타입의 잔소리 성격 설정";
+"onboarding_title5" = "5. 기타 기능";
+
 
 /* 호칭 설정 */
 "nickname_success" = "굿 네이밍^^\n참고로 호칭 변경은 '마이'에서 가능하단다.";

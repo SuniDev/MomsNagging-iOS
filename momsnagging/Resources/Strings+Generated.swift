@@ -30,11 +30,6 @@ internal enum L10n {
   internal static let habitBack = L10n.tr("Localizable", "habit_back", fallback: "지금 나가면 습관이 저장되지 않는단다.\n그래도 나가겠니?")
   /// 삭제
   internal static let habitDelete = L10n.tr("Localizable", "habit_delete", fallback: "습관을 삭제하면 되돌릴 수 없단다.\n그래도 삭제하겠니?")
-  /// 로그인에 실패 했습니다.
-  /// 다시 시도해주세요.
-  internal static let loginErrorMessage = L10n.tr("Localizable", "login_error_message", fallback: "로그인에 실패 했습니다.\n다시 시도해주세요.")
-  /// 인트로 & 로그인
-  internal static let loginErrorTitle = L10n.tr("Localizable", "login_error_title", fallback: "로그인 실패")
   /// 로그아웃 할꺼니?
   internal static let logout = L10n.tr("Localizable", "logout", fallback: "로그아웃 할꺼니?")
   /// 네트워크
@@ -51,6 +46,16 @@ internal enum L10n {
   internal static let nicknameSuccess = L10n.tr("Localizable", "nickname_success", fallback: "굿 네이밍^^\n참고로 호칭 변경은 '마이'에서 가능하단다.")
   /// 아니요
   internal static let no = L10n.tr("Localizable", "no", fallback: "아니요")
+  /// 온보딩
+  internal static let onboardingTitle1 = L10n.tr("Localizable", "onboarding_title1", fallback: "1. 습관/할일 추가")
+  /// 2. 추천 습관
+  internal static let onboardingTitle2 = L10n.tr("Localizable", "onboarding_title2", fallback: "2. 추천 습관")
+  /// 3. 엄마가 잔소리 해주는 PUSH 알림
+  internal static let onboardingTitle3 = L10n.tr("Localizable", "onboarding_title3", fallback: "3. 엄마가 잔소리 해주는 PUSH 알림")
+  /// 4. 3가지 타입의 잔소리 성격 설정
+  internal static let onboardingTitle4 = L10n.tr("Localizable", "onboarding_title4", fallback: "4. 3가지 타입의 잔소리 성격 설정")
+  /// 5. 기타 기능
+  internal static let onboardingTitle5 = L10n.tr("Localizable", "onboarding_title5", fallback: "5. 기타 기능")
   /// 마이
   internal static let statusmsgDefault = L10n.tr("Localizable", "statusmsg_default", fallback: "오늘 하루도 파이팅 🔥")
   /// 이렇게 할게요!

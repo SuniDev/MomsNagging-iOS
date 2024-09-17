@@ -20,6 +20,7 @@ class OnboardingViewController: BasePageViewController {
     
     // MARK: - UI Properties
     lazy var lblTitle = UILabel().then({
+        $0.text = L10n.onboardingTitle1
         $0.textColor = Asset.Color.monoDark010.color
         $0.font = FontFamily.Pretendard.semiBold.font(size: 20)
         $0.numberOfLines = 1
@@ -210,8 +211,10 @@ extension OnboardingViewController: View {
                 if pageIndex >= 0 && pageIndex < self.pages.count {
                     
                     // 페이지에 맞는 이미지 및 페이지 컨트롤 업데이트
-                    self.imgvEmoji.image = reactor.currentState.onboardings[pageIndex].emoji
-                    self.imgvPagecontrol.image = reactor.currentState.onboardings[pageIndex].pageControl
+                    let onboarding: Onboarding = reactor.currentState.onboardings[pageIndex]
+                    self.lblTitle.text = onboarding.title
+                    self.imgvEmoji.image = onboarding.emoji
+                    self.imgvPagecontrol.image = onboarding.pageControl
                 }
             })
             .disposed(by: disposeBag)
@@ -221,7 +224,6 @@ extension OnboardingViewController: View {
 
 extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let reactor = reactor else { return nil }
         
         // 현재 페이지가 무엇인지 정확히 계산
         guard let itemVC = viewController as? OnboardingItemViewController, let currentIndex = pages.firstIndex(of: itemVC) else { return nil }
