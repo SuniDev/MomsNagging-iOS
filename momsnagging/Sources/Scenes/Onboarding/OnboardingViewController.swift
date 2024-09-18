@@ -35,12 +35,6 @@ class OnboardingViewController: BasePageViewController {
         $0.image = Asset.Assets.onboardingEmoji1.image
     })
     
-    lazy var btnLogin = AppButton().then({
-        $0.normalBackgroundColor = Asset.Color.monoWhite.color
-        $0.highlightedBackgroundColor = Asset.Color.monoLight020.color
-        $0.layer.cornerRadius = 26.0
-    })
-    
     lazy var btnNext = AppButton().then({
         $0.normalBackgroundColor = Asset.Color.priMain.color
         $0.highlightedBackgroundColor = Asset.Color.priDark010.color
@@ -83,23 +77,11 @@ class OnboardingViewController: BasePageViewController {
         self.dataSource = self
         
         view.backgroundColor = Asset.Color.monoWhite.color
-        
-        let loginAttributes: [NSAttributedString.Key: Any] = [
-            .font: FontFamily.Pretendard.semiBold.font(size: 20),
-            .foregroundColor: Asset.Color.monoDark020.color,
-            .underlineStyle: NSUnderlineStyle.single.rawValue
-        ]
-        let loginAttributedString = NSMutableAttributedString(
-            string: "로그인",
-            attributes: loginAttributes
-        )
-        
-        btnLogin.setAttributedTitle(loginAttributedString, for: .normal)
     }
     
     override func initLayout() {
         // 서브뷰 추가
-        [lblTitle, viewMessage, imgvPagecontrol, btnLogin, btnNext, btnStart].forEach { view.addSubview($0) }
+        [lblTitle, viewMessage, imgvPagecontrol, btnNext, btnStart].forEach { view.addSubview($0) }
         viewMessage.addSubview(imgvEmoji)
         
         let safeArea = view.safeAreaLayoutGuide
@@ -127,19 +109,12 @@ class OnboardingViewController: BasePageViewController {
             $0.centerX.equalTo(safeArea.snp.centerX)
             $0.bottom.equalTo(btnStart.snp.top).offset(-32)
         }
-        
-        btnLogin.snp.makeConstraints {
-            $0.width.equalTo(100)
-            $0.height.equalTo(56)
-            $0.bottom.equalTo(safeArea.snp.bottom).offset(-32)
-            $0.leading.equalTo(safeArea.snp.leading).offset(20)
-        }
-        
+                
         btnNext.snp.makeConstraints {
             $0.width.equalTo(100)
             $0.height.equalTo(56)
             $0.trailing.equalTo(safeArea.snp.trailing).offset(-20)
-            $0.centerY.equalTo(btnLogin.snp.centerY)
+            $0.bottom.equalTo(safeArea.snp.bottom).offset(-32)
         }
         
         btnStart.snp.makeConstraints {
@@ -166,6 +141,7 @@ class OnboardingViewController: BasePageViewController {
     }
 }
 
+// MARK: - Bind
 extension OnboardingViewController: View {
     func bind(reactor: OnboardingReactor) {
         bindView(reactor)
@@ -215,13 +191,32 @@ extension OnboardingViewController: View {
                     self.lblTitle.text = onboarding.title
                     self.imgvEmoji.image = onboarding.emoji
                     self.imgvPagecontrol.image = onboarding.pageControl
+                    
+                    // 마지막 페이지일 경우, Start Button 노출
+                    let isLastPage = pageIndex == self.pages.count - 1
+                    self.updateButtonUI(isLastPage: isLastPage)
                 }
             })
             .disposed(by: disposeBag)
     }
-    
 }
 
+// MARK: - UI Logic
+extension OnboardingViewController {
+    private func updateButtonUI(isLastPage: Bool) {
+        if isLastPage && btnStart.isHidden {
+            btnStart.fadeIn(0.1, completion: {
+                self.btnNext.fadeOut(0.1)
+            })
+        } else if !isLastPage && btnNext.isHidden {
+            btnNext.fadeIn(0.1, completion: {
+                self.btnStart.fadeOut(0.1)
+            })
+        }
+    }
+}
+
+// MARK: - UIPageViewControllerDataSource, UIPageViewControllerDelegate
 extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
