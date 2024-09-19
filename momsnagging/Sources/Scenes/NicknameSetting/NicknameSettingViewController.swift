@@ -20,7 +20,7 @@ class NicknameSettingViewController: BaseViewController {
     // MARK: - UI Properties
     
     // MARK: - Init
-    init(with reactor: IntroReactor) {
+    init(with reactor: NicknameSettingReactor) {
         super.init(nibName: nil, bundle: nil)
         
         self.reactor = reactor
@@ -43,4 +43,30 @@ class NicknameSettingViewController: BaseViewController {
     }
     */
 
+}
+
+extension NicknameSettingViewController: View {
+    func bind(reactor: NicknameSettingReactor) {
+        bindView(reactor)
+        bindAction(reactor)
+        bindState(reactor)
+    }
+    
+    private func bindView(_ reactor: NicknameSettingReactor) {
+        self.rx.viewWillAppear
+            .map { _ in Reactor.Action.willAppearNicknameSetting }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction(_ reactor: NicknameSettingReactor) { }
+    
+    private func bindState(_ reactor: NicknameSettingReactor) {
+        reactor.state.map { $0.step }
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] step in
+                self?.steps.accept(step)
+            })
+            .disposed(by: disposeBag)
+    }
 }
