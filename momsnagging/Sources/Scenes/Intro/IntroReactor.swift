@@ -70,7 +70,7 @@ extension IntroReactor {
         case .laterUpdateButtonDidTap:
             return provider.userDefaultsService.value(forKey: .isFirstLaunch)
                 .asObservable()
-                .flatMap{ [weak self] isFirstLaunch -> Observable<Mutation> in
+                .flatMap { [weak self] isFirstLaunch -> Observable<Mutation> in
                     guard let self else { return .empty() }
                     
                     if let isFirstLaunch, isFirstLaunch {
@@ -78,6 +78,7 @@ extension IntroReactor {
                         return .just(.moveToOnboarding)
                     } else {
                         // 앱 첫 실행
+                        // TODO: - Home 이동 추가
                         return self.provider.userDefaultsService.set(value: true, forKey: .isFirstLaunch)
                             .andThen(Observable.just(.moveToOnboarding)) // Completable을 Observable로 연결
                     }

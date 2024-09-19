@@ -20,6 +20,8 @@
 		8F06EC1027D892DB00A17FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F06EC0F27D892DB00A17FF2 /* Assets.xcassets */; };
 		8F8DAE9A27D8948800F2E78F /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F8DAE9927D8948800F2E78F /* Color.xcassets */; };
 		A0568DD92876C3F300AE9A9C /* RemoteConfigDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0568DD82876C3F300AE9A9C /* RemoteConfigDefaults.plist */; };
+		EA610F432CA2C25F002ADF00 /* NicknameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA610F422CA2C25F002ADF00 /* NicknameSettingViewController.swift */; };
+		EA610F452CA2C3DA002ADF00 /* NicknameSettingReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA610F442CA2C3DA002ADF00 /* NicknameSettingReactor.swift */; };
 		EA70CFE62C9202FE00ABB5FE /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFE52C9202FE00ABB5FE /* UserDefaultsService.swift */; };
 		EA70CFE82C92045F00ABB5FE /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFE72C92045F00ABB5FE /* UserDefaultsKey.swift */; };
 		EA70CFEC2C920EB200ABB5FE /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA70CFEB2C920EB200ABB5FE /* OnboardingViewController.swift */; };
@@ -71,6 +73,8 @@
 		A040E620281D325C00CC0ABE /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NicknameSettingViewModel.swift; path = momsnagging/Modules/Login/NicknameSetting/NicknameSettingViewModel.swift; sourceTree = SOURCE_ROOT; };
 		A0568DD82876C3F300AE9A9C /* RemoteConfigDefaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RemoteConfigDefaults.plist; sourceTree = "<group>"; };
 		A06BB31627F058FA005727AD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		EA610F422CA2C25F002ADF00 /* NicknameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewController.swift; sourceTree = "<group>"; };
+		EA610F442CA2C3DA002ADF00 /* NicknameSettingReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingReactor.swift; sourceTree = "<group>"; };
 		EA70CFE52C9202FE00ABB5FE /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		EA70CFE72C92045F00ABB5FE /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
 		EA70CFEB2C920EB200ABB5FE /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +204,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EA610F402CA2C1F7002ADF00 /* NicknameSetting */ = {
+			isa = PBXGroup;
+			children = (
+				EA610F422CA2C25F002ADF00 /* NicknameSettingViewController.swift */,
+				EA610F442CA2C3DA002ADF00 /* NicknameSettingReactor.swift */,
+			);
+			path = NicknameSetting;
+			sourceTree = "<group>";
+		};
 		EA70CFE92C9205F700ABB5FE /* Types */ = {
 			isa = PBXGroup;
 			children = (
@@ -264,6 +277,7 @@
 				EA8539D62C822BB300A22F5C /* Base */,
 				EA8539CB2C82295500A22F5C /* Intro */,
 				EA70CFEA2C920E9D00ABB5FE /* Onboarding */,
+				EA610F402CA2C1F7002ADF00 /* NicknameSetting */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -565,6 +579,7 @@
 				EA882E1D2C92C79F00690707 /* Utils.swift in Sources */,
 				EA70CFF22C9212AC00ABB5FE /* BasePageViewController.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
+				EA610F452CA2C3DA002ADF00 /* NicknameSettingReactor.swift in Sources */,
 				EA8539F52C82441600A22F5C /* AppUpdateService.swift in Sources */,
 				EA882E1F2C92CC0700690707 /* Onboarding.swift in Sources */,
 				EA70CFF62C92137600ABB5FE /* AppButton.swift in Sources */,
@@ -576,6 +591,7 @@
 				EA8539FA2C8245BA00A22F5C /* Constants.swift in Sources */,
 				EA8539EF2C823B3500A22F5C /* AppPopup.swift in Sources */,
 				8F06EC0927D892D900A17FF2 /* SceneDelegate.swift in Sources */,
+				EA610F432CA2C25F002ADF00 /* NicknameSettingViewController.swift in Sources */,
 				EA8539F32C823BF800A22F5C /* UIView+Extension.swift in Sources */,
 				EA8539E32C82301800A22F5C /* BaseService.swift in Sources */,
 				EA70CFFC2C92195D00ABB5FE /* OnboardingItemViewController.swift in Sources */,
