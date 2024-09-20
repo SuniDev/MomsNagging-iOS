@@ -52,6 +52,9 @@
 		EA8539FC2C82472100A22F5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA8539FB2C82472100A22F5C /* GoogleService-Info.plist */; };
 		EA882E1D2C92C79F00690707 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA882E1C2C92C79F00690707 /* Utils.swift */; };
 		EA882E1F2C92CC0700690707 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA882E1E2C92CC0700690707 /* Onboarding.swift */; };
+		EA8E99B72CA90D3C007F677F /* AppTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E99B62CA90D3C007F677F /* AppTextField.swift */; };
+		EA8E99B92CA90D62007F677F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E99B82CA90D62007F677F /* UITextField+Extension.swift */; };
+		EA8E99BB2CA90D9A007F677F /* AppHintLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E99BA2CA90D9A007F677F /* AppHintLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +108,9 @@
 		EA8539FB2C82472100A22F5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA882E1C2C92C79F00690707 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		EA882E1E2C92CC0700690707 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		EA8E99B62CA90D3C007F677F /* AppTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTextField.swift; sourceTree = "<group>"; };
+		EA8E99B82CA90D62007F677F /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		EA8E99BA2CA90D9A007F677F /* AppHintLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHintLabel.swift; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -364,6 +370,7 @@
 			children = (
 				EA8539D82C822BD800A22F5C /* OSLog+Extension.swift */,
 				EA8539F22C823BF800A22F5C /* UIView+Extension.swift */,
+				EA8E99B82CA90D62007F677F /* UITextField+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -371,9 +378,11 @@
 		EA8539EB2C8239C500A22F5C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				EA882E1C2C92C79F00690707 /* Utils.swift */,
 				EA8539EE2C823B3500A22F5C /* AppPopup.swift */,
 				EA70CFF52C92137600ABB5FE /* AppButton.swift */,
-				EA882E1C2C92C79F00690707 /* Utils.swift */,
+				EA8E99B62CA90D3C007F677F /* AppTextField.swift */,
+				EA8E99BA2CA90D9A007F677F /* AppHintLabel.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -569,6 +578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA70CFF02C920FBE00ABB5FE /* OnboardingFlow.swift in Sources */,
+				EA8E99BB2CA90D9A007F677F /* AppHintLabel.swift in Sources */,
 				EA8539F82C82452D00A22F5C /* AppUpdateStatus.swift in Sources */,
 				86E39209280F93E2007D3C04 /* XCAssets+Generated.swift in Sources */,
 				EA8539DB2C822C7F00A22F5C /* IntroReactor.swift in Sources */,
@@ -579,6 +589,7 @@
 				EA882E1D2C92C79F00690707 /* Utils.swift in Sources */,
 				EA70CFF22C9212AC00ABB5FE /* BasePageViewController.swift in Sources */,
 				8F06EC0727D892D900A17FF2 /* AppDelegate.swift in Sources */,
+				EA8E99B72CA90D3C007F677F /* AppTextField.swift in Sources */,
 				EA610F452CA2C3DA002ADF00 /* NicknameSettingReactor.swift in Sources */,
 				EA8539F52C82441600A22F5C /* AppUpdateService.swift in Sources */,
 				EA882E1F2C92CC0700690707 /* Onboarding.swift in Sources */,
@@ -600,6 +611,7 @@
 				EA8539E52C82315100A22F5C /* AppFlow.swift in Sources */,
 				86E39212280FC9C6007D3C04 /* Fonts+Generated.swift in Sources */,
 				EA8539D22C822ACE00A22F5C /* BaseViewController.swift in Sources */,
+				EA8E99B92CA90D62007F677F /* UITextField+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
