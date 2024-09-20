@@ -26,9 +26,11 @@
 "onboarding_title4" = "4. 3가지 타입의 잔소리 성격 설정";
 "onboarding_title5" = "5. 기타 기능";
 
-
 /* 호칭 설정 */
 "nickname_success" = "굿 네이밍^^\n참고로 호칭 변경은 '마이'에서 가능하단다.";
+"nickname_done" = "네 엄마!";
+"nickname_comfirm" = "우리";
+"nickname_placeholder" = "띄어쓰기 포함 한/영/숫자 1-10글자";
 
 /* 뒤로가기 */
 "habit_back" = "지금 나가면 습관이 저장되지 않는단다.\n그래도 나가겠니?";
