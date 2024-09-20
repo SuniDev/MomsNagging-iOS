@@ -35,9 +35,9 @@ internal enum L10n {
   /// 네트워크
   internal static let networkErrorMessage = L10n.tr("Localizable", "network_error_message", fallback: "네트워크 연결이 실패했단다.\n다시 시도 해주겠니?")
   /// 우리
-  internal static let nicknameComfirm = L10n.tr("Localizable", "nickname_comfirm", fallback: "우리")
+  internal static let nicknameConfirm = L10n.tr("Localizable", "nickname_confirm", fallback: "우리")
   /// 네 엄마!
-  internal static let nicknameDone = L10n.tr("Localizable", "nickname_done", fallback: "네 엄마!")
+  internal static let nicknameDoneTitle = L10n.tr("Localizable", "nickname_done_title", fallback: "네 엄마!")
   /// 띄어쓰기 포함 한/영/숫자 1-10글자
   internal static let nicknamePlaceholder = L10n.tr("Localizable", "nickname_placeholder", fallback: "띄어쓰기 포함 한/영/숫자 1-10글자")
   /// 이렇게요!
