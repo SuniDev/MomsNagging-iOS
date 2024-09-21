@@ -55,6 +55,7 @@
 		EA8E99B72CA90D3C007F677F /* AppTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E99B62CA90D3C007F677F /* AppTextField.swift */; };
 		EA8E99B92CA90D62007F677F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E99B82CA90D62007F677F /* UITextField+Extension.swift */; };
 		EA8E99BB2CA90D9A007F677F /* AppHintLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E99BA2CA90D9A007F677F /* AppHintLabel.swift */; };
+		EA8E99BD2CA985F1007F677F /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E99BC2CA985F1007F677F /* AppView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +112,7 @@
 		EA8E99B62CA90D3C007F677F /* AppTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTextField.swift; sourceTree = "<group>"; };
 		EA8E99B82CA90D62007F677F /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		EA8E99BA2CA90D9A007F677F /* AppHintLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHintLabel.swift; sourceTree = "<group>"; };
+		EA8E99BC2CA985F1007F677F /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		EFA57B18FDC67682950AC19E /* Pods_momsnagging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_momsnagging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -379,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				EA882E1C2C92C79F00690707 /* Utils.swift */,
+				EA8E99BC2CA985F1007F677F /* AppView.swift */,
 				EA8539EE2C823B3500A22F5C /* AppPopup.swift */,
 				EA70CFF52C92137600ABB5FE /* AppButton.swift */,
 				EA8E99B62CA90D3C007F677F /* AppTextField.swift */,
@@ -597,6 +600,7 @@
 				EA8539DD2C822D9500A22F5C /* ServiceProvider.swift in Sources */,
 				EA8539CF2C822A7800A22F5C /* IntroViewController.swift in Sources */,
 				EA820DF62C84C85800EBABCE /* Strings+Generated.swift in Sources */,
+				EA8E99BD2CA985F1007F677F /* AppView.swift in Sources */,
 				EA8539E72C8231E400A22F5C /* AppStep.swift in Sources */,
 				EA70CFF92C92152800ABB5FE /* RxPageViewControllerDelegateProxy.swift in Sources */,
 				EA8539FA2C8245BA00A22F5C /* Constants.swift in Sources */,
