@@ -35,6 +35,8 @@ final class OnboardingFlow: Flow {
         switch step {
         case .onboardingIsRequired:
             return coordinateToOnboarding()
+        case .nicknameSettingIsRequired:
+            return coordinateToNicknameSetting()
         default:
             return .none
         }
@@ -43,6 +45,14 @@ final class OnboardingFlow: Flow {
     private func coordinateToOnboarding() -> FlowContributors {
         let reactor = OnboardingReactor(provider: provider)
         let viewController = OnboardingViewController(with: reactor)
+        
+        self.rootViewController.setViewControllers([viewController], animated: false)
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
+    }
+    
+    private func coordinateToNicknameSetting() -> FlowContributors {
+        let reactor = NicknameSettingReactor(provider: provider)
+        let viewController = NicknameSettingViewController(with: reactor)
         
         self.rootViewController.setViewControllers([viewController], animated: false)
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))

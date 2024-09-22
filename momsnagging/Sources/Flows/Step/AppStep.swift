@@ -25,14 +25,15 @@ enum AppStep: Step {
     
     // Intro
     case introIsRequired
+    case introIsCompleted
     
     // Onboarding
     case onboardingIsRequired
     case onboardingIsCompleted
     
-    // Login
-    case loginIsRequired
-    case loginIsCompleted
+    // Nickname Setting
+    case nicknameSettingIsRequired
+    case nicknameSettingIsCompleted
     
     // Main
     case mainTabBarIsRequired
