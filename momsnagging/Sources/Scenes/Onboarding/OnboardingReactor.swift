@@ -19,11 +19,13 @@ final class OnboardingReactor: Reactor {
         case nextPage
         case previousPage
         case setPage(Int)
+        case onboardingIsComplete
     }
     
     enum Mutation {
         case setError(String)
         case setPageIndex(Int)
+        case moveToNicknameSetting
     }
     
     struct State {
@@ -64,6 +66,9 @@ extension OnboardingReactor {
         case .setPage(let index):
             return Observable.just(.setPageIndex(index))
             
+        case .onboardingIsComplete:
+            return self.provider.userDefaultsService.set(value: true, forKey: .isCompleteOnboard)
+                .andThen(Observable.just(.moveToNicknameSetting))
         default: return .empty()
         }
     }
@@ -80,6 +85,9 @@ extension OnboardingReactor {
             
         case .setError(let error):
             newState.error = error
+            
+        case .moveToNicknameSetting:
+            newState.step = AppStep.nicknameSettingIsRequired
         }
         return newState
     }

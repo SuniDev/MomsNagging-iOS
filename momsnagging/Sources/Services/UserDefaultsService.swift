@@ -9,7 +9,8 @@ import Foundation
 import RxSwift
 
 extension UserDefaultsKey {
-    static var isFirstLaunch: UserDefaultsKey<Bool> { return "isFirstLaunch" }
+    static var isCompleteOnboard: UserDefaultsKey<Bool> { return "isCompleteOnboard" }
+    static var nickname: UserDefaultsKey<String> { return "nickname" }
 }
 
 protocol UserDefaultsServiceType {

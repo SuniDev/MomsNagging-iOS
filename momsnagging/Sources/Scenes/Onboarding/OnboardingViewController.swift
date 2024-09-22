@@ -149,8 +149,7 @@ extension OnboardingViewController: View {
         bindState(reactor)
     }
     
-    private func bindView(_ reactor: OnboardingReactor) {
-    }
+    private func bindView(_ reactor: OnboardingReactor) { }
     
     private func bindAction(_ reactor: OnboardingReactor) {
         btnNext.rx.tap
@@ -168,6 +167,11 @@ extension OnboardingViewController: View {
                 }
             })
             .disposed(by: disposeBag)
+        
+        btnStart.rx.tap
+            .map { _ in Reactor.Action.onboardingIsComplete }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
     }
     
     private func bindState(_ reactor: OnboardingReactor) {

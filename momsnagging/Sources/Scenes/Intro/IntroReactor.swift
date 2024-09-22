@@ -68,19 +68,18 @@ extension IntroReactor {
         case .updateButtonDidTap:
             return .just(Mutation.moveToAppStore)
         case .laterUpdateButtonDidTap:
-            return provider.userDefaultsService.value(forKey: .isFirstLaunch)
+            return provider.userDefaultsService.value(forKey: .isCompleteOnboard)
                 .asObservable()
-                .flatMap { [weak self] isFirstLaunch -> Observable<Mutation> in
+                .flatMap { [weak self] isCompleteOnboard -> Observable<Mutation> in
                     guard let self else { return .empty() }
                     
-                    if let isFirstLaunch, isFirstLaunch {
+                    if let isCompleteOnboard, isCompleteOnboard {
                         // 앱 재실행
+                        // TODO: - Home 이동 추가
                         return .just(.moveToOnboarding)
                     } else {
                         // 앱 첫 실행
-                        // TODO: - Home 이동 추가
-                        return self.provider.userDefaultsService.set(value: true, forKey: .isFirstLaunch)
-                            .andThen(Observable.just(.moveToOnboarding)) // Completable을 Observable로 연결
+                        return Observable.just(.moveToOnboarding)
                     }
                 }
         default: return .empty()
