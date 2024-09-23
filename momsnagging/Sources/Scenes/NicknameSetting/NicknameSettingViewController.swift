@@ -14,15 +14,123 @@ import ReactorKit
 
 class NicknameSettingViewController: BaseViewController {
 
+    // MARK: - Constants
+    struct Constants {
+        let customNameHeight: CGFloat = 100
+        let answerHeight: CGFloat = 190
+        
+        var answerToConfirmMargin: CGFloat = 16
+        var viewContentsHeight: CGFloat = 0
+    }
+    var constants = Constants()
+    
     // MARK: - Properties & Variable
     var disposeBag = DisposeBag()
     
     // MARK: - UI Properties
+    let viewContents = UIView()
+    lazy var scrollView = AppView.scrollView(viewContents: viewContents, bounces: false)
+    
+    lazy var btnBack = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var imgvBack = UIImageView().then({
+        $0.image = Asset.Icon.straightLeft.image
+    })
+    
+    lazy var viewBottom = UIView().then({
+        $0.backgroundColor = Asset.Color.monoWhite.color
+    })
+    
+    lazy var imgvQuestion = UIImageView().then({
+        $0.image = Asset.Assets.namesettingQuestion.image
+    })
+    
+    lazy var viewAnswer = UIView().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var imgvAnswer = UIImageView().then({
+        $0.image = Asset.Assets.namesettingAnswer.image
+    })
+    
+    lazy var imgvSon = UIImageView().then({
+        $0.image = Asset.Assets.namesettingSonDis.image
+    })
+    
+    lazy var btnSon = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var imgvDaughter = UIImageView().then({
+        $0.image = Asset.Assets.namesettingDaughterDis.image
+    })
+    
+    lazy var btnDaughter = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var viewCustomName = UIView().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var imgvCustom = UIImageView().then({
+        $0.image = Asset.Assets.namesettingEtcDis.image
+    })
+    
+    lazy var btnCustom = UIButton().then({
+        $0.backgroundColor = .clear
+    })
+    
+    let tfNickname = AppTextField().then({
+        $0.placeholder = L10n.nicknamePlaceholder
+        $0.isHidden = true
+        $0.normalBorderColor = Asset.Color.monoLight030.color
+        $0.successBorderColor = Asset.Color.monoLight030.color
+        $0.clearButtonMode = .whileEditing
+        $0.returnKeyType = .done
+    })
+    let lblHint = AppHintLabel()
+    lazy var viewHintTextField = AppView.hintTextFieldView(tf: tfNickname, lblHint: lblHint)
+    
+    lazy var viewConfirm = UIView().then({
+        $0.backgroundColor = Asset.Color.monoWhite.color
+    })
+    
+    lazy var imgvConfirm = UIImageView().then({
+        $0.image = Asset.Assets.namesettingConfirmS.image
+    })
+    
+    lazy var viewLblConfirm = UIView().then({
+        $0.backgroundColor = .clear
+    })
+    
+    lazy var lblConfirm = UILabel().then({
+        $0.textAlignment = .center
+        $0.text = L10n.nicknameConfirm
+        $0.font = FontFamily.Pretendard.bold.font(size: 18)
+        $0.textColor = Asset.Color.monoDark010.color
+    })
+    
+    lazy var lblNickname = UILabel().then({
+        $0.textAlignment = .center
+        $0.text = ""
+    })
+    
+    lazy var btnDone = AppButton().then({
+        $0.highlightedBackgroundColor = Asset.Color.priDark020.color
+        $0.disabledBackgroundColor = Asset.Color.priLight018Dis.color
+        $0.isEnabled = false
+        $0.setTitle(L10n.nicknameDoneTitle, for: .normal)
+        $0.setTitleColor(Asset.Color.monoWhite.color, for: .normal)
+        $0.layer.cornerRadius = 20
+        $0.titleLabel?.font = FontFamily.Pretendard.semiBold.font(size: 20)
+    })
     
     // MARK: - Init
     init(with reactor: NicknameSettingReactor) {
         super.init(nibName: nil, bundle: nil)
-        
         self.reactor = reactor
     }
     
@@ -31,23 +139,166 @@ class NicknameSettingViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    // MARK: - Init UI & Layout
+    override func initUI() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
 
-        // Do any additional setup after loading the view.
+        view.backgroundColor = Asset.Color.monoLight010.color
     }
     
+    override func initLayout() {
+        view.addSubview(viewBottom)
+        view.addSubview(scrollView)
+        
+        viewContents.addSubview(imgvBack)
+        viewContents.addSubview(btnBack)
+        viewContents.addSubview(imgvQuestion)
+        viewContents.addSubview(viewAnswer)
+        
+        viewAnswer.addSubview(imgvAnswer)
+        viewAnswer.addSubview(imgvSon)
+        viewAnswer.addSubview(btnSon)
+        viewAnswer.addSubview(imgvDaughter)
+        viewAnswer.addSubview(btnDaughter)
+        viewAnswer.addSubview(imgvCustom)
+        viewAnswer.addSubview(btnCustom)
+        
+        viewAnswer.addSubview(viewCustomName)
+        viewCustomName.addSubview(viewHintTextField)
+        
+        viewContents.addSubview(viewConfirm)
+        viewConfirm.addSubview(imgvConfirm)
+        viewConfirm.addSubview(viewLblConfirm)
+        viewLblConfirm.addSubview(lblConfirm)
+        viewLblConfirm.addSubview(lblNickname)
+        viewConfirm.addSubview(btnDone)
+        
+        viewBottom.snp.makeConstraints({
+            $0.top.equalTo(scrollView.snp.bottom)
+            $0.bottom.leading.trailing.equalToSuperview()
+        })
+        
+        scrollView.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        })
+        
+        imgvBack.snp.makeConstraints({
+            $0.width.height.equalTo(30)
+            $0.top.equalToSuperview().offset(12)
+            $0.leading.equalToSuperview().offset(16)
+        })
+        
+        btnBack.snp.makeConstraints({
+            $0.top.leading.equalTo(imgvBack).offset(-5)
+            $0.bottom.trailing.equalTo(imgvBack).offset(5)
+        })
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        imgvQuestion.snp.makeConstraints({
+            $0.width.equalTo(270)
+            $0.height.equalTo(72)
+            $0.top.equalTo(imgvBack.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(15)
+        })
+        
+        viewAnswer.snp.makeConstraints({
+            $0.width.equalTo(300)
+            $0.top.equalTo(imgvQuestion.snp.bottom).offset(30)
+            $0.trailing.equalToSuperview().offset(-15)
+        })
+        
+        imgvAnswer.snp.makeConstraints({
+            $0.width.top.leading.trailing.equalToSuperview()
+        })
+        
+        imgvSon.snp.makeConstraints({
+            $0.top.equalToSuperview().offset(25)
+            $0.leading.equalToSuperview().offset(20)
+        })
+        
+        btnSon.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(imgvSon)
+        })
+        
+        imgvDaughter.snp.makeConstraints({
+            $0.centerY.equalTo(imgvSon)
+            $0.leading.equalTo(imgvSon.snp.trailing).offset(18)
+        })
+        
+        btnDaughter.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(imgvDaughter)
+        })
+        
+        imgvCustom.snp.makeConstraints({
+            $0.centerY.equalTo(imgvSon)
+            $0.leading.equalTo(imgvDaughter.snp.trailing).offset(18)
+        })
+        
+        btnCustom.snp.makeConstraints({
+            $0.top.leading.trailing.bottom.equalTo(imgvCustom)
+        })
+        
+        viewCustomName.snp.makeConstraints({
+            $0.height.equalTo(0)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.equalTo(imgvSon.snp.bottom).offset(15)
+        })
+        
+        viewHintTextField.snp.makeConstraints({
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-30)
+        })
+        
+        viewConfirm.snp.makeConstraints({
+            $0.height.equalTo(288)
+            $0.top.equalTo(viewAnswer.snp.bottom).offset(constants.answerToConfirmMargin)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        })
+        
+        imgvConfirm.snp.makeConstraints({
+            $0.height.equalTo(148)
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(24)
+        })
+        
+        viewLblConfirm.snp.makeConstraints({
+            $0.height.equalTo(30)
+            $0.top.equalTo(imgvConfirm.snp.top).offset(10)
+            $0.centerX.equalTo(imgvConfirm)
+        })
+        
+        lblConfirm.snp.makeConstraints({
+            $0.top.bottom.leading.equalToSuperview()
+            $0.centerY.equalToSuperview()
+        })
+        
+        lblNickname.snp.makeConstraints({
+            $0.leading.equalTo(lblConfirm.snp.trailing)
+            $0.top.trailing.bottom.equalToSuperview()
+            $0.centerY.equalToSuperview()
+        })
+        
+        btnDone.snp.makeConstraints({
+            $0.height.equalTo(56)
+            $0.top.equalTo(imgvConfirm.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
+            $0.bottom.equalToSuperview().offset(-40)
+        })
     }
-    */
-
+    
+    // MARK: - ScrollView TapGesture로 키보드 내리기.
+    @objc
+    func hideKeyboard(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+    
 }
 
 extension NicknameSettingViewController: View {
