@@ -22,21 +22,22 @@ class NicknameSettingViewController: BaseViewController {
         var answerToConfirmMargin: CGFloat = 16
         var viewContentsHeight: CGFloat = 0
     }
-    var constants = Constants()
     
     // MARK: - Properties & Variable
     var disposeBag = DisposeBag()
+    var constants = Constants()
     
     // MARK: - UI Properties
     let viewContents = UIView()
     lazy var scrollView = AppView.scrollView(viewContents: viewContents, bounces: false)
     
-    lazy var btnBack = UIButton().then({
+    lazy var viewCancel = UIView()
+    lazy var btnCancel = UIButton().then({
         $0.backgroundColor = .clear
     })
     
-    lazy var imgvBack = UIImageView().then({
-        $0.image = Asset.Icon.straightLeft.image
+    lazy var imgvCancel = UIImageView().then({
+        $0.image = Asset.Icon.x.image
     })
     
     lazy var viewBottom = UIView().then({
@@ -139,7 +140,6 @@ class NicknameSettingViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - Init UI & Layout
     override func initUI() {
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
@@ -147,7 +147,8 @@ class NicknameSettingViewController: BaseViewController {
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-
+        scrollView.showsVerticalScrollIndicator = false
+        
         view.backgroundColor = Asset.Color.monoLight010.color
     }
     
@@ -155,8 +156,10 @@ class NicknameSettingViewController: BaseViewController {
         view.addSubview(viewBottom)
         view.addSubview(scrollView)
         
-        viewContents.addSubview(imgvBack)
-        viewContents.addSubview(btnBack)
+        viewContents.addSubview(viewCancel)
+        viewCancel.addSubview(imgvCancel)
+        viewCancel.addSubview(btnCancel)
+        
         viewContents.addSubview(imgvQuestion)
         viewContents.addSubview(viewAnswer)
         
@@ -184,24 +187,27 @@ class NicknameSettingViewController: BaseViewController {
         })
         
         scrollView.snp.makeConstraints({
-            $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         })
         
-        imgvBack.snp.makeConstraints({
+        viewCancel.snp.makeConstraints({
             $0.width.height.equalTo(30)
             $0.top.equalToSuperview().offset(12)
-            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().inset(16)
         })
         
-        btnBack.snp.makeConstraints({
-            $0.top.leading.equalTo(imgvBack).offset(-5)
-            $0.bottom.trailing.equalTo(imgvBack).offset(5)
+        imgvCancel.snp.makeConstraints({
+            $0.edges.equalToSuperview()
         })
-
+        
+        btnCancel.snp.makeConstraints({
+            $0.edges.equalToSuperview()
+        })
+        
         imgvQuestion.snp.makeConstraints({
             $0.width.equalTo(270)
             $0.height.equalTo(72)
-            $0.top.equalTo(imgvBack.snp.bottom).offset(16)
+            $0.top.equalTo(viewCancel.snp.bottom)
             $0.leading.equalToSuperview().offset(15)
         })
         
@@ -291,6 +297,18 @@ class NicknameSettingViewController: BaseViewController {
             $0.trailing.equalToSuperview().offset(-24)
             $0.bottom.equalToSuperview().offset(-40)
         })
+        
+        view.layoutIfNeeded()
+        
+        let safeAreaHeight = Utils.safeareaHeight
+        constants.viewContentsHeight = viewContents.bounds.height
+        
+        if safeAreaHeight > constants.viewContentsHeight {
+            constants.answerToConfirmMargin = safeAreaHeight - constants.viewContentsHeight + constants.answerToConfirmMargin
+            viewConfirm.snp.updateConstraints({
+                $0.top.equalTo(viewAnswer.snp.bottom).offset(constants.answerToConfirmMargin)
+            })
+        }
     }
     
     // MARK: - ScrollView TapGesture로 키보드 내리기.
@@ -322,6 +340,12 @@ extension NicknameSettingViewController: View {
             .compactMap { $0 }
             .subscribe(onNext: { [weak self] step in
                 self?.steps.accept(step)
+            })
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isEditView }
+            .subscribe(onNext: { [weak self] isEdit in
+                self?.viewCancel.isHidden = !isEdit
             })
             .disposed(by: disposeBag)
     }

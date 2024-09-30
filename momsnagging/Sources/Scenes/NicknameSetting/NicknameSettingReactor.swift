@@ -27,6 +27,7 @@ final class NicknameSettingReactor: Reactor {
     struct State {
         var step: Step?
         var error: String = ""
+        var isEditView: Bool = false
     }
     
     // MARK: Properties
