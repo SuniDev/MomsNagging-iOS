@@ -10,7 +10,6 @@ import SnapKit
 
 class AppView {
     
-    
     /**
      # scrollView
      - parameters:
@@ -23,6 +22,8 @@ class AppView {
     static func scrollView(viewContents: UIView, bounces: Bool) -> UIScrollView {
         lazy var scrollView = UIScrollView().then({
             $0.bounces = bounces
+            $0.contentInsetAdjustmentBehavior = .never
+            $0.contentInset = .zero
         })
         
         _ = viewContents.then({

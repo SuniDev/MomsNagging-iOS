@@ -16,6 +16,7 @@ final class IntroFlow: Flow {
     
     private lazy var rootViewController: UINavigationController = {
         let viewController = UINavigationController()
+        viewController.setNavigationBarHidden(true, animated: false)
         return viewController
     }()
     

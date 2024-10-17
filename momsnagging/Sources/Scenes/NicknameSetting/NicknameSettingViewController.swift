@@ -207,7 +207,7 @@ class NicknameSettingViewController: BaseViewController {
         imgvQuestion.snp.makeConstraints({
             $0.width.equalTo(270)
             $0.height.equalTo(72)
-            $0.top.equalTo(viewCancel.snp.bottom)
+            $0.top.equalTo(viewCancel.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(15)
         })
         
@@ -344,6 +344,7 @@ extension NicknameSettingViewController: View {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.isEditView }
+            .distinctUntilChanged()
             .subscribe(onNext: { [weak self] isEdit in
                 self?.viewCancel.isHidden = !isEdit
             })
